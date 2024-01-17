@@ -1,0 +1,298 @@
+Exception in thread "main" java.awt.AWTError: Can't connect to X11 window server using '10.220.5.27:1' as the value of the DISPLAY variable.
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)
+	at java.desktop/sun.awt.X11GraphicsEnvironment$1.run(X11GraphicsEnvironment.java:105)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initStatic(X11GraphicsEnvironment.java:64)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.<clinit>(X11GraphicsEnvironment.java:59)
+	at java.desktop/sun.awt.PlatformGraphicsInfo.createGE(PlatformGraphicsInfo.java:37)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.createGE(GraphicsEnvironment.java:93)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.<clinit>(GraphicsEnvironment.java:84)
+	at java.desktop/java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:106)
+	at java.desktop/java.awt.Window.initGC(Window.java:492)
+	at java.desktop/java.awt.Window.init(Window.java:512)
+	at java.desktop/java.awt.Window.<init>(Window.java:554)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:428)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:393)
+	at java.desktop/javax.swing.JFrame.<init>(JFrame.java:180)
+	at uk.ac.babraham.FastQC.FastQCApplication.<init>(FastQCApplication.java:63)
+	at uk.ac.babraham.FastQC.FastQCApplication.main(FastQCApplication.java:338)
+Exception in thread "main" java.awt.AWTError: Can't connect to X11 window server using '10.220.5.27:1' as the value of the DISPLAY variable.
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)
+	at java.desktop/sun.awt.X11GraphicsEnvironment$1.run(X11GraphicsEnvironment.java:105)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initStatic(X11GraphicsEnvironment.java:64)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.<clinit>(X11GraphicsEnvironment.java:59)
+	at java.desktop/sun.awt.PlatformGraphicsInfo.createGE(PlatformGraphicsInfo.java:37)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.createGE(GraphicsEnvironment.java:93)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.<clinit>(GraphicsEnvironment.java:84)
+	at java.desktop/java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:106)
+	at java.desktop/java.awt.Window.initGC(Window.java:492)
+	at java.desktop/java.awt.Window.init(Window.java:512)
+	at java.desktop/java.awt.Window.<init>(Window.java:554)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:428)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:393)
+	at java.desktop/javax.swing.JFrame.<init>(JFrame.java:180)
+	at uk.ac.babraham.FastQC.FastQCApplication.<init>(FastQCApplication.java:63)
+	at uk.ac.babraham.FastQC.FastQCApplication.main(FastQCApplication.java:338)
+Exception in thread "main" java.awt.AWTError: Can't connect to X11 window server using '10.220.5.27:1' as the value of the DISPLAY variable.
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)
+	at java.desktop/sun.awt.X11GraphicsEnvironment$1.run(X11GraphicsEnvironment.java:105)
+Started analysis of SRR24680770_1.fastq.gz
+r.doPrivileged(AccessController.java:319)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initStatic(X11GraphicsEnvironment.java:64)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.<clinit>(X11GraphicsEnvironment.java:59)
+	at java.desktop/sun.awt.PlatformGraphicsInfo.createGE(PlatformGraphicsInfo.java:37)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.createGE(GraphicsEnvironment.java:93)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.<clinit>(GraphicsEnvironment.java:84)
+	at java.desktop/java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:106)
+	at java.desktop/java.awt.Window.initGC(Window.java:492)
+	at java.desktop/java.awt.Window.init(Window.java:512)
+	at java.desktop/java.awt.Window.<init>(Window.java:554)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:428)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:393)
+	at java.desktop/javax.swing.JFrame.<init>(JFrame.java:180)
+	at uk.ac.babraham.FastQC.FastQCApplication.<init>(FastQCApplication.java:63)
+	at uk.ac.babraham.FastQC.FastQCApplication.main(FastQCApplication.java:338)
+Started analysis of SRR24680772_1.fastq.gz
+Started analysis of SRR24680773_1.fastq.gz
+Started analysis of SRR24680765_1.fastq.gz
+Started analysis of SRR24680771_1.fastq.gz
+Started analysis of SRR24680770_2.fastq.gz
+Started analysis of SRR24680772_2.fastq.gz
+Started analysis of SRR24680773_2.fastq.gz
+Started analysis of SRR24680765_2.fastq.gz
+Started analysis of SRR24680771_2.fastq.gz
+Exception in thread "main" java.awt.AWTError: Can't connect to X11 window server using '10.220.5.27:1' as the value of the DISPLAY variable.
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)
+	at java.desktop/sun.awt.X11GraphicsEnvironment$1.run(X11GraphicsEnvironment.java:105)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initStatic(X11GraphicsEnvironment.java:64)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.<clinit>(X11GraphicsEnvironment.java:59)
+	at java.desktop/sun.awt.PlatformGraphicsInfo.createGE(PlatformGraphicsInfo.java:37)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.createGE(GraphicsEnvironment.java:93)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.<clinit>(GraphicsEnvironment.java:84)
+	at java.desktop/java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:106)
+	at java.desktop/java.awt.Window.initGC(Window.java:492)
+	at java.desktop/java.awt.Window.init(Window.java:512)
+	at java.desktop/java.awt.Window.<init>(Window.java:554)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:428)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:393)
+	at java.desktop/javax.swing.JFrame.<init>(JFrame.java:180)
+	at uk.ac.babraham.FastQC.FastQCApplication.<init>(FastQCApplication.java:63)
+	at uk.ac.babraham.FastQC.FastQCApplication.main(FastQCApplication.java:338)
+Exception in thread "main" java.awt.AWTError: Can't connect to X11 window server using '10.220.5.27:1' as the value of the DISPLAY variable.
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initDisplay(Native Method)
+	at java.desktop/sun.awt.X11GraphicsEnvironment$1.run(X11GraphicsEnvironment.java:105)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:319)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.initStatic(X11GraphicsEnvironment.java:64)
+	at java.desktop/sun.awt.X11GraphicsEnvironment.<clinit>(X11GraphicsEnvironment.java:59)
+	at java.desktop/sun.awt.PlatformGraphicsInfo.createGE(PlatformGraphicsInfo.java:37)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.createGE(GraphicsEnvironment.java:93)
+	at java.desktop/java.awt.GraphicsEnvironment$LocalGE.<clinit>(GraphicsEnvironment.java:84)
+	at java.desktop/java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment(GraphicsEnvironment.java:106)
+	at java.desktop/java.awt.Window.initGC(Window.java:492)
+	at java.desktop/java.awt.Window.init(Window.java:512)
+	at java.desktop/java.awt.Window.<init>(Window.java:554)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:428)
+	at java.desktop/java.awt.Frame.<init>(Frame.java:393)
+	at java.desktop/javax.swing.JFrame.<init>(JFrame.java:180)
+	at uk.ac.babraham.FastQC.FastQCApplication.<init>(FastQCApplication.java:63)
+	at uk.ac.babraham.FastQC.FastQCApplication.main(FastQCApplication.java:338)
+Approx 5% complete for SRR24680772_1.fastq.gz
+Approx 5% complete for SRR24680765_1.fastq.gz
+Approx 95% complete for SRR24680785_1.fastq.gz
+Approx 5% complete for SRR24680770_1.fastq.gz
+Approx 5% complete for SRR24680770_2.fastq.gz
+Approx 5% complete for SRR24680765_2.fastq.gz
+Approx 5% complete for SRR24680771_2.fastq.gz
+Approx 5% complete for SRR24680773_1.fastq.gz
+Approx 5% complete for SRR24680772_2.fastq.gz
+Approx 5% complete for SRR24680773_2.fastq.gz
+Approx 5% complete for SRR24680771_1.fastq.gz
+Approx 95% complete for SRR24680785_2.fastq.gz
+Approx 85% complete for SRR24680791_1.fastq.gz
+Approx 85% complete for SRR24680791_2.fastq.gz
+Approx 10% complete for SRR24680772_1.fastq.gz
+Approx 10% complete for SRR24680770_1.fastq.gz
+Approx 10% complete for SRR24680765_1.fastq.gz
+Approx 10% complete for SRR24680771_2.fastq.gz
+Approx 10% complete for SRR24680770_2.fastq.gz
+Approx 10% complete for SRR24680765_2.fastq.gz
+Approx 10% complete for SRR24680773_1.fastq.gz
+Approx 10% complete for SRR24680771_1.fastq.gz
+Approx 10% complete for SRR24680772_2.fastq.gz
+Approx 10% complete for SRR24680773_2.fastq.gz
+Approx 15% complete for SRR24680772_1.fastq.gz
+Approx 15% complete for SRR24680765_1.fastq.gz
+Approx 15% complete for SRR24680770_2.fastq.gz
+Approx 15% complete for SRR24680771_2.fastq.gz
+Approx 15% complete for SRR24680770_1.fastq.gz
+Approx 15% complete for SRR24680765_2.fastq.gz
+Approx 15% complete for SRR24680773_1.fastq.gz
+Approx 15% complete for SRR24680771_1.fastq.gz
+Approx 15% complete for SRR24680772_2.fastq.gz
+Approx 15% complete for SRR24680773_2.fastq.gz
+Approx 90% complete for SRR24680791_1.fastq.gz
+Approx 90% complete for SRR24680791_2.fastq.gz
+Approx 20% complete for SRR24680772_1.fastq.gz
+Approx 20% complete for SRR24680765_1.fastq.gz
+Approx 20% complete for SRR24680770_2.fastq.gz
+Approx 20% complete for SRR24680771_2.fastq.gz
+Approx 20% complete for SRR24680770_1.fastq.gz
+Approx 20% complete for SRR24680765_2.fastq.gz
+Approx 20% complete for SRR24680773_1.fastq.gz
+Approx 20% complete for SRR24680771_1.fastq.gz
+Approx 20% complete for SRR24680772_2.fastq.gz
+Approx 20% complete for SRR24680773_2.fastq.gz
+Approx 25% complete for SRR24680772_1.fastq.gz
+Approx 25% complete for SRR24680765_1.fastq.gz
+Approx 25% complete for SRR24680770_2.fastq.gz
+Approx 25% complete for SRR24680771_2.fastq.gz
+Approx 25% complete for SRR24680770_1.fastq.gz
+Approx 25% complete for SRR24680765_2.fastq.gz
+Approx 25% complete for SRR24680773_1.fastq.gz
+Approx 95% complete for SRR24680791_1.fastq.gz
+Approx 25% complete for SRR24680772_2.fastq.gz
+Approx 25% complete for SRR24680771_1.fastq.gz
+Approx 25% complete for SRR24680773_2.fastq.gz
+Approx 95% complete for SRR24680791_2.fastq.gz
+Approx 30% complete for SRR24680765_1.fastq.gz
+Approx 30% complete for SRR24680772_1.fastq.gz
+Approx 30% complete for SRR24680770_2.fastq.gz
+Approx 30% complete for SRR24680771_2.fastq.gz
+Approx 30% complete for SRR24680770_1.fastq.gz
+Approx 30% complete for SRR24680765_2.fastq.gz
+Approx 30% complete for SRR24680773_1.fastq.gz
+Approx 30% complete for SRR24680772_2.fastq.gz
+Approx 30% complete for SRR24680771_1.fastq.gz
+Approx 30% complete for SRR24680773_2.fastq.gz
+Approx 35% complete for SRR24680765_1.fastq.gz
+Approx 35% complete for SRR24680772_1.fastq.gz
+Approx 35% complete for SRR24680770_1.fastq.gz
+Approx 35% complete for SRR24680771_2.fastq.gz
+Approx 35% complete for SRR24680770_2.fastq.gz
+Approx 35% complete for SRR24680765_2.fastq.gz
+Approx 35% complete for SRR24680773_1.fastq.gz
+Approx 35% complete for SRR24680772_2.fastq.gz
+Approx 35% complete for SRR24680771_1.fastq.gz
+Approx 35% complete for SRR24680773_2.fastq.gz
+Approx 40% complete for SRR24680765_1.fastq.gz
+Approx 40% complete for SRR24680772_1.fastq.gz
+Approx 40% complete for SRR24680771_2.fastq.gz
+Approx 40% complete for SRR24680770_1.fastq.gz
+Approx 40% complete for SRR24680770_2.fastq.gz
+Approx 40% complete for SRR24680765_2.fastq.gz
+Approx 40% complete for SRR24680773_1.fastq.gz
+Approx 40% complete for SRR24680772_2.fastq.gz
+Approx 40% complete for SRR24680771_1.fastq.gz
+Approx 40% complete for SRR24680773_2.fastq.gz
+Approx 45% complete for SRR24680765_1.fastq.gz
+Approx 45% complete for SRR24680770_2.fastq.gz
+Approx 45% complete for SRR24680771_2.fastq.gz
+Approx 45% complete for SRR24680772_1.fastq.gz
+Approx 45% complete for SRR24680770_1.fastq.gz
+Approx 45% complete for SRR24680765_2.fastq.gz
+Approx 45% complete for SRR24680773_1.fastq.gz
+Approx 45% complete for SRR24680772_2.fastq.gz
+Approx 45% complete for SRR24680771_1.fastq.gz
+Approx 50% complete for SRR24680765_1.fastq.gz
+Approx 45% complete for SRR24680773_2.fastq.gz
+Approx 50% complete for SRR24680770_2.fastq.gz
+Approx 50% complete for SRR24680771_2.fastq.gz
+Approx 50% complete for SRR24680772_1.fastq.gz
+Approx 50% complete for SRR24680765_2.fastq.gz
+Approx 50% complete for SRR24680770_1.fastq.gz
+Approx 50% complete for SRR24680773_1.fastq.gz
+Approx 50% complete for SRR24680772_2.fastq.gz
+Approx 55% complete for SRR24680765_1.fastq.gz
+Approx 50% complete for SRR24680771_1.fastq.gz
+Approx 55% complete for SRR24680770_2.fastq.gz
+Approx 50% complete for SRR24680773_2.fastq.gz
+Approx 55% complete for SRR24680771_2.fastq.gz
+Approx 55% complete for SRR24680772_1.fastq.gz
+Approx 55% complete for SRR24680770_1.fastq.gz
+Approx 55% complete for SRR24680765_2.fastq.gz
+Approx 55% complete for SRR24680773_1.fastq.gz
+Approx 55% complete for SRR24680772_2.fastq.gz
+Approx 60% complete for SRR24680765_1.fastq.gz
+Approx 55% complete for SRR24680771_1.fastq.gz
+Approx 60% complete for SRR24680770_2.fastq.gz
+Approx 60% complete for SRR24680771_2.fastq.gz
+Approx 60% complete for SRR24680772_1.fastq.gz
+Approx 55% complete for SRR24680773_2.fastq.gz
+Approx 60% complete for SRR24680770_1.fastq.gz
+Approx 60% complete for SRR24680765_2.fastq.gz
+Approx 60% complete for SRR24680773_1.fastq.gz
+Approx 65% complete for SRR24680765_1.fastq.gz
+Approx 60% complete for SRR24680772_2.fastq.gz
+Approx 65% complete for SRR24680771_2.fastq.gz
+Approx 65% complete for SRR24680772_1.fastq.gz
+Approx 65% complete for SRR24680770_2.fastq.gz
+Approx 60% complete for SRR24680771_1.fastq.gz
+Approx 65% complete for SRR24680765_2.fastq.gz
+Approx 65% complete for SRR24680770_1.fastq.gz
+Approx 60% complete for SRR24680773_2.fastq.gz
+Approx 65% complete for SRR24680773_1.fastq.gz
+Approx 70% complete for SRR24680765_1.fastq.gz
+Approx 65% complete for SRR24680772_2.fastq.gz
+Approx 70% complete for SRR24680771_2.fastq.gz
+Approx 70% complete for SRR24680770_2.fastq.gz
+Approx 70% complete for SRR24680772_1.fastq.gz
+Approx 70% complete for SRR24680770_1.fastq.gz
+Approx 65% complete for SRR24680771_1.fastq.gz
+Approx 70% complete for SRR24680765_2.fastq.gz
+Approx 65% complete for SRR24680773_2.fastq.gz
+Approx 75% complete for SRR24680765_1.fastq.gz
+Approx 70% complete for SRR24680773_1.fastq.gz
+Approx 75% complete for SRR24680771_2.fastq.gz
+Approx 75% complete for SRR24680770_2.fastq.gz
+Approx 75% complete for SRR24680772_1.fastq.gz
+Approx 70% complete for SRR24680772_2.fastq.gz
+Approx 75% complete for SRR24680770_1.fastq.gz
+Approx 75% complete for SRR24680765_2.fastq.gz
+Approx 70% complete for SRR24680771_1.fastq.gz
+Approx 70% complete for SRR24680773_2.fastq.gz
+Approx 80% complete for SRR24680765_1.fastq.gz
+Approx 75% complete for SRR24680773_1.fastq.gz
+Approx 80% complete for SRR24680771_2.fastq.gz
+Approx 80% complete for SRR24680770_2.fastq.gz
+Approx 80% complete for SRR24680770_1.fastq.gz
+Approx 80% complete for SRR24680772_1.fastq.gz
+Approx 75% complete for SRR24680772_2.fastq.gz
+Approx 80% complete for SRR24680765_2.fastq.gz
+Approx 75% complete for SRR24680771_1.fastq.gz
+Approx 75% complete for SRR24680773_2.fastq.gz
+Approx 85% complete for SRR24680765_1.fastq.gz
+Approx 80% complete for SRR24680773_1.fastq.gz
+Approx 85% complete for SRR24680771_2.fastq.gz
+Approx 85% complete for SRR24680770_1.fastq.gz
+Approx 85% complete for SRR24680770_2.fastq.gz
+Approx 85% complete for SRR24680772_1.fastq.gz
+Approx 85% complete for SRR24680765_2.fastq.gz
+Approx 80% complete for SRR24680772_2.fastq.gz
+Approx 80% complete for SRR24680771_1.fastq.gz
+Approx 80% complete for SRR24680773_2.fastq.gz
+Approx 90% complete for SRR24680765_1.fastq.gz
+Approx 85% complete for SRR24680773_1.fastq.gz
+Approx 90% complete for SRR24680771_2.fastq.gz
+Approx 90% complete for SRR24680770_1.fastq.gz
+Approx 90% complete for SRR24680770_2.fastq.gz
+Approx 90% complete for SRR24680772_1.fastq.gz
+Approx 90% complete for SRR24680765_2.fastq.gz
+Approx 85% complete for SRR24680772_2.fastq.gz
+Approx 85% complete for SRR24680771_1.fastq.gz
+Approx 85% complete for SRR24680773_2.fastq.gz
+Approx 95% complete for SRR24680765_1.fastq.gz
+Approx 95% complete for SRR24680771_2.fastq.gz
+Approx 90% complete for SRR24680773_1.fastq.gz
+Approx 95% complete for SRR24680770_1.fastq.gz
+Approx 95% complete for SRR24680770_2.fastq.gz
+Approx 95% complete for SRR24680772_1.fastq.gz
+Approx 95% complete for SRR24680765_2.fastq.gz
+Approx 90% complete for SRR24680772_2.fastq.gz
+Approx 90% complete for SRR24680771_1.fastq.gz
+Approx 90% complete for SRR24680773_2.fastq.gz
+Approx 95% complete for SRR24680773_1.fastq.gz
+Approx 95% complete for SRR24680772_2.fastq.gz
+Approx 95% complete for SRR24680771_1.fastq.gz
+Approx 95% complete for SRR24680773_2.fastq.gz

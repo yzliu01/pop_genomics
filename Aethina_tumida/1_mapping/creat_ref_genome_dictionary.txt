@@ -1,0 +1,38 @@
+# Ref contig name issue
+sed 's/,.*$//' New_Mbel.fa > New_Mbel_midified_contig_name.fa
+
+
+1?. # index fasta file - bwa index -a bwtsw reference.fa 
+module load bioinfo-tools
+module load bwa/0.7.17
+
+bwa index -a bwtsw /crex/proj/snic2021-23-365/nobackup/tuuli/termites/M_bel/New_ref_Mbel/New_Mbel_midified_contig_name.fa
+
+# -p New_Mbel
+
+2.
+module load samtools/1.2
+#samtools faidx reference.fa 
+samtools faidx /crex/proj/snic2021-23-365/nobackup/tuuli/termites/M_bel/New_ref_Mbel/New_Mbel_midified_contig_name.fa
+
+3. Create dictionary
+module load bioinfo-tools
+module load GATK/4.0.8.0
+
+java -jar /sw/bioinfo/GATK/4.0.8.0/rackham/gatk-package-4.0.8.0-local.jar CreateSequenceDictionary \
+-R /crex/proj/snic2021-23-365/nobackup/tuuli/termites/M_bel/New_ref_Mbel/New_Mbel_midified_contig_name.fa \
+-O /crex/proj/snic2021-23-365/nobackup/tuuli/termites/M_bel/New_ref_Mbel/New_Mbel_midified_contig_name.fa.dict
+
+# balteatus
+java -jar /sw/bioinfo/GATK/4.0.8.0/rackham/gatk-package-4.0.8.0-local.jar CreateSequenceDictionary \
+-R /crex/proj/snic2020-6-58/private/yzliu/reference_genome/Bombus_balteatus_v1.sorted.fna \
+-O /crex/proj/snic2020-6-58/private/yzliu/reference_genome/Bombus_balteatus_v1.sorted.fna.dict
+
+
+#java -jar picard.jar CreateSequenceDictionary \
+#    REFERENCE=reference.fa \ 
+#    OUTPUT=reference.dict
+
+
+
+  
