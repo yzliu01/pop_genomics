@@ -1,0 +1,18 @@
+# conda environments:
+#
+base                     /home/yzliu/miniforge3
+R                        /home/yzliu/miniforge3/envs/R
+Radian                   /home/yzliu/miniforge3/envs/Radian
+angsd                    /home/yzliu/miniforge3/envs/angsd
+bcftools                 /home/yzliu/miniforge3/envs/bcftools
+bioproject               /home/yzliu/miniforge3/envs/bioproject
+dos2unix                 /home/yzliu/miniforge3/envs/dos2unix
+fastsimcoal2             /home/yzliu/miniforge3/envs/fastsimcoal2
+ms                       /home/yzliu/miniforge3/envs/ms
+myproject                /home/yzliu/miniforge3/envs/myproject
+parallel-fastq-dump      /home/yzliu/miniforge3/envs/parallel-fastq-dump
+plink                    /home/yzliu/miniforge3/envs/plink
+py_ipykernel             /home/yzliu/miniforge3/envs/py_ipykernel
+rstudio                  /home/yzliu/miniforge3/envs/rstudio
+sratools                 /home/yzliu/miniforge3/envs/sratools
+
