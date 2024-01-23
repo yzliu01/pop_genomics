@@ -65,6 +65,27 @@ grep '>' D_melanogaster.7509v1.fa | sed -e 's/CP.*chromosome\s/chr/'
 ## output
 sed -e 's/CP.*chromosome\s/chr/' D_melanogaster.7509v1.fa > D_melanogaster.7509v1.md_chr.fa
 
+## Bombus hypnorm -> ref download issue
+## v1
+wget https://ftp.ensembl.org/pub/rapid-release/species/Andrena_hattorfiana/GCA_944738655.1/ensembl/genome/Andrena_hattorfiana-GCA_944738655.1-softmasked.fa.gz
+wget https://ftp.ensembl.org/pub/rapid-release/species/Bombus_hypnorum/GCA_911387925.1/ensembl/genome/Bombus_hypnorum-GCA_911387925.1-softmasked.fa.gz
+gunzip Bombus_hypnorum-GCA_911387925.1-softmasked.fa.gz
+mv Bombus_hypnorum-GCA_911387925.1-softmasked.fa iyBomHypn_7925v1_1.fa
+
+grep ">" iyBomHypn_7925v1_1.fa | sed -e 's/\ssoft*.*:1$//g' -e 's/^>/>chr/g'
+
+## v2 (Mac download)
+# https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_911387925.2/
+grep ">" /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyBomHypn_7925v1_2.fa
+grep ">" iyBomHypn_7925v1_2.fa | sed -e 's/OU.*.chromosome:\s/chr/' -e 's/OU.*.mitochondrion/mt/' -e 's/\sBombus.*.sequence//'
+## save as new .fa file
+sed -e 's/OU.*.chromosome:\s/chr/' -e 's/OU.*.mitochondrion/mt/' -e 's/\sBombus.*.sequence//' iyBomHypn_7925v1_2.fa > iyBomHypn_7925v1_2.md.fa
+
+## Andrena hattorfiana
+# https://www.ncbi.nlm.nih.gov/datasets/genome/GCA_944738785.2/
+grep '>' iyAndHatt_8785v1_2.fa | sed -e 's/\sAndrena.*.sequence//'
+sed -e 's/\sAndrena.*.sequence//' iyAndHatt_8785v1_2.fa > iyAndHatt_8785v1_2.md.fa
+
 **************
 
 1. # index fasta file - bwa index -a bwtsw reference.fa 
