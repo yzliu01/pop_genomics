@@ -2,10 +2,10 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 4
 ##SBATCH --mem 50g
-##SBATCH --array=1-136%20
-#SBATCH --array=1-10%10
-##SBATCH --time=3-04:04:00
-#SBATCH --time=00:05:00
+#SBATCH --array=1-136%20
+##SBATCH --array=1-10%10
+#SBATCH --time=3-04:04:00
+##SBATCH --time=00:05:00
 #SBATCH --error=1_mapping_dro_mel.%A_%a.e.txt
 #SBATCH --output=1_mapping_dro_mel.%A_%a.o.txt
 #SBATCH --job-name=1_mapping_dro_mel
@@ -13,9 +13,9 @@
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
 ## clean fastq sequence dir
-SEQDIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/empirical_drosophila_fastq
+SEQDIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/empirical_drosophila_clean_fastq
 ## mapping output
-OUTPUT=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
+OUT_BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
 ## reference dir
 REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.fa
 
@@ -44,11 +44,14 @@ conda activate variant_calling_mapping
 ## not necessary to view and generate those files
 ## https://www.biostars.org/p/319730/
 #bwa mem -t 8 $REF $seq1 $seq1 | samtools view -b -@ 8 | samtools sort -@ 8 -m 5G -o $OUTPUT/$File2
+
 script_path=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/2_mapping_genome
+bam_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
+cd $bam_dir
 echo -e "aligning: $seq1 $seq2\n" >> $script_path/dro_mel_aligning_sorting.log
-bwa mem -t 4 $REF $seq1 $seq1 | samtools sort -@ 4 -m 5G -o $OUTPUT/$File1 >> $script_path/dro_mel_aligning_sorting.log
+bwa mem -t 4 $REF $seq1 $seq1 | samtools sort -@ 4 -m 5G -o $OUT_BAM/$File1 >> $script_path/dro_mel_aligning_sorting.log
 
 ## indexing
 echo -e "indexing: $seq1 $seq2\n" >> $script_path/dro_mel_aligning_sorting.log
-samtools index $OUTPUT/$File1
+samtools index $OUT_BAM/$File1
 #bamtools stats -in $OUTPUT/$File1

@@ -18,3 +18,10 @@ aligning: SRR24680728_1.fastq.clean.gz SRR24680728_2.fastq.clean.gz
 
 aligning: SRR24680731_1.fastq.clean.gz SRR24680731_2.fastq.clean.gz
 
+aligning: SRR24680726_1.fastq.clean.gz SRR24680726_2.fastq.clean.gz
+
+aligning: SRR24680725_1.fastq.clean.gz SRR24680725_2.fastq.clean.gz
+
+indexing: SRR24680726_1.fastq.clean.gz SRR24680726_2.fastq.clean.gz
+indexing: SRR24680725_1.fastq.clean.gz SRR24680725_2.fastq.clean.gz
+

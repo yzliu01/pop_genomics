@@ -2,10 +2,10 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 2
 ##SBATCH --mem 50g
-##SBATCH --array=1-136%20
-#SBATCH --array=1-10%10
-##SBATCH --time=04:04:00
-#SBATCH --time=00:04:00
+#SBATCH --array=1-136%20
+##SBATCH --array=1-10%10
+#SBATCH --time=04:04:00
+##SBATCH --time=00:04:00
 #SBATCH --error=1_bam_stat_dro_mel.%A_%a.e.txt
 #SBATCH --output=1_bam_stat_dro_mel.%A_%a.o.txt
 #SBATCH --job-name=1_bam_stat_dro_mel
