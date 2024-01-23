@@ -1,0 +1,10 @@
+## example
+#!/bin/bash -l
+***************************
+## 1st open command pallete
+ctrl + shift + P
+## 2nd choose below command
+Git: Open Repository
+## 3rd enter below the cloned/linked directory
+/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/
+
