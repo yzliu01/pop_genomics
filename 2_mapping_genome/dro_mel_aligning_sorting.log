@@ -1,27 +1,2 @@
-aligning: SRR24680726_1.fastq.clean.gz SRR24680726_2.fastq.clean.gz
-
-aligning: SRR24680732_1.fastq.clean.gz SRR24680732_2.fastq.clean.gz
-
-aligning: SRR24680730_1.fastq.clean.gz SRR24680730_2.fastq.clean.gz
-
-aligning: SRR24680734_1.fastq.clean.gz SRR24680734_2.fastq.clean.gz
-
-aligning: SRR24680727_1.fastq.clean.gz SRR24680727_2.fastq.clean.gz
-
-aligning: SRR24680729_1.fastq.clean.gz SRR24680729_2.fastq.clean.gz
-
-aligning: SRR24680725_1.fastq.clean.gz SRR24680725_2.fastq.clean.gz
-
-aligning: SRR24680733_1.fastq.clean.gz SRR24680733_2.fastq.clean.gz
-
-aligning: SRR24680728_1.fastq.clean.gz SRR24680728_2.fastq.clean.gz
-
-aligning: SRR24680731_1.fastq.clean.gz SRR24680731_2.fastq.clean.gz
-
-aligning: SRR24680726_1.fastq.clean.gz SRR24680726_2.fastq.clean.gz
-
-aligning: SRR24680725_1.fastq.clean.gz SRR24680725_2.fastq.clean.gz
-
-indexing: SRR24680726_1.fastq.clean.gz SRR24680726_2.fastq.clean.gz
-indexing: SRR24680725_1.fastq.clean.gz SRR24680725_2.fastq.clean.gz
+aligning: SRR24680757_1.fastq.clean.gz SRR24680757_2.fastq.clean.gz
 

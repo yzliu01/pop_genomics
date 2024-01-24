@@ -1,11 +1,11 @@
 #!/bin/sh
 #SBATCH --account eDNA
-#SBATCH --cpus-per-task 4
-##SBATCH --mem 50g
+#SBATCH --cpus-per-task 6
+#SBATCH --mem 80g
 #SBATCH --array=1-136%20
 ##SBATCH --array=1-10%10
-#SBATCH --time=3-04:04:00
-##SBATCH --time=00:05:00
+##SBATCH --time=3-04:04:00
+#SBATCH --time=15:05:00
 #SBATCH --error=1_mapping_dro_mel.%A_%a.e.txt
 #SBATCH --output=1_mapping_dro_mel.%A_%a.o.txt
 #SBATCH --job-name=1_mapping_dro_mel
@@ -46,12 +46,14 @@ conda activate variant_calling_mapping
 #bwa mem -t 8 $REF $seq1 $seq1 | samtools view -b -@ 8 | samtools sort -@ 8 -m 5G -o $OUTPUT/$File2
 
 script_path=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/2_mapping_genome
-bam_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
-cd $bam_dir
+
+rm $script_path/dro_mel_aligning_sorting.log
+rm $script_path/dro_mel_bam_index.log
+
 echo -e "aligning: $seq1 $seq2\n" >> $script_path/dro_mel_aligning_sorting.log
-bwa mem -t 4 $REF $seq1 $seq1 | samtools sort -@ 4 -m 5G -o $OUT_BAM/$File1 >> $script_path/dro_mel_aligning_sorting.log
+bwa mem -t 6 $REF $seq1 $seq1 | samtools sort -@ 6 -m 40G -o $OUT_BAM/$File1
 
 ## indexing
-echo -e "indexing: $seq1 $seq2\n" >> $script_path/dro_mel_aligning_sorting.log
+echo -e "indexing: $seq1 $seq2\n" >> $script_path/dro_mel_bam_index.log
 samtools index $OUT_BAM/$File1
 #bamtools stats -in $OUTPUT/$File1

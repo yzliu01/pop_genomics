@@ -1,6 +1,9 @@
 ## example
 #!/bin/bash -l
 ***************************
+
+ssh -T git@github.com
+
 ## 1st open command pallete
 ctrl + shift + P
 ## 2nd choose below command
