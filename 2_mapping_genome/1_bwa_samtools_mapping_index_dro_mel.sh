@@ -47,8 +47,8 @@ conda activate variant_calling_mapping
 
 script_path=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/2_mapping_genome
 
-rm $script_path/dro_mel_aligning_sorting.log
-rm $script_path/dro_mel_bam_index.log
+#rm $script_path/dro_mel_aligning_sorting.log
+#rm $script_path/dro_mel_bam_index.log
 
 echo -e "aligning: $seq1 $seq2\n" >> $script_path/dro_mel_aligning_sorting.log
 bwa mem -t 6 $REF $seq1 $seq1 | samtools sort -@ 6 -m 40G -o $OUT_BAM/$File1
