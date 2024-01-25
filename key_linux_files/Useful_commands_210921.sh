@@ -1,3 +1,5 @@
+
+
 Remember to read the "Getting started" documentation for GenomeDK users at www.genome.au.dk - it will save you a lot of time :-)
 
 To protect your files from accidental deletion, add "alias rm='rm -i'" (remove double quotes) to the end of the .bashrc file in your home folder. When you now use the rm (remove) command, you will be prompted if you are sure, before the file or folder is deleted. Do the same for the mv and cp commands to avoid accidentally overwriting files. You can add a second alias for removal without prompt (force), for when you need to remove a directory and do not want to be prompted about every file: "alias rm_force='rm -f'". Similarly, for the mv and cp commands, add for instance "alias mv_overwrite='mv'". However, you should still be careful not to accidentally delete files when using terminal software like MobaXTerm - if you start renaming a file in the graphical interface, but then press enter when the file has no name, i.e. is called ".", then all files in the folder will be deleted! This is one of many reasons to use the command line interface as much as possible :-)

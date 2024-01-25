@@ -13,3 +13,7 @@ ls | grep -E *30207955_[0-9]{3}.*.txt | xargs rm
 
 ls -d -- *[!0-9][0-9].txt
 # The ! at the beginning of the group complements its meaning.
+
+https://stackoverflow.com/questions/8467424/echo-newline-in-bash-prints-literal-n
+echo -e "######  bamtools stats: $File1 ######\n"
+printf "######  bamtools stats: $File1 ######\n"
