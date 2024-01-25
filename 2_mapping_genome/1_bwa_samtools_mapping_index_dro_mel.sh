@@ -2,15 +2,17 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 6
 #SBATCH --mem 80g
-#SBATCH --array=1-136%20
+#SBATCH --array=1-68%20
 ##SBATCH --array=1-10%10
 ##SBATCH --time=3-04:04:00
-#SBATCH --time=15:05:00
+#SBATCH --time=04:05:00
 #SBATCH --error=1_mapping_dro_mel.%A_%a.e.txt
 #SBATCH --output=1_mapping_dro_mel.%A_%a.o.txt
 #SBATCH --job-name=1_mapping_dro_mel
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
+
+# scancel 30218861_[69-136]
 
 ## clean fastq sequence dir
 SEQDIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/empirical_drosophila_clean_fastq
@@ -57,3 +59,8 @@ bwa mem -t 6 $REF $seq1 $seq1 | samtools sort -@ 6 -m 40G -o $OUT_BAM/$File1
 echo -e "indexing: $seq1 $seq2\n" >> $script_path/dro_mel_bam_index.log
 samtools index $OUT_BAM/$File1
 #bamtools stats -in $OUTPUT/$File1
+
+exit
+
+# view bam files
+samtools view $OUT_BAM/SRR24680741.sort.bam | less -S

@@ -25,3 +25,24 @@ seq1=$(ls SRR*.sort.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward se
 
 ## input file to bamtools
 bamtools stats -in $bam/$seq1
+
+exit
+## example
+#bamtools stats -in /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/SRR24680763.sort.bam 
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       71657449
+Mapped reads:      67347541     (93.9854%)
+Forward strand:    37988883     (53.0146%)
+Reverse strand:    33668566     (46.9854%)
+Failed QC:         0    (0%)
+Duplicates:        0    (0%)
+Paired-end reads:  71657449     (100%)
+'Proper-pairs':    0    (0%)
+Both pairs mapped: 67347541     (93.9854%)
+Read 1:            35828753
+Read 2:            35828696
+Singletons:        0    (0%)
