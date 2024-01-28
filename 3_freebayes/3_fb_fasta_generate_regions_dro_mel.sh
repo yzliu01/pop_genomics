@@ -12,7 +12,7 @@
 
 
 REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-#REF_Index=$REF/D_melanogaster.7509v1.md_chr.fa.fai
+REF_Index=$REF/D_melanogaster.7509v1.md_chr.fa.fai
 #BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
 OUT_DIR=$REF/fb_cov2region_dro_mel
 
@@ -36,4 +36,4 @@ cd $JOB_SUB_DIR
 bamtools coverage -in $EXAMPLE_BAM | coverage_to_regions.py $REF/D_melanogaster.7509v1.md_chr.fa.fai 500 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.500.regions
 
 
-fasta_generate_regions.py 
+fasta_generate_regions.py $REF/D_melanogaster.7509v1.md_chr.fa 10000 >  > $REF_DIR/syl.ref.fa.100kbp.regions.freebayes

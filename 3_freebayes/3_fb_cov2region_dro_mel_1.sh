@@ -3,10 +3,10 @@
 #SBATCH --cpus-per-task 2
 #SBATCH --mem 40g
 #SBATCH --time=08:14:00
-#SBATCH --error=fb_cov2region_dro_mel.%A_%a.e.txt
-#SBATCH --output=fb_cov2region_dro_mel.%A_%a.o.txt
+#SBATCH --error=fb_cov2region_dro_mel_1.%A.e.txt
+#SBATCH --output=fb_cov2region_dro_mel_1.%A.o.txt
 ##SBATCH --output=dro_mel_variant_fb_calling.%A_%a.o.txt
-#SBATCH --job-name=fb_cov2region_dro_mel
+#SBATCH --job-name=fb_cov2region_dro_mel_1
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com #send email notification
 
@@ -27,13 +27,11 @@ source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 conda activate variant_calling_mapping
 ## one example bam file
 #EXAMPLE_BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/SRR24680763.sort.bam
-#EXAMPLE_BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/test_sort1/SRR24680726.sort.bam
-EXAMPLE_BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/test_sort/SRR24680726.sort.bam.mark_dups.bam
+EXAMPLE_BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/test_sort1/SRR24680726.sort.bam
+#EXAMPLE_BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/test_sort/SRR24680726.sort.bam.mark_dups.bam
 ## job submission folder
 JOB_SUB_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submittion
 cd $JOB_SUB_DIR
 
-bamtools coverage -in $EXAMPLE_BAM | coverage_to_regions.py $REF/D_melanogaster.7509v1.md_chr.fa.fai 500 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.500.regions
+bamtools coverage -in $EXAMPLE_BAM | coverage_to_regions.py $REF/D_melanogaster.7509v1.md_chr.fa.fai 500 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.500.SRR24680726.regions
 
-
-fasta_generate_regions.py 

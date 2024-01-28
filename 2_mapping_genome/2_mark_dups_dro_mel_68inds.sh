@@ -1,18 +1,18 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 6
-#SBATCH --mem 50g
-#SBATCH --array=1-68%20
-##SBATCH --array=1-10%10
+#SBATCH --mem 30g
+##SBATCH --array=1-68%20
+#SBATCH --array=64,65
 #SBATCH --time=00:15:00
-#SBATCH --error=2_mark_dups_dro_mel_68inds.%A_%a.e.txt
-#SBATCH --output=2_mark_dups_dro_mel_68inds.%A_%a.o.txt
-#SBATCH --job-name=2_mark_dups_dro_mel_68inds
+#SBATCH --error=2_RG_mark_dups_dro_mel_68inds.%A_%a.e.txt
+#SBATCH --output=2_RG_mark_dups_dro_mel_68inds.%A_%a.o.txt
+#SBATCH --job-name=2_RG_mark_dups_dro_mel_68inds
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
 ## bam files
-BAM_FILE=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
+BAM_DIRE=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
 ## reference dir
 REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.fa
 
@@ -20,6 +20,26 @@ REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.75
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 ## call picard and samtools in the env
 conda activate variant_calling_mapping
+
+cd $BAM_DIRE
+## mark duplicates
+SORTED_BAM=$(ls SRR*.sort.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
+MARKED_BAM=${SORTED_BAM/.sort.bam/.sort.marked_dups.bam}
+
+echo -e ${SORTED_BAM[*]}"\t"${MARKED_BAM[*]} >> Mark_dups.1-68.issue.log
+picard MarkDuplicates \
+    I=$SORTED_BAM \
+    O=$MARKED_BAM \
+    M=$MARKED_BAM".metrics.csv" >& $MARKED_BAM.issue.log
+
+## indexing marked_dups
+echo -e "\nindexing: $MARKED_BAM" >> dro_mel_sort_marked_bam_index.log
+samtools index $MARKED_BAM
+
+## stats
+printf "\n######  bamtools stats: $MARKED_BAM ######" >> bamtools_stats_marked_dups_68samples.issue.txt
+bamtools stats -in $MARKED_BAM >> bamtools_stats_marked_dups_68samples.issue.txt
+#echo -e "\n###### Job Done! #####\n" >> bamtools_stats_68samples.txt
 
 # Mark duplicate reads
 # Final output: ...sort.marked_dups.bam, ...bam.bai
@@ -35,7 +55,6 @@ I=$BAM \
 O=$MARKED_BAM \
 M=$MARKED_BAM".metrics.csv" >& $MARKED_BAM.log
 
-## 
 ## Index the file
 samtools index $MARKED_BAM
 samtools idxstats $MARKED_BAM > $MARKED_BAM.idxstats.csv
