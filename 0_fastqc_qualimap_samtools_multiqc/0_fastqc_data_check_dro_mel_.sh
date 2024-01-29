@@ -32,8 +32,8 @@ $fastqc --extract $seq1 $seq2 --outdir=$OUTPUT --dir $OUTPUT/temp --threads 6
 
 exit
 ## https://www.hadriengourle.com/tutorials/qc/
-conda create -n MultiQC -c conda-forge multiqc -y
-conda activate MultiQC
+conda create -n multiqc -c conda-forge multiqc -y
+conda activate multiqc
 multiqc .
 
 ## https://github.com/OpenGene/fastp
