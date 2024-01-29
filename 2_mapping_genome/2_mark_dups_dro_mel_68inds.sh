@@ -2,12 +2,12 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 6
 #SBATCH --mem 30g
-##SBATCH --array=1-68%20
-#SBATCH --array=64,65
-#SBATCH --time=00:15:00
-#SBATCH --error=2_RG_mark_dups_dro_mel_68inds.%A_%a.e.txt
-#SBATCH --output=2_RG_mark_dups_dro_mel_68inds.%A_%a.o.txt
-#SBATCH --job-name=2_RG_mark_dups_dro_mel_68inds
+#SBATCH --array=1-68%20
+##SBATCH --array=64,65
+#SBATCH --time=00:30:00
+#SBATCH --error=2_RG_mark_dups_index_dro_mel_68inds.%A_%a.e.txt
+#SBATCH --output=2_RG_mark_dups_index_dro_mel_68inds.%A_%a.o.txt
+#SBATCH --job-name=2_RG_mark_dups_index_dro_mel_68inds
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -26,43 +26,26 @@ cd $BAM_DIRE
 SORTED_BAM=$(ls SRR*.sort.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
 MARKED_BAM=${SORTED_BAM/.sort.bam/.sort.marked_dups.bam}
 
-echo -e ${SORTED_BAM[*]}"\t"${MARKED_BAM[*]} >> Mark_dups.1-68.issue.log
+echo -e ${SORTED_BAM}"\t"${MARKED_BAM} >> Mark_dups.1-68.log
 picard MarkDuplicates \
     I=$SORTED_BAM \
     O=$MARKED_BAM \
-    M=$MARKED_BAM".metrics.csv" >& $MARKED_BAM.issue.log
+    M=$MARKED_BAM".metrics.csv" >& $MARKED_BAM.log
 
 ## indexing marked_dups
 echo -e "\nindexing: $MARKED_BAM" >> dro_mel_sort_marked_bam_index.log
-samtools index $MARKED_BAM
+samtools index $MARKED_BAM >> dro_mel_sort_marked_bam_index.log
 
 ## stats
-printf "\n######  bamtools stats: $MARKED_BAM ######" >> bamtools_stats_marked_dups_68samples.issue.txt
-bamtools stats -in $MARKED_BAM >> bamtools_stats_marked_dups_68samples.issue.txt
+printf "\n######  bamtools stats: $MARKED_BAM ######" >> bamtools_stats_marked_dups_68samples.txt
+bamtools stats -in $MARKED_BAM 
+bamtools stats -in $MARKED_BAM >> bamtools_stats_marked_dups_68samples.txt
 #echo -e "\n###### Job Done! #####\n" >> bamtools_stats_68samples.txt
+
+exit 0
 
 # Mark duplicate reads
 # Final output: ...sort.marked_dups.bam, ...bam.bai
-## bam files
-cd $BAM_FILE
-BAM=$(ls SRR*.sort.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
-MARKED_BAM=${BAM_FILE/.sort.bam/.sort.marked_dups.bam}
-
-echo -e ${BAM_FILE[*]}"\t"${MARKED_BAM[*]} >> SampleID_2_Name.1-68.log
-
-picard MarkDuplicates \
-I=$BAM \
-O=$MARKED_BAM \
-M=$MARKED_BAM".metrics.csv" >& $MARKED_BAM.log
-
-## Index the file
-samtools index $MARKED_BAM
-samtools idxstats $MARKED_BAM > $MARKED_BAM.idxstats.csv
-
-
-exit
-
-
 
 cd $SEQDIR
 INPUT_NAMES=$(ls *_sort.bam | sed -n ${SLURM_ARRAY_TASK_ID}p) ## e.g. P23261_469_sort.bam
