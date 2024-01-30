@@ -112,6 +112,7 @@ dev.off()
 install.packages("gtools")
 library(gtools)
 #library(stringi)
+install.packages("stringr",dependancies=T)
 library(stringr) ## more convient for multiple replacements than gsub
 #https://stackoverflow.com/questions/63585270/r-stringr-mutate-i-think-multiple-partial-string-replacements-in-multiple
 ## make transparent plot

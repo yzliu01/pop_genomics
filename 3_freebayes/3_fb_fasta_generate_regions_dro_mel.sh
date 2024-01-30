@@ -39,4 +39,5 @@ bamtools coverage -in $EXAMPLE_BAM | coverage_to_regions.py $REF/D_melanogaster.
 
 ## reference genome fasta_generate_regions
 cd $OUT_DIR
-fasta_generate_regions.py $REF/D_melanogaster.7509v1.md_chr.fa 10000 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.100kbp.regions.fb
+fasta_generate_regions.py $REF/D_melanogaster.7509v1.md_chr.fa 10000 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.10kbp.regions.fb
+fasta_generate_regions.py $REF/D_melanogaster.7509v1.md_chr.fa 100000 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.100kbp.regions.fb

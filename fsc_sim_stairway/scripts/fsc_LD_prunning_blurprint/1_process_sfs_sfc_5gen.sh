@@ -111,13 +111,11 @@ done
 
 
 
-
-
-
-## all
+## all: checked methods
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/10000Ne_5rep
 
 for sample_size in {20,80,200};do
+    ## different sort orders
     sfs1=`find -maxdepth 2 -print | grep "10000Ne" | grep "1E" | grep -v "05i" | grep "15Mb/" | grep "$sample_size"hapS | grep "15Mb_MAFpop0.obs$" | sort -V`
     sfs2=`find -maxdepth 2 -print | grep "10000Ne" | grep "1E" | grep "05i" |  grep "15Mb/" | grep "$sample_size"hapS | grep "15Mb_MAFpop0.obs$" | sort -V`
     if [ $sample_size == 20 ];then

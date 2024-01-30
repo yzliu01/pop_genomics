@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --account eDNA
-#SBATCH --cpus-per-task 12
+#SBATCH --cpus-per-task 16
 #SBATCH --mem 250g
-##SBATCH --time=00:10:00
-#SBATCH --time=10:10:00
-#SBATCH --error=fb_dro_mel_variant_fb_calling_qual20_g15k.%A.e.txt
-#SBATCH --output=fb_dro_mel_variant_fb_calling_qual20_g15k.%A.o.txt
-#SBATCH --job-name=fb_dro_mel_variant_fb_calling_qual20_g15k
+##SBATCH --time=00:05:00
+#SBATCH --time=03-00:10:00
+#SBATCH --error=fb_dro_mel_variant_fb_calling_qual20_g10k.%A.e.txt
+#SBATCH --output=fb_dro_mel_variant_fb_calling_qual20_g10k.%A.o.txt
+#SBATCH --job-name=fb_dro_mel_variant_fb_calling_qual20_g10k
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com #send email notification
 
@@ -36,18 +36,22 @@ cd $JOB_SUB_DIR
 
 ## https://github.com/vcflib/vcflib/issues/389
 ## conda install -c bioconda vcflib=1.0.3 tabixpp=1.1.0
-GVCF_MQ=empirical_dro_mel_68samples.fb_qual20_dp1500.g.vcf
+GVCF_MQ=empirical_dro_mel_68samples.fb_qual20_dp1000.g.vcf
 ls $BAM_DIR/*sort.marked_dups.bam > $BAM_DIR/dro_mel_68samples.sort.marked_dups.bam.list
 
-fasta_generate_regions=$REF/fasta_generate_regions/D_melanogaster.7509v1.md_chr.fa.100kbp.regions.fb
+fasta_generate_regions=$REF/fasta_generate_regions/D_melanogaster.7509v1.md_chr.fa.10kbp.regions.fb
 
 ## By default, both base and mapping quality are into the reported site quality (QUAL in the VCF) 
 ## and genotype quality (GQ, when supplying --genotype-qualities)
-freebayes-parallel $fasta_generate_regions 12 --fasta-reference $REF/D_melanogaster.7509v1.md_chr.fa \
+freebayes-parallel $fasta_generate_regions 16 --fasta-reference $REF/D_melanogaster.7509v1.md_chr.fa \
     --bam-list $BAM_DIR/dro_mel_68samples.sort.marked_dups.bam.list \
-    --ploidy 2 --skip-coverage 1500 --min-coverage 3 \
+    --ploidy 2 --skip-coverage 1000 --min-coverage 3 \
     --genotype-qualities --strict-vcf --gvcf | \
     vcffilter -f "QUAL > 20" > $OUT_VCF_DIR/$GVCF_MQ
+# g.vcf.gz | bgzip -l 8
+
+## index vcf
+#bcftools index $OUT_VCF_DIR/$GVCF_MQ
 
 exit 0
 
