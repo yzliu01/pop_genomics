@@ -2,8 +2,8 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 12
 #SBATCH --mem 250g
-##SBATCH --time=00:10:00
-#SBATCH --time=10:10:00
+#SBATCH --time=02-05:10:00
+##SBATCH --time=10:10:00
 #SBATCH --error=fb_dro_mel_variant_fb_calling_qual20_g15k.%A.e.txt
 #SBATCH --output=fb_dro_mel_variant_fb_calling_qual20_g15k.%A.o.txt
 #SBATCH --job-name=fb_dro_mel_variant_fb_calling_qual20_g15k
@@ -37,7 +37,7 @@ cd $JOB_SUB_DIR
 ## https://github.com/vcflib/vcflib/issues/389
 ## conda install -c bioconda vcflib=1.0.3 tabixpp=1.1.0
 GVCF_MQ=empirical_dro_mel_68samples.fb_qual20_dp1500.g.vcf
-ls $BAM_DIR/*sort.marked_dups.bam > $BAM_DIR/dro_mel_68samples.sort.marked_dups.bam.list
+#ls $BAM_DIR/*sort.marked_dups.bam > $BAM_DIR/dro_mel_68samples.sort.marked_dups.bam.list
 
 fasta_generate_regions=$REF/fasta_generate_regions/D_melanogaster.7509v1.md_chr.fa.100kbp.regions.fb
 
@@ -45,15 +45,17 @@ fasta_generate_regions=$REF/fasta_generate_regions/D_melanogaster.7509v1.md_chr.
 ## and genotype quality (GQ, when supplying --genotype-qualities)
 freebayes-parallel $fasta_generate_regions 12 --fasta-reference $REF/D_melanogaster.7509v1.md_chr.fa \
     --bam-list $BAM_DIR/dro_mel_68samples.sort.marked_dups.bam.list \
-    --ploidy 2 --skip-coverage 1500 --min-coverage 3 \
+    --ploidy 2 --skip-coverage 1500 \
     --genotype-qualities --strict-vcf --gvcf | \
     vcffilter -f "QUAL > 20" > $OUT_VCF_DIR/$GVCF_MQ
+# TYPE=snp
+# vcffilter -f "QUAL > 20" -f "TYPE=snp" -f "DP > 3"
 
 exit 0
 
 ## for pooled data
 freebayes-parallel $fasta_generate_regions 12 --fasta-reference $REF/D_melanogaster.7509v1.md_chr.fa \
-    --ploidy 32 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 --min-coverage 3 \
+    --ploidy 90 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 --min-coverage 3 \
     aln.bam --strict-vcf --vcf var.vcf
     
 ## vcf dir
