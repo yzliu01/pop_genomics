@@ -7,6 +7,15 @@ P23261_111      NexteraUD_UDP0011       illumina        AHCYGKDSX3      M_L011
 sed -e 's/\t/\\t:/g' -e 's/P23261/@RG\\tID:P23261/g' -e 's/:Next/LB:Next/g' -e 's/:ill/PL:ill/g' -e 's/:AH/PU:AH/g' -e 's/X3\\t:/X3\\tSM:/g' seed3_ReadGroup |head (> seed3_RG)
 @RG\tID:P23261_106\tLB:NexteraUD_UDP0006\tPL:illumina\tPU:AHCYGKDSX3\tSM:M_L006
 
+sed -e 's/\t/\\t:/g' -e 's/SN/@RG\\tID:SN/g' -e 's/:Bom/LB:Bom/1' -e 's/:And/LB:And/1' -e 's/:BGI_DNBSEQ/PL:BGI_DNBSEQ/g' -e 's/:gDNA/PU:gDNA/g' -e 's/DNA\\t:/DNA\\tSM:/g' ReadGroup_pooled.list
+
+SN8522312001289	Bompas_pool1	BGI_DNBSEQ	gDNA	Bompas_pool1
+SN8522312001290	Bomvet_pool1	BGI_DNBSEQ	gDNA	Bomvet_pool1
+SN8522312001291	Andhae_pool1	BGI_DNBSEQ	gDNA	Andhae_pool1
+SN8522312001292	Andmar_pool1	BGI_DNBSEQ	gDNA	Andmar_pool1
+
+
+
 # empirical Drosophila melanogaster
 LB	PL	PU	SM
 SRR24680725	Illumina_NovaSeq_6000	gDNA	SB_SE_01

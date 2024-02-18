@@ -55,7 +55,7 @@ sed -e 's/NW.*chromosome:\s/chr/' -e 's/ENA.*organelle:\smitochondrion/mt/' iyAn
 grep '>' Amel_HAv3_1.fa | sed -e '/LG2/'
 grep '>' Amel_HAv3_1.fa | sed -e 's/NW.*unplaced.*Amel_HAv3.1\s//g' -e 's/,\swhole.*sequence//' -e 's/NC.*linkage\sgroup\s//g' -e 's/,\sAmel_HAv3.1//' -e 's/NW.*unlocalized.*scaffold\s//' -e 's/_associated_to//' -e 's/NC.*complete\sgenome/mt/'
 
-sed -e 's/NW.*unplaced.*Amel_HAv3.1\s//g' -e 's/,\swhole.*sequence//' -e 's/NC.*linkage\sgroup\s//g' -e 's/,\sAmel_HAv3.1//' -e 's/NW.*unlocalized.*scaffold\s//' -e 's/_associated_to//' -e 's/NC.*complete\sgenome/mt/' \
+sed -e 's/NW.*unplaced.*Amel_HAv3.1\s//g' -e 's/,\swhole.*sequence//' -e 's/NC.*linkage\sgroup\s//g' -e 's/,\sAmel_HAv3.1//' -e 's/NW.*unlocalized.*scaffold\s//' -e 's/_associated_to//' -e 's/NC.*complete\sgenome/mt/' Amel_HAv3_1.fa \
 > Amel_HAv3_1.md_chr.fa
 
 ## Drosophila melanogaster
@@ -96,20 +96,33 @@ conda rename -n variant_calling variant_calling_mapping
 
 bwa/0.7.17
 
+
 conda activate variant_calling_mapping
 ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/
 cd $ref_dir
 bwa index -a bwtsw D_melanogaster.7509v1.md_chr.fa
+
 bwa index -a bwtsw iyAndHaem1_1.md_chr.fa
+bwa index -a bwtsw iyAndHatt_8785v1_2.md_chr.fa
+
 bwa index -a bwtsw iyBomPasc1_1.md_chr.fa
-bwa index -a bwtsw iyBomTerr1_2.md_chr.fa
+bwa index -a bwtsw iyBomHypn_7925v1_2.md_chr.fa
+
 bwa index -a bwtsw Amel_HAv3_1.md_chr.fa
+
 
 2.
 samtools/1.2
 samtools-1.19
 #samtools faidx reference.fa 
 samtools faidx D_melanogaster.7509v1.md_chr.fa
+
+samtools faidx iyAndHaem1_1.md_chr.fa
+samtools faidx iyAndHatt_8785v1_2.md_chr.fa
+samtools faidx iyBomPasc1_1.md_chr.fa
+samtools faidx iyBomHypn_7925v1_2.md_chr.fa
+samtools faidx Amel_HAv3_1.md_chr.fa
+
 
 3. Create dictionary for gatk
 GATK_4.5.0.0 requires Java 17 (after gatk_4.3.0.0)

@@ -45,7 +45,7 @@ fasta_generate_regions=$REF/fasta_generate_regions/D_melanogaster.7509v1.md_chr.
 ## and genotype quality (GQ, when supplying --genotype-qualities)
 freebayes-parallel $fasta_generate_regions 16 --fasta-reference $REF/D_melanogaster.7509v1.md_chr.fa \
     --bam-list $BAM_DIR/dro_mel_68samples.sort.marked_dups.bam.list \
-    --ploidy 2 --skip-coverage 1000 --min-coverage 3 \
+    --ploidy 2 --skip-coverage 700 --min-coverage 3 \
     --genotype-qualities --strict-vcf --gvcf | \
     vcffilter -f "QUAL > 20" > $OUT_VCF_DIR/$GVCF_MQ
 # g.vcf.gz | bgzip -l 8

@@ -2,8 +2,8 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 8
 #SBATCH --mem 10g
-#SBATCH --array=1-6%6
-#SBATCH --time=06:06:00
+#SBATCH --array=5-6%2
+#SBATCH --time=12:06:00
 #SBATCH --error=fsc2stairway_10000Ne_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.array.%A_%a.e.txt
 #SBATCH --output=fsc2stairway_10000Ne_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.array.%A_%a.o.txt
 #SBATCH --job-name=fsc2stairway_10000Ne_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i

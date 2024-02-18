@@ -1,4 +1,4 @@
-#!/bin/bash -l
+,#!/bin/bash -l
 
 #SBATCH -A snic2022-22-258
 #SBATCH -p node

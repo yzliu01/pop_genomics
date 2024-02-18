@@ -19,18 +19,19 @@ seq1=$(ls SRR*_1.fastq.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
 seq2=$(ls SRR*_2.fastq.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # reverse sequence
 
 ## call env
-#source /home/yzliu/miniforge3/etc/profile.d/conda.sh
+source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 ## https://stackoverflow.com/questions/61915607/commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda
-#conda activate variant_calling_mapping
+conda activate fastqc
 ## local
 #fastqc=/home/yzliu/bin/fastqc/FastQC/fastqc
 
 ## conda
-fastqc=/home/yzliu/miniforge3/envs/variant_calling_mapping/bin/fastqc
-$fastqc --extract $seq1 $seq2 --outdir=$OUTPUT --dir $OUTPUT/temp --threads 6
+#fastqc=/home/yzliu/miniforge3/envs/variant_calling_mapping/bin/fastqc
+fastqc --extract $seq1 $seq2 --outdir=$OUTPUT --dir $OUTPUT/temp --threads 6
 #/home/yzliu/bin/fastqc/FastQC/fastqc --extract SRR24680780_1.fastq.gz SRR24680780_2.fastq.gz --outdir=$OUTPUT --dir $OUTPUT/temp --threads 6
 
-exit
+exit 0
+
 ## https://www.hadriengourle.com/tutorials/qc/
 conda create -n multiqc -c conda-forge multiqc -y
 conda activate multiqc
