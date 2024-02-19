@@ -12,7 +12,7 @@
 
 
 REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF_Index=$REF/D_melanogaster.7509v1.md_chr.fa.fai
+#REF_Index=$REF/D_melanogaster.7509v1.md_chr.fa.fai
 #BAM=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate
 #OUT_DIR=$REF/fb_cov2region_dro_mel
 OUT_DIR=$REF/fasta_generate_regions
@@ -41,3 +41,15 @@ cd $JOB_SUB_DIR
 cd $OUT_DIR
 fasta_generate_regions.py $REF/D_melanogaster.7509v1.md_chr.fa 10000 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.10kbp.regions.fb
 fasta_generate_regions.py $REF/D_melanogaster.7509v1.md_chr.fa 100000 > $OUT_DIR/D_melanogaster.7509v1.md_chr.fa.100kbp.regions.fb
+
+## create genomic regions for all ref
+## https://unix.stackexchange.com/questions/450944/bash-loop-through-list-of-strings#:~:text=1%20You%20can%20loop%20over%20a%20list%20of,%22more%20with%20spaces%22%3B%20do%20echo%20%22%27%24%20%7Bitem%7D%27%22%20done
+cd $OUT_DIR
+for ref in "Amel_HAv3_1.md_chr.fa" "iyAndHaem1_1.md_chr.fa" "iyAndHatt_8785v1_2.md_chr.fa" "iyBomHypn_7925v1_2.md_chr.fa" "iyBomPasc1_1.md_chr.fa";
+    #do echo -e "$ref \n";
+    do fasta_generate_regions.py $REF/$ref 10000 > $OUT_DIR/$ref.10kbp.regions.fb;
+done
+
+for i in {a,b,c,d}
+    do echo $i
+done 

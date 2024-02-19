@@ -64,7 +64,7 @@ bwa mem -t 6 -R $ReadGroup $REF_DIR/$REF2 $FASTQ_CLEAN/$seq1 $FASTQ_CLEAN/$seq2 
 
 ## indexing sorted
 echo -e "\nindexing: $File1\n" >> $script_path/bee_REF2_sort_marked_bam_index.log
-samtools index $File1
+samtools index $File1.$OUT_NAME".sort.bam"
 
 exit 0
 
