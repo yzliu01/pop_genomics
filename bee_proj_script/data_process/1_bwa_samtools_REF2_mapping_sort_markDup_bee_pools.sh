@@ -38,7 +38,7 @@ REF2=$(echo ${REF2_list[*]} | tr ' ' '\n' | sort | sed -n ${SLURM_ARRAY_TASK_ID}
 File1=${seq1/_fastq1.fq.clean.gz/.sort.bam}
 
 OUT_NAME_list=("REF_AndHatt" "REF_AndHatt" "REF_BomHypn" "REF_BomHypn")
-OUT_NAME=$(echo ${OUT_NAME_list[*]} | tr ' ' '\n' | sort | sed -n ${SLURM_ARRAY_TASK_ID}p)
+OUT_NAME=$(echo ${OUT_NAME_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 File1=${seq1/_fastq1.fq.clean.gz/}
 
 ## activate (env) tools of variant_calling_mapping
