@@ -3,8 +3,8 @@
 #SBATCH --cpus-per-task 6
 #SBATCH --mem 120g
 #SBATCH --array=1-68%8
-#SBATCH -t 00:05:00
-##SBATCH -t 1-10:00:00
+##SBATCH -t 00:05:00
+#SBATCH -t 1-10:00:00
 #SBATCH -J gatk_snp_calling_dro_mel
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
@@ -41,3 +41,8 @@ gatk HaplotypeCaller \
 -O $VCF_OUT_DIR/$RENAME \
 -ploidy 2
 -ERC GVCF
+
+gatk IndexFeatureFile \
+     -I $VCF_OUT_DIR/$RENAME
+
+#bcftools index -t -f in.vcf.gz

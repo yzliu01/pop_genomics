@@ -1,3 +1,6 @@
+conda activate variant_calling_mapping
+for bam in `ls -t *.bam | head -4`;do time samtools index $bam;done
+for bam in `ls -t *.bam | awk 'FNR > 2 && FNR < 6 {print $0}'`;do time samtools index $bam;done
 
 
 for i in `ls /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/*REF_And*`;
@@ -23,3 +26,32 @@ sed '1d' $REF/dro_mel_readGroup.list | awk -F "\t"  '{print $4,$1}' OFS="\t" | h
 SB_SE_01        SRR24680725
 SB_SE_02        SRR24680726
 
+## create map file
+MAP_FILE_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics
+sed '1d' $MAP_FILE_DIR/2_mapping_genome/dro_mel_readGroup.list | awk -F "\t"  '{print $4,""$1".sort.marked_dups.g.vcf.gz"}' OFS="\t" > $VCF_DIR/sample_name_map_dro_mel.txt
+
+
+## vcf index
+A USER ERROR has occurred: Failed to create reader from file:///faststorage/project/eDNA/yzliu/DK_proj/data/dro_mel_gatk_vcf/gVCF/SRR24680727.sort.marked_dups.g.vcf.gz because of the following error:
+	An index is required, but none found with file ending .idx, for input source: file:///faststorage/project/eDNA/yzliu/DK_proj/data/dro_mel_gatk_vcf/gVCF/SRR24680727.sort.marked_dups.g.vcf.gz
+
+
+## submit jobs
+for bom_sh in `ls /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/
+bee_proj_script/data_process/*REF_Bom*.sh`;do sbatch $bom_sh;done
+
+Submitted batch job 32815643
+Submitted batch job 32815644
+Submitted batch job 32815645
+Submitted batch job 32815646
+Submitted batch job 32815647
+Submitted batch job 32815648
+
+for i in `seq 32815375 32815380`;do scancel $i;done
+
+❯ sbatch /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/3_fb_variant_calling_4_bee_pools.AndHae_REF_AndHatt.array_per_contig.10kb_g600.sh
+Submitted batch job 32816268
+
+yzliu in 🌐 fe-open-02 in DK_proj/data/job_submission on  main [?] 
+❯ sbatch /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/3_fb_variant_calling_4_bee_pools.AndMar_REF_AndHatt.array_per_contig.10kb_g600.sh
+Submitted batch job 32816287

@@ -41,7 +41,7 @@ REF1=$(echo ${REF1_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 #File2=${File1/.bam/_sort.bam}				 ### SRR13647737_1_sort.bam
 
 OUT_NAME_list=("REF_AndHae" "REF_AndHae" "REF_BomPas" "REF_BomPas")
-OUT_NAME=$(echo ${OUT_NAME_list[*]} | tr ' ' '\n' | sort | sed -n ${SLURM_ARRAY_TASK_ID}p)
+OUT_NAME=$(echo ${OUT_NAME_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 File1=${seq1/_fastq1.fq.clean.gz/}
 
 ## activate (env) tools of variant_calling_mapping
@@ -70,7 +70,7 @@ echo -e "\nindexing: $File1\n" >> $script_path/bee_REF1_sort_marked_bam_index.lo
 samtools index $File1.$OUT_NAME".sort.bam"
 
 exit 0
-
+for bam in `ls -t *.bam | head -4`;do time samtools index $bam;done
 ## mark duplicates
 SORTED_BAM=$(ls SRR*.sort.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
 MARKED_BAM=${SORTED_BAM/.sort.bam/.sort.marked_dups.bam}

@@ -28,7 +28,7 @@ OUT_BAM=/faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/bam
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 
 REF2_list=("iyAndHatt_8785v1_2.md_chr.fa" "iyAndHatt_8785v1_2.md_chr.fa" "iyBomHypn_7925v1_2.md_chr.fa" "iyBomHypn_7925v1_2.md_chr.fa")
-REF2=$(echo ${REF2_list[*]} | tr ' ' '\n' | sort | sed -n ${SLURM_ARRAY_TASK_ID}p)
+REF2=$(echo ${REF2_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 #REF1=$(cat $REF_DIR/REF1.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
 

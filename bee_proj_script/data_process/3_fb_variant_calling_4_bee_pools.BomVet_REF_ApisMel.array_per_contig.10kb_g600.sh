@@ -1,13 +1,13 @@
 #!/bin/sh
 #SBATCH --account eDNA
-#SBATCH --cpus-per-task 6
-#SBATCH --mem 200g
+##SBATCH --cpus-per-task 6
+#SBATCH --mem 700g
 #SBATCH --array=1-177%20
 ##SBATCH --time=00:05:00
-#SBATCH --time=3-10:30:00
+#SBATCH --time=60:30:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.array_per_contig_177.10kb_g600.%A.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.array_per_contig_177.10kb_g600.%A.o
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.array_per_contig_177.10kb_g600.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.array_per_contig_177.10kb_g600.%A_%a.o
 #SBATCH --job-name=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
@@ -51,9 +51,10 @@ SAMPLE=Bomvet.REF_ApisMel.sort.bam
 ## Andmar.REF_AndHat.sort.bam
 BAM2VCF_NAME=${SAMPLE/sort.bam/g600_10kb_fb}
 
-freebayes-parallel $contig_region 12 --fasta-reference $REF \
+freebayes-parallel $contig_region --fasta-reference $REF \
     --ploidy 58 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
-    --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf > $VCF_OUT_DIR/fb_per_contig_BomVet_REF_ApisMel/"$BAM2VCF_NAME"_"$contig_name".g.vcf
+    --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomVet_REF_ApisMel/"$BAM2VCF_NAME"_"$contig_name".qual_20.g.vcf
 
 
 

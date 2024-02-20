@@ -1,20 +1,24 @@
 #!/bin/sh
 #SBATCH --account eDNA
-#SBATCH --cpus-per-task 6
-#SBATCH --mem 650g
-#SBATCH --array=1-4%4
+##SBATCH --cpus-per-task 6
+#SBATCH --mem 700g
+#SBATCH --array=3-4%2
 ##SBATCH --time=00:05:00
-#SBATCH --time=1-12:30:00
+#SBATCH --time=1-00:30:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=1_REF3_mapping_sort_markDup_bee_4_pools.%A_%a.e.txt
-#SBATCH --output=1_REF3_mapping_sort_markDup_bee_4_pools.%A_%a.o.txt
-#SBATCH --job-name=1_REF3_mapping_bee_pools
+#SBATCH --error=1_REF1_mapping_sort_markDup_bee_4_pools.%A_%a.e.txt
+#SBATCH --output=1_REF1_mapping_sort_markDup_bee_4_pools.%A_%a.o.txt
+#SBATCH --job-name=1_REF1_mapping_bee_pools
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
 ## read fastq files and Read group lines
 FASTQ_CLEAN=/faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/fastq_clean
 cd $FASTQ_CLEAN
+# Andhae_fastq1.fq.clean.gz
+# Andhae_fastq2.fq.clean.gz
+# Andmar_fastq1.fq.clean.gz
+# Andmar_fastq2.fq.clean.gz
 seq1=$(ls *fastq1.fq.clean.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
 seq2=$(ls *fastq2.fq.clean.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # reverse sequence
 
@@ -27,19 +31,16 @@ OUT_BAM=/faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/bam
 ## reference dir
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 
-REF3_list=("iyBomPasc1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa" "Amel_HAv3_1.md_chr.fa" "Amel_HAv3_1.md_chr.fa")
-REF3=$(echo ${REF3_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
+REF1_list=("iyAndHaem1_1.md_chr.fa" "iyAndHaem1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa")
+REF1=$(echo ${REF1_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 #REF1=$(cat $REF_DIR/REF1.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 ## modify output file names
 #File1=${seq1/.fastq.clean.gz/.bam}				 ### SRR13647737_1.bam
 #File2=${File1/.bam/_sort.bam}				 ### SRR13647737_1_sort.bam
-File1=${seq1/_fastq1.fq.clean.gz/.sort.bam}
 
-OUT_NAME_list=("REF_BomPas" "REF_BomPas" "REF_ApisMel" "REF_ApisMel")
-## DO NOT sort their order
-
+OUT_NAME_list=("REF_AndHae" "REF_AndHae" "REF_BomPas" "REF_BomPas")
 OUT_NAME=$(echo ${OUT_NAME_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 File1=${seq1/_fastq1.fq.clean.gz/}
 
@@ -50,7 +51,7 @@ conda activate variant_calling_mapping
 ## read mapping, convert sam file to bam file, and sort reads
 ## not necessary to view and generate those files
 ## https://www.biostars.org/p/319730/
-#bwa mem -t 8 $REF $seq1 $seq1 | samtools view -b -@ 8 | samtools sort -@ 8 -m 5G -o $OUTPUT/$File2
+#bwa mem -t 8 $REF $seq1 $seq2 | samtools view -b -@ 8 | samtools sort -@ 8 -m 5G -o $OUTPUT/$File2
 
 script_path=/faststorage/project/eDNA/yzliu/DK_proj/population_genomics/bee_proj_script/data_process
 
@@ -59,17 +60,17 @@ script_path=/faststorage/project/eDNA/yzliu/DK_proj/population_genomics/bee_proj
 
 cd $OUT_BAM
 
-echo -e "aligning: $seq1 $seq2\n" >> $script_path/bee_REF3_aligning_sorting.log
-bwa mem -t 6 -R $ReadGroup $REF_DIR/$REF3 $FASTQ_CLEAN/$seq1 $FASTQ_CLEAN/$seq2 | samtools sort -m 700G -o $OUT_BAM/$File1.$OUT_NAME".sort.bam"
+echo -e "aligning: $seq1 $seq2\n" >> $script_path/bee_REF1_aligning_sorting.log
+bwa mem -t 6 -R $ReadGroup $REF_DIR/$REF1 $FASTQ_CLEAN/$seq1 $FASTQ_CLEAN/$seq2 | samtools sort -m 700G -o $OUT_BAM/$File1.$OUT_NAME".sort.bam"
 #bwa mem -t 6 -R $ReadGroup $REF $SEQDIR/$seq1 $SEQDIR/$seq2 | samtools view -b -@ 6 -o $File1
 #samtools sort -@ 6 -m 40G -o $File2 $File1
 
 ## indexing sorted
-echo -e "\nindexing: $File1\n" >> $script_path/bee_REF3_sort_marked_bam_index.log
+echo -e "\nindexing: $File1\n" >> $script_path/bee_REF1_sort_marked_bam_index.log
 samtools index $File1.$OUT_NAME".sort.bam"
 
 exit 0
-
+for bam in `ls -t *.bam | head -4`;do time samtools index $bam;done
 ## mark duplicates
 SORTED_BAM=$(ls SRR*.sort.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
 MARKED_BAM=${SORTED_BAM/.sort.bam/.sort.marked_dups.bam}
