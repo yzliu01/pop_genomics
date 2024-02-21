@@ -55,3 +55,17 @@ Submitted batch job 32816268
 yzliu in 🌐 fe-open-02 in DK_proj/data/job_submission on  main [?] 
 ❯ sbatch /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/3_fb_variant_calling_4_bee_pools.AndMar_REF_AndHatt.array_per_contig.10kb_g600.sh
 Submitted batch job 32816287
+
+samtools view -h Bompas.REF_BomHypn.sort.bam | less -S
+
+
+freebayes-parallel $contig_region 12 --fasta-reference $REF \
+    --ploidy 68 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
+    --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomHyp/"$BAM2VCF_NAME"_"$contig_name".qual_20.g.vcf
+
+
+## for number of threads, it must be specified, otherwise you get error as below
+Bareword found where operator expected at (eval 14) line 1, near "--fasta"
+	(Missing operator before fasta?)
+Please specify a fasta reference file.

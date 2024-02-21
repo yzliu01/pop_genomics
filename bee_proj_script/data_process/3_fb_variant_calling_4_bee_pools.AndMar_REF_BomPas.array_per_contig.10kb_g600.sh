@@ -1,8 +1,8 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 6
-#SBATCH --mem 700g
-#SBATCH --array=1-18%8
+#SBATCH --mem 1000g
+#SBATCH --array=1-18%9
 ##SBATCH --time=00:05:00
 #SBATCH --time=60:30:00
 ##SBATCH --time=3-04:04:00
@@ -43,15 +43,15 @@ conda activate variant_calling_mapping
 
 ## for pooled data
 #SAMPLE=$SEQDIR/Andhae_Andmar.REF_Andhae.bam.list
-SAMPLE=Andmar.REF_ApisMel.sort.bam
-## Andhae.REF_AndHat.sort.bam
-## Andmar.REF_AndHat.sort.bam
+SAMPLE=Andmar.REF_BomPas.sort.bam
+## Andhae.REF_BomPas.sort.bam
+## Andmar.REF_BomPas.sort.bam
 
 ## output vcf file name
-## Andmar.REF_AndHat.sort.bam
+## Andmar.REF_BomPas.sort.bam
 BAM2VCF_NAME=${SAMPLE/sort.bam/g600_10kb_fb}
 
-freebayes-parallel $contig_region --fasta-reference $REF \
+freebayes-parallel $contig_region 12 --fasta-reference $REF \
     --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
     vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME"_"$contig_name".qual_20.g.vcf

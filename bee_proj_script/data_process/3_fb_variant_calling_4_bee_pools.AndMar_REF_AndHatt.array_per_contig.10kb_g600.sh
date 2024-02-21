@@ -1,7 +1,7 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 6
-#SBATCH --mem 900g
+#SBATCH --mem 1000g
 #SBATCH --array=1-220%20
 ##SBATCH --time=00:05:00
 #SBATCH --time=60:30:00
@@ -51,7 +51,7 @@ SAMPLE=Andmar.REF_AndHatt.sort.bam
 ## Andmar.REF_AndHatt.sort.bam
 BAM2VCF_NAME=${SAMPLE/sort.bam/g600_10kb_fb}
 
-freebayes-parallel $contig_region --fasta-reference $REF \
+freebayes-parallel $contig_region 12 --fasta-reference $REF \
     --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
     vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_AndHatt/"$BAM2VCF_NAME"_"$contig_name".qual_20.g.vcf

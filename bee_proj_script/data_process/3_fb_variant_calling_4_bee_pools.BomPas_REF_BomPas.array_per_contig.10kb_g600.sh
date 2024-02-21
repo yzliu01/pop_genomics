@@ -1,8 +1,9 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 6
-#SBATCH --mem 200g
-#SBATCH --array=1-18%6
+#SBATCH --mem 1000g
+#SBATCH --array=1-18%9
+##SBATCH --array=1-2%2
 ##SBATCH --time=00:05:00
 #SBATCH --time=60:30:00
 ##SBATCH --time=3-04:04:00
@@ -51,7 +52,7 @@ SAMPLE=Bompas.REF_BomPas.sort.bam
 ## Andmar.REF_AndHae.sort.bam
 BAM2VCF_NAME=${SAMPLE/sort.bam/g600_10kb_fb}
 
-freebayes-parallel $contig_region --fasta-reference $REF \
+freebayes-parallel $contig_region 12 --fasta-reference $REF \
     --ploidy 68 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
     vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas/"$BAM2VCF_NAME"_"$contig_name".qual_20.g.vcf
