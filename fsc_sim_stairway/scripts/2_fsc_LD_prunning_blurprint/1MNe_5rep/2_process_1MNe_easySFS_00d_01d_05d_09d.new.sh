@@ -1,25 +1,13 @@
-
 ************ non-pruned ( tab separated) *******************************************
-cd /home/yzliu/DK_proj/steps/systematic_fsc_test3/10000Ne_5rep
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/10000Ne_5rep
-
-cut -d "/" -f 1,3,5 sfs_10000Ne_20hapS_5rep_for_bp_non_pruned.txt | \
-sed -e 's/\.\///g' -e 's/_MAFpop0\.obs//' -e 's/MAFpop0\.obs//1' | \
-awk -F "\t" -v OFS="\t" '{$13=++a[$11]".blueprint"}1' | \
-awk '{ for (i = 1; i <= 11; ++i) printf $i"\t"; print "" $12$13}'
-## print "" $12$13 # formate column with \n
-
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/10000Ne_5rep
-out_sub_dir=/home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint
-
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/1000000Ne_5rep
+#out_sub_dir=/home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint
 out_sub_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint
 
-
-#sfs_10000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt
+#sfs_1000000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt
 
 for sample_size in {20,80,200};do
     if [ $sample_size == 20 ];then
-        cat sfs_10000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt |\
+        cat sfs_1000000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt |\
         cut -d "/" -f 1,3,5 | \
         sed -e 's/\.\///g' -e 's/_MAFpop0\.obs//' -e 's/MAFpop0\.obs//1' | \
         awk -F "\t" -v OFS="\t" '{$13=++a[$11]}1' | \
@@ -28,13 +16,13 @@ for sample_size in {20,80,200};do
         ## https://stackoverflow.com/questions/18516301/add-a-number-to-each-line-of-a-file-in-bash
         ## https://unix.stackexchange.com/questions/517985/how-can-i-merge-multiple-column-in-one-column-and-separated-by
     elif [ $sample_size == 80 ];then
-        cat sfs_10000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt |\
+        cat sfs_1000000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt |\
         cut -d "/" -f 1,3,5 | \
         sed -e 's/\.\///g' -e 's/_MAFpop0\.obs//' -e 's/MAFpop0\.obs//1' | \
         awk -F "\t" -v OFS="\t" '{$43=++a[$41]}1' | \
         awk '{ for (i = 1; i <= 41; ++i) printf $i"\t"; print "" $42$43}' >> $out_sub_dir/sfs_hapS_20_80_200_5rep_00d_01d_05d_09d_final.blueprint.txt
     else
-        cat sfs_10000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt |\
+        cat sfs_1000000Ne_"$sample_size"hapS_5rep_00d_01d_05d_09d_final.txt |\
         cut -d "/" -f 1,3,5 | \
         sed -e 's/\.\///g' -e 's/_MAFpop0\.obs//' -e 's/MAFpop0\.obs//1' | \
         awk -F "\t" -v OFS="\t" '{$103=++a[$101]}1' | \
@@ -42,4 +30,4 @@ for sample_size in {20,80,200};do
     fi
 done
 ## example
-## 22608	11900	8644	6733	5772	5060	4867	4442	4276	2175	ft_sim_10000Ne_20hapS_1E_50G_00d_20Chr_15Mb	ft_sim_10000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1
+## 22608	11900	8644	6733	5772	5060	4867	4442	4276	2175	ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb	ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1

@@ -13,3 +13,9 @@ ft_sim_10000Ne_20hapS_2E_100_500G_2e_d_2e_i_20Chr_15Mb_1_ERR
 ft_sim_10000Ne_20hapS_2E_100_500G_2e_i_2e_d_20Chr_15Mb_1_ERR
 ft_sim_10000Ne_80hapS_2E_100_500G_2e_d_2e_i_20Chr_15Mb_1_ERR
 ft_sim_10000Ne_80hapS_2E_100_500G_2e_i_2e_d_20Chr_15Mb_1_ERR
+
+conda activate dos2unix
+dos2unix -h
+
+dos2unix /home/yzliu/eDNA/faststorage/yzliu/DK_proj/backup/scripts/fastsimcoal/para_test3/ft_sim_100000Ne_80_200hapS_1E_50_100_500G_09d_20Chr_15Mb.unfinished.anders.sh
+dos2unix: converting file /home/yzliu/eDNA/faststorage/yzliu/DK_proj/backup/scripts/fastsimcoal/para_test3/ft_sim_100000Ne_80_200hapS_1E_50_100_500G_09d_20Chr_15Mb.unfinished.anders.sh to Unix format...
