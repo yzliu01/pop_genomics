@@ -9,3 +9,5 @@ aligning: Bompas_fastq1.fq.clean.gz Bompas_fastq2.fq.clean.gz
 
 aligning: Bomvet_fastq1.fq.clean.gz Bomvet_fastq2.fq.clean.gz
 
+aligning: Bompas_fastq1.fq.clean.gz Bompas_fastq2.fq.clean.gz
+
