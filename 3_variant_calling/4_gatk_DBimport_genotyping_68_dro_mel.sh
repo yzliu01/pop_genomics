@@ -1,7 +1,8 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 6
-#SBATCH --mem 120g
+##SBATCH --mem 120g
+#SBATCH --mem 10g
 #SBATCH --array=1-6%6
 ##SBATCH --array=1-1342%40
 #SBATCH -t 00:05:00

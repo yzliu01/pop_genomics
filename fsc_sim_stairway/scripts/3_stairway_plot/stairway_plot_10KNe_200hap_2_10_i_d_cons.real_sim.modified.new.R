@@ -10,19 +10,21 @@ for par in `ls *cons* `;do rename G_2e_ G_05e_ $par;done
 for par in `ls *cons* `;do rename G_05e_ G_2e_ $par;done
 for par in `ls *cons* `;do rename G_01e_ G_10e_ $par;done
 
+find -maxdepth 2 | grep final.summary$ | egrep *200hapS.*[014]\{1,2\}e_[id]_[014]\{1,2\}[di]* | sort -V | wc -l
+
 library(gtools)
 library(fs)
 library(stringr)
 
-setwd("/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned")
+setwd("/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned/")
 final_summary <- "/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned"
-
+mixedsort(sort(fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*G_*e_*_cons*200hapS*15Mb_*.final.summary")))
 ## attention to refer to only one file name
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*15Mb_1.final.summary")
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
-pdf(paste0("combined.10000Ne_200hapS_5rep_2_10_i_d_cons_non_pruned.rotated_x_lab.pdf"),width = 20, height = 25)
+pdf(paste0("combined.10000Ne_200hapS_2rep_2_10_i_d_cons_non_pruned.rotated_x_lab.pdf"),width = 20, height = 25)
 #pdf(paste0("combined.10000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
@@ -53,23 +55,23 @@ for (generation in c("50G","100G","500G","1000G")){
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
         } else if (plot_name %in% c("10000Ne_200hapS_1E_1000G_10e_d_cons_20Chr_15Mb","10000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.5e4),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.0e4),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
             
             ## high Ne (attention to duplicate)
 
         } else if (plot_name %in% c("10000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb","10000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb","10000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,7.0e4),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
         } else if (plot_name %in% c("10000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,7.0e4),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
         
         } else {
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.5e4),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.0e4),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
         }
@@ -98,17 +100,20 @@ for (generation in c("50G","100G","500G","1000G")){
 
         ## add replicate lines
         #par(new=TRUE)
-        for (rep in c(1:5)){
+        for (rep in c(2,4)){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
+            ## assign variable to read_data
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*.final.summary"))),header=T,sep="\t"))
-            ##print(head(get(paste0("a",rep)),n=2L))
+            #print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
-            ##print(head(data))
+            #print(head(data,n=2L))
             ## https://stackoverflow.com/questions/77616764/how-to-use-paste0-to-get-the-column-of-a-table-in-r
             lines(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median,type="l",lwd=1.6,col = adjustcolor("blue", alpha = 0.6))
         }
-
+# error check: Error in file(file, "rt") : invalid 'description' argument
+#    }
+#}
         ## plot real demography
 
         ## piewise function

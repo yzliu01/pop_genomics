@@ -1,0 +1,6 @@
+
+
+Task : Create a file in DOS or in notepad with following contents
+hello everybody
+welcome to unix
+unix is easy

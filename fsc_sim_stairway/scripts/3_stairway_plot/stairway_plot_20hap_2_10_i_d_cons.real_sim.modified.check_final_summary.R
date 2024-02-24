@@ -10,6 +10,12 @@ for par in `ls *cons* `;do rename G_2e_ G_05e_ $par;done
 for par in `ls *cons* `;do rename G_05e_ G_2e_ $par;done
 for par in `ls *cons* `;do rename G_01e_ G_10e_ $par;done
 
+## check final.summary files
+find -maxdepth 2 -print | grep "1000000Ne" | grep "1E" | egrep *[0-2]\{1,2\}e_[di]_cons | grep "15Mb/" | grep "15Mb_MAFpop0.obs$" | sort -V | wc -l
+cd /home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned
+find -maxdepth 2 | grep final.summary$ | egrep *200hapS.*[0-4]\{1,2\}e_[id]_cons* | sort -V | wc -l
+find -maxdepth 2 | grep final.summary$ | egrep *200hapS.*[0-4]\{1,2\}e_[id]_cons*
+
 library(gtools)
 library(fs)
 library(stringr)
@@ -22,6 +28,56 @@ final_summary <- "/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned"
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
+************ error when reading result stairway files ****************
+## read data in a series of data files (1..5) but it got issue when one or more of them are lacking of.
+# Error in file(file, "rt") : invalid 'description' argument
+# https://stackoverflow.com/questions/64142114/error-in-filefile-rt-invalid-description-argument-when-calling-the-fu
+  mutation_per_site n_estimation theta_per_site_median theta_per_site_2.5. theta_per_site_97.5.          year Ne_median  Ne_2.5. Ne_97.5. Ne_12.5. Ne_87.5.
+1     4.940656e-324          200          3.245309e-06        1.505867e-06         7.303996e-06 1.372405e-315  225.3687 104.5741 507.2219 145.3073 489.8174
+2      3.260172e-11          200          3.245309e-06        1.505867e-06         7.303996e-06  9.056034e-03  225.3687 104.5741 507.2219 145.3073 489.8174
+  get.paste0..a...rep...year get.paste0..a...rep...Ne_median
+1              1.372405e-315                        225.3687
+2               9.056034e-03                        225.3687
+Error in file(file, "rt") : invalid 'description' argument
+
+r$> mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*G_*_cons*200hapS*15Mb_1.final.summary")))
+
+ft_sim_10000Ne_200hapS_1E_50G_2e_d_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_50G_2e_d_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_50G_10e_d_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_50G_10e_d_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_2e_d_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_100G_2e_d_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_10e_d_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_100G_10e_d_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_500G_2e_d_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_500G_2e_d_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_2e_d_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_1000G_2e_d_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_10e_d_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_1000G_10e_d_cons_20Chr_15Mb_1.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb_1/ft_sim_10000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb_1.final.summary
+
+r$> mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*G_*_cons*200hapS*15Mb_2.final.summary")))
+
+ft_sim_10000Ne_200hapS_1E_50G_2e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_50G_2e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_50G_10e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_50G_10e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_2e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_100G_2e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_10e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_100G_10e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_500G_2e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_500G_2e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_500G_10e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_500G_10e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_2e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_1000G_2e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_10e_d_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_1000G_10e_d_cons_20Chr_15Mb_2.final.summary
+ft_sim_10000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb_2/ft_sim_10000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb_2.final.summary
+
+***************** plotting codes ********************
 pdf(paste0("combined.10000Ne_20hapS_5rep_10_2_i_d_cons_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #pdf(paste0("combined.10000Ne_20hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)

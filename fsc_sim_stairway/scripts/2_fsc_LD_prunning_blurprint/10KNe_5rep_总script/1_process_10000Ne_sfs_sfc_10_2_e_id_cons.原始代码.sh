@@ -4,6 +4,7 @@
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/10000Ne_5rep
 #awk 'NR>2{print NF;exit}' file
 rm *hapS_5rep_10_2_e_id_cons_bp_non_pruned.txt
+
 for sample_size in {20,80,200};do
     ## decrease
     #sfs1=`find -maxdepth 2 -print | grep "10000Ne" | grep "xE" | grep -v "05i" | grep "15Mb/" | grep "$sample_size"hapS | grep "15Mb_MAFpop0.obs$" | sort -V`

@@ -4,7 +4,7 @@
 #SBATCH --mem 1000g
 #SBATCH --array=1-7%7
 ##SBATCH --time=00:05:00
-#SBATCH --time=60:30:00
+#SBATCH --time=04-00:30:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_REF_AndHae.array_per_contig_8.10kb_g600.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_REF_AndHae.array_per_contig_8.10kb_g600.%A_%a.o
