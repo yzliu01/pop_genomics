@@ -69,3 +69,11 @@ freebayes-parallel $contig_region 12 --fasta-reference $REF \
 Bareword found where operator expected at (eval 14) line 1, near "--fasta"
 	(Missing operator before fasta?)
 Please specify a fasta reference file.
+
+## check unfinished jobs
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submission
+ls * | grep 32857563 | xargs grep error
+grep -h error *32857563*.e
+
+## tee command
+wc -l file1.txt | tee -a file2.txt

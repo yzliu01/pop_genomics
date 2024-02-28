@@ -53,3 +53,83 @@ done
 for i in {a,b,c,d}
     do echo $i
 done 
+
+## split long chromosomes into 60 small chunks
+REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+REF_BomHypn=$REF_DIR/iyBomHypn_7925v1_2.md_chr.fa
+REF_BomPas=$REF_DIR/iyBomPasc1_1.md_chr.fa
+REF_AndHae=$REF_DIR/iyAndHaem1_1.md_chr.fa
+REF_AndHat=$REF_DIR/iyAndHatt_8785v1_2.md_chr.fa
+REF_ApisMel=$REF_DIR/Amel_HAv3_1.md_chr.fa
+
+OUT_DIR_CHUNK=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_chunks
+OUT_DIR_REGION=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
+fasta_generate_regions=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions
+OUT_DIR_CHUNK_BomHypn=$OUT_DIR/BomHypn
+OUT_DIR_CHUNK_BomPas=$OUT_DIR/BomPas
+OUT_DIR_CHUNK_AndHae=$OUT_DIR/AndHae
+OUT_DIR_CHUNK_ApisMel=$OUT_DIR/ApisMel
+
+OUT_DIR_region_BomHyp=$OUT_DIR_REGION/BomHyp
+OUT_DIR_region_BomPas=$OUT_DIR_REGION/BomPas
+OUT_DIR_region_AndHae=$OUT_DIR_REGION/AndHae
+OUT_DIR_region_AndHat=$OUT_DIR_REGION/AndHat
+OUT_DIR_region_ApisMel=$OUT_DIR_REGION/ApisMel
+
+#fasta_generate_regions.py $REF_BomHypn --chunks 20 \
+#    --chromosomes chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 \
+#    > $OUT_DIR/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to6_20chunks.fb
+
+fasta_generate_regions.py $REF_BomHypn --chunks 60 \
+    --chromosomes chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 \
+    > $OUT_DIR_CHUNK_BomHypn/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to60_chunks.fb
+
+fasta_generate_regions.py $REF_BomPas --chunks 60 \
+    --chromosomes chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 \
+    > $OUT_DIR_CHUNK_BomPas/iyBomPasc1_1.md_chr.fa.chr1_17to60_chunks.fb
+
+fasta_generate_regions.py $REF_AndHae --chunks 60 \
+    --chromosomes chr1 chr2 chr3 chr4 chr5 chr6 chr7 \
+    > $OUT_DIR_CHUNK_AndHae/iyAndHaem1_1.md_chr.fa.chr1_7to60_chunks.fb
+
+fasta_generate_regions.py $REF_ApisMel --chunks 60 \
+    --chromosomes LG1 LG2 LG3 LG4 LG5 LG6 LG7 LG8 LG9 LG10 LG11 LG12 LG13 LG14 LG15 LG16 \
+    > $OUT_DIR_CHUNK_ApisMel/Amel_HAv3_1.md_chr.fa.chr1_16to60_chunks.fb
+
+
+## create individual chr fb
+for chr in `cut -d ":" -f 1 $OUT_DIR/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to6_chunks.fb`;do
+    for order in {1..6};do
+        grep "$chr" $OUT_DIR/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to6_chunks.fb > $OUT_DIR/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to6_chunks."$chr"_"$order".fb;
+    done
+done
+
+
+ls iy*_40chunks.*[0-9]fb | xargs rm
+ls iy*60chunks.*[0-9].fb | xargs rm
+
+## split fb file into multiple files with 10 lines in each, 6 files for each long chr
+split -l 10  $OUT_DIR/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to60_chunks.fb $OUT_DIR/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to60_chunks. --numeric-suffixes=1 --additional-suffix=.fb
+/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/Amel_HAv3_1.md_chr.fa.10kbp.regions.fb
+
+split -l 300  $fasta_generate_regions/Amel_HAv3_1.md_chr.fa.10kbp.regions.fb \
+    $OUT_DIR_region_ApisMel/Amel_HAv3_1.md_chr.fa.10kbp.regions. \
+    --numeric-suffixes=1 --additional-suffix=.fb
+
+split -l 300  $fasta_generate_regions/iyAndHaem1_1.md_chr.fa.10kbp.regions.fb \
+    $OUT_DIR_region_AndHae/iyAndHaem1_1.md_chr.fa.10kbp.regions. \
+    --numeric-suffixes=1 --additional-suffix=.fb
+
+split -l 60  $fasta_generate_regions/iyAndHatt_8785v1_2.md_chr.fa.10kbp.regions.fb \
+    $OUT_DIR_region_AndHat/iyAndHatt_8785v1_2.md_chr.fa.10kbp.regions. \
+    --numeric-suffixes=1 --additional-suffix=.fb
+
+split -l 300  $fasta_generate_regions/iyBomPasc1_1.md_chr.fa.10kbp.regions.fb \
+    $OUT_DIR_region_BomPas/iyBomPasc1_1.md_chr.fa.10kbp.regions. \
+    --numeric-suffixes=1 --additional-suffix=.fb
+##  -a, --suffix-length=N   generate suffixes of length N (default 2)
+split -a 3 -l 300  $fasta_generate_regions/iyBomHypn_7925v1_2.md_chr.fa.10kbp.regions.fb \
+    $OUT_DIR_region_BomHyp/iyBomHypn_7925v1_2.md_chr.fa.10kbp.regions. \
+    --numeric-suffixes=1 --additional-suffix=.fb
+## delete duplicates
+ls $OUT_DIR_region_BomHyp/* | egrep *.regions.[0-9]\{1,2\}.fb | xargs rm

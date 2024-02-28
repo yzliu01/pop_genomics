@@ -64,6 +64,10 @@ freebayes-parallel $contig_region 12 --fasta-reference $REF \
 ## not execute after this line
 exit 0
 
+## check unfinished jobs
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submission
+ls * | grep 32857563 | xargs grep error
+
 # ref list
 REF1_list=("iyAndHaem1_1.md_chr.fa" "iyAndHaem1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa")
 REF2_list=("iyAndHatt_8785v1_2.md_chr.fa" "iyAndHatt_8785v1_2.md_chr.fa" "iyBomHypn_7925v1_2.md_chr.fa" "iyBomHypn_7925v1_2.md_chr.fa")
