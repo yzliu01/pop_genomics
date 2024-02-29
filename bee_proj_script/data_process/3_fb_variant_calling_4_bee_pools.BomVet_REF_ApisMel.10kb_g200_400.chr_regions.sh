@@ -5,7 +5,7 @@
 #SBATCH --array=1-76%10
 ##SBATCH --time=00:05:00
 ##SBATCH --time=80:30:00
-#SBATCH --time=6-14:04:00
+#SBATCH --time=20:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.10kb_g200_400.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.10kb_g200_400.%A_%a.o
 #SBATCH --job-name=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel

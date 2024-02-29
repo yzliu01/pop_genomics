@@ -1,11 +1,11 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 1000g
+#SBATCH --mem 1100g
 #SBATCH --array=1-76%10
 ##SBATCH --time=00:05:00
-##SBATCH --time=80:30:00
-#SBATCH --time=3-04:04:00
+#SBATCH --time=10:30:00
+##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.array_per_contig_177.10kb_g600.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel.array_per_contig_177.10kb_g600.%A_%a.o
 #SBATCH --job-name=3_fb_variant_calling_4_bee_pools.BomVet_REF_ApisMel
@@ -58,7 +58,7 @@ contig_regions_order=${contig_regions/\.\/ApisMel\/Amel_HAv3_1.md_chr.fa/}
 freebayes-parallel $contig_regions --fasta-reference $REF \
     --ploidy 58 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomVet_REF_ApisMel/"$BAM2VCF_NAME"_"$contig_regions_order".qual_20.g.vcf
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomVet_REF_ApisMel/"$BAM2VCF_NAME""$contig_regions_order".qual_20.g.vcf
 
 
 

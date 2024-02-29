@@ -4,8 +4,8 @@
 #SBATCH --mem 700g
 #SBATCH --array=4%1
 ##SBATCH --time=00:05:00
-#SBATCH --time=2-10:30:00
-##SBATCH --time=3-04:04:00
+##SBATCH --time=2-10:30:00
+#SBATCH --time=3-04:04:00
 #SBATCH --error=1_REF1_mapping_sort_markDup_bee_4_pools_4.%A_%a.e.txt
 #SBATCH --output=1_REF1_mapping_sort_markDup_bee_4_pools_4.%A_%a.o.txt
 #SBATCH --job-name=1_REF1_mapping_bee_pools_4

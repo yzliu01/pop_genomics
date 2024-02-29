@@ -1,11 +1,11 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 1000g
+#SBATCH --mem 1100g
 ##SBATCH --array=1-2%2
 #SBATCH --array=1-100%10
 ##SBATCH --time=00:05:00
-#SBATCH --time=3-10:30:00
+#SBATCH --time=10:30:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.BomVet_REF_BomHyp.10kb_g600.chr_regions.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.BomVet_REF_BomHyp.10kb_g600.chr_regions.%A_%a.o

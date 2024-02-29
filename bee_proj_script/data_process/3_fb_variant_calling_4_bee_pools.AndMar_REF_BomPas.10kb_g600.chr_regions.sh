@@ -1,11 +1,11 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 1000g
+#SBATCH --mem 1100g
 ##SBATCH --array=1-2%2
 #SBATCH --array=1-91%10
 ##SBATCH --time=00:05:00
-#SBATCH --time=3-10:30:00
+#SBATCH --time=10:30:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g600.chr_regions.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g600.chr_regions.%A_%a.o
@@ -59,7 +59,7 @@ contig_regions_order=${contig_regions/\.\/BomPas\/iyBomPasc1_1.md_chr.fa/}
 freebayes-parallel $contig_regions 20 --fasta-reference $REF \
     --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME"_"$contig_regions_order".qual_20.g.vcf
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME""$contig_regions_order".qual_20.g.vcf
 
 
 

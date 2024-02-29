@@ -5,7 +5,7 @@
 ##SBATCH --array=1-2%2
 #SBATCH --array=1-98%10
 ##SBATCH --time=00:05:00
-#SBATCH --time=6-10:30:00
+#SBATCH --time=20:30:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_REF_AndHae.10kb_g200_400.chr_regions.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_REF_AndHae.10kb_g200_400.chr_regions.%A_%a.o
