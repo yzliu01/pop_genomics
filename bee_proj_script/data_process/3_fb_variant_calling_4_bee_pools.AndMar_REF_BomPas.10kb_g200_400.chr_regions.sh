@@ -60,12 +60,12 @@ contig_regions_order=${contig_regions/\.\/BomPas\/iyBomPasc1_1.md_chr.fa/}
 freebayes-parallel $contig_regions 20 --fasta-reference $REF \
     --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 200 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAM_200E"_"$contig_regions_order".qual_20.g.vcf
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAM_200E""$contig_regions_order".qual_20.g.vcf
 
 freebayes-parallel $contig_regions 20 --fasta-reference $REF \
     --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 400 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAM_400E"_"$contig_regions_order".qual_20.g.vcf
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAM_400E""$contig_regions_order".qual_20.g.vcf
 
 
 

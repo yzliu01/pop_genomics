@@ -51,6 +51,7 @@ SAMPLE=Andhae.REF_AndHatt.sort.bam
 
 ## output vcf file name
 ## Andmar.REF_AndHatt.sort.bam
+BAM2VCF_NAME=${SAMPLE/sort.bam/g600_10kb_fb}
 contig_regions_order=${contig_regions/\.\/AndHat\/iyAndHatt_8785v1_2.md_chr.fa/}
 ## ./AndHat/iyAndHatt_8785v1_2.md_chr.fa.10kbp.regions.51.fb
 
