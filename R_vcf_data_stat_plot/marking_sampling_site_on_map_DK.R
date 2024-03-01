@@ -22,6 +22,7 @@ map("worldHires","Canada", xlim=c(-150,-10),ylim=c(0,120), col="gray90", fill=TR
 #https://www.r-bloggers.com/2018/10/getting-started-stamen-maps-with-ggmap/
 install.packages("ggmap")
 install.packages("rosm")
+install.packages("caret")
 library(ggmap)
 #scale must be a positive integer 0-18, see ?get_stamenmap.
 library(caret) ## data(Sacramento)
@@ -51,13 +52,20 @@ ggmap(get_stadiamap(bbox_everest, zoom = 10))
 packageVersion("ggmap")
 ## https://stackoverflow.com/questions/77418619/error-in-curlcurl-fetch-memoryurl-handle-handle-with-ggmap-package
 detach(package:ggmap, unload = TRUE)
+## options(download.file.method = "curl")
 remotes::install_github("dkahle/ggmap")
+
+## install on new windows machine via vs code in terminal [conda activate R -> enter: R]
+install.packages("ggplot2",dependancy=TRUE)
+## solution to install ggmap when got issue: https://github.com/forestgeo/learn/issues/102
+options(download.file.method = "curl")
+remotes::install_github("https://github.com/dkahle/ggmap")
 library(ggmap)
 ?register_stadiamaps
 
-## google API-Key
-register_stadiamaps(key = "AIzaSyAsh8H8QRZdawAXfRhnnpJCCqz88coK1-8", write = TRUE)
-## ggmap
+## google API-Key - following not working anymore
+## register_stadiamaps(key = "AIzaSyAsh8H8QRZdawAXfRhnnpJCCqz88coK1-8", write = TRUE)
+## ggmap one works
 register_stadiamaps(key = "10fc01ec-fa9a-4c7b-bfff-e4fc2312191b", write = TRUE)
 ## https://github.com/dkahle/ggmap/issues/237
 httr::set_config(httr::use_proxy(url = "http://64.251.21.73", port = 8080), override = TRUE)
@@ -119,7 +127,29 @@ ggmap(bumblebee_map)+
   scale_colour_manual(values =c("red", "orange", "black","violet","deeppink","blue","cyan"))
 
 
+## danmark bee excel data
+install.packages("readxl")
+library("readxl", help, pos = 2, lib.loc = NULL)
+library(ggplot2, help, pos = 2, lib.loc = NULL)
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script")
+## Denmark are in range: Latitude from 54.76906 to 57.72093 and longitude from 8.24402 to 14.70664
+bee_site <- read_excel("organized_bee_lat_lon.xlsx")
 
+bee_site <- read.table("organized_bee_lat_lon.tsv",sep = "\t",header = T,na.strings = "NA")
+head(bee_site)
+bee_map <- get_stadiamap(bbox = c(left = 7.7, bottom = 54.76906, right =12.5, top = 57.7), zoom = 10, maptype = "stamen_terrain")
+#install.packages(c("sf","maptools"))
+devtools::install_github('oswaldosantos/ggsn')
+install.packages("devtools",denpendencies=TRUE)
+library(devtools, help, pos = 2, lib.loc = NULL)
+#install.packages("https://cran.r-project.org/src/contrib/Archive/ggsn/ggsn_0.5.0.tar.gz",repos=NULL,method="libcurl",dependencies= TRUE)
+bee_site_plot <- ggmap(bee_map) +
+                geom_point(data = bee_site, mapping = aes(x = as.numeric(Longitude), y = as.numeric(Latitude), col = Species_name), size=2,alpha=0.4) + 
+                scale_colour_manual(values =c("red", "orange", "black","blue")) +
+                theme(legend.position = c(0.2,0.9),legend.text = element_text(size=12), legend.background = element_rect(fill=NA))                 
+                geom_label(aes(x=10, y=10, label="N"), size=3, label.padding=unit(1,"mm"), label.r=unit(1,"lines")) 
+
+ggsave(filename="bee_site_plot_transparent_legend.pdf",height = 20, width =20, units = "cm", bee_site_plot)
 
 
 
