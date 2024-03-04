@@ -11,9 +11,23 @@ CXX17 = g++-7 -std=gnu++17 -fPIC
 #https://stats.stackexchange.com/questions/13399/calculating-the-95th-percentile-comparing-normal-distribution-r-quantile-and
 getwd()
 setwd("/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/Sweden_Colorado/syl_inc_lap_mon_bif_van/DB_VCF/merged_vcf_per_contig/stats")
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/stats/samtools_stats/samtools_stat_cov")
 getwd()
-EH_DP_MQ_data = read.table("ExcessHet_DP_MQ_new.txt",header=F)
+list.files()
+EH_DP_MQ_data = read.table("concated_deo_mel_all_chr.sorted_chr.SNP_hard_filtered.CHROM_POS_QUAL_DP_MQ",header=F)
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/DB_VCF")
+CHROM_POS_QUAL_DP_MQ = read.table("concated_deo_mel_all_chr.sorted_chr.SNP_hard_filtered.CHROM_POS_QUAL_DP_MQ",header=F)
+
+stats_dro_mel_COV <- read.table("SRR24680792.sort.marked_rm_dups.bam.stats_COV.txt",header=F)
 head(EH_DP_MQ_data)
+
+head(CHROM_POS_QUAL_DP_MQ)
+    V1    V2      V3   V4    V5
+1 chrX 38888   40.55  158 44.96
+2 chrX 38909   32.39  224 43.48
+
+head(stats_dro_mel_COV)
+str(stats_dro_mel_COV)
 # DP
 quantile(EH_DP_MQ_data$V4,0.95)
 5865
@@ -44,29 +58,32 @@ MQ_bal_new <- MQ_bal %>%
 head(EH_DP_MP_data)
 head(as.numeric(as.character(EH_DP_MP_data$V5))
 
-MQ_data <- ggplot(EH_DP_MP_data,aes(as.numeric(as.character(EH_DP_MP_data$V5))))+
-  geom_histogram(bins=100)+
-  xlim(0,100)+
-  labs(x="MQ_combined_plus_bif_van")
+MQ_data <- ggplot(CHROM_POS_QUAL_DP_MQ,aes(as.numeric(as.character(V3))))+
+  geom_histogram(bins=500)+
+  xlim(0,500)+
+  labs(x="dro_mel_68_QUAL")
 #  scale_x_continuous(limits=c(0,60))
-
+ggsave("distribution_QUAL.pdf",MQ_data,width=6,height=4)
 #### combined ####  
-MQ_plot <- ggplot(EH_DP_MP_data,aes(as.numeric(V5)))+
+MQ_plot <- ggplot(stats_dro_mel_COV,aes(V2))+
    geom_density()+
    xlim(0,50)+
-   labs(x="MQ_combined_plus_bif_van")
+   labs(x="stats_dro_mel_COV")
    scale_x_continuous(limits=c(0,80))
 
 ### save file as pdf/png
 # https://bookdown.org/ndphillips/YaRrr/saving-plots-to-a-file-with-pdf-jpeg-and-png.html
-pdf(file="./plus_plus_bif_van_EH.pdf",width=6,height=4)
-ggplot(EH_DP_MQ_data,aes(V3))+
+pdf(file="./CHROM_POS_QUAL_DP_MQ.pdf",width=6,height=4)
+plot(stats_dro_mel_COV$V2,stats_dro_mel_COV$V3)
+ggplot(stats_dro_mel_COV,aes(V3))+
 geom_histogram(bins=80)+
-#    xlim(0,80)+
-labs(x="plus_plus_bif_van_EH")+
+    xlim(0,800)+
+labs(x="stats_dro_mel_COV")+
 xlim(0,10)
 dev.off()
-  
+
+
+
 ggplot(EH_DP_MP_data,aes(V4))+
   geom_histogram(bins=10)+
    #    xlim(0,80)+

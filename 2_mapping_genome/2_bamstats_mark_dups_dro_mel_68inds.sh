@@ -25,7 +25,7 @@ cd $BAM_DIRE
 MARKED_BAM=$(ls SRR*.marked_dups.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
 OUTPUT_NAMES=${MARKED_BAM/.bam/}
 ## stats
-bamtools stats -in $MARKED_BAM > ./stats/$OUTPUT_NAMES.bamtools_stats.csv
+bamtools stats -in $MARKED_BAM > ./stats/bamtools_stats/$OUTPUT_NAMES.bamtools_stats.csv
 ## if not specified, output will be in .o files
 
 exit 0

@@ -1,0 +1,154 @@
+Bomvet.REF_BomHypn.sort.bam	Bomvet.REF_BomHypn.sort.marked_rm_dups.bam
+Andhae.REF_AndHae.sort.bam	Andhae.REF_AndHae.sort.marked_rm_dups.bam
+Andhae.REF_AndHatt.sort.bam	Andhae.REF_AndHatt.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       1133736900
+Mapped reads:      321389721	(28.3478%)
+Forward strand:    948907578	(83.6973%)
+Reverse strand:    184829322	(16.3027%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  1133736900	(100%)
+'Proper-pairs':    227528613	(20.0689%)
+Both pairs mapped: 316655324	(27.9302%)
+Read 1:            566911450
+Read 2:            566825450
+Singletons:        4734397	(0.417592%)
+
+Andhae.REF_BomPas.sort.bam	Andhae.REF_BomPas.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       1203288502
+Mapped reads:      172469660	(14.3332%)
+Forward strand:    1094453785	(90.9552%)
+Reverse strand:    108834717	(9.04477%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  1203288502	(100%)
+'Proper-pairs':    158817309	(13.1986%)
+Both pairs mapped: 161990557	(13.4623%)
+Read 1:            601707393
+Read 2:            601581109
+Singletons:        10479103	(0.870872%)
+
+Andmar.REF_AndHae.sort.bam	Andmar.REF_AndHae.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       1077381458
+Mapped reads:      905836933	(84.0776%)
+Forward strand:    609162039	(56.541%)
+Reverse strand:    468219419	(43.459%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  1077381458	(100%)
+'Proper-pairs':    727729341	(67.5461%)
+Both pairs mapped: 899119057	(83.4541%)
+Read 1:            538749600
+Read 2:            538631858
+Singletons:        6717876	(0.623537%)
+
+Andmar.REF_AndHatt.sort.bam	Andmar.REF_AndHatt.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       1044538432
+Mapped reads:      305617611	(29.2586%)
+Forward strand:    872637785	(83.5429%)
+Reverse strand:    171900647	(16.4571%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  1044538432	(100%)
+'Proper-pairs':    229088988	(21.9321%)
+Both pairs mapped: 302163352	(28.9279%)
+Read 1:            522426015
+Read 2:            522112417
+Singletons:        3454259	(0.330697%)
+
+Andmar.REF_BomPas.sort.bam	Andmar.REF_BomPas.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       1119732150
+Mapped reads:      162475147	(14.5102%)
+Forward strand:    1018770249	(90.9834%)
+Reverse strand:    100961901	(9.01661%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  1119732150	(100%)
+'Proper-pairs':    149793193	(13.3776%)
+Both pairs mapped: 152477863	(13.6174%)
+Read 1:            559917457
+Read 2:            559814693
+Singletons:        9997284	(0.892828%)
+
+Bompas.REF_ApisMel.sort.bam	Bompas.REF_ApisMel.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       981253849
+Mapped reads:      207317687	(21.1278%)
+Forward strand:    850878228	(86.7134%)
+Reverse strand:    130375621	(13.2866%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  981253849	(100%)
+'Proper-pairs':    186009486	(18.9563%)
+Both pairs mapped: 191794382	(19.5458%)
+Read 1:            490868956
+Read 2:            490384893
+Singletons:        15523305	(1.58199%)
+
+Bompas.REF_BomHypn.sort.bam	Bompas.REF_BomHypn.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       911133934
+Mapped reads:      829470049	(91.0371%)
+Forward strand:    489210247	(53.6925%)
+Reverse strand:    421923687	(46.3075%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  911133934	(100%)
+'Proper-pairs':    760109612	(83.4246%)
+Both pairs mapped: 826891020	(90.7541%)
+Read 1:            455651300
+Read 2:            455482634
+Singletons:        2579029	(0.283057%)
+
+Bomvet.REF_ApisMel.sort.bam	Bomvet.REF_ApisMel.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       1253443463
+Mapped reads:      309644426	(24.7035%)
+Forward strand:    1068665731	(85.2584%)
+Reverse strand:    184777732	(14.7416%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  1253443463	(100%)
+'Proper-pairs':    287073894	(22.9028%)
+Both pairs mapped: 296092412	(23.6223%)
+Read 1:            627065059
+Read 2:            626378404
+Singletons:        13552014	(1.08118%)
+

@@ -149,7 +149,7 @@ bee_site_plot <- ggmap(bee_map) +
                 theme(legend.position = c(0.2,0.9),legend.text = element_text(size=12), legend.background = element_rect(fill=NA))                 
                 geom_label(aes(x=10, y=10, label="N"), size=3, label.padding=unit(1,"mm"), label.r=unit(1,"lines")) 
 
-ggsave(filename="bee_site_plot_transparent_legend.pdf",height = 20, width =20, units = "cm", bee_site_plot)
+ggsave(filename="bee_site_plot_transparent_legend.new.pdf",height = 20, width =20, units = "cm", bee_site_plot)
 
 
 

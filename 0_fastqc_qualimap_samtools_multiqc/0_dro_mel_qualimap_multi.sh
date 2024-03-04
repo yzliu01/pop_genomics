@@ -46,6 +46,14 @@ qualimap multi-bamqc -d $bam_list_result_path_group --java-mem-size=10G -sd \
 
 exit 0
 
+## create config file self: https://github.com/MultiQC/MultiQC/issues/1743
+## add the following line to multiqc_config.yaml file as below:
+log_filesize_limit: 200000000000
+
+multiqc --config /home/yzliu/miniforge3/envs/multiqc/multiqc_config.yaml . --outdir ../multiqc_data/samtools_stats_68_dro_mel --
+filename samtools_stats_68_dro_mel_new
+
+
 #unset DISPLAY
 #qualimap bamqc -nt 6 -bam $BAM_DIR/SRR24680792.sort.marked_dups.bam -outdir SRR24680792.sort.marked_dups.bam.qualimap -outformat HTML -c
 # qualimap bamqc -nt 1 -bam $INPUT_BAM -outdir $OUT_FILE/$OUT_FILENAME -c –sd

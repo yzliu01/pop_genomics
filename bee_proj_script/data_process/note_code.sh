@@ -77,3 +77,6 @@ grep -h error *32857563*.e
 
 ## tee command
 wc -l file1.txt | tee -a file2.txt
+
+ls -t /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process | head -16
+for i in `ls -t /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/* | head -16`;do sbatch $i;done

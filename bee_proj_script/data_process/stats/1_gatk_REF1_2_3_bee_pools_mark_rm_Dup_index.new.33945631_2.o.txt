@@ -1,0 +1,19 @@
+Andhae.REF_AndHatt.sort.bam	Andhae.REF_AndHatt.sort.marked_rm_dups.bam
+
+**********************************************
+Stats for BAM file(s): 
+**********************************************
+
+Total reads:       1133736900
+Mapped reads:      321389721	(28.3478%)
+Forward strand:    948907578	(83.6973%)
+Reverse strand:    184829322	(16.3027%)
+Failed QC:         0	(0%)
+Duplicates:        0	(0%)
+Paired-end reads:  1133736900	(100%)
+'Proper-pairs':    227528613	(20.0689%)
+Both pairs mapped: 316655324	(27.9302%)
+Read 1:            566911450
+Read 2:            566825450
+Singletons:        4734397	(0.417592%)
+

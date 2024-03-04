@@ -475,6 +475,19 @@ cd 1000000Ne_5rep
 pop20=pop20_file
 pop80=pop80_file
 pop200=pop200_file
+
+pop20_file
+G_1_1_G_1_1 pop20
+G_1_2_G_1_2 pop20
+G_1_3_G_1_3 pop20
+G_1_4_G_1_4 pop20
+G_1_5_G_1_5 pop20
+G_1_6_G_1_6 pop20
+G_1_7_G_1_7 pop20
+G_1_8_G_1_8 pop20
+G_1_9_G_1_9 pop20
+G_1_10_G_1_10 pop20
+
 ## output files depend on the file name and dots in its name
 for sample_size in {20,80,200};do
     if [ $sample_size == 20 ];then
