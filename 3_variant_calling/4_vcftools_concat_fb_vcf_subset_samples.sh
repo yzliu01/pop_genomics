@@ -56,7 +56,7 @@ bcftools view -v snps -A -m 2 -M 2 concated_fb_all_chr.g600_100_regions.vcf.gz |
 
 number of sites covered by reads 200X
 
-## variant filtering
+## variant filteringfor {bees}
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomVet_REF_BomHyp
 REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyBomHypn_7925v1_2.md_chr.fa
 concated_fb_all_chr.g600_100_regions.sorted_chr.vcf.gz
@@ -64,9 +64,9 @@ bcftools view -v snps -A -m 2 -M 2 concated_fb_all_chr.g600_100_regions.vcf.gz |
     bcftools norm -D -f $REF | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -i 'INFO/DP > 200 && INFO/MQM > 15 && FMT/GQ > 10' | \
     bcftools query -f '%CHROM\t%POS\t%DP\t%DPB\t%MQM[\t%SAMPLE\tGQ=%GQ\tDP=%DP\tTYPE=%TYPE]\n'| less -S
 
+## variant filtering for {dro_mel}
 ## https://gatk.broadinstitute.org/hc/en-us/community/posts/4476803114779-GenotypeGVCFs-Output-no-call-as-reference-genotypes
 ## GenotypeGVCFs Output no call as reference genotypes 
-## dro_mel
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/DB_VCF
 REF_DRO_MEL=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.fa
 ## bcftools norm -D -> bcftools norm -d none 
@@ -102,6 +102,12 @@ BP_CS_04
 ## subset samples in vcf
 sample_listS=("BP_CS.list" "SB_RP.list" "SB_SE.list" "SPD.list")
 vcf_dro_mel=concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered.vcf.gz
+
+bcftools view -v snps -A -m 2 -M 2 -f PASS $vcf_dro_mel | bcftools norm -d none -f $REF_DRO_MEL | \
+    bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+    bcftools view -S SB_RP.list -i 'MIN(FMT/DP) > 3 | F_MISSING < 0.3' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.SB_RP.list.vcf.gz
+
 for sample_list in ${sample_listS[*]};
     do echo $sample_list;
 done

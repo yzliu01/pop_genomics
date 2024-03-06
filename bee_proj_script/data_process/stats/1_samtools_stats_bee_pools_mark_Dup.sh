@@ -6,9 +6,9 @@
 ##SBATCH --time=00:05:00
 #SBATCH --time=04:30:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=1_samtools_stats_bee_pools_mark_rm_Dup.%A_%a.e.txt
-#SBATCH --output=1_samtools_stats_bee_pools_mark_rm_Dup.%A_%a.o.txt
-#SBATCH --job-name=1_samtools_stats_bee_pools_mark_rm_Dup
+#SBATCH --error=1_samtools_stats_bee_pools_mark_Dup.%A_%a.e.txt
+#SBATCH --output=1_samtools_stats_bee_pools_mark_Dup.%A_%a.o.txt
+#SBATCH --job-name=1_samtools_stats_bee_pools_mark_Dup
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -21,7 +21,7 @@ conda activate variant_calling_mapping
 BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 cd $BAM_DIR
 
-MARKED_RM_BAM=$(ls *.sort.marked_rm_dups.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+MARKED_RM_BAM=$(ls *.sort.marked_dups.new.bam | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 SATS_OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_stats
 ## stats
 #"\n######  samtools stats: $MARKED_BAM ######" >> bamtools_stats_marked_rm_dups_4_pools.txt

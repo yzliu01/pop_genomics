@@ -1,3 +1,47 @@
+######## problem solving: delete lines contain a pattern except for the first line #########
+## https://stackoverflow.com/questions/16126479/how-to-conditionally-remove-first-line-only-with-sed-when-it-matches
+"AB"
+"CD"
+"E"
+"AB"
+"F"
+"AB"
+## 
+sed '1!{/AB/d}' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/test_delete.txt
+
+vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomPas_REF_BomPas
+vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomVet_REF_BomPas
+issued_vcf=$vcf_dir/Bompas.REF_BomPas.g600_10kb_fb.10kbp.regions.48.fb.qual_20.g.copy.vcf------------
+ok_vcf=Bompas.REF_BomPas.g600_10kb_fb.10kbp.regions.48.fb.qual_20.g.OK.vcf
+## check files that have multiple "##fileformat=VCFv4.2"
+grep fileformat /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomPas_REF_BomHyp/*g600_10kb_fb.10kbp.regions*
+grep fileformat /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomVet_REF_BomHyp/*g600_10kb_fb.10kbp.regions*
+
+sed '1!{/##fileformat=VCFv4.2/d}' $issued_vcf > $vcf_dir/$ok_vcf
+
+sed -i '1!{/##fileformat=VCFv4.2/d}' $issued_vcf
+
+## fb_per_contig_BomPas_REF_BomHyp
+vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomPas_REF_BomHyp
+issued_vcf=$vcf_dir/*g600_10kb_fb.10kbp.regions*.vcf
+for vcf in ${issued_vcf[*]}
+    do
+    sed -i '1!{/##fileformat=VCFv4.2/d}' $vcf
+done
+
+## Another issue
+grep -E '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bompas.REF_BomHypn.g600_10kb_fb.10kbp.regions.084.fb.qual_20.g.vcf| less -S
+grep -E '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bompas.REF_BomHypn.g600_10kb_fb.10kbp.regions.084.fb.qual_20.g.vcf > \
+    Bompas.REF_BomHypn.g600_10kb_fb.10kbp.regions.084.fb.qual_20.md.g.vcf| bgzip -c >
+## check lines without these
+grep -E -v '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bomvet.REF_BomPas.g600_10kb_fb.10kbp.regions.*.fb.qual_20.g.vcf
+
+less concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.vcf.gz | grep -E '^#|GT:GQ:DP:AD:RO:QR:AO:QA' | bgzip -c > \
+    concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.md.vcf.gz
+
+****************************************************************************************
+
+
 ## https://cyverse.atlassian.net/wiki/spaces/DEapps/pages/259063974/vcftools-merge+0.1.16
 ## https://vcftools.sourceforge.net/perl_module.html
 
@@ -26,6 +70,65 @@ vcf-concat --files $vcf_list | bgzip -c > concated_fb_all_chr.g600_100_regions.v
 conda activate gatk_4.3.0.0
 gatk SortVcf --INPUT concated_fb_all_chr.g600_100_regions.vcf.gz --OUTPUT concated_fb_all_chr.g600_100_regions.sorted_chr.vcf.gz
 
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
+## list only directory in a folder
+species_dir=("fb_per_contig_AndHae_REF_AndHae" "fb_per_contig_AndMar_REF_AndHatt" "fb_per_contig_BomPas_REF_BomPas"
+            "fb_per_contig_AndHae_REF_AndHatt" "fb_per_contig_AndMar_REF_BomPas" "fb_per_contig_BomVet_REF_ApisMel"
+            "fb_per_contig_AndHae_REF_BomPas" "fb_per_contig_BomPas_REF_ApisMel" "fb_per_contig_BomVet_REF_BomHyp"
+            "fb_per_contig_AndMar_REF_AndHae" "fb_per_contig_BomPas_REF_BomHyp" "fb_per_contig_BomVet_REF_BomPas"
+)
+species_dir=("fb_per_contig_BomPas_REF_BomPas" "fb_per_contig_AndHae_REF_AndHae")
+species_dir=("fb_per_contig_BomVet_REF_BomPas")
+## save vcf file per region into a file
+for vcf in ${species_dir[*]};
+    do ls ./$vcf/*g600*regions*vcf > ./$vcf.g600_regions.vcf.list
+done
+## concate each vcf file
+vcf_list=fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list
+conda activate variant_calling_mapping
+vcf-concat --files $vcf_list | bgzip -c > concated_fb_all_chr.g600_100_regions.vcf.gz
+
+conda activate gatk_4.3.0.0
+gatk SortVcf --INPUT concated_fb_all_chr.g600_100_regions.vcf.gz --OUTPUT concated_fb_all_chr.g600_100_regions.sorted_chr.vcf.gz
+
+## for all
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
+ls *g600*.list
+vcf_list=("fb_per_contig_AndHae_REF_AndHae.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_ApisMel.g600_regions.vcf.list"
+        "fb_per_contig_AndHae_REF_AndHatt.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list"
+        "fb_per_contig_AndHae_REF_BomPas.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list"
+        "fb_per_contig_AndMar_REF_AndHae.g600_regions.vcf.list" "fb_per_contig_BomVet_REF_ApisMel.g600_regions.vcf.list"
+        "fb_per_contig_AndMar_REF_AndHatt.g600_regions.vcf.list" "fb_per_contig_BomVet_REF_BomHyp.g600_regions.vcf.list"
+        "fb_per_contig_AndMar_REF_BomPas.g600_regions.vcf.list"
+)
+## issued vcf files
+vcf_list=("fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list"
+    #"fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list"
+)
+## not available yet:  "fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list"
+for species_vcf in  ${vcf_list[*]}
+    do vcf-concat --files $species_vcf | bgzip -c > ./concated_vcf_each_species_REF/concated.$species_vcf.vcf.gz
+done
+
+## reorder the chromosome order
+conda activate gatk_4.3.0.0
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
+for vcf in `ls concated*.g600_regions.vcf.list.vcf.gz`
+    do 
+    vcf_sorted_chr=${vcf/.vcf.list.vcf.gz/}
+    gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.sorted_chr.vcf.gz
+done
+
+## issued vcf
+## concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.md.vcf.gz
+for vcf in `ls *BomVet_REF_BomPas*g600_regions.vcf.list.vcf.gz`
+    do 
+    vcf_sorted_chr=${vcf/.vcf.list.vcf.gz/}
+    gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.sorted_chr.vcf.gz
+done
+
+## concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.md.sorted_chr.vcf.gz
+
 ## example from freebayes
 #CHROM  POS     ID      REF     ALT     QUAL    FILTER  INFO    FORMAT  Andmar_pool1
 chr1    3332    .       T       A       221.12  .       AB=0;ABP=0;AC=58;AF=1;AN=58;AO=1>
@@ -52,6 +155,150 @@ bcftools view -v snps -A -m 2 -M 2 -f PASS concated_deo_mel_all_chr.sorted_chr.S
 
 REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyBomHypn_7925v1_2.md_chr.fa
 
+
+**********************************************************************************
+## variant filtering and subset samples in vcf
+conda activate variant_calling_mapping
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
+## concated_vcf_REF_all
+concated_vcf_species=(
+    "concated.fb_per_contig_AndHae_REF_AndHae.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_AndHae_REF_AndHatt.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_AndHae_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_AndMar_REF_AndHae.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_AndMar_REF_AndHatt.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_AndMar_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_BomPas_REF_ApisMel.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_BomVet_REF_ApisMel.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_BomVet_REF_BomHyp.g600_regions.vcf.list.vcf.gz"
+)
+## concated_vcf_REF_pas
+concated_vcf_REF_pas=(
+    "concated.fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+    #"concated.fb_per_contig_AndHae_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+    #"concated.fb_per_contig_AndMar_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+    #"concated.fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+)
+
+## concated_vcf_REF_hyp
+concated_vcf_REF_hyp=(
+    "concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.md.sorted_chr.vcf.gz" ## some issue with variants for BomPas_REF_BomHyp
+    #"concated.fb_per_contig_BomVet_REF_BomHyp.g600_regions.vcf.list.vcf.gz"
+)
+
+## concated_vcf_REF_hae
+concated_vcf_REF_hae=(
+    "concated.fb_per_contig_AndHae_REF_AndHae.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_AndMar_REF_AndHae.g600_regions.vcf.list.vcf.gz"
+)
+
+## concated_vcf_REF_hat
+concated_vcf_REF_hat=(
+    "concated.fb_per_contig_AndHae_REF_AndHatt.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_AndMar_REF_AndHatt.g600_regions.vcf.list.vcf.gz"
+)
+
+## concated_vcf_REF_ApisMel
+concated_vcf_REF_ApisMel=(
+    "concated.fb_per_contig_BomPas_REF_ApisMel.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_BomVet_REF_ApisMel.g600_regions.vcf.list.vcf.gz"
+)
+
+## Reference dir
+REF_BomPas=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyBomPasc1_1.md_chr.fa
+REF_BomHyp=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyBomHypn_7925v1_2.md_chr.fa
+REF_ApisMel=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Amel_HAv3_1.md_chr.fa
+REF_AndHae=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyAndHaem1_1.md_chr.fa
+REF_AndHat=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyAndHatt_8785v1_2.md_chr.fa
+
+
+bcftools view -v snps -A -m 2 -M 2 -f PASS $vcf_dro_mel | bcftools norm -d none -f $REF_DRO_MEL | \
+    bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+    bcftools view -S SB_RP.list -i 'MIN(FMT/DP) > 3 | F_MISSING < 0.3' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG03.SB_RP.list.vcf.gz
+
+for sample_list in ${sample_listS[*]};
+    do echo $sample_list;
+done
+
+## concated_vcf_REF_pas
+for vcf in ${concated_vcf_REF_pas[*]}
+    do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
+        bcftools view -v snps -A -m 2 -M 2 $vcf | bcftools norm -d none -f $REF_BomPas \
+        | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+        bcftools view -i 'INFO/DP > 270' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./$out_vcf_prefix.bi_MQ20_DP270.vcf.gz
+done
+## problem solved after remove issued variants
+Lines   total/split/joined/realigned/skipped:   1207855/0/0/4113/0
+Filled 0 alleles
+Lines   total/split/joined/realigned/skipped:   1214385/0/0/3388/0
+Filled 0 alleles
+[W::vcf_parse_info] INFO 'technology.B##fileformat' is not defined in the header, assuming Type=String
+[W::bcf_hrec_check] Invalid tag name: "technology.B##fileformat"
+[E::bcf_write] Broken VCF record, the number of columns at chr7:10424222 does not match the number of samples (0 vs 1)
+[main_vcfview] Error: cannot write to (null)
+Lines   total/split/joined/realigned/skipped:   1241798/0/0/9072/0
+Filled 0 alleles
+
+## concated_vcf_REF_hyp
+for vcf in ${concated_vcf_REF_hyp[*]}
+    do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
+        bcftools view -v snps -A -m 2 -M 2 $vcf | bcftools norm -d none -f $REF_BomHyp \
+        | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+        bcftools view -i 'INFO/DP > 270' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./$out_vcf_prefix.bi_MQ20_DP270.vcf.gz
+done
+## solved
+[E::vcf_parse_format_fill5] Invalid character '#' in 'GT' FORMAT field at chr1:24722469
+[W::vcf_parse_info] INFO '##fileformat' is not defined in the header, assuming Type=String
+[W::bcf_hrec_check] Invalid tag name: "##fileformat"
+[E::bcf_write] Broken VCF record, the number of columns at chr10:6674058 does not match the number of samples (0 vs 1)
+[main_vcfview] Error: cannot write to (null)
+[E::bcf_write] Broken VCF record, the number of columns at chr10:6673809 does not match the number of samples (0 vs 1)
+[flush_buffer] Error: cannot write to -
+[E::vcf_parse_format_empty1] FORMAT column with no sample columns starting at chr10:6673445
+Filled 0 alleles
+Lines   total/split/joined/realigned/skipped:   4066817/0/0/40295/0
+Filled 0 alleles
+
+## concated_vcf_REF_hae
+for vcf in ${concated_vcf_REF_hae[*]}
+    do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
+        bcftools view -v snps -A -m 2 -M 2 $vcf | bcftools norm -d none -f $REF_AndHae \
+        | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+        bcftools view -i 'INFO/DP > 270' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./$out_vcf_prefix.bi_MQ20_DP270.vcf.gz
+done
+## concated_vcf_REF_hat
+for vcf in ${concated_vcf_REF_hat[*]}
+    do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
+        bcftools view -v snps -A -m 2 -M 2 $vcf | bcftools norm -d none -f $REF_AndHat \
+        | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+        bcftools view -i 'INFO/DP > 270' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./$out_vcf_prefix.bi_MQ20_DP270.vcf.gz
+done
+## concated_vcf_REF_ApisMel
+for vcf in ${concated_vcf_REF_ApisMel[*]}
+    do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
+        bcftools view -v snps -A -m 2 -M 2 $vcf | bcftools norm -d none -f $REF_ApisMel \
+        | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+        bcftools view -i 'INFO/DP > 270' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./$out_vcf_prefix.bi_MQ20_DP270.vcf.gz
+done
+
+
+## -S $sample_list
+vcf_pas=concated.fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list.vcf.gz
+out_vcf_prefix=${vcf_pas/.vcf.list.vcf.gz/}
+echo $out_vcf_prefix
+bcftools view -v snps -A -m 2 -M 2 $vcf_pas | bcftools norm -d none -f $REF_BomPas \
+    | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+    bcftools view -i 'INFO/DP > 160' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./$vcf_pas.bi_MQ20_DP160_MSG03.vcf.gz
+    
 ## example of output query data
 chr1    66849   502     502     60      Andmar_pool1    GQ=11   DP=502  TYPE=SNP
 chr1    68097   469     469     59.9393 Andmar_pool1    GQ=21   DP=469  TYPE=SNP
@@ -69,7 +316,14 @@ chr1    337434  527     527     60      Andmar_pool1    GQ=11   DP=527  TYPE=SNP
 ## snpeff neutral variants
 
 ## https://unix.stackexchange.com/questions/66255/awk-how-to-add-all-columns-beginning-with-specific-row
+## https://askubuntu.com/questions/785038/how-can-i-sum-numbers-on-lines-in-a-file
+## https://stackoverflow.com/questions/33006845/how-to-sum-a-row-of-numbers-from-text-file-bash-shell-scripting
 awk -F " " '{sum=0;for(i=200;i<=NR;i++){sum+=$i};print sum}'
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate/stats/samtools_stats
+less -S SRR24680792.sort.marked_rm_dups.bam.stats.txt | grep ^COV | cut -f 2- > ./samtools_stat_cov/SRR24680792.sort.marked_rm_dups.bam.stats_COV.txt
+for sample_samtools_stat in `ls *sort*stats.txt`;do
+    grep ^COV $sample_samtools_stat| cut -f 2- > ./samtools_stat_cov/$sample_samtools_stat.COV;
+done
 
 ## total number of bases with depth > 9
 awk -F " " 'NR > 9 {sum+=$3}END{print sum}' ./samtools_stat_cov/SRR24680792.sort.marked_rm_dups.bam.stats_COV.txt
@@ -81,3 +335,7 @@ awk -F " " 'NR > 9 {len=133880608;sum+=$3}END{print sum/len}' ./samtools_stat_co
 ## total length of dro_mel genome
 awk -F " " 'NR > 0 {sum+=$2}END{print sum}' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.fa.fai
 133880608
+ 95%*133880608
+
+ 0.95*133880608
+127186577.60

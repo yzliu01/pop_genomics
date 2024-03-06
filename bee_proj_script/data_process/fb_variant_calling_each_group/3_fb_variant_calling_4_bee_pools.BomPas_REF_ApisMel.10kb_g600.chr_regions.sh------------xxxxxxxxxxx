@@ -45,7 +45,7 @@ conda activate variant_calling_mapping
 
 ## for pooled data
 #SAMPLE=$SEQDIR/Andhae_Andmar.REF_Andhae.bam.list
-SAMPLE=Bomvet.REF_ApisMel.sort.marked_dups.new.bam
+SAMPLE=Bompas.REF_ApisMel.sort.marked_dups.new.bam
 ## Bompas.REF_ApisMel.sort.marked_dups.new.bam
 ## Bomvet.REF_ApisMel.sort.marked_dups.new.bam
 

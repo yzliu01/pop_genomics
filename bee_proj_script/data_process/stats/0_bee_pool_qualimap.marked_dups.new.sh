@@ -2,21 +2,21 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 10
 #SBATCH --mem 100g
-#SBATCH --array=1-8%8
-#SBATCH --time=10:04:00
-#SBATCH --error=qualimap_bee_pool.rm_dups.%A_%a.e.txt
-#SBATCH --output=qualimap_bee_pool.rm_dups.%A_%a.o.txt
-#SBATCH --job-name=rm_dups.qualimap_bee_pool
+#SBATCH --array=1-12%12
+#SBATCH --time=05:04:00
+#SBATCH --error=qualimap_bee_pool.marked_dups.new.%A_%a.e.txt
+#SBATCH --output=qualimap_bee_pool.marked_dups.new.%A_%a.o.txt
+#SBATCH --job-name=marked_dups.new.qualimap_bee_pool
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
-
-## bam files
-BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 
 ## activate (env) tools of variant_calling_mapping
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 ## call picard and samtools in the env
 conda activate qualimap # v2.2.3
+
+## bam files
+BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 
 ## mark duplicates
 #SORTED_BAM=$(cat $BAM_DIR/bee_spools.bam.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
@@ -29,17 +29,27 @@ cd $BAM_DIR
 
 #bam_list_path_group=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/stats/multi_bamqc_describing_pool_samples.new_rm_dups.list
 ##-bam flag must be given a file
-##bam_list=$(ls *sort.marked_rm_dups.bam | sed -n ${SLURM_ARRAY_TASK_ID}p)
+##bam_list=$(ls *sort.marked_dups.new.bam | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
-##ls *sort.marked_rm_dups.bam > bee_pools.sort.marked_rm_dups.bam.list
-bam_list=$(cat bee_pools.sort.marked_rm_dups.bam.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
+##ls *sort.marked_dups.new.bam > bee_pools.sort.marked_dups.new.bam.list
+bam_list=$(cat bee_4_pools.bam_marked_dups.new.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 #qualimap bamqc -nt 6 -bam $SORTED_BAM -outdir $OUT_DIR -outformat HTML -c
-qualimap bamqc -nt 10 -cl 300 -dl 60 --output-genome-coverage 300 -sd -c -bam $bam_list --java-mem-size=100G \
--outdir $OUT_DIR \
+#--output-genome-coverage 300
+## specify one outdir folder for each array run
+qualimap bamqc -nt 20 -cl 400 -dl 90 -sd -c -bam $bam_list --java-mem-size=100G \
+-outdir $OUT_DIR/$bam_list \
 -outformat PDF:HTML
 
 exit 0
+## multiqc plot
+conda activate multiqc
+multiqc .
+
+qualimap bamqc -nt 10 -cl 400 -dl 90 -sd -c -bam Andhae.REF_AndHae.sort.marked_dups.new.bam --java-mem-size=100G \
+-outdir $OUT_DIR \
+-outformat PDF:HTML
+
 
 ## run multi-bamqc after bamqc
 ##  it must have raw result data
