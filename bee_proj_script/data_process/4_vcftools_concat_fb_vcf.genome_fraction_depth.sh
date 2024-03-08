@@ -325,7 +325,18 @@ for sample_samtools_stat in `ls *sort*stats.txt`;do
     grep ^COV $sample_samtools_stat| cut -f 2- > ./samtools_stat_cov/$sample_samtools_stat.COV;
 done
 
+## calculate genome fraction covered by reads
 ## total number of bases with depth > 9
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_stats
+BomVet_BomPas_COV=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/Bomvet.REF_BomPas.sort.marked_dups.new.bam/raw_data_qualimapReport/coverage_histogram.txt
+awk -F " " 'NR > 7 && NR < 10 {sum+=$2}END{print sum}' $BomVet_BomPas_COV
+## right expression
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 280 && NR < 600 {sum+=$2}END{print sum}'
+    printf "$COV \n"
+done
+
 awk -F " " 'NR > 9 {sum+=$3}END{print sum}' ./samtools_stat_cov/SRR24680792.sort.marked_rm_dups.bam.stats_COV.txt
 125571763
 ## genome fraction coverage 

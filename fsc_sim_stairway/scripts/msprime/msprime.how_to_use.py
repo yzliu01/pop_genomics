@@ -1,8 +1,60 @@
 #       open jupyter notebook
+## https://genome.au.dk/docs/software-specific/
+
+Jupyter Notebook/Lab¶
+
+Install the jupyter package in your environment.
+
+One way to run a Jupyter Notebook on the cluster is to setup an SSH tunnel to the Jupyter instance.
+
+Start an interactive job. Login to the cluster and start an interactive job where the notebook will run.
+
+[local ~]$ ssh <user>@login.genome.au.dk
+[me@genomedk ~]$ srun --pty bash
+srun: job 3597082 queued and waiting for resources
+srun: job 3597082 has been allocated resources
+[me@node ~]$
+
+Setup SSH tunnel. Back on your local computer open a second terminal to setup the port-forwarding from the computing node to your computer.
+
+[local ~]$ ssh -L<UID>:<compute node>:<UID> <user>@login.genome.au.dk
+
+You will need to replace <UID> with your user ID on the cluster, <compute node> with the name of the compute node you have your job on, and <user> with your username on the cluster. You can easily get those values by running following commands on your compute node inside the interactive job you started in the previous step.
+
+[me@node ~]$ echo $UID
+1234
+[me@node ~]$ hostname -s
+node
+[me@node ~]$ echo $USER
+me
+
+Resulting in a command that would look like this:
+
+[local ~]$ ssh -L1234:node:1234 me@login.genome.au.dk
+
+Start the notebook. Back on the computing node start a Jupyter notebook. For this you may have to first unset the environmental variable XDG_RUNTIME_DIR (this could also be included in ~/.bashrc).
+
+[me@node ~]$ unset XDG_RUNTIME_DIR
+[me@node ~]$ conda activate <jupyter-env>
+[me@node ~]$ jupyter-notebook --no-browser --port=$UID --ip=0.0.0.0
+
+Run the notebook. Back on your local computer start a web browser and paste the URL from above. But replace the part in parenthesis with localhost to get:
+
+http://localhost:<UID>/?token=....
+
+Cleanup. When finished, remember to log out from both sessions.
+
+**********************************************************************
 1)
 conda activate bioproject
 2)
-ssh -L7699:s21n13:7699 yzliu@login.genome.au.dk
+ssh yzliu@login.genome.au.dk
+srun --pty bash
+echo $UID
+# 7669
+hostname -s
+# s21n72
+ssh -L7696:s21n72:7669 yzliu@login.genome.au.dk
 3)
 unset XDG_RUNTIME_DIR
 conda activate bioproject

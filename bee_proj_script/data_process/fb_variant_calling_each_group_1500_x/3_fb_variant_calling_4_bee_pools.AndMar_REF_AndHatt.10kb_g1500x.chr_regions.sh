@@ -1,15 +1,14 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 700g
-##SBATCH --array=1-2%2
-#SBATCH --array=1-91%10
+#SBATCH --mem 1100g
+#SBATCH --array=1-62%10
 ##SBATCH --time=00:05:00
-#SBATCH --time=20:30:00
+#SBATCH --time=10:30:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g200_400.chr_regions.%A_%a.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g200_400.chr_regions.%A_%a.o
-#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_REF_AndHatt.10kb_g1500x.chr_regions.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_REF_AndHatt.10kb_g1500x.chr_regions.%A_%a.o
+#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndMar_REF_AndHatt
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -19,11 +18,11 @@ BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 VCF_OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 
 cd $VCF_OUT_DIR
-mkdir fb_per_contig_AndMar_REF_BomPas
+mkdir fb_per_contig_AndMar_REF_AndHatt
 
 ## path to your ref genome
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyBomPasc1_1.md_chr.fa
+REF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyAndHatt_8785v1_2.md_chr.fa
 
 ## example
 #Run freebayes in parallel on 100000bp chunks of the ref (fasta_generate_regions.py is also
@@ -38,7 +37,7 @@ cd $fasta_generate_regions
 
 ## a problem with the output names
 
-contig_regions=$(ls ./BomPas/*regions.[0-9][0-9].fb | sed -n ${SLURM_ARRAY_TASK_ID}p)
+contig_regions=$(ls ./AndHat/*regions.[0-9][0-9].fb | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 ## activate (env) tools of variant_calling_mapping
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
@@ -46,27 +45,20 @@ conda activate variant_calling_mapping
 
 ## for pooled data
 #SAMPLE=$SEQDIR/Andhae_Andmar.REF_Andhae.bam.list
-SAMPLE=Andmar.REF_BomPas.sort.marked_dups.new.bam
-## Andhae.REF_BomPas.sort.marked_dups.new.bam
-## Andmar.REF_BomPas.sort.marked_dups.new.bam
+SAMPLE=Andmar.REF_AndHatt.sort.marked_dups.new.bam
+## Andhae.REF_AndHatt.sort.marked_dups.new.bam
+## Andmar.REF_AndHatt.sort.marked_dups.new.bam
 
 ## output vcf file name
-## Andmar.REF_BomPas.sort.marked_dups.new.bam
-BAM2VCF_NAME_200=${SAMPLE/sort.marked_dups.new.bam/g200_10kb_fb}
-BAM2VCF_NAME_400=${SAMPLE/sort.marked_dups.new.bam/g400_10kb_fb}
-contig_regions_order=${contig_regions/\.\/BomPas\/iyBomPasc1_1.md_chr.fa/}
-## ./BomPas/iyBomPasc1_1.md_chr.fa.10kbp.regions.91.fb
+## Andmar.REF_AndHatt.sort.marked_dups.new.bam
+BAM2VCF_NAME=${SAMPLE/sort.marked_dups.new.bam/g1500x_10kb_fb}
+contig_regions_order=${contig_regions/\.\/AndHat\/iyAndHatt_8785v1_2.md_chr.fa/}
+## ./AndHat/iyAndHatt_8785v1_2.md_chr.fa.10kbp.regions.51.fb
 
 freebayes-parallel $contig_regions 20 --fasta-reference $REF \
     --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
-    --bam $BAM_DIR/$SAMPLE -g 200 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME_200""$contig_regions_order".qual_20.g.vcf
-
-freebayes-parallel $contig_regions 20 --fasta-reference $REF \
-    --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
-    --bam $BAM_DIR/$SAMPLE -g 400 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME_400""$contig_regions_order".qual_20.g.vcf
-
+    --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf | \
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_AndHatt/"$BAM2VCF_NAME""$contig_regions_order".qual_20.g.vcf
 
 
 

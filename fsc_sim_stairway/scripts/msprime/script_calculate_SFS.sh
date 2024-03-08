@@ -169,6 +169,8 @@ bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | head | 
 bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | head -500 | awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c |awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' '
 23 6 25 53 36 49 23 22 27 19 13 16 15 12 15 13 12 11 9 13 11 13 11 13 10 6 12 8 
 ## do all with for loop
+conda activate variant_calling_mapping
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 output_SFS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
 for vcf_rename in `ls concated*rename.vcf.gz`
     do
@@ -176,4 +178,12 @@ for vcf_rename in `ls concated*rename.vcf.gz`
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_rename | \
         awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
+done
+
+for vcf_rename in `ls concated*rename.vcf.gz`
+    do
+    output_sfs_name=${vcf_rename/bi_MQ20_DP270_rename.vcf.gz/bi_MQ20_DP270_rename}
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_rename | \
+        awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+        echo $vcf_rename
 done

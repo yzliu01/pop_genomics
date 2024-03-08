@@ -3,11 +3,11 @@
 #SBATCH --cpus-per-task 4
 #SBATCH --mem 20g
 ##SBATCH --mem-per-cpu=8G
-#SBATCH --array=1-4%4
-#SBATCH --time=20:06:00
-#SBATCH --error=dro_mel_4_groups_sw.%A_%a.e.txt
-#SBATCH --output=dro_mel_4_groups_sw.%A_%a.o.txt
-#SBATCH --job-name=dro_mel_4_groups_sw
+#SBATCH --array=1-20%10
+#SBATCH --time=15:06:00
+#SBATCH --error=bee_pools_all_site_no_mono_sw.%A_%a.e.txt
+#SBATCH --output=bee_pools_all_site_no_mono_sw.%A_%a.o.txt
+#SBATCH --job-name=bee_pools_all_site_no_mono_sw
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com #send email notification
 
@@ -20,10 +20,10 @@ function pwait() {
     }
 ## generate blueprint.sh batch files
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
-blueprint_file_dir=./stairway_plot_blueprint/dro_mel_4_groups
+blueprint_file_dir=./stairway_plot_blueprint/bee_pools_blueprint
 ## e.g. ft_sim_10000Ne_20hapS_1E_50G_05d_20Chr_15Mb_1_5_MSFS.blueprint
 #blueprint_file=`ls ft_sim_10000Ne*20Chr_15Mb_*MSFS.blueprint | sort -V`
-blueprint_file=`ls $blueprint_file_dir/dro_mel*.blueprint | sort -V`
+blueprint_file=`ls $blueprint_file_dir/*sfs_600x.blueprint | sort -V`
 #blueprint_file=$(ls ft_sim_10000Ne*20Chr_15Mb_*MSFS.blueprint | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## create a function to run blueprint file
 ## attention to nrand as integer
@@ -35,8 +35,6 @@ create_batch_files(){
 }
 ## run the function and output **blueprint.sh files
 #create_batch_files
-
-
 
 
 
@@ -66,7 +64,7 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 ## test blueprint_plot.sh
 #plot_blueprint_file=$blueprint_folder/fsc_fold_1KNe_4E_60S_1_10_50_90d_5Chr_1000Kb.blueprint.sh
 #run_blueprint_plot_sh=$(ls ./stairway_plot_blueprint/ft_sim_10000Ne*20Chr_15Mb*MSFS.blueprint.sh | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
-run_blueprint_plot_sh=$(ls $blueprint_file_dir/dro_mel*.blueprint.sh | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+run_blueprint_plot_sh=$(ls $blueprint_file_dir/*sfs_600x.blueprint.sh | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 time bash $run_blueprint_plot_sh
 
 exit

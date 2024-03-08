@@ -1,14 +1,14 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 700g
+#SBATCH --mem 1100g
 ##SBATCH --array=1-2%2
 #SBATCH --array=1-91%10
 ##SBATCH --time=00:05:00
-#SBATCH --time=20:30:00
+#SBATCH --time=10:30:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g200_400.chr_regions.%A_%a.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g200_400.chr_regions.%A_%a.o
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g1500x.chr_regions.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas.10kb_g1500x.chr_regions.%A_%a.o
 #SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndMar_REF_BomPas
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
@@ -52,20 +52,15 @@ SAMPLE=Andmar.REF_BomPas.sort.marked_dups.new.bam
 
 ## output vcf file name
 ## Andmar.REF_BomPas.sort.marked_dups.new.bam
-BAM2VCF_NAME_200=${SAMPLE/sort.marked_dups.new.bam/g200_10kb_fb}
-BAM2VCF_NAME_400=${SAMPLE/sort.marked_dups.new.bam/g400_10kb_fb}
+BAM2VCF_NAME=${SAMPLE/sort.marked_dups.new.bam/g1500x_10kb_fb}
 contig_regions_order=${contig_regions/\.\/BomPas\/iyBomPasc1_1.md_chr.fa/}
 ## ./BomPas/iyBomPasc1_1.md_chr.fa.10kbp.regions.91.fb
 
 freebayes-parallel $contig_regions 20 --fasta-reference $REF \
     --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
-    --bam $BAM_DIR/$SAMPLE -g 200 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME_200""$contig_regions_order".qual_20.g.vcf
+    --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf | \
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME""$contig_regions_order".qual_20.g.vcf
 
-freebayes-parallel $contig_regions 20 --fasta-reference $REF \
-    --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
-    --bam $BAM_DIR/$SAMPLE -g 400 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_AndMar_REF_BomPas/"$BAM2VCF_NAME_400""$contig_regions_order".qual_20.g.vcf
 
 
 

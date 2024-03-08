@@ -59,7 +59,12 @@ contig_regions_order=${contig_regions/\.\/ApisMel\/Amel_HAv3_1.md_chr.fa/}
 freebayes-parallel $contig_regions 20 --fasta-reference $REF \
     --ploidy 58 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
-    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomVet_REF_ApisMel/"$BAM2VCF_NAME""$contig_regions_order".qual_20.g.vcf
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomVet_REF_ApisMel/"$BAM2VCF_NAME_200""$contig_regions_order".qual_20.g.vcf
+
+freebayes-parallel $contig_regions 20 --fasta-reference $REF \
+    --ploidy 58 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
+    --bam $BAM_DIR/$SAMPLE -g 600 --strict-vcf --gvcf | \
+    vcffilter -f "QUAL > 20" > $VCF_OUT_DIR/fb_per_contig_BomVet_REF_ApisMel/"$BAM2VCF_NAME_400""$contig_regions_order".qual_20.g.vcf
 
 
 
