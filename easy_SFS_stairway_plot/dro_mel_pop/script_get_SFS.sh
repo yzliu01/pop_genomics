@@ -45,10 +45,13 @@ for vcf_group in `ls $dro_mel_vcf_dir/concated*list.vcf.gz`;do
     $easySFS -i $vcf_group -p ${sample_pop[*]} -a -f --proj 17 -o $out_put_sfs_dir --prefix dro_mel_4_pop_SFS;
 done
 
-$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.BP_CS.list.vcf.gz -p BP_CS.pop.list -a -f --proj 17 -o $out_put_sfs_dir --prefix dro_mel_BP_CS_pop_SFS
-$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.SB_RP.list.vcf.gz -p SB_RP.pop.list -a -f --proj 17 -o $out_put_sfs_dir --prefix dro_mel_SB_RP_pop_SFS
-$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.SB_SE.list.vcf.gz -p SB_SE.pop.list -a -f --proj 17 -o $out_put_sfs_dir --prefix dro_mel_SB_SE_pop_SFS
-$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.SPD.list.vcf.gz -p SPD.pop.list -a -f --proj 17 -o $out_put_sfs_dir --prefix dro_mel_SPD_pop_SFS
+$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.BP_CS.list.vcf.gz -p BP_CS.pop.list -a -f --proj 17 -o $output_sfs_dir --prefix dro_mel_BP_CS_pop_SFS
+$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.SB_RP.list.vcf.gz -p SB_RP.pop.list -a -f --proj 17 -o $output_sfs_dir --prefix dro_mel_SB_RP_pop_SFS
+$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.SB_SE.list.vcf.gz -p SB_SE.pop.list -a -f --proj 17 -o $output_sfs_dir --prefix dro_mel_SB_SE_pop_SFS
+$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.SPD.list.vcf.gz -p SPD.pop.list -a -f --proj 17 -o $output_sfs_dir --prefix dro_mel_SPD_pop_SFS
+
+cd ./easy_SFS_stairway_plot/dro_mel_pop/test_SFS
+$easySFS -i $dro_mel_vcf_dir/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filtered_bi_MQ20_FMT_DP3_MSG0.BP_CS.list.vcf.gz -p ../BP_CS.pop.list --proj 17 -o .
 
 ## bees
 conda activate bioproject

@@ -187,3 +187,16 @@ for vcf_rename in `ls concated*rename.vcf.gz`
         awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
         echo $vcf_rename
 done
+
+## NR > 160 && NR < 1500
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
+vcf_pas=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomPas_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz
+vcf_vet=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz
+
+for vcf_rename in `ls concated.fb_per_contig_BomVet_REF_BomPas*g1500x_regions*bi_MQ20_DP160_1500.vcf.gz`
+    do
+    output_sfs_name=${vcf_rename/bi_MQ20_DP270_rename.vcf.gz/bi_MQ20_DP270_rename}
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_rename | \
+        awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+        echo $vcf_rename
+done

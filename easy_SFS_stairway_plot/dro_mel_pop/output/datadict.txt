@@ -1,0 +1,6 @@
+chrX-20868066-0{'segregating': ['T', 'G'], 'calls': {'BP_CS': (31, 1)}, 'outgroup_allele': 'T'}
+chr2L-6101181-1{'segregating': ['C', 'A'], 'calls': {'BP_CS': (25, 1)}, 'outgroup_allele': 'C'}
+chr2R-21029852-2{'segregating': ['C', 'T'], 'calls': {'BP_CS': (20, 12)}, 'outgroup_allele': 'C'}
+chr3L-11148982-3{'segregating': ['A', 'T'], 'calls': {'BP_CS': (32, 2)}, 'outgroup_allele': 'A'}
+chr3R-23717666-4{'segregating': ['A', 'C'], 'calls': {'BP_CS': (2, 32)}, 'outgroup_allele': 'A'}
+chr4-1163494-5{'segregating': ['G', 'C'], 'calls': {'BP_CS': (30, 4)}, 'outgroup_allele': 'G'}

@@ -16,6 +16,8 @@ ok_vcf=Bompas.REF_BomPas.g600_10kb_fb.10kbp.regions.48.fb.qual_20.g.OK.vcf
 ## check files that have multiple "##fileformat=VCFv4.2"
 grep fileformat /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomPas_REF_BomHyp/*g600_10kb_fb.10kbp.regions*
 grep fileformat /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomVet_REF_BomHyp/*g600_10kb_fb.10kbp.regions*
+## 1500
+grep fileformat /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomVet_REF_BomHyp/*g1500x_10kb_fb.10kbp.regions*
 
 sed '1!{/##fileformat=VCFv4.2/d}' $issued_vcf > $vcf_dir/$ok_vcf
 
@@ -29,6 +31,8 @@ for vcf in ${issued_vcf[*]}
     sed -i '1!{/##fileformat=VCFv4.2/d}' $vcf
 done
 
+issued_vcf=./*g1500x_10kb_fb.10kbp.regions*.g.vcf
+
 ## Another issue
 grep -E '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bompas.REF_BomHypn.g600_10kb_fb.10kbp.regions.084.fb.qual_20.g.vcf| less -S
 grep -E '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bompas.REF_BomHypn.g600_10kb_fb.10kbp.regions.084.fb.qual_20.g.vcf > \
@@ -39,6 +43,8 @@ grep -E -v '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bomvet.REF_BomPas.g600_10kb_fb.10kbp.reg
 less concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.vcf.gz | grep -E '^#|GT:GQ:DP:AD:RO:QR:AO:QA' | bgzip -c > \
     concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.md.vcf.gz
 
+grep -E -v '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bompas.REF_BomPas.g1500x_10kb_fb.10kbp.regions.*.fb.qual_20.g.vcf
+grep -E -v '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bomvet.REF_BomPas.g1500x_10kb_fb.10kbp.regions.*.fb.qual_20.g.vcf
 ****************************************************************************************
 
 
@@ -51,16 +57,29 @@ vcf-concat -h
 ## g600_chunks (having duplicates)
 ls *g600_10kb_fb_*vcf > BomVet_REF_BomHyp.individual_fb_vcf_file.list
 
-vcf-concat Bomvet.REF_BomHypn.g600_10kb_fb_chr1.qual_20.g.vcf Bomvet.REF_BomHypn.g600_10kb_f
-b_chr2.qual_20.g.vcf | bgzip -c > concated_fb_chr_1_2.vcf.gz
+vcf-concat Bomvet.REF_BomHypn.g600_10kb_fb_chr1.qual_20.g.vcf Bomvet.REF_BomHypn.g600_10kb_fb_chr2.qual_20.g.vcf | bgzip -c > concated_fb_chr_1_2.vcf.gz
+
 vcf_list=BomVet_REF_BomHyp.individual_fb_vcf_file.list
 vcf-concat --files $vcf_list | bgzip -c > concated_fb_all_chr.vcf.gz
 
+ls *g1500x_10kb_fb*g.vcf > Bompas_REF_BomPas.individual_fb_g1500x_vcf_file.list
+ls *g1500x_10kb_fb*g.vcf > Bomvet_REF_BomPas.individual_fb_g1500x_vcf_file.list
+vcf_list=Bompas_REF_BomPas.individual_fb_g1500x_vcf_file.list
+vcf_list=Bomvet_REF_BomPas.individual_fb_g1500x_vcf_file.list
+vcf-concat --files $vcf_list | bgzip -c > ../concated_vcf_each_species_REF/concated.fb_per_contig_BomPas_REF_BomPas.g1500x_regions.vcf.list.vcf.gz
+vcf-concat --files $vcf_list | bgzip -c > ../concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.vcf.list.vcf.gz
+
 ## sort chromosome order with SortVcf (indexed automatically)
 conda activate gatk_4.3.0.0
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 gatk --list
 gatk SortVcf --INPUT concated_fb_all_chr.vcf.gz --OUTPUT concated_fb_all_chr.sorted_chr.vcf.gz
 less -S concated_fb_all_chr.sorted_chr.vcf.gz
+
+## 1500x
+gatk SortVcf --INPUT concated.fb_per_contig_BomPas_REF_BomPas.g1500x_regions.vcf.list.vcf.gz --OUTPUT concated.fb_per_contig_BomPas_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz
+gatk SortVcf --INPUT concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.vcf.list.vcf.gz --OUTPUT concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz
+
 
 ## g600_regions
 ls *g600*regions*vcf > BomVet_REF_BomHyp.individual_fb.g600_100_regions.vcf_file.list
@@ -176,7 +195,9 @@ concated_vcf_species=(
 )
 ## concated_vcf_REF_pas
 concated_vcf_REF_pas=(
-    "concated.fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list.vcf.gz"
+    "concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz"
+    #"concated.fb_per_contig_BomPas_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz"
+    #"concated.fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list.vcf.gz"
     #"concated.fb_per_contig_AndHae_REF_BomPas.g600_regions.vcf.list.vcf.gz"
     #"concated.fb_per_contig_AndMar_REF_BomPas.g600_regions.vcf.list.vcf.gz"
     #"concated.fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list.vcf.gz"
@@ -231,6 +252,17 @@ for vcf in ${concated_vcf_REF_pas[*]}
         bcftools view -i 'INFO/DP > 270' | bcftools filter -e 'AC==0 || AC == AN' \
     -Oz -o ./$out_vcf_prefix.bi_MQ20_DP270.vcf.gz
 done
+
+## 1500x
+conda activate variant_calling_mapping
+for vcf in ${concated_vcf_REF_pas[*]}
+    do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
+        bcftools view -v snps -A -m 2 -M 2 $vcf | bcftools norm -d none -f $REF_BomPas \
+        | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+        bcftools view -i 'INFO/DP > 160' | bcftools filter -e 'AC==0 || AC == AN' \
+    -Oz -o ./$out_vcf_prefix.bi_MQ20_DP160_1500.vcf.gz
+done
+
 ## problem solved after remove issued variants
 Lines   total/split/joined/realigned/skipped:   1207855/0/0/4113/0
 Filled 0 alleles
@@ -329,7 +361,10 @@ done
 ## total number of bases with depth > 9
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_stats
 BomVet_BomPas_COV=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/Bomvet.REF_BomPas.sort.marked_dups.new.bam/raw_data_qualimapReport/coverage_histogram.txt
+BomPas_BomPas_COV=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/Bompas.REF_BomPas.sort.marked_dups.new.bam/raw_data_qualimapReport/coverage_histogram.txt
+
 awk -F " " 'NR > 7 && NR < 10 {sum+=$2}END{print sum}' $BomVet_BomPas_COV
+
 ## right expression
 for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
     do
@@ -337,6 +372,90 @@ for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
     printf "$COV \n"
 done
 
+## NR > 160 && NR < 1500
+for COV in `find -maxdepth 2 -print | grep 'coverage_histogram.txt'`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 160 && NR < 1500 {sum+=$2}END{print sum}'
+    printf "$COV \n"
+done
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/Bomvet.REF_BomPas.sort.marked_dups.new.bam
+
+## individually seq Swedish data: getting SFS
+cd /crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/PAS/QC_qualimap/pas_samtools
+cp -r DA_04*Qualimap GT_03*Qualimap GT_05*Qualimap GT_08*Qualimap NS_07*Qualimap NS_08*Qualimap SL_04*Qualimap ./subset_qualimap/
+cd ./subset_qualimap/
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 3 && NR < 1000 {sum+=$2}END{print sum}'
+    printf "$COV \n"
+done
+## subset 7 samples with DP > 14x 
+vcf_SE_BomPas=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/PAS/new_variant_calling_ploidy/combined_vcf_genotyping/pas.DP3_GQ20_biSNP_maf005_f_missing05.infoDP3_1000Excesshet_25.rm_non_var.pas_41F.vcf.gz
+#bcftools query -l pas_7dip_1hap_depth_X15.headerlines.vcf.gz
+sample_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/PAS/new_variant_calling_ploidy/combined_vcf_genotyping/pop_list/pas_7_depth_X15.list
+bcftools view -S $sample_list $vcf_SE_BomPas | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0' | less -S
+bcftools view -S $sample_list $vcf_SE_BomPas | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'INFO/DP < 220 | F_MISSING > 0' | less -S
+bcftools view -S $sample_list $vcf_SE_BomPas | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'INFO/DP < 220 | F_MISSING > 0' -Oz -o Se_subset_7_BomPas_inds_DP220_1000.vcf.gz
+less Se_subset_7_BomPas_inds_DP220_1000.vcf.gz | grep -v '#' | wc -l
+
+## get SFS
+bcftools view -S $sample_list $vcf_SE_BomPas | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0' | bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | head -500 | awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c |awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' '
+bcftools view -S $sample_list $vcf_SE_BomPas | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'INFO/DP < 220 | F_MISSING > 0' | bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c |awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' '
+
+## save subset vcf file
+bcftools view -S $sample_list $vcf_SE_BomPas | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0' -Oz -o Se_subset_7_BomPas_inds.vcf.gz
+## count the number of SNPs
+less Se_subset_7_BomPas_inds.vcf.gz | grep -v '#' | wc -l
+2102389
+
+## count SNP number
+less /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz | grep -v '^#' | wc -l
+## balteatus
+vcf_SE_BomBal=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_17haploid_54diploid_B_bal.SNP_hard_filtered.DP3_GQ20_biSNP.missing05_DP3_1000_Excesshet25.vcf.gz
+sample_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/subpop_list/bal_12_DP_13X_SMC.txt
+bcftools view -S $sample_list $vcf_SE_BomBal | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | awk '{if ($3 < $4/2) print $3; 
+if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+
+# qualimap data bal
+cp -r AC-002* AC-022* AC-152* M_L024* M_L032* M_L033* M_L049* M_L137* M_L149* M_L190* M_L195* M_L198* ./subset_qualimap/
+sample_mon_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/Fst_pop_list/mon_10F_X15.list
+vcf_mon=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_89haploid_118diploid_B_syl.SNP_hard_filtered.DP3_GQ20_biSNP.minorAC2_maleHet_missing05_DP3_3134_Excesshet25.mon_76_27M_49F.vcf.gz
+
+# qualimap data lap
+cp -r M_L018* M_L021* M_L138* M_L180* M_L194* AC-006* AC-138* WO_003* WO_006* WO_383* WO_448* WO_449* WO_703* BH_11* subset_qualimap_lap
+vcf_lap=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_89haploid_118diploid_B_syl.SNP_hard_filtered.DP3_GQ20_biSNP.minorAC2_maleHet_missing05_DP3_3134_Excesshet25.lap_128_62M_66F.vcf.gz
+sample_lap_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/Fst_pop_list/lap_11F_X15.list
+
+cd ./subset_qualimap/
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 3 && NR < 3134 {sum+=$2}END{print sum}'
+    printf "$COV \n"
+done
+## DP 220 - 1000
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 16 && NR < 1000 {sum+=$2}END{print sum}'
+    printf "$COV \n"
+done
+bcftools view -S $sample_lap_list $vcf_lap | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | awk '{if ($3 < $4/2) print $3; 
+if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+
+# qualimap data mon
+cp -r M_L119* AC-020* AC-021* AC-034* M_L210* M_L213* BH_07* BH_08* BH_09* BH_16* ./subset_qualimap_mon
+sample_mon_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/Fst_pop_list/mon_10F_X15.list
+
+cd ./subset_qualimap/
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 3 && NR < 3134 {sum+=$2}END{print sum}'
+    printf "$COV \n"
+done
+
+bcftools view -S $sample_mon_list $vcf_mon | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | awk '{if ($3 < $4/2) print $3; 
+if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+
+***************************
 awk -F " " 'NR > 9 {sum+=$3}END{print sum}' ./samtools_stat_cov/SRR24680792.sort.marked_rm_dups.bam.stats_COV.txt
 125571763
 ## genome fraction coverage 
