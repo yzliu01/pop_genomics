@@ -110,6 +110,11 @@ bwa index -a bwtsw iyBomHypn_7925v1_2.md_chr.fa
 
 bwa index -a bwtsw Amel_HAv3_1.md_chr.fa
 
+## softmasked reference genome
+for masked_ref in `ls *softmasked.fa`
+    do
+    bwa index -a bwtsw $masked_ref
+done
 
 2.
 samtools/1.2
@@ -123,6 +128,10 @@ samtools faidx iyBomPasc1_1.md_chr.fa
 samtools faidx iyBomHypn_7925v1_2.md_chr.fa
 samtools faidx Amel_HAv3_1.md_chr.fa
 
+for masked_ref in `ls *softmasked.fa`
+    do
+    bwa index -a bwtsw $masked_ref
+done
 
 3. Create dictionary for gatk
 GATK_4.5.0.0 requires Java 17 (after gatk_4.3.0.0)
