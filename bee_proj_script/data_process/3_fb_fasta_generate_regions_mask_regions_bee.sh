@@ -96,7 +96,46 @@ fasta_generate_regions.py $REF_ApisMel --chunks 60 \
     --chromosomes LG1 LG2 LG3 LG4 LG5 LG6 LG7 LG8 LG9 LG10 LG11 LG12 LG13 LG14 LG15 LG16 \
     > $OUT_DIR_CHUNK_ApisMel/Amel_HAv3_1.md_chr.fa.chr1_16to60_chunks.fb
 
+## new Ref-softmasked-no-modification
+Pas_Ref_New=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
+Regions_New=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
+## spilt fast into N length pieces
+fasta_generate_regions.py $Pas_Ref_New 2000000 > $Regions_New/Pas_New.fb_2Mb.regions
 
+for Ref_New in `ls *-softmasked.fa`
+    do
+    Out_Region_Name=${Ref_New/.fa/.fb_2Mb.regions}
+    fasta_generate_regions.py $Ref_New 2000000 > $Regions_New/$Out_Region_Name
+done
+
+
+##
+AndHat_Ref_Regions=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions/Andrena_hattorfiana-GCA_944738655.1-softmasked.fb_2Mb.regions
+1:0-2000000
+1:2000000-4000000
+1:4000000-6000000
+1:6000000-8000000
+
+ApisMel_Ref_Regions=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fb_2Mb.regions
+## chr name in the region bed file
+head $ApisMel_Ref_Regions
+NC_037638.1:0-2000000
+NC_037638.1:2000000-4000000
+NC_037638.1:4000000-6000000
+NC_037638.1:6000000-8000000
+## the chr name in fasta file for ApisMel
+less -S /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
+>NC_037638.1 Apis mellifera strain DH4 linkage group LG1, Amel_HAv3.1, whole genome shotgun sequence
+
+
+## use this in freebayes for each region
+## print the first line
+Each_Region_And_Hat_Ref=$(cat $And_Hat_Ref_Regions | sed -n 1p)
+## each line depending on task ID
+Each_Region_And_Hat_Ref=$(cat $And_Hat_Ref_Regions | sed -n ${SLURM_ARRAY_TASK_ID}p)
+
+
+**************************************************************************************
 ## create individual chr fb
 for chr in `cut -d ":" -f 1 $OUT_DIR/iyBomHypn_7925v1_2.md_chr.fa.chr1_12to6_chunks.fb`;do
     for order in {1..6};do

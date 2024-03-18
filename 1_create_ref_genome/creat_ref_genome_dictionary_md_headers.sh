@@ -130,7 +130,7 @@ samtools faidx Amel_HAv3_1.md_chr.fa
 
 for masked_ref in `ls *softmasked.fa`
     do
-    bwa index -a bwtsw $masked_ref
+    samtools faidx $masked_ref
 done
 
 3. Create dictionary for gatk
@@ -172,6 +172,21 @@ gatk CreateSequenceDictionary \
 -R D_melanogaster.7509v1.md_chr.fa \
 -O D_melanogaster.7509v1.md_chr.fa.dict
 
+## Ref with chr not modified
+## out name should be noted
+## D_melanogaster.7509v1.md_chr.fa -> D_melanogaster.7509v1.md_chr.dict
+for masked_ref_dick in `ls *softmasked.fa`
+    do
+    out_masked_ref_dick=${masked_ref_dick/.fa/}
+    gatk CreateSequenceDictionary \
+    -R "$masked_ref_dick" \
+    -O "$out_masked_ref_dick.dict"
+done
+
+for masked_ref_dick in `ls *softmasked.N.fa`
+    do
+    echo $masked_ref_dick
+done
 4. freebayes
 freebayes-1.3.7
 
