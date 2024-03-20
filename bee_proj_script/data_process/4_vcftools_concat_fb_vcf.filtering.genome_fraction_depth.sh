@@ -275,6 +275,31 @@ Filled 0 alleles
 Lines   total/split/joined/realigned/skipped:   1241798/0/0/9072/0
 Filled 0 alleles
 
+## DP <= 1500x for New_REF
+conda activate variant_calling_mapping
+## 600x < DP
+## 400x < DP
+## 200x < DP
+## example
+concated_vcf_REF_pas=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomPas_REF_BomPas/Bompas.REF_BomPas.mono_1500x_region_1.g.vcf
+bcftools filter -g 40:indel $concated_vcf_REF_pas | less -S
+## 17363 ins
+## 17393 snp (removed)
+
+for vcf in ${concated_vcf_REF_pas[*]}
+    do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
+        bcftools view -i 'INFO/DP > 600' $vcf > xx.vcf
+
+        bcftools filter --SnpGap 3:indel | \
+        bcftools view --types snps --min-alleles 2 --max-alleles 2 -i 'INFO/AO > 2' xx.$vcf | \
+        bcftools norm -d none -f $REF_BomPas | \
+        bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
+        bcftools filter -e 'AC==0 || AC == AN' | \
+        bcftools filter -e --mask-file file.bed | \
+        bcftools view -e 'F_MISSING > 0' | \
+        -Oz -o ./$out_vcf_prefix.bi_MQ20_DP160_1500.vcf.gz
+done
+
 ## concated_vcf_REF_hyp
 for vcf in ${concated_vcf_REF_hyp[*]}
     do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}

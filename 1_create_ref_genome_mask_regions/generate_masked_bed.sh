@@ -82,27 +82,48 @@ less -S $REF_PAS_GTF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}
 conda activate variant_calling_mapping
 cd /home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
+REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 REF_list=(
     "./AndHae_GCA_910592295.1/genes.gtf.gz"
-    "./Amel_HAv3_1/genes.gtf.gz"
-    "./DeoMel-GCF_000001215.4_Release_6_plus_ISO1_MT/genes.gtf.gz"
-    "./BomHyp_GCA_911387925.1/genes.gtf.gz"
     "./AndHat_GCA_944738655.1/genes.gtf.gz"
-    #"./BomPas_GCA_905332965.1/genes.gtf.gz"
+    "./Amel_HAv3_1/genes.gtf.gz"
+    "./BomHyp_GCA_911387925.1/genes.gtf.gz"
+    "./BomPas_GCA_905332965.1/genes.gtf.gz"
+    "./DroMel-GCF_000001215.4_Release_6_plus_ISO1_MT/genes.gtf.gz"
 )
-echo ${REF_list[*]}
-for REF in ${REF_list[*]}
+#echo ${REF_list[*]}
+#REF_INDEX_list=(`ls *softmasked.fa.fai`)
+## https://superuser.com/questions/121627/how-to-get-elements-from-list-in-bash
+List="abcd 1234 jvm something"
+set -- $List
+echo $2
+1234
+
+REF_INDEX_list=(
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai"
+    "Andrena_hattorfiana-GCA_944738655.1-softmasked.fa.fai"
+    "Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa.fai"
+    "Bombus_hypnorum-GCA_911387925.1-softmasked.fa.fai"
+    "Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai"
+    "Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fa.fai"
+)
+#echo ${REF_INDEX_list[1]}
+## Two variables in for-loop
+## https://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-script
+## https://stackoverflow.com/questions/68358789/using-bash-to-get-two-variables-in-for-loop-form-two-different-lists
+for i in ${!REF_list[*]}
+    ## input in the same index
     do
-    OUT_name=`echo $REF | sed -e 's/\.\///' -e 's/\/genes.gtf.gz/_gene_region_1.bed/'`
-    #${REF/\/genes.gtf.gz/_gene_region_1.bed}
+    OUT_name=`echo ${REF_list[i]} | sed -e 's/\.\///' -e 's/\/genes.gtf.gz/_gene_region-1.sorted.bed/'`
     #echo $OUT_name
-    less $REF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | \
-    sed -e 's/^/chr/' -e '/chrCAJ/d' > $OUT_BED_DIR/$OUT_name
+    less ${REF_list[i]} | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | \
+    bedtools sort -i stdin -g $REF_DIR/${REF_INDEX_list[i]} \
+    > $OUT_BED_DIR/$OUT_name
+    #| sed -e 's/^/chr/' -e '/chrCAJ/d' \
 done
 
 ## sort the gene region according to reference genome
 REF_PAS_INDEX=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/iyBomPasc1_1.md_chr.fa.fai
-$REF_PAS_INDEX
 bedtools sort -i $OUT_BED_DIR/BomPas_GCA_905332965.1_gene_region.bed -g $REF_PAS_INDEX >  $OUT_BED_DIR/BomPas_GCA_905332965.1_gene_region.sorted.bed
 bedtools sort -i $OUT_BED_DIR/BomPas_GCA_905332965.1_gene_region_1.bed -g $REF_PAS_INDEX >  $OUT_BED_DIR/BomPas_GCA_905332965.1_gene_region_1.sorted.bed
 
@@ -148,6 +169,41 @@ chr1    32485   32514
 chr1    36940   36982
 chr1    37326   37365
 chr1    37526   46635
+
+## for loop
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
+OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
+REF_gene_region_list=(
+    "Amel_HAv3_1_gene_region-1.sorted.bed"
+    "AndHae_GCA_910592295.1_gene_region-1.sorted.bed"
+    "AndHat_GCA_944738655.1_gene_region-1.sorted.bed"
+    "BomHyp_GCA_911387925.1_gene_region-1.sorted.bed"
+    "BomPas_GCA_905332965.1_gene_region-1.sorted.bed"
+    "DroMel_GCF_000001215.4_Release_6_plus_ISO1_MT_gene_region-1.sorted.bed"
+)
+
+REF_softmasked_region_list=(
+    "Amel_HAv-GCF_003254395.2-softmasked.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.bed"
+    "Andrena_hattorfiana-GCA_944738655.1-softmasked.bed"
+    "Bombus_hypnorum-GCA_911387925.1-softmasked.bed"
+    "Bombus_pascuorum-GCA_905332965.1-softmasked.bed"
+    "Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.bed"
+)
+
+for i in ${!REF_gene_region_list[*]}
+    ## input in the same index
+    do
+    REF_softmasked_region=${REF_softmasked_region_list[i]}
+
+    ## use var as an agent in the substition expression
+    OUT_name=${REF_softmasked_region/.bed/_ref_gene.conca_sorted.bed}
+
+    #echo $OUT_name
+    #echo ${REF_gene_region_list[i]} $REF_softmasked_region
+    cat ${REF_gene_region_list[i]} $REF_softmasked_region | \
+    bedtools sort | bedtools merge -i - > $OUT_BED_DIR/$OUT_name
+done
 
 ## get intergenic regions
 bedtools sort -i $OUT_BED_DIR/BomPas_GCA_905332965.1_intergenic_region.bed \
