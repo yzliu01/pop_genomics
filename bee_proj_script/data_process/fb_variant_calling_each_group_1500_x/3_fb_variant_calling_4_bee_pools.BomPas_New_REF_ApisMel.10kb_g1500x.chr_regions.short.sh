@@ -75,7 +75,7 @@ fb_list=("Andrena_haemorrhoa-GCA_910592295.1-softmasked.fb_2Mb.regions"
         "Bombus_pascuorum-GCA_905332965.1-softmasked.fb_2Mb.regions"
         "Bombus_hypnorum-GCA_911387925.1-softmasked.fb_2Mb.regions"
         "Apis_mellifera_HAv-GCF_003254395.2-softmasked.fb_2Mb.regions")
-
+        
 for chr in `cut -d ":" -f 1 iyAndHaem1_1.md_chr.fa.10kbp.regions.fb | uniq`;do
     grep "$chr" iyAndHaem1_1.md_chr.fa.10kbp.regions.fb > ./iyAndHaem1_1.md_chr.fa.10kbp."$chr".regions.fb;
 done

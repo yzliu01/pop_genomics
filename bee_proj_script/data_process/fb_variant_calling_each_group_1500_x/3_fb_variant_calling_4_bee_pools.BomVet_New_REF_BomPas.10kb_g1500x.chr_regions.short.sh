@@ -52,7 +52,7 @@ Each_Region_Ref=$(cat $Each_Region_Dir/$Ref_Region | sed -n ${SLURM_ARRAY_TASK_I
 # 1:0-2000000
 # 1:2000000-4000000
 # 1:4000000-6000000
-Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed//home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/BomPas_GCA_905332965.1_gene_region_1.softmasked_chr_name.sorted.bed
+Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/BomPas_GCA_905332965.1_gene_region_1.softmasked_chr_name.sorted.bed
 
 ## run freebayes with single core
 freebayes --region $Each_Region_Ref --fasta-reference $REF \

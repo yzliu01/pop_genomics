@@ -3,14 +3,14 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 150g
 ##SBATCH --array=1-2%2
-##SBATCH --array=1-151%20
-#SBATCH --array=152-210%20
+#SBATCH --array=1,7,8%3
+##SBATCH --array=149-544%20
 ##SBATCH --time=03:10:00
-#SBATCH --time=12:00:00
+#SBATCH --time=24:00:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_BomPas.10kb_g1500x.chr_regions.short.%A_%a.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_BomPas.10kb_g1500x.chr_regions.short.%A_%a.o
-#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_BomPas.short
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.10kb_g1500x.chr_regions.long_left.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.10kb_g1500x.chr_regions.long_left.%A_%a.o
+#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.long_left
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -24,13 +24,13 @@ BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 VCF_OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 
 ## mkdir $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
-mkdir $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_BomPas
+mkdir $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae
 #cd $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
-cd $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_BomPas
+cd $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae
 
 ## path to your ref genome
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF=$REF_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
+REF=$REF_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
 
 ## example
 #Run freebayes in parallel on 100000bp chunks of the ref (fasta_generate_regions.py is also
@@ -41,12 +41,12 @@ REF=$REF_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
 
 ## for pooled data
 #SAMPLE=$SEQDIR/Andhae_Andmar.REF_Andhae.bam.list
-SAMPLE=Andhae.New_REF_BomPas.sort.marked_dups.bam
+SAMPLE=Andhae.New_REF_AndHae.sort.marked_dups.bam
 ## Bompas.New_REF_BomPas.sort.marked_dups.bam
 ## Bomvet.New_REF_BomPas.sort.marked_dups.bam
 
 Each_Region_Dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
-Ref_Region=Bombus_pascuorum-GCA_905332965.1-softmasked.fb_2Mb.regions
+Ref_Region=Andrena_haemorrhoa-GCA_910592295.1-softmasked.fb_2Mb.regions
 Each_Region_Ref=$(cat $Each_Region_Dir/$Ref_Region | sed -n ${SLURM_ARRAY_TASK_ID}p)
 # 1:0-2000000
 # 1:2000000-4000000
@@ -57,8 +57,8 @@ Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_ma
 freebayes --region $Each_Region_Ref --fasta-reference $REF \
     --ploidy 68 --pooled-discrete --genotype-qualities --report-monomorphic --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf \
-    > $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_BomPas/"Andhae.New_REF_BomPas.mono_1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
-#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_AndHae_New_REF_BomPas/"Bompas.New_REF_BomPas.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
+    > $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae/"Andhae.New_REF_AndHae.mono_1500x_region_"${SLURM_ARRAY_TASK_ID}.left.g.vcf
+#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_AndHae_New_REF_AndHae/"Bompas.New_REF_BomPas.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcffilter -f "QUAL > 20"
 
 ## not execute after this line

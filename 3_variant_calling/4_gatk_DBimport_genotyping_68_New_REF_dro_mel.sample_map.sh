@@ -4,15 +4,15 @@
 ##SBATCH --mem 120g
 #SBATCH --mem 10g
 ##SBATCH --array=1-6%6
-#SBATCH --array=1-1342%40
-#SBATCH -t 00:25:00
+#SBATCH --array=1-1935%40
+#SBATCH -t 05:25:00
 ##SBATCH -t 1-10:00:00
 ##SBATCH -t 9-00:00:00
 #SBATCH -J gatk_DBimport_genotyping_deo_mel
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
-#SBATCH --error=gatk_DBimport_genotyping_deo_mel_68_deo_mel.%A_%a.e
-#SBATCH --output=gatk_DBimport_genotyping_deo_mel_68_deo_mel.%A_%a.o
+#SBATCH --error=gatk_DBimport_genotyping_New_REF_deo_mel_68.%A_%a.e
+#SBATCH --output=gatk_DBimport_genotyping_New_REF_deo_mel_68.%A_%a.o
 
 ## activate (env) tools of variant_calling_mapping
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
@@ -28,7 +28,7 @@ VCF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/GVCF
 ## Reference sequence
 ## Update this with the name of the ref fasta file 
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF=$REF_DIR/D_melanogaster.7509v1.md_chr.fa
+REF=$REF_DIR/Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fa
 
 ## The sample-name-map that you created in the previous step (tab-separated list of each sample name followed by the full path to its .g.vcf file. One line per sample.)
 ## example:
@@ -51,10 +51,10 @@ OUT_DIR=$GATK_VCF/DB_VCF/vcfs_all_indv
 DB_DIR=$GATK_VCF/DB_VCF/DB_scaffold
 
 ## Get all the chr (contig or scaffold) names in array from the reference genome fasta file
-FB_CHUNK=$REF_DIR/fasta_generate_regions/D_melanogaster.7509v1.md_chr.fa.100kbp.regions.fb
+FB_2M_regions=$REF_DIR/fasta_generate_regions/chr_regions/Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fb_2Mb.1_index.regions
 #scaffold_names=$(cut -f 1 $REF_DIR/D_melanogaster.7509v1.md_chr.fa.fai | sed -n ${SLURM_ARRAY_TASK_ID}p)
-scaffold_names=$(cut -f 1 $FB_CHUNK | sed -n ${SLURM_ARRAY_TASK_ID}p)
-scaffold_order=$(cut -d : -f 1 $FB_CHUNK | sed -n ${SLURM_ARRAY_TASK_ID}p)
+scaffold_names=$(cut -f 1 $FB_2M_regions | sed -n ${SLURM_ARRAY_TASK_ID}p)
+scaffold_order=$(cut -d : -f 1 $FB_2M_regions | sed -n ${SLURM_ARRAY_TASK_ID}p)
         ## Create a database for each chr/contig/scaffold
         ## The following command is submitted in parallel on multiple cores
 
@@ -68,23 +68,24 @@ cd $VCF_DIR
 ## ....
 ## Contig:chr2 start:0 end:100000
 
-echo "Running GenomicsDBImport for $scaffold_names"
+#awk -F [:-] '{print $1":"$2+1"-"$3}' Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fb_2Mb.regions \
+#        > Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fb_2Mb.1_index.regions
+
 gatk --java-options "-Xmx10g -Xms10g" GenomicsDBImport \
---overwrite-existing-genomicsdb-workspace \
---sample-name-map $SAMP_NAME \
---genomicsdb-workspace-path $DB_DIR/${scaffold_names} \
---tmp-dir $TMPDIR \
---intervals ${scaffold_names}
+        --overwrite-existing-genomicsdb-workspace \
+        --sample-name-map $SAMP_NAME \
+        --genomicsdb-workspace-path $DB_DIR/${scaffold_names} \
+        --tmp-dir $TMPDIR \
+        --intervals ${scaffold_names}
 
         ## Use the databases for joint genotyping
         ## The following command is submitted in array on multiple cores
-
-echo "Running GenotypeGVCFs for ${scaffold_names}"
 gatk --java-options "-Xmx10g -Xms10g" GenotypeGVCFs \
--R $REF \
--V gendb://$DB_DIR/${scaffold_names} \
--new-qual true \
--O $OUT_DIR/${scaffold_order}_100kb_${SLURM_ARRAY_TASK_ID}.g.vcf.gz
+        -R $REF \
+        -V gendb://$DB_DIR/${scaffold_names} \
+        -new-qual true \
+        -O $OUT_DIR/${scaffold_order}_fb_region_2Mb_${SLURM_ARRAY_TASK_ID}.g.vcf.gz
+        #-O $OUT_DIR/${scaffold_order}_100kb_${SLURM_ARRAY_TASK_ID}.g.vcf.gz
 
 exit 0
 ## prepare sample name path map file

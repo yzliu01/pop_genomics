@@ -6,7 +6,7 @@
 #SBATCH --array=1-153%20
 ##SBATCH --array=154-186%20
 ##SBATCH --time=03:10:00
-#SBATCH --time=20:00:00
+#SBATCH --time=24:00:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.BomVet_New_REF_BomHyp.10kb_g1500x.chr_regions.long.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.BomVet_New_REF_BomHyp.10kb_g1500x.chr_regions.long.%A_%a.o

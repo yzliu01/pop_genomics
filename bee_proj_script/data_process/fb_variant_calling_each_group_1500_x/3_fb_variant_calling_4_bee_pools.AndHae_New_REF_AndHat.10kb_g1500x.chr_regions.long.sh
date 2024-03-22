@@ -3,10 +3,10 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 150g
 ##SBATCH --array=1-2%2
-#SBATCH --array=1-148%20
-##SBATCH --array=149-544%20
+#SBATCH --array=1-215%20
+##SBATCH --array=216-329%20
 ##SBATCH --time=03:10:00
-#SBATCH --time=20:00:00
+#SBATCH --time=24:00:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHat.10kb_g1500x.chr_regions.long.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHat.10kb_g1500x.chr_regions.long.%A_%a.o
@@ -51,7 +51,7 @@ Each_Region_Ref=$(cat $Each_Region_Dir/$Ref_Region | sed -n ${SLURM_ARRAY_TASK_I
 # 1:0-2000000
 # 1:2000000-4000000
 # 1:4000000-6000000
-Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed//home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/BomPas_GCA_905332965.1_gene_region_1.softmasked_chr_name.sorted.bed
+Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/BomPas_GCA_905332965.1_gene_region_1.softmasked_chr_name.sorted.bed
 
 ## run freebayes with single core
 freebayes --region $Each_Region_Ref --fasta-reference $REF \

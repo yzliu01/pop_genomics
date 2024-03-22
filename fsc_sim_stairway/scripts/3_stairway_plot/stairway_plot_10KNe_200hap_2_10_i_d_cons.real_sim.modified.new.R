@@ -16,9 +16,10 @@ library(gtools)
 library(fs)
 library(stringr)
 
-setwd("/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned/")
-final_summary <- "/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned"
-mixedsort(sort(fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*G_*e_*_cons*200hapS*15Mb_*.final.summary")))
+#setwd("/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned/")
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp")
+#final_summary <- "/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned"
+#mixedsort(sort(fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*G_*e_*_cons*200hapS*15Mb_*.final.summary")))
 ## attention to refer to only one file name
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*15Mb_1.final.summary")
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
@@ -100,10 +101,10 @@ for (generation in c("50G","100G","500G","1000G")){
 
         ## add replicate lines
         #par(new=TRUE)
-        for (rep in c(2,4)){
+        for (rep in c(1:5)){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             ## assign variable to read_data
-            assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*.final.summary"))),header=T,sep="\t"))
+            assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned/ft_sim_10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*.final.summary"))),header=T,sep="\t"))
             #print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
