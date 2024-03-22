@@ -11,16 +11,18 @@ final_summary <- "/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned"
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
-pdf(paste0("combined.10000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_label.pdf"),width = 20, height = 25)
+pdf(paste0("combined.10000Ne_200hapS_5rep_cons_1_1i_1_5i_1_9i_non_pruned.rotated_x_lab_final.pdf"),width = 20, height = 25)
+#pdf(paste0("combined.10000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-par(mfcol=c(5,5),mar=c(4,4.4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
-layout(matrix(c(1:25),nrow=5,ncol=5,byrow=T),width=c(1,1),height=c(1,1))
+#par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
+par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.4,cex.lab=1.6, cex.axis=1.3,lwd=2)
+layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
     #for (event in c("00d","01d","05d","09d","05i")){
     ## modified naming format
-    for (event in c("cons","1.1i","1.5i","1.9i","0.5e_d_1.5i")){
+    for (event in c("cons","1.1i","1.5i","1.9i")){
         ## solo axis name plot
         #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
         ##log="xy",xlab="Years ago", ylab="Effective population size"
@@ -39,7 +41,7 @@ for (generation in c("50G","100G","500G","1000G")){
             plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-        } else if (plot_name %in% c("10000Ne_200hapS_1E_1000G_1.1i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_1.5i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_1.9i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_0.5e_d_1.5i_20Chr_15Mb")){
+        } else if (plot_name %in% c("10000Ne_200hapS_1E_1000G_1.1i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_1.5i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_1.9i_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
@@ -49,7 +51,7 @@ for (generation in c("50G","100G","500G","1000G")){
             title(line=2)
         }
         ##turn scientific notion off
-        #axis(side=1,at=c(50,100,500,1000,10000,100000,200000),las=0,label=c(format(c(50,100,500,1000,10000,100000,200000),scientific=FALSE)))
+        #axis(side=1,at=c(50,100,500,1000,10000,100000,200000),las=0,label=c(format(c(50,100,500,1000,10000,100000,200000),scientific=TRUE)))
         axis(side=2, at=c(500,1000,5000,7000,10000),label=c(format(c(500,1000,5000,7000,10000),scientific=FALSE)))
         #eaxis(2, padj=0.5,cex.axis=1.5)
         
@@ -88,7 +90,7 @@ for (generation in c("50G","100G","500G","1000G")){
         x <- 0:100000
         #plot_name <- c("10000Ne_200hapS_1E_1000G_1.1i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_1.5i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_1.9i_20Chr_15Mb","10000Ne_200hapS_1E_1000G_0.5e_d_1.5i_20Chr_15Mb")
         fx <- function(x) {
-            if (all(sapply(c("cons"), grepl, plot_name))) {
+            if (all(sapply(c("G_cons"), grepl, plot_name))) {
                 ## constant Ne
                 return(5000)
             } else if (all(sapply(c("50G","G_1.1i"), grepl, plot_name))) {
@@ -110,12 +112,6 @@ for (generation in c("50G","100G","500G","1000G")){
                 } else {
                     return(5000*1.9)
                 }
-            } else if (all(sapply(c("50G","G_0.5e_d_1.5i"), grepl, plot_name))) {
-                if (x <= 50) {
-                    return(5000*(0.9868^x))
-                } else {
-                    return(5000*(0.9868^50)*1.5)
-                }
             } else if (all(sapply(c("100G","G_1.1i"), grepl, plot_name))) {
                 if (x <= 100) {
                     return(5000)
@@ -133,12 +129,6 @@ for (generation in c("50G","100G","500G","1000G")){
                     return(5000)
                 } else {
                     return(5000*1.9)
-                }
-            } else if (all(sapply(c("100G","G_0.5e_d_1.5i"), grepl, plot_name))) {
-                if (x <= 100) {
-                    return(5000*(0.9933^x))
-                } else {
-                    return(5000*(0.9933^100)*1.5)
                 }
             } else if (all(sapply(c("500G","G_1.1i"), grepl, plot_name))) {
                 ## piewise 
@@ -159,12 +149,6 @@ for (generation in c("50G","100G","500G","1000G")){
                 } else {
                     return(5000*1.9)
                 }
-            } else if (all(sapply(c("500G","G_0.5e_d_1.5i"), grepl, plot_name))) {
-                if (x <= 500) {
-                    return(5000*(0.9987^x))
-                } else {
-                    return(5000*(0.9987^500)*1.5)
-                }
             } else if (all(sapply(c("1000G","G_1.1i"), grepl, plot_name))) {
                 if (x <= 1000) {
                     return(5000)
@@ -177,24 +161,17 @@ for (generation in c("50G","100G","500G","1000G")){
                 } else {
                     return(5000*1.5)
                 }
-            } else if (all(sapply(c("1000G","G_1.9i"), grepl, plot_name))) {
+            } else {
                 if (x <= 1000) {
                     return(5000)
                 } else {
                     return(5000*1.9)
                 }
-            # } else if (all(sapply(c("1000G","G_0.5e_d_1.5i"), grepl, plot_name))) {
-            } else {
-                if (x <= 1000) {
-                    return(5000*(0.9993^x))
-                } else {
-                    return(5000*(0.9993^1000)*1.5)
-                }
-            #} else {
+            } # else {
             #    ## return empty value
             #    NULL
             #    #return(NULL)
-            }
+            #}
         }
         lines(x,sapply(x,fx),type="s",lwd=2.5,col = adjustcolor("red", alpha = 0.8))
         ## add legend in specific plot
