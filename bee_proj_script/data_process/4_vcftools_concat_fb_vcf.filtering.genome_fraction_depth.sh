@@ -290,9 +290,9 @@ for vcf in ${concated_vcf_REF_pas[*]}
     do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
         bcftools view -i 'INFO/DP > 600' $vcf > xx.vcf
 
-        bcftools filter --SnpGap 3:indel | \
+        bcftools filter --SnpGap 10:indel | \
         bcftools view --types snps --min-alleles 2 --max-alleles 2 -i 'INFO/AO > 2' xx.$vcf | \
-        bcftools norm -d none -f $REF_BomPas | \
+#        bcftools norm -d none -f $REF_BomPas | \
         bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
         bcftools filter -e 'AC==0 || AC == AN' | \
         bcftools filter -e --mask-file file.bed | \

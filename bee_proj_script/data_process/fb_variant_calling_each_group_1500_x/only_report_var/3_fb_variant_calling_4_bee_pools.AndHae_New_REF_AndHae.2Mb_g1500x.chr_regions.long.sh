@@ -3,14 +3,14 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 150g
 ##SBATCH --array=1-2%2
-#SBATCH --array=1-189%20
-##SBATCH --array=190-279%20
+#SBATCH --array=1-148%20
+##SBATCH --array=149-544%20
 ##SBATCH --time=03:10:00
-#SBATCH --time=24:00:00
+#SBATCH --time=12:00:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.BomVet_New_REF_ApisMel.10kb_g1500x.chr_regions.long.%A_%a.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.BomVet_New_REF_ApisMel.10kb_g1500x.chr_regions.long.%A_%a.o
-#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.BomVet_New_REF_ApisMel.long
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.2Mb_g1500x.chr_regions.long.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.2Mb_g1500x.chr_regions.long.%A_%a.o
+#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.long
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -23,14 +23,14 @@ BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 ## output vcf
 VCF_OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 
-## mkdir $VCF_OUT_DIR/fb_per_contig_BomPas_REF_ApisMel
-mkdir $VCF_OUT_DIR/fb_per_region_BomVet_New_REF_ApisMel
-#cd $VCF_OUT_DIR/fb_per_contig_BomPas_REF_ApisMel
-cd $VCF_OUT_DIR/fb_per_region_BomVet_New_REF_ApisMel
+## mkdir $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
+mkdir $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae
+#cd $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
+cd $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae
 
 ## path to your ref genome
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF=$REF_DIR/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
+REF=$REF_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
 
 ## example
 #Run freebayes in parallel on 100000bp chunks of the ref (fasta_generate_regions.py is also
@@ -41,12 +41,12 @@ REF=$REF_DIR/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
 
 ## for pooled data
 #SAMPLE=$SEQDIR/Andhae_Andmar.REF_Andhae.bam.list
-SAMPLE=Bomvet.New_REF_ApisMel.sort.marked_dups.bam
-## Bompas.New_REF_ApisMel.sort.marked_dups.bam
-## Bomvet.New_REF_ApisMel.sort.marked_dups.bam
+SAMPLE=Andhae.New_REF_AndHae.sort.marked_dups.bam
+## Bompas.New_REF_BomPas.sort.marked_dups.bam
+## Bomvet.New_REF_BomPas.sort.marked_dups.bam
 
 Each_Region_Dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
-Ref_Region=Apis_mellifera_HAv-GCF_003254395.2-softmasked.fb_2Mb.regions
+Ref_Region=Andrena_haemorrhoa-GCA_910592295.1-softmasked.fb_2Mb.regions
 Each_Region_Ref=$(cat $Each_Region_Dir/$Ref_Region | sed -n ${SLURM_ARRAY_TASK_ID}p)
 # 1:0-2000000
 # 1:2000000-4000000
@@ -55,10 +55,10 @@ Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_ma
 
 ## run freebayes with single core
 freebayes --region $Each_Region_Ref --fasta-reference $REF \
-    --ploidy 68 --pooled-discrete --genotype-qualities --report-monomorphic --use-best-n-alleles 4 \
+    --ploidy 78 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf \
-    > $VCF_OUT_DIR/fb_per_region_BomVet_New_REF_ApisMel/"Bomvet.New_REF_ApisMel.mono_1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
-#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_BomVet_New_REF_ApisMel/"Bompas.New_REF_ApisMel.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
+    > $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae/"Andhae.New_REF_AndHae.1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
+#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_AndHae_New_REF_AndHae/"Bompas.New_REF_BomPas.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcffilter -f "QUAL > 20"
 
 ## not execute after this line
@@ -76,8 +76,8 @@ fb_list=("Andrena_haemorrhoa-GCA_910592295.1-softmasked.fb_2Mb.regions"
         "Bombus_hypnorum-GCA_911387925.1-softmasked.fb_2Mb.regions"
         "Apis_mellifera_HAv-GCF_003254395.2-softmasked.fb_2Mb.regions")
 
-for chr in `cut -d ":" -f 1 iyAndHaem1_1.md_chr.fa.10kbp.regions.fb | uniq`;do
-    grep "$chr" iyAndHaem1_1.md_chr.fa.10kbp.regions.fb > ./iyAndHaem1_1.md_chr.fa.10kbp."$chr".regions.fb;
+for chr in `cut -d ":" -f 1 iyAndHaem1_1.md_chr.fa.2Mbp.regions.fb | uniq`;do
+    grep "$chr" iyAndHaem1_1.md_chr.fa.2Mbp.regions.fb > ./iyAndHaem1_1.md_chr.fa.2Mbp."$chr".regions.fb;
 done
 
 for ref in "${fb_list[@]}";do
