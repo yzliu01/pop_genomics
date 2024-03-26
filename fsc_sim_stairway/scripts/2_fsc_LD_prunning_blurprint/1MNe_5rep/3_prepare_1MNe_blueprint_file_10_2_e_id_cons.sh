@@ -34,7 +34,7 @@ cd /home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint
 blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
 ## ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1.blueprint
 
-sfs_FilePlotName_20_80_200=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.blueprint.txt
+sfs_FilePlotName_20_80_200=sfs_Ne1000000_hapS_20_80_200_10_2_e_id_cons_non_pruned.blueprint.txt
 
 for i in {1..240};do
     for sample_size in {20hapS,80hapS,200hapS};do

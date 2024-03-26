@@ -108,6 +108,11 @@ for Ref_New in `ls *-softmasked.fa`
     fasta_generate_regions.py $Ref_New 2000000 > $Regions_New/$Out_Region_Name
 done
 
+for Ref_New in `ls *-softmasked.fa`
+    do
+    Out_Region_Name=${Ref_New/.fa/.fb_100kb.regions}
+    fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
+done
 
 ##
 AndHat_Ref_Regions=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions/Andrena_hattorfiana-GCA_944738655.1-softmasked.fb_2Mb.regions

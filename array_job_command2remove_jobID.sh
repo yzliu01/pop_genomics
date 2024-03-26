@@ -1,4 +1,9 @@
 
+## check if job finished
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/fb_variant_calling_each_group_1500_x/only_report_var
+grep -E 'CANCELLED|kill' *35265444*.e
+
+sed -i -e 's/--mem\ 150g/--mem\ 250g/' -e 's/--time=07:00/--time=12:00/' *regions.short.sh*
 
 ## array batch job bash different ranges
 #SBATCH --array=4,8,12,16-48:2

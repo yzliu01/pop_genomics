@@ -46,10 +46,17 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 #blueprint_file_list_5rep=sfs_hapS_20_80_200_5rep_00d_01d_05d_09d_final.5rep_blueprint.file_name.list
 ## ft_sim_100000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1.blueprint
 
+{"cons","1.1i","1.5i","1.9i"} {"2e_i_cons","2e_d_cons","10e_i_cons","10e_d_cons"}
+for group in {"cons","1.1i","1.5i","1.9i"}
+do
+./100000Ne_5rep/
 #sfs_FilePlotName_20_80_200=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.blueprint.txt
-sfs_FilePlotName_20_80_200=sfs_hapS_20_80_200_5rep_00d_01d_05d_09d_final.blueprint.txt
+sfs_FilePlotName_20_80_200=sfs_Ne100000_hapS_20_80_200_5rep_00d_01d_05d_09d_final.blueprint.txt
 ## ft_sim_100000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1
 ## ft_sim_100000Ne_20hapS_1E_50G_00d_20Chr_15Mb_2
+
+## modity file names
+sed -i -e 's/00d/cons/g' -e 's/01d/1\.1i/g' -e 's/05d/1\.5i/g' -e 's/09d/1\.9i/g' $sfs_FilePlotName_20_80_200
 
 for i in {1..240};do
     for sample_size in {20hapS,80hapS,200hapS};do

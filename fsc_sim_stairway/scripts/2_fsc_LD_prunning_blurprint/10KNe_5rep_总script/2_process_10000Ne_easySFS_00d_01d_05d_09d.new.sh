@@ -13,6 +13,8 @@ for sample_size in {20,80,200};do
         sed -e 's/\.\///g' -e 's/_MAFpop0\.obs//' -e 's/MAFpop0\.obs//1' | \
         awk -F "\t" -v OFS="\t" '{$13=++a[$11]}1' | \
         awk '{ for (i = 1; i <= 11; ++i) printf $i"\t"; print "" $12$13}' > $out_sub_dir/sfs_hapS_20_80_200_5rep_00d_01d_05d_09d_final.blueprint.txt
+        ## {$13=++a[$11]} count the number of the same item in the column
+        ## print "" $12$13 merge the columns with total number of the same item in the column
         ## https://www.baeldung.com/linux/display-columns-from-file
         ## https://stackoverflow.com/questions/18516301/add-a-number-to-each-line-of-a-file-in-bash
         ## https://unix.stackexchange.com/questions/517985/how-can-i-merge-multiple-column-in-one-column-and-separated-by

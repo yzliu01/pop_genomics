@@ -47,7 +47,7 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 ## ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1.blueprint
 
 #sfs_FilePlotName_20_80_200=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.blueprint.txt
-sfs_FilePlotName_20_80_200=sfs_hapS_20_80_200_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.blueprint.txt
+sfs_FilePlotName_20_80_200=sfs_Ne1000000_hapS_20_80_200_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.blueprint.txt
 ## ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1
 ## ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_2
 
