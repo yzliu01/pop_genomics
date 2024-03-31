@@ -2,7 +2,7 @@
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 250g
-#SBATCH --array=1-2964%40
+#SBATCH --array=1-2964%60
 ##SBATCH --array=2965-3005%40
 #SBATCH --time=10:00:00
 ##SBATCH --time=3-04:04:00
@@ -56,7 +56,7 @@ freebayes --region $Each_Region_Ref --fasta-reference $REF \
     --ploidy 58 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf \
     > $VCF_OUT_DIR/fb_per_region_BomVet_New_REF_BomHyp/"Bomvet.New_REF_BomHyp.100kb_1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
-#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_BomVet_New_REF_BomHyp/"Bompas.New_REF_BomHyp.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
+#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_BomVet_New_REF_BomHyp/"Bomvet.New_REF_BomHyp.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcffilter -f "QUAL > 20"
 
 ## not execute after this line

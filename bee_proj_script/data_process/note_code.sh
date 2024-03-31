@@ -1,3 +1,6 @@
+## check job queue
+squeue -u yzliu | sort -t "t" -k1 -h
+
 conda activate variant_calling_mapping
 for bam in `ls -t *.bam | head -4`;do time samtools index $bam;done
 for bam in `ls -t *.bam | awk 'FNR > 2 && FNR < 6 {print $0}'`;do time samtools index $bam;done
@@ -13,8 +16,7 @@ Submitted batch job 32731048
 Submitted batch job 32731049
 
 ## count the number of row
-awk 'END{print NR}' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_freebayes_vcf/empiri
-cal_dro_mel_68samples.fb_qual20_dp1000.g.vcf
+awk 'END{print NR}' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_freebayes_vcf/empirical_dro_mel_68samples.fb_qual20_dp1000.g.vcf
 
 ## gatk haplotypecaller
 A USER ERROR has occurred: Fasta dict file file:///home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.dict for reference file:///home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.fa does not exist. Please see http://gatkforums.broadinstitute.org/discussion/1601/how-can-i-prepare-a-fasta-file-to-use-as-reference for help creating it.A USER ERROR has occurred: Fasta dict file file:///home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.dict for reference file:///home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/D_melanogaster.7509v1.md_chr.fa does not exist. Please see http://gatkforums.broadinstitute.org/discussion/1601/how-can-i-prepare-a-fasta-file-to-use-as-reference for help creating it.
@@ -75,8 +77,25 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submission
 ls * | grep 32857563 | xargs grep error
 grep -h error *32857563*.e
 
+grep -E 'kill|CANCELLED' *35275219*.e
+
+squeue -u yzliu | sort -t "t" -k1 -h
+
 ## tee command
 wc -l file1.txt | tee -a file2.txt
 
 ls -t /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process | head -16
 for i in `ls -t /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/* | head -16`;do sbatch $i;done
+
+
+## check if jobs are finished 
+## 3_fb_VC_4_bee_pools.BomPas_REF_BomPas
+
+| grep 'TIMEOUT|CANCELLED|OUT_OF_MEMORY'
+
+for i in {1..143}
+do
+echo -e "       "35021813_$i
+jobinfo 35021813_$i
+echo -e "\n"
+done

@@ -55,7 +55,7 @@ Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_ma
 freebayes --region $Each_Region_Ref --fasta-reference $REF \
     --ploidy 78 --pooled-discrete --genotype-qualities --use-best-n-alleles 4 \
     --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf \
-    > $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae/"Andhae.New_REF_AndHae.100kb_Ref_Region=Andrena_haemorrhoa-GCA_910592295.1-softmasked.fb_2Mb.regions"${SLURM_ARRAY_TASK_ID}.g.vcf
+    > $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae/"Andhae.New_REF_AndHae.100kb_1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_AndHae_New_REF_AndHae/"Bompas.New_REF_BomPas.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcffilter -f "QUAL > 20"
 

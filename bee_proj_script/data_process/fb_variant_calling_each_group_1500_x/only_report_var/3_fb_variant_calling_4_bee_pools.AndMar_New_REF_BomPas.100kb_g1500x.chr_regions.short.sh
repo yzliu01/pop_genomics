@@ -2,7 +2,7 @@
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 350g
-#SBATCH --array=1-2965%40
+#SBATCH --array=1-2965%60
 ##SBATCH --array=2966-3116%40
 #SBATCH --time=03:00:00
 ##SBATCH --time=3-04:04:00

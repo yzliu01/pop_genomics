@@ -52,15 +52,15 @@ grep -E -v '^#|GT:GQ:DP:AD:RO:QR:AO:QA' Bomvet.REF_BomPas.g1500x_10kb_fb.10kbp.r
 ## https://vcftools.sourceforge.net/perl_module.html
 
 conda activate variant_calling_mapping
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_contig_BomVet_REF_BomHyp
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_AndHae_New_REF_AndHae
 vcf-concat -h
-## g600_chunks (having duplicates)
-ls *g600_10kb_fb_*vcf > BomVet_REF_BomHyp.individual_fb_vcf_file.list
-
-vcf-concat Bomvet.REF_BomHypn.g600_10kb_fb_chr1.qual_20.g.vcf Bomvet.REF_BomHypn.g600_10kb_fb_chr2.qual_20.g.vcf | bgzip -c > concated_fb_chr_1_2.vcf.gz
-
-vcf_list=BomVet_REF_BomHyp.individual_fb_vcf_file.list
-vcf-concat --files $vcf_list | bgzip -c > concated_fb_all_chr.vcf.gz
+## g1500_region (having duplicates?)
+ls Andhae.New_REF_AndHae.*b_1500x_region_*.g.vcf | sort -V > ../Andhae.New_REF_AndHae.individual_fb_1500x_vcf.list
+ls Andhae.New_REF_BomPas.*b_1500x_region_*.g.vcf | sort -V > ../Andhae.New_REF_BomPas.individual_fb_1500x_vcf.list
+ls Bompas.New_REF_ApisMel.*b_1500x_region_*.g.vcf | sort -V > ../Bompas.New_REF_ApisMel.individual_fb_1500x_vcf.list
+ls Bomvet.New_REF_ApisMel.*b_1500x_region_*.g.vcf | sort -V > ../Bomvet.New_REF_ApisMel.individual_fb_1500x_vcf.list
+ls Bompas.New_REF_BomPas.*b_1500x_region_*.g.vcf | sort -V > ../Bompas.New_REF_BomPas.individual_fb_1500x_vcf.list
+ls Bomvet.New_REF_BomPas.*b_1500x_region_*.g.vcf | sort -V > ../Bomvet.New_REF_BomPas.individual_fb_1500x_vcf.list
 
 ls *g1500x_10kb_fb*g.vcf > Bompas_REF_BomPas.individual_fb_g1500x_vcf_file.list
 ls *g1500x_10kb_fb*g.vcf > Bomvet_REF_BomPas.individual_fb_g1500x_vcf_file.list
@@ -68,6 +68,82 @@ vcf_list=Bompas_REF_BomPas.individual_fb_g1500x_vcf_file.list
 vcf_list=Bomvet_REF_BomPas.individual_fb_g1500x_vcf_file.list
 vcf-concat --files $vcf_list | bgzip -c > ../concated_vcf_each_species_REF/concated.fb_per_contig_BomPas_REF_BomPas.g1500x_regions.vcf.list.vcf.gz
 vcf-concat --files $vcf_list | bgzip -c > ../concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.vcf.list.vcf.gz
+
+## New_REF
+i = 0
+filename=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/Bompas.New_REF_BomPas.individual_fb_1500x_vcf.list
+head `ls *individual_fb_1500x_vcf.list` | while read line
+    do
+    [[ $line == *Bompas.New_REF_BomPas* ]] && echo $line
+    #echo $line
+done
+
+while IFS= read -rd '' file
+    do
+    [[ $line == *Bompas.New_REF_BomPas* ]] && echo $file
+    #echo $line
+done < $list
+list=( "fb_per_region_BomPas_New_REF_BomPas"
+    "fb_per_region_BomVet_New_REF_BomPas"
+    "fb_per_region_BomVet_New_REF_ApisMel"
+    "fb_per_region_BomPas_New_REF_ApisMel"
+    "fb_per_region_AndHae_New_REF_BomPas"
+    "fb_per_region_AndHae_New_REF_AndHae"
+    )
+
+## concat in for loop
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
+
+for vcf_list in `ls *.list`
+    do
+    for dir in `ls -d fb_per_region*`
+        do
+        conc_name=${vcf_list/.individual_fb_1500x_vcf.list/}
+        ## when meet multiple condition
+        if [[ $vcf_list == *Bompas*New_REF_BomPas* && $dir == fb_per_region*BomPas*New_REF_BomPas* ]]
+        then
+            echo $vcf_list $dir
+            ## attention to the directory
+            cd $dir
+            ## https://github.com/samtools/bcftools/issues/420
+            ## [E::vcf_parse_format_fill5] Invalid character '.' in 'GQ' FORMAT field at 1:4484
+            time vcf-concat --files ../$vcf_list | sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ../concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_region.vcf.gz
+            cd ..
+        elif [[ $vcf_list == *Bomvet*New_REF_BomPas* && $dir == fb_per_region*BomVet*New_REF_BomPas* ]]
+        then
+            echo $vcf_list $dir
+            cd $dir
+            time vcf-concat --files ../$vcf_list | sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ../concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_region.vcf.gz
+            cd ..
+        elif [[ $vcf_list == *Bompas*New_REF_ApisMel* && $dir == fb_per_region*BomPas*New_REF_ApisMel* ]]
+        then
+            echo $vcf_list $dir
+            cd $dir
+            time vcf-concat --files ../$vcf_list | sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ../concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_region.vcf.gz
+            cd ..
+        elif [[ $vcf_list == *Bomvet*New_REF_ApisMel* && $dir == fb_per_region*BomVet*New_REF_ApisMel* ]]
+        then
+            echo $vcf_list $dir
+            cd $dir
+            time vcf-concat --files ../$vcf_list | sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ../concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_region.vcf.gz
+            cd ..
+        elif [[ $vcf_list == *Andhae*New_REF_BomPas* && $dir == fb_per_region*AndHae*New_REF_BomPas* ]]
+        then
+            echo $vcf_list $dir
+            cd $dir
+            time vcf-concat --files ../$vcf_list | sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ../concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_region.vcf.gz
+            cd ..
+        elif [[ $vcf_list == *Andhae*New_REF_AndHae* && $dir == fb_per_region*AndHae*New_REF_AndHae* ]]
+        then
+            echo $vcf_list $dir
+            cd $dir
+            time vcf-concat --files ../$vcf_list | sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ../concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_region.vcf.gz
+            cd ..
+        else
+            echo "no_concat"
+        fi
+    done
+done
 
 ## sort chromosome order with SortVcf (indexed automatically)
 conda activate gatk_4.3.0.0
@@ -132,9 +208,10 @@ done
 ## reorder the chromosome order
 conda activate gatk_4.3.0.0
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
-for vcf in `ls concated*.g600_regions.vcf.list.vcf.gz`
+## New_REF
+for vcf in `ls concated*.100kb_g1500x_region.vcf.gz`
     do 
-    vcf_sorted_chr=${vcf/.vcf.list.vcf.gz/}
+    vcf_sorted_chr=${vcf/.vcf.gz/}
     gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.sorted_chr.vcf.gz
 done
 
@@ -288,9 +365,9 @@ bcftools filter -g 40:indel $concated_vcf_REF_pas | less -S
 
 for vcf in ${concated_vcf_REF_pas[*]}
     do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
-        bcftools view -i 'INFO/DP > 600' $vcf > xx.vcf
+        bcftools view -i 'INFO/DP >= 600' $vcf > xx.vcf
 
-        bcftools filter --SnpGap 10:indel | \
+        bcftools filter --SnpGap 5:indel | \
         bcftools view --types snps --min-alleles 2 --max-alleles 2 -i 'INFO/AO > 2' xx.$vcf | \
 #        bcftools norm -d none -f $REF_BomPas | \
         bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
@@ -298,6 +375,205 @@ for vcf in ${concated_vcf_REF_pas[*]}
         bcftools filter -e --mask-file file.bed | \
         bcftools view -e 'F_MISSING > 0' | \
         -Oz -o ./$out_vcf_prefix.bi_MQ20_DP160_1500.vcf.gz
+done
+
+## New REF
+## dro_mel
+conda activate variant_calling_mapping
+REF_MASKED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
+
+New_REF_mask_region=$REF_MASKED_DIR/Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked_ref_gene.conca_sorted.bed
+bcftools filter --soft-filter mask --mask-file $New_REF_mask_region concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.vcf.gz | \
+bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | bcftools filter --SnpGap 5:indel | \
+bcftools norm -d none -f $New_REF_DRO_MEL | bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e 'MIN(FMT/DP) < 3 | F_MISSING > 0' | \
+bcftools view -i 'AC > 1' -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_masked_bi_AC1_FMT_DP3_noMS.vcf.gz
+
+## bed file
+New_REF_AndHae_mask_region=$REF_MASKED_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked_ref_gene.conca_sorted.bed
+New_REF_AndHat_mask_region=$REF_MASKED_DIR/Andrena_hattorfiana-GCA_944738655.1-softmasked_ref_gene.conca_sorted.bed
+New_REF_BomPas_mask_region=$REF_MASKED_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked_ref_gene.conca_sorted.bed
+New_REF_BomHyp_mask_region=$REF_MASKED_DIR/Bombus_hypnorum-GCA_911387925.1-softmasked_ref_gene.conca_sorted.bed
+New_REF_ApisMel_mask_region=$REF_MASKED_DIR/Amel_HAv-GCF_003254395.2-softmasked_ref_gene.conca_sorted.bed
+
+## ref
+REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+
+REF_AndHae=$REF_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
+REF_AndHat=$REF_DIR/Andrena_hattorfiana-GCA_944738655.1-softmasked.fa
+REF_BomPas=$REF_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
+REF_BomHyp=$REF_DIR/Bombus_hypnorum-GCA_911387925.1-softmasked.fa
+REF_ApisMel=$REF_DIR/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
+
+
+## vcf
+concated_vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
+cd $concated_vcf_dir
+
+## https://github.com/samtools/bcftools/issues/420
+## [E::vcf_parse_format_fill5] Invalid character '.' in 'GQ' FORMAT field at 1:4484
+sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' \
+    concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.vcf
+for vcf in `ls *sorted_chr.vcf.gz`
+    do
+    output_vcf=${vcf/sorted_chr.vcf.gz/sorted_chr.GQ_issue.vcf}
+    ## pigz is faster than gzip
+    ## https://www.baeldung.com/linux/gzip-and-gunzip
+    pigz -d -k -c $vcf > $output_vcf
+    sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' $output_vcf
+    ## -f: Force overwrite, compress .gz, links, and to terminal
+    pigz -f $output_vcf > $output_vcf.gz
+done
+## earlier
+Andhae_New_REF_AndHae_VCF=concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Andhae_New_REF_AndHae_VCF_filter=${Andhae_New_REF_AndHae_VCF/.vcf.gz/}
+Andhae_New_REF_BomPas_VCF=concated.Andhae.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Andhae_New_REF_BomPas_VCF_filter=${Andhae_New_REF_BomPas_VCF/.vcf.gz/}
+Bompas_New_REF_BomPas_VCF=concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Bompas_New_REF_BomPas_VCF_filter=${Bompas_New_REF_BomPas_VCF/.vcf.gz/}
+Bomvet_New_REF_BomPas_VCF=concated.Bomvet.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Bomvet_New_REF_BomPas_VCF_filter=${Bomvet_New_REF_BomPas_VCF/.vcf.gz/}
+Bompas_New_REF_ApisMel_VCF=concated.Bompas.New_REF_ApisMel.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Bompas_New_REF_ApisMel_VCF_filter=${Bompas_New_REF_ApisMel_VCF/.vcf.gz/}
+Bomvet_New_REF_ApisMel_VCF=concated.Bomvet.New_REF_ApisMel.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Bomvet_New_REF_ApisMel_VCF_filter=${Bomvet_New_REF_ApisMel_VCF/.vcf.gz/}
+
+## later
+Andmar_New_REF_AndHae_VCF=concated.Andmar.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Andmar_New_REF_AndHae_VCF_filter=${Andmar_New_REF_AndHae_VCF/.vcf.gz/}
+Andmar_New_REF_BomPas_VCF=concated.Andmar.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Andmar_New_REF_BomPas_VCF_filter=${Andmar_New_REF_BomPas_VCF/.vcf.gz/}
+Andmar_New_REF_AndHat_VCF=concated.Andmar.New_REF_AndHat.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Andmar_New_REF_AndHat_VCF_filter=${Andmar_New_REF_AndHat_VCF/.vcf.gz/}
+Andhae_New_REF_AndHat_VCF=concated.Andhae.New_REF_AndHat.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Andhae_New_REF_AndHat_VCF_filter=${Andhae_New_REF_AndHat_VCF/.vcf.gz/}
+Bompas_New_REF_BomHyp_VCF=concated.Bompas.New_REF_BomHyp.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Bompas_New_REF_BomHyp_VCF_filter=${Bompas_New_REF_BomHyp_VCF/.vcf.gz/}
+Bomvet_New_REF_BomHyp_VCF=concated.Bomvet.New_REF_BomHyp.100kb_g1500x_region.sorted_chr.GQ_issue.vcf.gz
+Bomvet_New_REF_BomHyp_VCF_filter=${Bomvet_New_REF_BomHyp_VCF/.vcf.gz/}
+
+## keep biallelic snp, remove duplicates and normalize snp with long base (bcftools norm -d none/-m-snps), also remove monomorphic snps
+1. ## Andhae_New_REF_AndHae_VCF
+for depth in {200,400,600}
+do
+time
+bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andhae_New_REF_AndHae_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andhae_New_REF_AndHae_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+2. ## Andhae_New_REF_BomPas_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Andhae_New_REF_BomPas_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andhae_New_REF_BomPas_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+3. ## Bompas_New_REF_BomPas_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Bompas_New_REF_BomPas_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bompas_New_REF_BomPas_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+4. ## Bomvet_New_REF_BomPas_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Bomvet_New_REF_BomPas_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bomvet_New_REF_BomPas_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+
+5. ## Bompas_New_REF_ApisMel_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_ApisMel_mask_region $Bompas_New_REF_ApisMel_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_ApisMel | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bompas_New_REF_ApisMel_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+
+6. ## Bomvet_New_REF_ApisMel_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_ApisMel_mask_region $Bomvet_New_REF_ApisMel_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_ApisMel | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bomvet_New_REF_ApisMel_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+## later
+7. ## Andmar_New_REF_AndHae_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andmar_New_REF_AndHae_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andmar_New_REF_AndHae_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+8. ## Andmar_New_REF_BomPas_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Andmar_New_REF_BomPas_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andmar_New_REF_BomPas_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+9. ## Andmar_New_REF_AndHat_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_AndHat_mask_region $Andmar_New_REF_AndHat_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHat | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andmar_New_REF_AndHat_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+10. ## Andhae_New_REF_AndHat_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_AndHat_mask_region $Andhae_New_REF_AndHat_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHat | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andhae_New_REF_AndHat_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+11. ## Bompas_New_REF_BomHyp_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomHyp_mask_region $Bompas_New_REF_BomHyp_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomHyp | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bompas_New_REF_BomHyp_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+12. ## Bomvet_New_REF_BomHyp_VCF
+for depth in {200,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomHyp_mask_region $Bomvet_New_REF_BomHyp_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomHyp | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bomvet_New_REF_BomHyp_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+done
+
+## count SNP number
+less /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz | \
+    grep -v '^#' | wc -l
+
+for vcf in `ls *GQ*AO3.vcf.gz`
+    do
+    less $vcf | grep -v '^#' | wc -l | tr -d '\n'
+    echo -e "\t$vcf"
 done
 
 ## concated_vcf_REF_hyp
@@ -403,6 +679,31 @@ for COV in `find -maxdepth 2 -print | grep 'coverage_histogram.txt'`
     sed '1d' $COV | awk -F " " 'NR > 160 && NR < 1500 {sum+=$2}END{print sum}'
     printf "$COV \n"
 done
+## New REF
+## NR > 200 (&& NR < 1500: fb variant calling)
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 200 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\t$COV \n"
+done
+
+## NR > 400 (&& NR < 1500: fb variant calling)
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 400 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\t$COV \n"
+done
+
+## NR > 600 (&& NR < 1500: fb variant calling)
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 600 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\t$COV \n"
+done
+
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/Bomvet.REF_BomPas.sort.marked_dups.new.bam
 
 ## individually seq Swedish data: getting SFS
@@ -434,7 +735,16 @@ less Se_subset_7_BomPas_inds.vcf.gz | grep -v '#' | wc -l
 2102389
 
 ## count SNP number
-less /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz | grep -v '^#' | wc -l
+less /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz | \
+    grep -v '^#' | wc -l
+
+for vcf in `ls *GQ*AO3.vcf.gz`
+    do
+    less $vcf | grep -v '^#' | wc -l | tr -d '\n'
+    echo -e "\t$vcf"
+done
+
+
 ## balteatus
 vcf_SE_BomBal=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_17haploid_54diploid_B_bal.SNP_hard_filtered.DP3_GQ20_biSNP.missing05_DP3_1000_Excesshet25.vcf.gz
 sample_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/subpop_list/bal_12_DP_13X_SMC.txt
