@@ -188,25 +188,64 @@ for vcf_rename in `ls concated*rename.vcf.gz`
         echo $vcf_rename
 done
 
-## New REF
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/conc_vcf
-for vcf in `ls concated*masked*list.vcf.gz`
+## New REF ($3 <= $4/2)
+conda activate variant_calling_mapping
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
+
+output_SFS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/snpEff_annotation
+## softmasked+gene_regions
+for vcf in `ls concated*masked*AO3.vcf.gz`
+## softmasked only
+for vcf in `ls *GQ*softmasked*.gz`
     do
-    output_sfs_name=${vcf/list.vcf.gz/equal_self}
+    output_sfs_name=${vcf/vcf.gz/equal_self}
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
+        awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
+done
+## pas-pas-200x
+vcf=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.vcf.gz
+vcf_ann=concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
+vcf_ann=concated.Andhae.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
+vcf_ann=concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
+
+bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_ann | \
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c |
+
+## each group sfs count
+for vcf_softmask_ann in `ls *GQ*softmasked*.gz`
+    do
+    output_sfs_name=${vcf_softmask_ann/vcf.gz/equal_self}
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_softmask_ann | \
+    #echo -e "$vcf_softmask_ann\n"
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c \
+        > $output_SFS_dir/$output_sfs_name.sfs.count
+done
+
+## New_REF_DroMel
+vcf=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/conc_vcf/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_masked_bi_AC1_FMT_DP3_noMS.BP_CS.list.vcf.gz
+bcftools index $vcf
+bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | less -S
+bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V > BP_CS.list_equal.sfs
+
+output_SFS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/SFS_data
+for vcf in `ls *softmasked*list.vcf.gz`
+    do
+    output_sfs_name=${vcf/vcf.gz/equal_self}
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
         awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
 done
 
-vcf=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/conc_vcf/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_masked_bi_AC1_FMT_DP3_noMS.BP_CS.list.vcf.gz
-bcftools index $vcf
-bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | less -S
-bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V > BP_CS.list_equal.sfs
 ## calculate sum of sites
 ## https://stackoverflow.com/questions/33006845/how-to-sum-a-row-of-numbers-from-text-file-bash-shell-scripting
 awk 'NR == 3{c=0;for(i=1;i<=NF;++i){c+=$i};print $0, "Sum:", c}' \
 /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/easy_SFS/fastsimcoal2/dro_mel_New_REF_SB_RP.pop.list_MSFS.obs
-
+## New REF
+awk 'NR == 1{c=0;for(i=1;i<=NF;++i){c+=$i};print $0, "Sum:", c}' concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_masked_bi_FMT_DP200_noMS_AO3.equal_self.sfs
+## 2666 3050 3529 70067 98376 79382 65285 55824 48856 43201 39099 35214 32157 29398 27450 25431 24830 23321 22039 21667 20605 19647 18932 18410 17801 17102 17021 16561 16296 16077 15939 15770 15800 15568 15448 15329 15366 15357 7538  Sum: 1061409
+awk 'NR == 1{c=0;for(i=1;i<=NF;++i){c+=$i};print $0, "Sum:", c}' concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.equal_self.sfs
 ## count SNP number
 less /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz |\
  grep -v '^#' | wc -l

@@ -115,3 +115,34 @@ plot <- ggplot(data,aes(ExcessHet))  +
   geom_histogram(bins=10)
   xlim(1,500)
 xlim(1,3000)
+
+
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data")
+sfs_file <-"concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.equal_self.sfs"
+list.files(pattern = "ann_no_mis.equal_self")
+sfs_pas1 <- read.table(sfs_file,sep=" ",header=F)
+sfs_pas <- sfs_pas[,!is.na(sfs_pas1[1,])]
+sfs_pas2 <- t(sfs_pas)
+
+sfs_file_pas_REF_pas <-"concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.equal_self.sfs"
+sfs_file_hae_REF_hae <-"concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.equal_self.sfs"
+
+list.files(pattern = "ann_no_mis.equal_self")
+sfs_pas_REF_pas <- read.table(sfs_file_pas_REF_pas,sep=" ",header=F)
+sfs_hae_REF_hae <- read.table(sfs_file_hae_REF_hae,sep=" ",header=F)
+sfs_hae_REF_hae <- sfs_hae_REF_hae[,!is.na(sfs_hae_REF_hae[1,])]
+class(sfs_hae_REF_hae)
+sfs_hae_REF_hae_t <- as.data.frame(t(sfs_hae_REF_hae))
+class(sfs_hae_REF_hae_t)
+library(ggplot2)
+ggplot()+
+    geom_point(aes(sfs_hae_REF_hae_t$V1))
+
+
+pdf("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data/sfs_plot/sfs_pas_REF_pas.pdf")
+plot(sfs_pas2$V1,type="h")
+dev.off()
+
+pdf("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data/sfs_plot/sfs_hae_REF_hae.pdf")
+plot(sfs_hae_REF_hae_t,type="h")
+dev.off()

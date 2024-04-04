@@ -1,0 +1,41 @@
+############# .bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/120_S_Bor_6_W.sorted.marked_dupes.rg.bam 120_S_Bor_6_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/150_S_Bor_3_W.sorted.marked_dupes.rg.bam 150_S_Bor_3_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/262_S_Hor_10_W.sorted.marked_dupes.rg.bam 262_S_Hor_10_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/471_S_Eva_14_W.sorted.marked_dupes.rg.bam 471_S_Eva_14_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/612_S_Pen_18_W.sorted.marked_dupes.rg.bam 612_S_Pen_18_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/727_S_Qua_21_W.sorted.marked_dupes.rg.bam 727_S_Qua_21_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/859_S_Niw_25_W.sorted.marked_dupes.rg.bam 859_S_Niw_25_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/949_S_Niw_27_W.sorted.marked_dupes.rg.bam 949_S_Niw_27_W.sorted.marked_dupes.rg.bam
+
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/8_S_Dem_1_W.sorted.marked_dupes.rg.bam 8_S_Dem_1_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/70_S_Dem_1_W.sorted.marked_dupes.rg.bam 70_S_Dem_1_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/72_S_Bor_2_W.sorted.marked_dupes.rg.bam 72_S_Bor_2_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/149_S_Bor_3_W.sorted.marked_dupes.rg.bam 149_S_Bor_3_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/300_S_Hor_10_W.sorted.marked_dupes.rg.bam 300_S_Hor_10_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/441_S_Eva_14_W.sorted.marked_dupes.rg.bam 441_S_Eva_14_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/586_S_Pen_17_W.sorted.marked_dupes.rg.bam 586_S_Pen_17_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/780_S_Qua_22_W.sorted.marked_dupes.rg.bam 780_S_Qua_22_W.sorted.marked_dupes.rg.bam
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/908_S_Niw_25_W.sorted.marked_dupes.rg.bam 908_S_Niw_25_W.sorted.marked_dupes.rg.bam
+
+############# .bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/120_S_Bor_6_W.sorted.marked_dupes.rg.bam.bai 120_S_Bor_6_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/150_S_Bor_3_W.sorted.marked_dupes.rg.bam.bai 150_S_Bor_3_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/262_S_Hor_10_W.sorted.marked_dupes.rg.bam.bai 262_S_Hor_10_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/471_S_Eva_14_W.sorted.marked_dupes.rg.bam.bai 471_S_Eva_14_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/612_S_Pen_18_W.sorted.marked_dupes.rg.bam.bai 612_S_Pen_18_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/727_S_Qua_21_W.sorted.marked_dupes.rg.bam.bai 727_S_Qua_21_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/859_S_Niw_25_W.sorted.marked_dupes.rg.bam.bai 859_S_Niw_25_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/inco_bams/949_S_Niw_27_W.sorted.marked_dupes.rg.bam.bai 949_S_Niw_27_W.sorted.marked_dupes.rg.bam.bai
+
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/8_S_Dem_1_W.sorted.marked_dupes.rg.bam.bai 8_S_Dem_1_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/70_S_Dem_1_W.sorted.marked_dupes.rg.bam.bai 70_S_Dem_1_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/72_S_Bor_2_W.sorted.marked_dupes.rg.bam.bai 72_S_Bor_2_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/149_S_Bor_3_W.sorted.marked_dupes.rg.bam.bai 149_S_Bor_3_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/300_S_Hor_10_W.sorted.marked_dupes.rg.bam.bai 300_S_Hor_10_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/441_S_Eva_14_W.sorted.marked_dupes.rg.bam.bai 441_S_Eva_14_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/586_S_Pen_17_W.sorted.marked_dupes.rg.bam.bai 586_S_Pen_17_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/780_S_Qua_22_W.sorted.marked_dupes.rg.bam.bai 780_S_Qua_22_W.sorted.marked_dupes.rg.bam.bai
+ln -f -s /crex/proj/snic2020-6-58/private/bumblebee_project/population_sequencing/sylv_bees/mappings/sylv_bams/908_S_Niw_25_W.sorted.marked_dupes.rg.bam.bai 908_S_Niw_25_W.sorted.marked_dupes.rg.bam.bai
+
+

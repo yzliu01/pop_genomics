@@ -80,10 +80,6 @@ bcftools view -v snps -A -m 2 -M 2 -f PASS concated_dro_mel_all_chr.sorted_chr.S
     bcftools norm -d none -f $REF_DRO_MEL | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -i 'FMT/DP > 3' | \
     bcftools query -f '%CHROM\t%POS\t%QUAL\t%DP\t%MQ\n'| less -S > concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.CHROM_POS_QUAL_DP_MQ
 
-## New REF
-New_REF_mask_region=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked_ref_gene.conca_sorted.bed
-bcftools filter --soft-filter mask --mask-file $New_REF_mask_region concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.vcf.gz | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $New_REF_DRO_MEL | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e 'MIN(FMT/DP) < 3 | F_MISSING > 0' | bcftools view -i 'AC > 1' -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_masked_bi_AC1_FMT_DP3_noMS.vcf.gz
-
 ## example of output query data
 chr1    66849   502     502     60      Andmar_pool1    GQ=11   DP=502  TYPE=SNP
 chr1    68097   469     469     59.9393 Andmar_pool1    GQ=21   DP=469  TYPE=SNP
@@ -95,6 +91,28 @@ chr1    197577  561     561     60      Andmar_pool1    GQ=12   DP=561  TYPE=SNP
 chr1    247579  584     584     59.9229 Andmar_pool1    GQ=13   DP=584  TYPE=SNP
 chr1    327127  572     572     59.9891 Andmar_pool1    GQ=17   DP=572  TYPE=SNP
 chr1    337434  527     527     60      Andmar_pool1    GQ=11   DP=527  TYPE=SNP
+
+## New REF
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/conc_vcf
+New_REF_mask_region=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked_ref_gene.conca_sorted.bed
+New_REF_mask_region=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.bed
+
+bcftools filter --soft-filter mask --mask-file $New_REF_mask_region concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.vcf.gz | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $New_REF_DRO_MEL | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e 'MIN(FMT/DP) < 3 | F_MISSING > 0' | bcftools view -i 'AC > 1' -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_masked_bi_AC1_FMT_DP3_noMS.vcf.gz
+*****************
+## New_REF - final 
+bcftools filter --soft-filter mask --mask-file $New_REF_mask_region concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.vcf.gz | bcftools filter --SnpGap 5:indel | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | bcftools filter -e 'AC==0 || AC == AN' | \
+    bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e 'MIN(FMT/DP) < 2 || MAX(FMT/DP) > 250' | \
+    bcftools view -e 'F_MISSING > 0' | bcftools view -i 'AC > 1' -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_softmasked_bi_AC1_FMT_DP2_250_noMS.vcf.gz
+    
+*****************    
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP[\t%SAMPLE:DP=%DP]\n' | less -S
+
+    bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e 'MIN(FMT/DP) < 2 || MAX(FMT/DP) > 250' | \ 
+    bcftools view -e 'F_MISSING > 0' | \
+    bcftools view -i 'AC > 1' -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_softmasked_bi_AC1_FMT_DP3_noMS.vcf.gz
+
+bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP[\t%SAMPLE:DP=%DP]\n' concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.vcf.gz  | less -S
+'%CHROM\t%POS[\t%SAMPLE:DP=%DP GQ=%GQ]\n'
 
 ## get sample name list
 less -S concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter_bi_MQ20_FMT_DP3_MSG03.vcf.gz \
@@ -109,6 +127,10 @@ BP_CS_04
 sample_listS=("BP_CS.list" "SB_RP.list" "SB_SE.list" "SPD.list")
 vcf_dro_mel=concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.vcf.gz
 
+vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/conc_vcf
+vcf_dro_mel=concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_softmasked_bi_AC1_FMT_DP3_noMS.vcf.gz
+cd $vcf_dir
+
 bcftools view -v snps -A -m 2 -M 2 -f PASS $vcf_dro_mel | bcftools norm -d none -f $REF_DRO_MEL | \
     bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
     bcftools view -S SB_RP.list -i 'MIN(FMT/DP) > 3 | F_MISSING < 0.3' | bcftools filter -e 'AC==0 || AC == AN' \
@@ -119,10 +141,10 @@ for sample_list in ${sample_listS[*]};
 done
 
 for sample_list in ${sample_listS[*]};
-    do bcftools view -v snps -A -m 2 -M 2 -f PASS $vcf_dro_mel | bcftools norm -d none -f $REF_DRO_MEL \
+    do bcftools view -v snps -A -m 2 -M 2 -f PASS $vcf_dro_mel | bcftools norm -d none -f $New_REF_DRO_MEL \
         | bcftools filter -e 'AC==0 || AC == AN' | bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | \
         bcftools view -S $sample_list -i 'MIN(FMT/DP) > 3 | F_MISSING < 0.3' | bcftools filter -e 'AC==0 || AC == AN' \
-    -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter_bi_MQ20_FMT_DP3_MSG0.$sample_list.vcf.gz;
+    -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_softmasked_bi_AC1_FMT_DP3_noMS.$sample_list.vcf.gz;
 done
 
 ## New REF

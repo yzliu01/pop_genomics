@@ -389,12 +389,18 @@ bcftools norm -d none -f $New_REF_DRO_MEL | bcftools filter -e 'AC==0 || AC == A
 bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e 'MIN(FMT/DP) < 3 | F_MISSING > 0' | \
 bcftools view -i 'AC > 1' -Oz -o ./concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_masked_bi_AC1_FMT_DP3_noMS.vcf.gz
 
-## bed file
+## complement (softmasked+gene) bed file
 New_REF_AndHae_mask_region=$REF_MASKED_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked_ref_gene.conca_sorted.bed
 New_REF_AndHat_mask_region=$REF_MASKED_DIR/Andrena_hattorfiana-GCA_944738655.1-softmasked_ref_gene.conca_sorted.bed
 New_REF_BomPas_mask_region=$REF_MASKED_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked_ref_gene.conca_sorted.bed
 New_REF_BomHyp_mask_region=$REF_MASKED_DIR/Bombus_hypnorum-GCA_911387925.1-softmasked_ref_gene.conca_sorted.bed
 New_REF_ApisMel_mask_region=$REF_MASKED_DIR/Amel_HAv-GCF_003254395.2-softmasked_ref_gene.conca_sorted.bed
+## only softmasked bed file
+New_REF_AndHae_mask_region=$REF_MASKED_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.bed
+New_REF_AndHat_mask_region=$REF_MASKED_DIR/Andrena_hattorfiana-GCA_944738655.1-softmasked.bed
+New_REF_BomPas_mask_region=$REF_MASKED_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked.bed
+New_REF_BomHyp_mask_region=$REF_MASKED_DIR/Bombus_hypnorum-GCA_911387925.1-softmasked.bed
+New_REF_ApisMel_mask_region=$REF_MASKED_DIR/Amel_HAv-GCF_003254395.2-softmasked.bed
 
 ## ref
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
@@ -453,63 +459,63 @@ Bomvet_New_REF_BomHyp_VCF=concated.Bomvet.New_REF_BomHyp.100kb_g1500x_region.sor
 Bomvet_New_REF_BomHyp_VCF_filter=${Bomvet_New_REF_BomHyp_VCF/.vcf.gz/}
 
 ## keep biallelic snp, remove duplicates and normalize snp with long base (bcftools norm -d none/-m-snps), also remove monomorphic snps
-1. ## Andhae_New_REF_AndHae_VCF
+1. ## Andhae_New_REF_AndHae_VCF *************
 for depth in {200,400,600}
 do
-time
 bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andhae_New_REF_AndHae_VCF | \
 bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
-bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andhae_New_REF_AndHae_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andhae_New_REF_AndHae_VCF_filter".SNP_softmasked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
 done
-2. ## Andhae_New_REF_BomPas_VCF
+2. ## Andhae_New_REF_BomPas_VCF ****************
 for depth in {200,400,600}
 do
 bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Andhae_New_REF_BomPas_VCF | \
 bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
-bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andhae_New_REF_BomPas_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Andhae_New_REF_BomPas_VCF_filter".SNP_softmasked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
 done
-3. ## Bompas_New_REF_BomPas_VCF
+3. ## Bompas_New_REF_BomPas_VCF ****************
 for depth in {200,400,600}
 do
 bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Bompas_New_REF_BomPas_VCF | \
 bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
-bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bompas_New_REF_BomPas_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bompas_New_REF_BomPas_VCF_filter".SNP_softmasked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
 done
-4. ## Bomvet_New_REF_BomPas_VCF
+4. ## Bomvet_New_REF_BomPas_VCF ****************
 for depth in {200,400,600}
 do
 bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Bomvet_New_REF_BomPas_VCF | \
 bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
-bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bomvet_New_REF_BomPas_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bomvet_New_REF_BomPas_VCF_filter".SNP_softmasked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
 done
 
-5. ## Bompas_New_REF_ApisMel_VCF
+5. ## Bompas_New_REF_ApisMel_VCF ****************
 for depth in {200,400,600}
 do
 bcftools filter --soft-filter mask --mask-file $New_REF_ApisMel_mask_region $Bompas_New_REF_ApisMel_VCF | \
 bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_ApisMel | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
-bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bompas_New_REF_ApisMel_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bompas_New_REF_ApisMel_VCF_filter".SNP_softmasked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
 done
 
-6. ## Bomvet_New_REF_ApisMel_VCF
+6. ## Bomvet_New_REF_ApisMel_VCF ****************
 for depth in {200,400,600}
 do
 bcftools filter --soft-filter mask --mask-file $New_REF_ApisMel_mask_region $Bomvet_New_REF_ApisMel_VCF | \
 bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_ApisMel | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools +setGT -- -t q -n . -i 'FMT/DP=0' | bcftools view -e "MIN(FMT/DP) < $depth | F_MISSING > 0" | \
-bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bomvet_New_REF_ApisMel_VCF_filter".SNP_masked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
+bcftools view -i 'FMT/AO > 2' -Oz -o ./"$Bomvet_New_REF_ApisMel_VCF_filter".SNP_softmasked_bi_FMT_DP"$depth"_noMS_AO3.vcf.gz
 done
+
 ## later
 7. ## Andmar_New_REF_AndHae_VCF
 for depth in {200,400,600}
@@ -576,6 +582,11 @@ for vcf in `ls *GQ*AO3.vcf.gz`
     echo -e "\t$vcf"
 done
 
+for vcf in `ls *GQ_issue.SNP_softmasked_bi_FMT_DP*_noMS_AO3*vcf.gz`
+    do
+    less $vcf | grep -v '^#' | wc -l | tr -d '\n'
+    echo -e "\t$vcf"
+done
 ## concated_vcf_REF_hyp
 for vcf in ${concated_vcf_REF_hyp[*]}
     do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}
@@ -672,12 +683,12 @@ for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
     sed '1d' $COV | awk -F " " 'NR > 280 && NR < 600 {sum+=$2}END{print sum}'
     printf "$COV \n"
 done
-
-## NR > 160 && NR < 1500
-for COV in `find -maxdepth 2 -print | grep 'coverage_histogram.txt'`
+## dro_mel
+## NR > 2 && NR < 1500
+for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
     do
-    sed '1d' $COV | awk -F " " 'NR > 160 && NR < 1500 {sum+=$2}END{print sum}'
-    printf "$COV \n"
+    sed '1d' $COV | awk -F " " 'NR > 2 && NR < 1500 {sum+=$2}END{print sum}'  | tr -d '\n'
+    printf "\t$COV \n"
 done
 ## New REF
 ## NR > 200 (&& NR < 1500: fb variant calling)
@@ -746,49 +757,63 @@ done
 
 
 ## balteatus
-vcf_SE_BomBal=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_17haploid_54diploid_B_bal.SNP_hard_filtered.DP3_GQ20_biSNP.missing05_DP3_1000_Excesshet25.vcf.gz
-sample_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/subpop_list/bal_12_DP_13X_SMC.txt
-bcftools view -S $sample_list $vcf_SE_BomBal | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | awk '{if ($3 < $4/2) print $3; 
-if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+sample_bal_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/subpop_list/bal_12_DP_13X_SMC.txt
+vcf_bal=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_17haploid_54diploid_B_bal.SNP_hard_filtered.DP3_GQ20_biSNP.missing05_DP3_1000_Excesshet25.vcf.gz
 
-# qualimap data bal
+bcftools view -S $sample_list $vcf_bal | bcftools filter -e 'AC==0 || AC == AN' | \
+    bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | \
+    awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+## SE - pas
+sample_pas_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/PAS/new_variant_calling_ploidy/combined_vcf_genotyping/pop_list/pas_7_depth_X15.list
+vcf_pas=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/PAS/new_variant_calling_ploidy/combined_vcf_genotyping/genotyping_output_14haploid_41diploid_B_pas.SNP_hard_filtered.DP3_GQ20_biSNP_05missing_DP3_1000_Excesshet25.vcf.gz
+
+# qualimap pas
+cd /crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/PAS/QC_qualimap/pas_samtools/subset_qualimap
+# qualimap bal
+cd /crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/BAL/QC_qualimap/bal/subset_qualimap
+
+# qualimap data mon
 cp -r AC-002* AC-022* AC-152* M_L024* M_L032* M_L033* M_L049* M_L137* M_L149* M_L190* M_L195* M_L198* ./subset_qualimap/
 sample_mon_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/Fst_pop_list/mon_10F_X15.list
 vcf_mon=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_89haploid_118diploid_B_syl.SNP_hard_filtered.DP3_GQ20_biSNP.minorAC2_maleHet_missing05_DP3_3134_Excesshet25.mon_76_27M_49F.vcf.gz
 
 # qualimap data lap
 cp -r M_L018* M_L021* M_L138* M_L180* M_L194* AC-006* AC-138* WO_003* WO_006* WO_383* WO_448* WO_449* WO_703* BH_11* subset_qualimap_lap
-vcf_lap=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_89haploid_118diploid_B_syl.SNP_hard_filtered.DP3_GQ20_biSNP.minorAC2_maleHet_missing05_DP3_3134_Excesshet25.lap_128_62M_66F.vcf.gz
 sample_lap_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/Fst_pop_list/lap_11F_X15.list
+vcf_lap=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/gatk_89haploid_118diploid_B_syl.SNP_hard_filtered.DP3_GQ20_biSNP.minorAC2_maleHet_missing05_DP3_3134_Excesshet25.lap_128_62M_66F.vcf.gz
 
-cd ./subset_qualimap/
+## qualimap lap
+cd /crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/QC_qualimap/mon_lap/subset_qualimap_lap
+cd ../subset_qualimap_mon/
+## lap & mon: DP 2 - 3134
 for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
     do
-    sed '1d' $COV | awk -F " " 'NR > 3 && NR < 3134 {sum+=$2}END{print sum}'
-    printf "$COV \n"
+    sed '1d' $COV | awk -F " " 'NR > 2 && NR < 3134 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\t$COV \n"
 done
-## DP 220 - 1000
+## pas & bal: DP 2 - 1000
 for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
     do
-    sed '1d' $COV | awk -F " " 'NR > 16 && NR < 1000 {sum+=$2}END{print sum}'
+    sed '1d' $COV | awk -F " " 'NR > 2 && NR < 1000 {sum+=$2}END{print sum}'
     printf "$COV \n"
 done
-bcftools view -S $sample_lap_list $vcf_lap | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | awk '{if ($3 < $4/2) print $3; 
-if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
 
 # qualimap data mon
 cp -r M_L119* AC-020* AC-021* AC-034* M_L210* M_L213* BH_07* BH_08* BH_09* BH_16* ./subset_qualimap_mon
 sample_mon_list=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping/Fst_pop_list/mon_10F_X15.list
 
-cd ./subset_qualimap/
-for COV in `find -maxdepth 3 -print | grep 'coverage_histogram.txt'`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 3 && NR < 3134 {sum+=$2}END{print sum}'
-    printf "$COV \n"
-done
-
-bcftools view -S $sample_mon_list $vcf_mon | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | awk '{if ($3 < $4/2) print $3; 
-if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+## get SFS from vcf file
+#conda activate variant_calling_mapping
+##via uppmax
+module load bioinfo-tools python bcftools
+## lap
+bcftools view -S $sample_lap_list $vcf_lap | bcftools filter -e 'AC==0 || AC == AN' | \
+    bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | \
+    awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+## mon
+bcftools view -S $sample_mon_list $vcf_mon | bcftools filter -e 'AC==0 || AC == AN' | \
+    bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | \
+    awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
 
 ***************************
 awk -F " " 'NR > 9 {sum+=$3}END{print sum}' ./samtools_stat_cov/SRR24680792.sort.marked_rm_dups.bam.stats_COV.txt
