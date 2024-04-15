@@ -1,17 +1,4 @@
 
-cd /home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_test3
-## move stairway results (20hapS) from systematic_ft_test3 to systematic_ft_non_pruned
-[yzliu@fe-open-01 systematic_ft_test3]$ mv *20hapS*e_[id]_cons*_[1-5] ../systematic_ft_non_pruned/
-
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/backup/scripts/fastsimcoal/para_test3/100000Ne_new
-for par in `ls *cons* `;do rename G_10e_ G_01e_ $par;done
-for par in `ls *cons* `;do rename G_2e_ G_05e_ $par;done
-
-for par in `ls *cons* `;do rename G_05e_ G_2e_ $par;done
-for par in `ls *cons* `;do rename G_01e_ G_10e_ $par;done
-
-find -maxdepth 2 | grep final.summary$ | egrep *20hapS.*[014]\{1,2\}e_[id]_[014]\{1,2\}[di]* | sort -V | wc -l
-
 library(gtools)
 library(fs)
 library(stringr)
