@@ -90,3 +90,5 @@ screen -ls: see all screens
 screen -X -S NAME kill: stop process
 
 screen -x NAME: reattach attached screen
+
+

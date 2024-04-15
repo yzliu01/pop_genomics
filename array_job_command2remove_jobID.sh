@@ -1,7 +1,23 @@
 
+## slurm session
+srun --account eDNA -c 10 --pty bash
+## squeue sort
+squeue -u yzliu | sort -t "t" -k1 -h
+## check unfinished job
+ls *35671660*.e* | xargs egrep 'CANCELLED|kill' | sort -V | head
+
 ## check if job finished
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/fb_variant_calling_each_group_1500_x/only_report_var
 grep -E 'CANCELLED|kill' *35265444*.e
+
+
+## pending jobid
+squeue -u yzliu |  sort -Vr
+squeue -j 36356255
+squeue -u yzliu -h -t pending,running -r
+
+squeue -u yzliu -h -t pending,running -r | grep '36356255'
+
 
 sed -i -e 's/--mem\ 150g/--mem\ 250g/' -e 's/--time=07:00/--time=12:00/' *regions.short.sh*
 

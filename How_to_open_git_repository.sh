@@ -11,3 +11,4 @@ Git: Open Repository
 ## 3rd enter below the cloned/linked directory
 /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/
 
+find . -size +100M | cat >> .gitignore

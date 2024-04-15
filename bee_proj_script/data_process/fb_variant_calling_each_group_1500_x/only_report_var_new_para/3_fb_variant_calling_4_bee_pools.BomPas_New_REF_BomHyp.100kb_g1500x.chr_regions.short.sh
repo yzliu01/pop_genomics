@@ -1,10 +1,10 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
-#SBATCH --mem 50g
+#SBATCH --mem 20g
 ##SBATCH --array=1-2964%60
-#SBATCH --array=1-3005%40
-#SBATCH --time=05:00:00
+#SBATCH --array=1-3005%200
+#SBATCH --time=08:00:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.BomPas_New_REF_BomHyp.100kb_g1500x.chr_regions.short.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.BomPas_New_REF_BomHyp.100kb_g1500x.chr_regions.short.%A_%a.o

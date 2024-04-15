@@ -14,7 +14,7 @@ out_softmasked_genome_Amel=${softmasked_genome_Amel/.fa/}
 grep -v "^>"tr $softmasked_genome_Amel | tr "[atcg]" "N" > $softmasked_genome_Amel.N.fa
 
 ## II - generate bed file using converted fasta file
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome_mask_regions
 python generate_masked_region_md.py $out_softmasked_genome_Amel > Amel_masked.bed
 *********
 less Amel_masked.bed
@@ -36,7 +36,7 @@ rename Amel Apis_mellifera Amel_HAv-GCF*
 
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 cd $REF_DIR
-generate_masked_region_md_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome/generate_masked_region_md.py
+generate_masked_region_md_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome_mask_regions/generate_masked_region_md.py
 for masked_ref in `ls *softmasked.fa`
     do
     out_softmasked_genome=${masked_ref/.fa/}
@@ -51,8 +51,14 @@ for masked_ref in `ls Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_IS
     python $generate_masked_region_md_py $out_softmasked_genome.N.fa > ./ref_masked_bed/$out_softmasked_genome.bed
 done
 Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fa
-bwa index -a bwtsw
 
+## Andrena marginata
+for masked_ref in `ls Andrena_marginata_GCA_963932335.1-softmasked.fa`
+    do
+    out_softmasked_genome=${masked_ref/.fa/}
+    grep -v "^>"tr $masked_ref | tr "[atcg]" "N" > $out_softmasked_genome.N.fa
+    python $generate_masked_region_md_py $out_softmasked_genome.N.fa > ./ref_masked_bed/$out_softmasked_genome.bed
+done
 
 ## mask gene regions
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
@@ -210,6 +216,23 @@ bedtools sort -i $OUT_BED_DIR/BomPas_GCA_905332965.1_intergenic_region.bed \
     -g $REF_PAS_INDEX | bedtools complement -i stdin -g $REF_PAS_INDEX | less |
     gzip > my_intergenic.bed.gz
 
+## get mappability regions
+bedtools sort -i $OUT_BED_DIR/BomPas_GCA_905332965.1_intergenic_region.bed \
+    -g $REF_PAS_INDEX | 
+
+conda activate variant_calling_mapping
+ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+ref_pas_softmask_bed=$ref_dir/ref_masked_bed/Bombus_pascuorum-GCA_905332965.1-softmasked.bed
+ref_hae_softmask_bed=$ref_dir/ref_masked_bed/Andrena_haemorrhoa-GCA_910592295.1-softmasked.bed
+REF_PAS_INDEX=$ref_dir/Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai
+REF_HAE_INDEX=$ref_dir/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai
+output_mappability_bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
+
+cd $output_mappability_bed
+bedtools complement -i $ref_pas_softmask_bed -g $REF_PAS_INDEX | less |
+    gzip > $output_mappability_bed/mappability_pas.bed.gz
+bedtools complement -i $ref_hae_softmask_bed -g $REF_HAE_INDEX | less |
+    gzip > $output_mappability_bed/mappability_hae.bed.gz
 
 
 

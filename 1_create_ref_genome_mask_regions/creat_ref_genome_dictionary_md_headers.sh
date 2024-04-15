@@ -86,7 +86,7 @@ sed -e 's/OU.*.chromosome:\s/chr/' -e 's/OU.*.mitochondrion/mt/' -e 's/\sBombus.
 grep '>' iyAndHatt_8785v1_2.fa | sed -e 's/\sAndrena.*.sequence//'
 sed -e 's/\sAndrena.*.sequence//' iyAndHatt_8785v1_2.fa > iyAndHatt_8785v1_2.md.fa
 
-**************
+***************************  NEW REF ********************************************
 
 1. # index fasta file - bwa index -a bwtsw reference.fa 
 conda create -n variant_calling bwa samtools bamtools freebayes
@@ -116,6 +116,9 @@ for masked_ref in `ls *softmasked.fa`
     bwa index -a bwtsw $masked_ref
 done
 
+## use self softmasked REF
+bwa index -a bwtsw Andrena_marginata_GCA_963932335.1-softmasked.fa
+
 2.
 samtools/1.2
 samtools-1.19
@@ -132,6 +135,9 @@ for masked_ref in `ls *softmasked.fa`
     do
     samtools faidx $masked_ref
 done
+
+## use self softmasked REF
+samtools faidx Andrena_marginata_GCA_963932335.1-softmasked.fa
 
 3. Create dictionary for gatk
 GATK_4.5.0.0 requires Java 17 (after gatk_4.3.0.0)
@@ -183,10 +189,23 @@ for masked_ref_dick in `ls *softmasked.fa`
     -O "$out_masked_ref_dick.dict"
 done
 
+## use self softmasked REF
+conda activate gatk_4.3.0.0
+for masked_ref_dick in `ls Andrena_marginata*softmasked.fa`
+    do
+    out_masked_ref_dick=${masked_ref_dick/.fa/}
+    gatk CreateSequenceDictionary \
+    -R "$masked_ref_dick" \
+    -O "$out_masked_ref_dick.dict"
+done
+
+## test
 for masked_ref_dick in `ls *softmasked.N.fa`
     do
     echo $masked_ref_dick
 done
+
+
 4. freebayes
 freebayes-1.3.7
 

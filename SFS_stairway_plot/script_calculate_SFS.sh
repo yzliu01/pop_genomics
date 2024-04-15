@@ -165,8 +165,8 @@ chr1    42130   9       58      543
 chr1    43438   6       58      524
 
 ## https://unix.stackexchange.com/questions/396785/selecting-two-sets-of-conditions-in-awk
-bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | head | awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' |  
-bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | head -500 | awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c |awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' '
+bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | head | awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' |  
+bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | head -500 | awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c |awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' '
 23 6 25 53 36 49 23 22 27 19 13 16 15 12 15 13 12 11 9 13 11 13 11 13 10 6 12 8 
 ## do all with for loop
 conda activate variant_calling_mapping
@@ -176,7 +176,7 @@ for vcf_rename in `ls concated*rename.vcf.gz`
     do
     output_sfs_name=${vcf_rename/bi_MQ20_DP270_rename.vcf.gz/bi_MQ20_DP270_rename}
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_rename | \
-        awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
 done
 
@@ -184,20 +184,19 @@ for vcf_rename in `ls concated*rename.vcf.gz`
     do
     output_sfs_name=${vcf_rename/bi_MQ20_DP270_rename.vcf.gz/bi_MQ20_DP270_rename}
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_rename | \
-        awk '{if ($3 < $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
         echo $vcf_rename
 done
 
 ## New REF ($3 <= $4/2)
-conda activate variant_calling_mapping
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 
+conda activate variant_calling_mapping
 output_SFS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
+
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/snpEff_annotation
 ## softmasked+gene_regions
-for vcf in `ls concated*masked*AO3.vcf.gz`
-## softmasked only
-for vcf in `ls *GQ*softmasked*.gz`
+for vcf in `ls *all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
     do
     output_sfs_name=${vcf/vcf.gz/equal_self}
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
@@ -205,19 +204,20 @@ for vcf in `ls *GQ*softmasked*.gz`
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
 done
 ## pas-pas-200x
-vcf=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.vcf.gz
+vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
+vcf=
 vcf_ann=concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
 vcf_ann=concated.Andhae.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
 vcf_ann=concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
 
 bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_ann | \
-        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c |
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
 
 ## each group sfs count
-for vcf_softmask_ann in `ls *GQ*softmasked*.gz`
+for vcf in `ls *all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
     do
-    output_sfs_name=${vcf_softmask_ann/vcf.gz/equal_self}
-    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_softmask_ann | \
+    output_sfs_name=${vcf/vcf.gz/equal_self}
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
     #echo -e "$vcf_softmask_ann\n"
         awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c \
         > $output_SFS_dir/$output_sfs_name.sfs.count

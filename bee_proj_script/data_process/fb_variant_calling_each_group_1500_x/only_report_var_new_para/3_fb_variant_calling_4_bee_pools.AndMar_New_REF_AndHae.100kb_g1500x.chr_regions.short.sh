@@ -1,11 +1,11 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
-#SBATCH --mem 60g
+#SBATCH --mem 20g
 ##SBATCH --array=2943-2944%2
 ##SBATCH --array=1-2944%40
-#SBATCH --array=1-3537%40
-#SBATCH --time=05:00:00
+#SBATCH --array=1-3537%200
+#SBATCH --time=16:00:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndHae.100kb_g1500x.chr_regions.short.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndHae.100kb_g1500x.chr_regions.short.%A_%a.o

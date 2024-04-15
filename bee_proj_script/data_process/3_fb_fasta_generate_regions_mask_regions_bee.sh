@@ -114,6 +114,14 @@ for Ref_New in `ls *-softmasked.fa`
     fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
 done
 
+## AndMar
+for Ref_New in `ls Andrena_marginata*-softmasked.fa`
+    do
+    Out_Region_Name=${Ref_New/.fa/.fb_100kb.regions}
+    fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
+done
+## count=2976 segments
+
 ##
 AndHat_Ref_Regions=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions/Andrena_hattorfiana-GCA_944738655.1-softmasked.fb_2Mb.regions
 1:0-2000000

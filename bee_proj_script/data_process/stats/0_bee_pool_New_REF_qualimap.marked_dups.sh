@@ -2,7 +2,7 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 10
 #SBATCH --mem 100g
-#SBATCH --array=5-8%4
+#SBATCH --array=13%1
 #SBATCH --time=04:00:00
 #SBATCH --error=qualimap_bee_pool.New_REF_marked_dups.%A_%a.e.txt
 #SBATCH --output=qualimap_bee_pool.New_REF_marked_dups.%A_%a.o.txt
