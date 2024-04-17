@@ -74,14 +74,19 @@ ls ./fb_per_region_AndMar_New_REF_BomPas/Andmar.New_REF_BomPas.100kb_1500x_regio
 
 ls ./fb_per_region_AndMar_New_REF_AndMar/Andmar.New_REF_AndMar.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_AndMar.individual_100kb_1500x_region_vcf_file.list
 
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
+mv Andmar*g.vcf ./fb_per_region_AndMar_New_REF_AndMar
+
 vcf_list1=BomPas_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
 vcf_list2=BomVet_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
 vcf_list3=AndHae_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list
 vcf_list4=AndMar_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list
+vcf_list5=AndMar_New_REF_AndMar.individual_100kb_1500x_region_vcf_file.list
 vcf-concat --files $vcf_list1 | bgzip -c > ./concated_vcf_each_species_REF/concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.vcf.gz
 vcf-concat --files $vcf_list2 | bgzip -c > ./concated_vcf_each_species_REF/concated.BomVet_New_REF_BomPas.100kb_g1500x_regions.vcf.gz
 vcf-concat --files $vcf_list3 | bgzip -c > ./concated_vcf_each_species_REF/concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.vcf.gz
 vcf-concat --files $vcf_list4 | bgzip -c > ./concated_vcf_each_species_REF/concated.AndMar_New_REF_AndHae.100kb_g1500x_regions.vcf.gz
+vcf-concat --files $vcf_list5 | bgzip -c > ./concated_vcf_each_species_REF/concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.vcf.gz
 
 ## sort chr according to ref
 cd ./concated_vcf_each_species_REF
@@ -90,6 +95,7 @@ gatk SortVcf --INPUT concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.vcf.gz 
 gatk SortVcf --INPUT concated.BomVet_New_REF_BomPas.100kb_g1500x_regions.vcf.gz --OUTPUT concated.BomVet_New_REF_BomPas.100kb_g1500x_regions.all_chr.sorted.vcf.gz
 gatk SortVcf --INPUT concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.vcf.gz --OUTPUT concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.all_chr.sorted.vcf.gz
 #gatk SortVcf --INPUT concated.AndMar_New_REF_AndHae.100kb_g1500x_regions.vcf.gz --OUTPUT concated.AndMar_New_REF_AndHae.100kb_g1500x_regions.all_chr.sorted.vcf.gz
+gatk SortVcf --INPUT concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.vcf.gz --OUTPUT concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.all_chr.sorted.vcf.gz
 
 ## issue
 ## https://github.com/samtools/bcftools/issues/420
@@ -100,7 +106,7 @@ sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' \
 
 ## replace "Integer" with "Float" using for loop
 for vcf in `ls *all_chr.sorted.vcf.gz`
-for vcf in `ls *BomVet_REF_BomPas*all_chr.sorted.vcf.gz`
+for vcf in `ls *AndMar_New_REF_AndMar*all_chr.sorted.vcf.gz`
     do
     output_vcf=${vcf/sorted.vcf.gz/sorted.GQ_issue_solved.vcf}
     ## pigz is faster than gzip
@@ -431,6 +437,8 @@ New_REF_BomHyp_mask_region=$REF_MASKED_DIR/Bombus_hypnorum-GCA_911387925.1-softm
 New_REF_ApisMel_mask_region=$REF_MASKED_DIR/Amel_HAv-GCF_003254395.2-softmasked_ref_gene.conca_sorted.bed
 New_REF_AndMar_mask_region=$REF_MASKED_DIR/Andrena_marginata_GCA_963932335.1-softmasked_ref_gene.conca_sorted.bed
 
+New_REF_AndMar_mask_region=$REF_MASKED_DIR/Andrena_marginata_GCA_963932335.1-softmasked.bed
+
 ## only softmasked_regions bed file
 #New_REF_AndHae_mask_region=$REF_MASKED_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.bed
 #New_REF_AndHat_mask_region=$REF_MASKED_DIR/Andrena_hattorfiana-GCA_944738655.1-softmasked.bed
@@ -470,6 +478,10 @@ Bomvet_New_REF_ApisMel_VCF_filter=${Bomvet_New_REF_ApisMel_VCF/.vcf.gz/}
 ## later (GQ_issue?)
 Andmar_New_REF_AndHae_VCF=concated.AndMar_New_REF_AndHae.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
 Andmar_New_REF_AndHae_VCF_filter=${Andmar_New_REF_AndHae_VCF/.vcf.gz/}
+
+Andmar_New_REF_AndMar_VCF=concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
+Andmar_New_REF_AndMar_VCF_filter=${Andmar_New_REF_AndMar_VCF/.vcf.gz/}
+
 Andmar_New_REF_BomPas_VCF=concated.AndMar_New_REF_BomPas.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
 Andmar_New_REF_BomPas_VCF_filter=${Andmar_New_REF_BomPas_VCF/.vcf.gz/}
 Andmar_New_REF_AndHat_VCF=concated.AndMar_New_REF_AndHat.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
@@ -613,6 +625,16 @@ do
 done
 
 ## later
+7-1. ## Andmar_New_REF_AndMar_VCF
+for depth in {240,400,600}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region $Andmar_New_REF_AndMar_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndMar | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Andmar_New_REF_AndMar_VCF_filter".SNP_softmask_bi_FMT_DP"$depth"x_1500x_noMS.vcf.gz
+done
+
 7. ## Andmar_New_REF_AndHae_VCF
 for depth in {240,400,600}
 do
@@ -805,7 +827,7 @@ for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_his
 done
 
 ## grep 'Andmar.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP240_1500x\t$COV \n"

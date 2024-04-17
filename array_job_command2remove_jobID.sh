@@ -1,6 +1,7 @@
 
 ## slurm session
 srun --account eDNA -c 10 --pty bash
+srun --account eDNA --mem 16g --pty bash -t 05:00:00
 ## squeue sort
 squeue -u yzliu | sort -t "t" -k1 -h
 ## check unfinished job

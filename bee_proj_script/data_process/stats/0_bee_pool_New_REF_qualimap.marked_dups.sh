@@ -21,7 +21,7 @@ BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 ## mark duplicates
 #SORTED_BAM=$(cat $BAM_DIR/bee_spools.bam.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
 #OUT_FILENAME=${SORTED_BAM/.bam/.bam.qualimap}
-OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap
+OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
 #OUT_FILE=$OUT_DIR/$OUT_FILENAME
 
 #cd $BAM_DIR/qualimap

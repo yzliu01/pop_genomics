@@ -9,7 +9,7 @@
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndHae.100kb_g1500x.chr_regions.short_13left.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndHae.100kb_g1500x.chr_regions.short_13left.%A_%a.o
-#SBATCH --job-name=80left.3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndHae.short
+#SBATCH --job-name=13left.3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndHae.short
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 

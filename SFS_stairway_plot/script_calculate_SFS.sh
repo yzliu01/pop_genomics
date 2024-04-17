@@ -203,6 +203,15 @@ for vcf in `ls *all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
         awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
 done
+## softmask - AndMar
+for vcf in `ls *AndMar_New_REF_AndMar*all_chr.sorted.GQ_issue_solved.SNP_softmask_bi_FMT*vcf.gz`
+    do
+    output_sfs_name=${vcf/vcf.gz/equal_self}
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
+        awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
+done
+
 ## pas-pas-200x
 vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 vcf=
