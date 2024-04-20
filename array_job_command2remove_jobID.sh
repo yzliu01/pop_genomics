@@ -1,7 +1,7 @@
 
 ## slurm session
 srun --account eDNA -c 10 --pty bash
-srun --account eDNA --mem 16g --pty bash -t 05:00:00
+srun --account eDNA -t 05:00:00 --mem 16g --pty bash
 ## squeue sort
 squeue -u yzliu | sort -t "t" -k1 -h
 ## check unfinished job
@@ -11,6 +11,9 @@ ls *35671660*.e* | xargs egrep 'CANCELLED|kill' | sort -V | head
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/fb_variant_calling_each_group_1500_x/only_report_var
 grep -E 'CANCELLED|kill' *35265444*.e
 
+## find file in a directory
+find . -type f -path "*.fai" -print
+./Bombus_hypnorum-GCA_911387925.1-softmasked.N.fa.fai
 
 ## pending jobid
 squeue -u yzliu |  sort -Vr

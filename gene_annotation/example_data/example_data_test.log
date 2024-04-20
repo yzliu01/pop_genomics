@@ -1,0 +1,3 @@
+# Fri Apr 19 10:25:13 2024: Log information is stored in file /faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_results_example_data/braker.log
+ERROR in file /opt/BRAKER/scripts/braker.pl at line 6005
+Failed to create new species with new_species.pl, check write permissions in /opt/Augustus/config//species directory! Command was /usr/bin/perl /opt/Augustus/scripts/new_species.pl --species=AndMar --AUGUSTUS_CONFIG_PATH=/opt/Augustus/config/ 1> /dev/null 2>/faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_results_example_data/errors/new_species.stderr
