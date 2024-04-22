@@ -83,7 +83,7 @@ braker.pl --genome="$Andrena_marginata_softmask_simple_header_genome" --prot_seq
     --GENEMARK_PATH=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/gmetp_linux_64/bin/gmes \
     --makehub --email=yuanzhen.liu2@gmail.com
 
->>>>>>>>>> method II <<<<<<<<<<
+>>>>>>>>>> method II gave results <<<<<<<<<<
 ## run braker3 with prothint result gff file
 braker.pl --genome="$Andrena_marginata_softmask_simple_header_genome" --hints="$prothint_augustus_gff" \
     --workingdir=$braker_output_dir --threads 4 \
