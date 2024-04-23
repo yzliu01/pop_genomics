@@ -59,9 +59,9 @@ vcf-concat -h
 ## concatenate (having duplicates?)
 vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/
 cd $vcf_dir
-ls ./fb_per_region_BomPas_New_REF_BomPas/Bompas.New_REF_BomPas.100kb_1500x_region_*[0-9].g.vcf | sort -V > BomPas_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
-ls ./fb_per_region_BomVet_New_REF_BomPas/Bomvet.New_REF_BomPas.100kb_1500x_region_*.g.vcf | sort -V > BomVet_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
-ls ./fb_per_region_AndHae_New_REF_AndHae/Andhae.New_REF_AndHae.100kb_1500x_region_*.g.vcf | sort -V > AndHae_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list
+#ls ./fb_per_region_BomPas_New_REF_BomPas/Bompas.New_REF_BomPas.100kb_1500x_region_*[0-9].g.vcf | sort -V > BomPas_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
+#ls ./fb_per_region_BomVet_New_REF_BomPas/Bomvet.New_REF_BomPas.100kb_1500x_region_*.g.vcf | sort -V > BomVet_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
+#ls ./fb_per_region_AndHae_New_REF_AndHae/Andhae.New_REF_AndHae.100kb_1500x_region_*.g.vcf | sort -V > AndHae_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list
 ls ./fb_per_region_AndMar_New_REF_AndHae/Andmar.New_REF_AndHae.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list
 ls ./fb_per_region_BomPas_New_REF_BomHyp/Bompas.New_REF_BomHyp.100kb_1500x_region_*[0-9].g.vcf | sort -V > BomPas_New_REF_BomHyp.individual_100kb_1500x_region_vcf_file.list
 ls ./fb_per_region_BomVet_New_REF_BomHyp/Bomvet.New_REF_BomHyp.100kb_1500x_region_*.g.vcf | sort -V > BomVet_New_REF_BomHyp.individual_100kb_1500x_region_vcf_file.list
@@ -72,7 +72,7 @@ ls ./fb_per_region_BomVet_New_REF_ApisMel/Bomvet.New_REF_ApisMel.100kb_1500x_reg
 ls ./fb_per_region_AndHae_New_REF_BomPas/Andhae.New_REF_BomPas.100kb_1500x_region_*.g.vcf | sort -V > AndHae_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
 ls ./fb_per_region_AndMar_New_REF_BomPas/Andmar.New_REF_BomPas.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list
 
-ls ./fb_per_region_AndMar_New_REF_AndMar/Andmar.New_REF_AndMar.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_AndMar.individual_100kb_1500x_region_vcf_file.list
+#ls ./fb_per_region_AndMar_New_REF_AndMar/Andmar.New_REF_AndMar.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_AndMar.individual_100kb_1500x_region_vcf_file.list
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 mv Andmar*g.vcf ./fb_per_region_AndMar_New_REF_AndMar
@@ -107,6 +107,7 @@ sed -i 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' \
 ## replace "Integer" with "Float" using for loop
 for vcf in `ls *all_chr.sorted.vcf.gz`
 for vcf in `ls *AndMar_New_REF_AndMar*all_chr.sorted.vcf.gz`
+for vcf in `ls -t *all_chr.sorted.vcf.gz | head -9`
     do
     output_vcf=${vcf/sorted.vcf.gz/sorted.GQ_issue_solved.vcf}
     ## pigz is faster than gzip
@@ -209,21 +210,38 @@ species_dir=("fb_per_contig_AndHae_REF_AndHae" "fb_per_contig_AndMar_REF_AndHatt
             "fb_per_contig_AndMar_REF_AndHae" "fb_per_contig_BomPas_REF_BomHyp" "fb_per_contig_BomVet_REF_BomPas"
 )
 species_dir=("fb_per_contig_BomPas_REF_BomPas" "fb_per_contig_AndHae_REF_AndHae")
-species_dir=("fb_per_contig_BomVet_REF_BomPas")
+species_dir=(
+            "fb_per_contig_AndMar_REF_AndHatt"
+            "fb_per_contig_AndHae_REF_AndHatt" "fb_per_contig_AndMar_REF_BomPas" "fb_per_contig_BomVet_REF_ApisMel"
+            "fb_per_contig_AndHae_REF_BomPas" "fb_per_contig_BomPas_REF_ApisMel" "fb_per_contig_BomVet_REF_BomHyp"
+            "fb_per_contig_AndMar_REF_AndHae" "fb_per_contig_BomPas_REF_BomHyp"
+
+)
 ## save vcf file per region into a file
 for vcf in ${species_dir[*]};
-    do ls ./$vcf/*g600*regions*vcf > ./$vcf.g600_regions.vcf.list
+    do ls ./$vcf/*100kb_1500x_regions*vcf | sort -V > ./$vcf.individual_100kb_1500x_region_vcf_file.list
+    #sort -V > AndHae_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list
 done
 
 ## for all
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
-ls *g600*.list
-vcf_list=("fb_per_contig_AndHae_REF_AndHae.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_ApisMel.g600_regions.vcf.list"
-        "fb_per_contig_AndHae_REF_AndHatt.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list"
-        "fb_per_contig_AndHae_REF_BomPas.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list"
-        "fb_per_contig_AndMar_REF_AndHae.g600_regions.vcf.list" "fb_per_contig_BomVet_REF_ApisMel.g600_regions.vcf.list"
-        "fb_per_contig_AndMar_REF_AndHatt.g600_regions.vcf.list" "fb_per_contig_BomVet_REF_BomHyp.g600_regions.vcf.list"
-        "fb_per_contig_AndMar_REF_BomPas.g600_regions.vcf.list"
+#ls *individual_100kb_1500x*.list
+vcf_list=(
+   #"AndHae_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list"
+   "AndHae_New_REF_AndHat.individual_100kb_1500x_region_vcf_file.list"
+   "AndHae_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list"
+   "AndMar_New_REF_AndHae.individual_100kb_1500x_region_vcf_file.list"
+   "AndMar_New_REF_AndHat.individual_100kb_1500x_region_vcf_file.list"
+   #"AndMar_New_REF_AndMar.individual_100kb_1500x_region_vcf_file.list"
+   "AndMar_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list"
+   "BomPas_New_REF_ApisMel.individual_100kb_1500x_region_vcf_file.list"
+   
+   ***"BomPas_New_REF_BomHyp.individual_100kb_1500x_region_vcf_file.list"
+
+   #"BomPas_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list"
+   "BomVet_New_REF_ApisMel.individual_100kb_1500x_region_vcf_file.list"
+   "BomVet_New_REF_BomHyp.individual_100kb_1500x_region_vcf_file.list"
+   #"BomVet_New_REF_BomPas.individual_100kb_1500x_region_vcf_file.list"
 )
 
 ## issued vcf files
@@ -231,27 +249,25 @@ vcf_list=("fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list"
     #"fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list" "fb_per_contig_BomPas_REF_BomPas.g600_regions.vcf.list"
 )
 ## not available yet:  "fb_per_contig_BomVet_REF_BomPas.g600_regions.vcf.list"
+
+conda activate variant_calling_mapping
 for species_vcf in  ${vcf_list[*]}
-    do vcf-concat --files $species_vcf | bgzip -c > ./concated_vcf_each_species_REF/concated.$species_vcf.vcf.gz
+    do
+    concat_vcf=${species_vcf/.individual_100kb_1500x_region_vcf_file.list/.100kb_1500x_regions}
+    vcf-concat --files $species_vcf | bgzip -c > ./concated_vcf_each_species_REF/concated.$concat_vcf.vcf.gz
 done
 
+## issued vcf
 ## reorder the chromosome order
 conda activate gatk_4.3.0.0
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 ## New_REF
-for vcf in `ls concated*.100kb_g1500x_region.vcf.gz`
+for vcf in `ls concated*.100kb_g1500x_regions.vcf.gz`
     do 
     vcf_sorted_chr=${vcf/.vcf.gz/}
-    gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.sorted_chr.vcf.gz
+    gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.all_chr.sorted.vcf.gz
 done
 
-## issued vcf
-## concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.md.vcf.gz
-for vcf in `ls *BomVet_REF_BomPas*g600_regions.vcf.list.vcf.gz`
-    do 
-    vcf_sorted_chr=${vcf/.vcf.list.vcf.gz/}
-    gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.sorted_chr.vcf.gz
-done
 
 ## concated.fb_per_contig_BomPas_REF_BomHyp.g600_regions.vcf.list.md.sorted_chr.vcf.gz
 ## example from freebayes

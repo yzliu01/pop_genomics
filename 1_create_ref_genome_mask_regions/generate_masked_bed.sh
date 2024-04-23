@@ -97,6 +97,9 @@ REF_list=(
     "./BomPas_GCA_905332965.1/genes.gtf.gz"
     "./DroMel-GCF_000001215.4_Release_6_plus_ISO1_MT/genes.gtf.gz"
 )
+REF_list=(
+    "./AndMar_GCA_963932335.1/genes.gtf.gz"
+)
 #echo ${REF_list[*]}
 #REF_INDEX_list=(`ls *softmasked.fa.fai`)
 ## https://superuser.com/questions/121627/how-to-get-elements-from-list-in-bash
@@ -113,7 +116,11 @@ REF_INDEX_list=(
     "Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai"
     "Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fa.fai"
 )
-#echo ${REF_INDEX_list[1]}
+
+REF_INDEX_list=(
+    "./Andrena_marginata_GCA_963932335.1-softmasked.fa.fai"
+)
+#echo ${REF_INDEX_list[0]}
 ## Two variables in for-loop
 ## https://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-script
 ## https://stackoverflow.com/questions/68358789/using-bash-to-get-two-variables-in-for-loop-form-two-different-lists
@@ -180,6 +187,7 @@ chr1    37526   46635
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 REF_gene_region_list=(
+    "AndMar_GCA_963932335.1_gene_region-1.sorted.bed"
     "Amel_HAv3_1_gene_region-1.sorted.bed"
     "AndHae_GCA_910592295.1_gene_region-1.sorted.bed"
     "AndHat_GCA_944738655.1_gene_region-1.sorted.bed"
@@ -189,6 +197,7 @@ REF_gene_region_list=(
 )
 
 REF_softmasked_region_list=(
+    "Andrena_marginata_GCA_963932335.1-softmasked.bed"
     "Amel_HAv-GCF_003254395.2-softmasked.bed"
     "Andrena_haemorrhoa-GCA_910592295.1-softmasked.bed"
     "Andrena_hattorfiana-GCA_944738655.1-softmasked.bed"

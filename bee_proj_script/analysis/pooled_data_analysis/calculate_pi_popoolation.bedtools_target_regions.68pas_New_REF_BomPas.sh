@@ -3,7 +3,7 @@
 ##SBATCH --cpus-per-task 10
 #SBATCH --mem 150g
 #SBATCH --array=1-4%4
-#SBATCH --time=12:00:00
+#SBATCH --time=2-00:00:00
 #SBATCH --error=popoolation_pi.New_REF_BomPas_marked_dups.%A_%a.e.txt
 #SBATCH --output=popoolation_pi.New_REF_BomPas_marked_dups.%A_%a.o.txt
 #SBATCH --job-name=popoolation_pi.New_REF_BomPas_marked_dups

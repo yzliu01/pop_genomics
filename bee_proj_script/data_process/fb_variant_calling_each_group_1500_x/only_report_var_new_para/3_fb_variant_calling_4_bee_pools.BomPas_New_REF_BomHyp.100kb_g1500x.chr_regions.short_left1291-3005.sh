@@ -3,8 +3,8 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 20g
 ##SBATCH --array=1-2964%60
-#SBATCH --array=1291-3005%600
-#SBATCH --time=12:00:00
+#SBATCH --array=1291-3005%1000
+#SBATCH --time=14:00:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.BomPas_New_REF_BomHyp.100kb_g1500x.chr_regions.short_left1291-.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.BomPas_New_REF_BomHyp.100kb_g1500x.chr_regions.short_left1291-.%A_%a.o
