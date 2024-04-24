@@ -2,6 +2,15 @@
 ## slurm session
 srun --account eDNA -c 10 --pty bash
 srun --account eDNA -t 10:00:00 --mem 16g --pty bash
+
+## terminal test issue
+## https://stackoverflow.com/questions/52026652/openblas-blas-thread-init-pthread-create-resource-temporarily-unavailable
+OpenBLAS blas_thread_init: pthread_create failed for thread 53 of 64: Resource temporarily unavailable
+OpenBLAS blas_thread_init: RLIMIT_NPROC 1000 current, 1000 max
+
+export OPENBLAS_NUM_THREADS=1
+
+
 ## squeue sort
 squeue -u yzliu | sort -t "t" -k1 -h
 ## check unfinished job

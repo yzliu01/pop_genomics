@@ -265,7 +265,14 @@ echo $($function_array)
 
 exit 0
 
-## function
+## run function in for loop in terminal
+for i in {1..12}
+do
+function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n "$i"p)
+echo $($function_array)
+done
+
+## function test
 sleep_fun(){
     sleep 5s
 }

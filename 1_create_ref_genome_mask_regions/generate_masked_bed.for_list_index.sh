@@ -183,7 +183,7 @@ chr1    36940   36982
 chr1    37326   37365
 chr1    37526   46635
 
-## for loop
+## for loop: to prepare softmask+gene region bed
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 REF_gene_region_list=(

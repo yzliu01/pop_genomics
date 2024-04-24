@@ -4,9 +4,9 @@
 #SBATCH --mem 150g
 #SBATCH --array=3-4%4
 #SBATCH --time=2-00:00:00
-#SBATCH --error=popoolation_pi.New_REF_BomPas3_4left_marked_dups.%A_%a.e.txt
-#SBATCH --output=popoolation_pi.New_REF_BomPas3_4left_marked_dups.%A_%a.o.txt
-#SBATCH --job-name=popoolation_pi.New_REF_BomPas3_4left_marked_dups
+#SBATCH --error=popoolation_pi.New_REF_BomPas_marked_dups.3-4.%A_%a.e.txt
+#SBATCH --output=popoolation_pi.New_REF_BomPas_marked_dups.3-4.%A_%a.o.txt
+#SBATCH --job-name=popoolation_pi.New_REF_BomPas_marked_dups.3-4
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
