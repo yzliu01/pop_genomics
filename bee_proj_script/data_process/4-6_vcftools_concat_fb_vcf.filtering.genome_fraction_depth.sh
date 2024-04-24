@@ -715,12 +715,6 @@ done
 less /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz | \
     grep -v '^#' | wc -l
 
-for vcf in `ls *GQ*AO3.vcf.gz`
-    do
-    less $vcf | grep -v '^#' | wc -l | tr -d '\n'
-    echo -e "\t$vcf"
-done
-
 for vcf in `ls *GQ_issue.SNP_softmasked_bi_FMT_DP*_noMS_AO3*vcf.gz`
     do
     less $vcf | grep -v '^#' | wc -l | tr -d '\n'
@@ -796,7 +790,7 @@ for sample_samtools_stat in `ls *sort*stats.txt`;do
     grep ^COV $sample_samtools_stat| cut -f 2- > ./samtools_stat_cov/$sample_samtools_stat.COV;
 done
 
-## calculate genome fraction covered by reads
+*********************  calculate genome fraction covered by reads   **********************
 ## total number of bases with depth > 9
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_stats
 BomVet_BomPas_COV=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/Bomvet.REF_BomPas.sort.marked_dups.new.bam/raw_data_qualimapReport/coverage_histogram.txt
@@ -833,8 +827,8 @@ Bomvet.New_REF_BomHyp.sort.marked_dups.bam
 Bomvet.New_REF_BomPas.sort.marked_dups.bam
 
 ## New REF for pooled bees
-## NR > 200 (&& NR < 1500: fb variant calling)
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+## 3x per sample: NR > 200 (&& NR < 1500: fb variant calling)
 ## grep 'Andhae.New_REF'
 for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
     do
@@ -863,22 +857,64 @@ for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_his
     printf "\tDP174_1500x\t$COV \n"
 done
 
-## NR > 400 (&& NR < 1500: fb variant calling)
+## 5x per sample:  NR > 400 (&& NR < 1500: fb variant calling)
+## grep 'Bompas.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 340 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP340_1500x\t$COV \n"
+done
+## grep 'Bomvet.New_REF'
 for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 290 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP290_1500x\t$COV \n"
+done
+## grep 'Andhae.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 390 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP390_1500x\t$COV \n"
+done
+
+## grep 'Andmar.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 400 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP400_1500x\t$COV \n"
 done
 
-## NR > 600 (&& NR < 1500: fb variant calling)
+## 7x per sample: NR > 600 (&& NR < 1500: fb variant calling)
+## grep 'Bompas.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 476 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP476_1500x\t$COV \n"
+done
+## grep 'Bomvet.New_REF'
 for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
     do
-    sed '1d' $COV | awk -F " " 'NR > 600 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP600_1500x\t$COV \n"
+    sed '1d' $COV | awk -F " " 'NR > 416 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP416_1500x\t$COV \n"
 done
 
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/Bomvet.REF_BomPas.sort.marked_dups.new.bam
+## grep 'Andhae.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 546 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP546_1500x\t$COV \n"
+done
 
+## grep 'Andmar.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 560 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP560_1500x\t$COV \n"
+done
+
+
+
+*****************************************************************************************************
 ## individually seq Swedish data: getting SFS
 cd /crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/PAS/QC_qualimap/pas_samtools
 cp -r DA_04*Qualimap GT_03*Qualimap GT_05*Qualimap GT_08*Qualimap NS_07*Qualimap NS_08*Qualimap SL_04*Qualimap ./subset_qualimap/
@@ -976,6 +1012,10 @@ bcftools view -S $sample_lap_list $vcf_lap | bcftools filter -e 'AC==0 || AC == 
 bcftools view -S $sample_mon_list $vcf_mon | bcftools filter -e 'AC==0 || AC == AN' | \
     bcftools view -e 'F_MISSING > 0'| bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' | \
     awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
+
+
+
+
 
 ***************************
 awk -F " " 'NR > 9 {sum+=$3}END{print sum}' ./samtools_stat_cov/SRR24680792.sort.marked_rm_dups.bam.stats_COV.txt
