@@ -32,7 +32,7 @@ bam_list=(
         "Bompas.New_REF_BomPas.sort.marked_dups.bam"
         #"Andmar.New_REF_BomPas.sort.marked_dups.bam"
         "Bomvet.New_REF_BomPas.sort.marked_dups.bam")
-bam=$(echo ${bam_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_JOB}p)
+bam=$(echo ${bam_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 bam=$(echo ${bam_list[*]} | tr ' ' '\n' | sed -n 2p)
 
 bam_output=${bam_list/.sort.marked_dups.bam/}

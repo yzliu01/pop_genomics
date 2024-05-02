@@ -829,20 +829,6 @@ Bomvet.New_REF_BomPas.sort.marked_dups.bam
 ## New REF for pooled bees
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
 ## 3x per sample: NR > 200 (&& NR < 1500: fb variant calling)
-## grep 'Andhae.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 234 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP234_1500x\t$COV \n"
-done
-
-## grep 'Andmar.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP240_1500x\t$COV \n"
-done
-
 ## grep 'Bompas.New_REF'
 for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
     do
@@ -855,6 +841,20 @@ for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_his
     do
     sed '1d' $COV | awk -F " " 'NR > 174 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP174_1500x\t$COV \n"
+done
+
+## grep 'Andhae.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 234 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP234_1500x\t$COV \n"
+done
+
+## grep 'Andmar.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP240_1500x\t$COV \n"
 done
 
 ## 5x per sample:  NR > 400 (&& NR < 1500: fb variant calling)
@@ -878,7 +878,7 @@ for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_his
 done
 
 ## grep 'Andmar.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar' | grep 'coverage_histogram.txt' | sort -V`
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 400 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP400_1500x\t$COV \n"
@@ -906,7 +906,7 @@ for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_his
 done
 
 ## grep 'Andmar.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar' | grep 'coverage_histogram.txt' | sort -V`
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 560 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP560_1500x\t$COV \n"

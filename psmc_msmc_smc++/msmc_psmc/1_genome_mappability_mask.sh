@@ -72,14 +72,22 @@ done
 #cd $SNPable_AndHae
 #REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 #REF_AndHae_DIR=$REF_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
+## all fastq read files
+ls | egrep 'x[abc][a-z]$' | wc -l
+## rest 
+ls | egrep 'xaa|x[bc][a-z]$'
 
 for i in ${!REF_list[*]}
 do
 cd $SNPable_DIR/${REF_SNPable_DIR_list[i]}
-    for read in `ls xa[b-z]`;do
-        # Align all reads to the genome with BWA to generate .sai files
+    ## not list all read files(issue)
+    #for read in `ls xa[b-z]`;do
+    ## list all read files
+    for read in `ls | egrep 'xaa|x[bc][a-z]$'`;do
+    #for read in `ls | grep 'x[abc][a-z]$'`;do
+        ## Align all reads to the genome with BWA to generate .sai files
         bwa aln -R 1000000 -O 3 -E 3 $REF_DIR/${REF_list[i]} $read > $read.sai
-        # convert .sai to .sam file
+        ## convert .sai to .sam file
         bwa samse $REF_DIR/${REF_list[i]} $read.sai $read | gzip > $read.sam.gz
     done
 cd $SNPable_DIR
@@ -92,16 +100,22 @@ gen_raw_mask=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/seqbility-20091
 cd $SNPable_DIR
 for i in ${!REF_SNPable_DIR_list[*]}
 do
-cd $SNPable_DIR/${REF_SNPable_DIR_list[i]}
-    for sam in `ls xa*.sam.gz`;do
-        gzip -dc $sam | $gen_raw_mask >> rawMask_k35.fa
-    done
-cd $SNPable_DIR
+    cd $SNPable_DIR/${REF_SNPable_DIR_list[i]}
+    #    for sam in `ls *.sam.gz`;do
+    #        gzip -dc $sam | $gen_raw_mask >> rawMask_k35.fa
+    #    done
+    gzip -dc x??.sam.gz | $gen_raw_mask > rawMask_k35.fa
+    cd $SNPable_DIR
 done
+
+## correct way to concatenate all reads
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/SNPable/REF_AndHae
+gzip -dc x??.sam.gz | $gen_raw_mask > rawMask_35.text.fa
 
 ## generate final mask
 gen_final_mask=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/seqbility-20091110/gen_mask
 #$gen_final_mask -l 35 -r 0.9 syl_rawMask_35.fa > syl_rawMask_35_90.fa
+$gen_final_mask -l 35 -r 0.5 rawMask_35.text.fa > rawMask_k35_r50.test.fa
 
 for i in ${!REF_SNPable_DIR_list[*]}
 do
@@ -125,9 +139,15 @@ done
 # -r 0.9
 #python /home/yzliu/bin/msmc/msmc-tools/makeMappabilityMask3590.py
 
-## modified
-/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/msmc-tools-master/makeMappabilityMask_k35_r50.py
+## modified (OpenAi)
+# -r 0.5
+# important line:     self.file = gzip.open(filename, "wt")
+makeMappabilityMask_k35_r50=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/msmc-tools-master/makeMappabilityMask_k35_r50.open_wt.py
 
+## /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/SNPable/REF_AndHae
+## output_file.bed.gz
+1       9999072 9999104
+1       9999128 9999185
 
 *************************************** old ************************************************
 # convert .sai to .sam file

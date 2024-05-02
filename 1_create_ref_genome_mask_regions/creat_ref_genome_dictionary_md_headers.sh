@@ -1,3 +1,7 @@
+
+
+##https://github.com/broadgsa/gatk/blob/master/doc_archive/deprecated/(howto)_Prepare_a_reference_for_use_with_BWA_and_GATK.md
+
 # Ref contig name issue
 sed 's/,.*$//' New_Mbel.fa > New_Mbel_midified_contig_name.fa
 

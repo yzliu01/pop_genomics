@@ -194,15 +194,23 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vc
 conda activate variant_calling_mapping
 output_SFS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
 
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/snpEff_annotation
+#cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/snpEff_annotation
 ## softmasked+gene_regions
-for vcf in `ls *all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
+for vcf in `ls -t *AndMar_New_REF_AndMar*all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
+for vcf in `ls -t *BomPas_New_REF_BomHyp*all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
     do
     output_sfs_name=${vcf/vcf.gz/equal_self}
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
         awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
 done
+
+## output SFS in terminal
+## https://unix.stackexchange.com/questions/513131/how-to-get-the-files-name-and-content-in-the-terminal-for-all-files-in-a-direc
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
+ls -t *softmask_genic_bi_FMT*_1500x_noMS.equal_self.sfs | head -36 | sort -V | xargs head
+
+
 ## softmask - AndMar
 for vcf in `ls *AndMar_New_REF_AndMar*all_chr.sorted.GQ_issue_solved.SNP_softmask_bi_FMT*vcf.gz`
     do
