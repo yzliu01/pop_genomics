@@ -2,7 +2,7 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 4
 #SBATCH --mem 5g
-#SBATCH --time=12:00:00
+#SBATCH --time=30:00:00
 #SBATCH --array=1-6%6
 #SBATCH --job-name=4_msmc.Bompas_Bomvet_AndHae_AndMar_REF_ALL.fun
 #SBATCH --mail-type=all
@@ -10,6 +10,8 @@
 #SBATCH --error=4_msmc.Bompas_Bomvet_AndHae_AndMar_REF_ALL.fun.%A_%a.e
 #SBATCH --output=4_msmc.Bompas_Bomvet_AndHae_AndMar_REF_ALL.fun.%A_%a.o
 
+## activate (env) tools of variant_calling_mapping for bcftools
+source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 # run msmc2
 conda activate conda_msmc2
 ## run msmc2 (weird)
@@ -83,6 +85,7 @@ msmc_fun_list=(
 msmc_fun=$(echo ${msmc_fun_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## msmc_fun=$(echo ${msmc_fun_list[*]} | tr ' ' '\n' | sed -n 6p)
 ## execute function from a list
-echo $($msmc_fun)
+#echo $($msmc_fun)
+
 ## execute function directly
 msmc_bootstrap
