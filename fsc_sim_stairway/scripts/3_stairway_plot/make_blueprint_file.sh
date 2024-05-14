@@ -1,4 +1,6 @@
 
+
+
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/bee_pools_blueprint
 ## convert space in filename into "_"
 ## https://linuxconfig.org/remove-or-substitute-space-within-a-file-name
@@ -38,3 +40,16 @@ for bp in `ls *no_singleton*New_REF*blueprint`
     cp $bp $new_bp
     sed -i 's/dro_mel_4_groups_no_singleton_New_REF/dro_mel_4_groups_no_doubleton_New_REF/' $new_bp
 done
+
+## singletons removed
+
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep_no_singletons
+cp ../1000000Ne_5rep/*.blueprint .
+
+ls *.blueprint | sed -i '8s/#smallest/smallest/'
+sed -i 's/1000000Ne/1MNe_no_singleton/g' *.blueprint
+
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submission
+
+sbatch /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/fsc_sim_stairway/scripts/3_stairway_plot/fsc2stairway_1MNe_no_singleton_20_80_200hapS_1E_cons_1.1i_1.5i_1.9i_20Chr_15Mb.sh
+Submitted batch job 38325916
