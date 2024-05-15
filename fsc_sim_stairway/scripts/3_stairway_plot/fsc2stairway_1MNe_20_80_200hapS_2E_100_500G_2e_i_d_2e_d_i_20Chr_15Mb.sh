@@ -4,8 +4,8 @@
 #SBATCH --mem 4g
 #SBATCH --array=1-30%15
 #SBATCH --time=12:00:00
-#SBATCH --error=fsc2stairway_1MNe_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.array.%A_%a.e.txt
-#SBATCH --output=fsc2stairway_1MNe_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.array.%A_%a.o.txt
+#SBATCH --error=fsc2stairway_1MNe_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.%A_%a.e.txt
+#SBATCH --output=fsc2stairway_1MNe_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.%A_%a.o.txt
 #SBATCH --job-name=fsc2stairway_1MNe_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com #send email notification
@@ -20,7 +20,6 @@ blueprint_plot_sh=$(ls $blueprint_dir/ft_sim_1000000Ne*2E_100_500G_2e*2e*.bluepr
 time bash $blueprint_plot_sh
 
 exit 0
-
 
 *************************************
 ## parallel job

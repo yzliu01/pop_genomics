@@ -2,7 +2,7 @@ library(gtools)
 library(fs)
 library(stringr)
 
-setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp")
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp")
 final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp"
 
 ## attention to refer to only one file name
@@ -15,8 +15,8 @@ setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stai
 ## check the files
 #mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*100_500G*200hapS*.final.summary")))
 
-pdf(paste0("combined.1000000Ne_200hapS_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei_non_pruned.rotated_x_lab_final.pdf"),width = 20, height = 25)
-#pdf(paste0("combined.1000000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
+pdf(paste0("combined.1000000Ne_200hapS_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.pdf"),width = 20, height = 25)
+#pdf(paste0("combined.1000000Ne_200hapS_5rep.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
 par(mfcol=c(4,4),mar=c(4,4.4,3,1)+0.4,cex.lab=1.6, cex.axis=1.3,lwd=2)
@@ -36,6 +36,8 @@ for (generation in c("100_500G")){
         ## conditional axis name plot
         plot_name <- paste0("1000000Ne_200hapS_2E_",generation,"_",event,"_20Chr_15Mb")
         #print(plot_name)
+        ## print names with newline 
+        cat("\n",plot_name,"\n\n")
         
         if (plot_name %in% c("xx_1000000Ne_200hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,2.0e4),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
@@ -74,7 +76,7 @@ for (generation in c("100_500G")){
         for (rep in c(1:5)){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_1000000Ne_200hapS_2E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*.final.summary"))),header=T,sep="\t"))
-            ##print(head(get(paste0("a",rep)),n=2L))
+            print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_1000000Ne_200hapS_2E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             ##print(head(data))
@@ -110,27 +112,27 @@ for (generation in c("100_500G")){
         fx <- function(x) {
             if (all(sapply(c("xxxx"), grepl, plot_name))) {
                 ## constant Ne
-                return(5000)
+                return(500000)
             } else if (all(sapply(c("100_500G","2i_2i"), grepl, plot_name))) {
                 ## piewise 
                 if (x <= 100) {
-                    return(5000)
+                    return(500000)
                 } else if (100 < x & x <= 500) {
-                    return(2*5000)
+                    return(2*500000)
                 } else {
-                    return(2*2*5000)
+                    return(2*2*500000)
                 }
             } else if (all(sapply(c("100_500G","10d_10d"), grepl, plot_name))) {
                 if (x <= 100) {
-                    return(5000)
+                    return(500000)
                 } else if (100 < x & x <= 500) {
-                    return(0.1*5000)
+                    return(0.1*500000)
                 } else {
-                    return(0.1*0.1*5000)
+                    return(0.1*0.1*500000)
                 }
             } else if (all(sapply(c("100_500G","2e_i_2e_d"), grepl, plot_name))) {
                 if (x <= 100) {
-                    return(5000*(1.0069^x))
+                    return(500000*(1.0069^x))
                 } else if (100 < x & x <=500) {
                     return(11855*(0.9983^x))
                 } else {
@@ -138,7 +140,7 @@ for (generation in c("100_500G")){
                 }
             } else if (all(sapply(c("100_500G","2e_d_2e_i"), grepl, plot_name))) {
                 if (x <= 100) {
-                    return(5000*(0.9931^x))
+                    return(500000*(0.9931^x))
                 } else if (100 < x & x <=500) {
                     return(2109*(1.0017^x))
                 } else {

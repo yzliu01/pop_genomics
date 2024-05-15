@@ -96,3 +96,25 @@ do
         done
     done
 done
+
+## 200G 300G sim
+## delete *15Mb_1.par etc
+rm *15Mb_*.par
+
+for i in `ls ft_sim_1000000Ne*_1E_50G*.par`;do cp $i $i.cp;done
+rename 50G 200G ft_sim_1000000Ne*_1E_50G*.par.cp
+
+for i in `ls ft_sim_1000000Ne*_1E_50G*.par`;do cp $i $i.cp;done
+rename 50G 300G ft_sim_1000000Ne*_1E_50G*.par.cp
+
+for i in `ls ft_sim_1000000Ne*_1E_200G*.par.cp`;do sed -i '13s/50 0/200 0/' $i;done
+for i in `ls ft_sim_1000000Ne*_1E_300G*.par.cp`;do sed -i '13s/50 0/200 0/' $i;done
+
+## change par file names
+rename ".cp" "" ft_sim_1000000Ne*_1E_*.par.cp
+
+cd ../1000000Ne_new/
+for i in `ls *100_500*.par`;do cp $i $i.cp;done
+
+ls *100G_2e_*_cons*.par
+ls *100G_10e_*_cons*.par

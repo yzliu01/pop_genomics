@@ -1,12 +1,12 @@
 #!/bin/bash
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 3
-#SBATCH --mem 3g
-#SBATCH --array=21-22%2
-#SBATCH --time=16:00:00
-#SBATCH --error=fsc2stairway_100000Ne_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.left21_22.%A_%a.e
-#SBATCH --output=fsc2stairway_100000Ne_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i_20Chr_15Mb.left21_22.%A_%a.o
-#SBATCH --job-name=fsc2stairway_100000Ne_20_80_200hapS_2E_100_500G_2e_i_d_2e_d_i
+#SBATCH --mem 4g
+#SBATCH --array=1-30%30
+#SBATCH --time=12:00:00
+#SBATCH --error=fsc2stairway_100KNe_20_80_200hapS_2E_100_500G_10d_10d_2i_2i_20Chr_15Mb.%A_%a.e
+#SBATCH --output=fsc2stairway_100KNe_20_80_200hapS_2E_100_500G_10d_10d_2i_2i_20Chr_15Mb.%A_%a.o
+#SBATCH --job-name=fsc2stairway_100KNe_20_80_200hapS_2E_100_500G_10d_10d_2i_2i
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com #send email notification
 
@@ -15,7 +15,7 @@
 ## I - generate blueprint.sh batch files
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
 blueprint_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/100000Ne_5rep
-blueprint_plot_sh=$(ls $blueprint_dir/ft_sim_100000Ne*2E_100_500G_2e*2e*.blueprint.sh | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+blueprint_plot_sh=$(ls $blueprint_dir/ft_sim_100000Ne*2E_100_500G_*.blueprint.sh | grep -E '10d_10d|2i_2i' | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 time bash $blueprint_plot_sh
 
@@ -36,7 +36,7 @@ function pwait() {
 #cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
 blueprint_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/100000Ne_5rep
-blueprint_file=`ls $blueprint_dir/ft_sim*2E_100_500G_2e*2e*.blueprint`
+blueprint_file=`ls $blueprint_dir/ft_sim_100000Ne*2E_100_500G_*.blueprint | grep -E '10d_10d|2i_2i'`
 ## attention to nrand as integer
 ## blueprint files and program are in the same folder
 create_batch_files(){

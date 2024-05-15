@@ -38,6 +38,8 @@ for (generation in c("50G","100G","500G","1000G")){
         ## conditional axis name plot
         plot_name <- paste0("1000000Ne_80hapS_1E_",generation,"_",event,"_20Chr_15Mb")
         #print(plot_name)
+        ## print names with newline 
+        cat("\n",plot_name,"\n\n")
         
         if (plot_name %in% c("1000000Ne_80hapS_1E_50G_2e_d_cons_20Chr_15Mb", "1000000Ne_80hapS_1E_100G_2e_d_cons_20Chr_15Mb", "1000000Ne_80hapS_1E_500G_2e_d_cons_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,5.5e5),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
@@ -102,14 +104,13 @@ for (generation in c("50G","100G","500G","1000G")){
         
         #text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 8000,srt = 38,pos = 3, xpd = TRUE)
         
-        ##1000000Ne_80hapS_1E_50G_10e_i_cons_20Chr_15Mb
         ## distance to x axis
         if (plot_name %in% c("1000000Ne_80hapS_1E_50G_10e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_100G_10e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_500G_10e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 40000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 400000,srt = 38,pos = 3, xpd = TRUE)
         } else if (plot_name %in% c("1000000Ne_80hapS_1E_50G_2e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_100G_2e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_500G_2e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_1000G_2e_i_cons_20Chr_15Mb")) {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 10000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 100000,srt = 38,pos = 3, xpd = TRUE)
         } else {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 4000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 40000,srt = 38,pos = 3, xpd = TRUE)
         }
 
         ## add plot title in each plot
@@ -123,7 +124,7 @@ for (generation in c("50G","100G","500G","1000G")){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             ## assign variable to read_data
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_1000000Ne_80hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*80hapS*.final.summary"))),header=T,sep="\t"))
-            #print(head(get(paste0("a",rep)),n=2L))
+            print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_1000000Ne_80hapS_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             #print(head(data,n=2L))

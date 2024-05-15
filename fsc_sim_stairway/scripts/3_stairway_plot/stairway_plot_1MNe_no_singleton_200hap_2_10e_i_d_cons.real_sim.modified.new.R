@@ -17,13 +17,18 @@ pdf(paste0("combined.1MNe_no_singleton_200hapS_5rep_2_10_i_d_cons.rotated_x_lab.
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
 par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+
+#layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+layout(matrix(c(1,2,3,0,4,5,6,0,7,8,9,0,10:17),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
     #for (event in c("00d","01d","05d","09d","05i")){
     ## modified naming format
-    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
+
+    ## difficult to simulate
+    #for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
+    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons")){
         ## solo axis name plot
         #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
         ##log="xy",xlab="Years ago", ylab="Effective population size"
@@ -33,6 +38,8 @@ for (generation in c("50G","100G","500G","1000G")){
         ## conditional axis name plot
         plot_name <- paste0("1MNe_200hapS_1E_",generation,"_",event,"_20Chr_15Mb")
         #print(plot_name)
+        ## print names with newline 
+        cat("\n",plot_name,"\n\n")
         
         if (plot_name %in% c("1MNe_200hapS_1E_50G_2e_d_cons_20Chr_15Mb", "1MNe_200hapS_1E_100G_2e_d_cons_20Chr_15Mb", "1MNe_200hapS_1E_500G_2e_d_cons_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,5.5e5),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
@@ -100,11 +107,11 @@ for (generation in c("50G","100G","500G","1000G")){
         ##1000000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb
         ## distance to x axis
         if (plot_name %in% c("1MNe_200hapS_1E_50G_10e_i_cons_20Chr_15Mb","1MNe_200hapS_1E_100G_10e_i_cons_20Chr_15Mb","1MNe_200hapS_1E_500G_10e_i_cons_20Chr_15Mb","1MNe_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 40000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 400000,srt = 38,pos = 3, xpd = TRUE)
         } else if (plot_name %in% c("1MNe_200hapS_1E_50G_2e_i_cons_20Chr_15Mb","1MNe_200hapS_1E_100G_2e_i_cons_20Chr_15Mb","1MNe_200hapS_1E_500G_2e_i_cons_20Chr_15Mb","1MNe_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb")) {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 10000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 100000,srt = 38,pos = 3, xpd = TRUE)
         } else {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 4000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 40000,srt = 38,pos = 3, xpd = TRUE)
         }
 
         ## add plot title in each plot
@@ -118,7 +125,7 @@ for (generation in c("50G","100G","500G","1000G")){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             ## assign variable to read_data
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_1MNe_no_singleton_200hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*.final.summary"))),header=T,sep="\t"))
-            #print(head(get(paste0("a",rep)),n=2L))
+            print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_1000000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             #print(head(data,n=2L))

@@ -2,8 +2,8 @@ library(gtools)
 library(fs)
 library(stringr)
 
-setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp")
-final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp"
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft/10KNe_swp")
+final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft/10KNe_swp"
 
 ## attention to refer to only one file name
 file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*15Mb_1.final.summary")
@@ -13,8 +13,8 @@ file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "fil
 ## check the files
 #mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*100_500G*200hapS*.final.summary")))
 
-pdf(paste0("combined.10000Ne_200hapS_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei_non_pruned.rotated_x_lab_final.pdf"),width = 20, height = 25)
-#pdf(paste0("combined.10000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
+pdf(paste0("combined.10000Ne_200hapS_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.pdf"),width = 20, height = 25)
+#pdf(paste0("combined.10000Ne_200hapS_5rep.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
 par(mfcol=c(4,4),mar=c(4,4.4,3,1)+0.4,cex.lab=1.6, cex.axis=1.3,lwd=2)
