@@ -50,7 +50,7 @@ for (generation in c("100_500G")){
             plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e5),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(100000,125000,1500000,250000,300000,400000,500000),label=c(format(c(100000,125000,1500000,250000,300000,400000,500000),scientific=FALSE)))
+            axis(side=2, at=c(100000,125000,150000,250000,300000,400000,500000),label=c(format(c(100000,125000,150000,250000,300000,400000,500000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_20hapS_2E_100_500G_2i_2i_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.1e6),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
@@ -77,7 +77,7 @@ for (generation in c("100_500G")){
         
         ## distance to x axis
         if (plot_name %in% c("1000000Ne_20hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 30000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 32000,srt = 38,pos = 3, xpd = TRUE)
         } else if (plot_name %in% c("1000000Ne_20hapS_2E_100_500G_2i_2i_20Chr_15Mb")) {
             text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 120000,srt = 38,pos = 3, xpd = TRUE)
         } else {

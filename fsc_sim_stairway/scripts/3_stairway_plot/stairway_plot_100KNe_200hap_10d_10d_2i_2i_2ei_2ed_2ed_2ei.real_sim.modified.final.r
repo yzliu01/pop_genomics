@@ -1,14 +1,15 @@
-library(gtools)
-library(fs)
-library(stringr)
 
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp")
-final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/100KNe_swp"
+final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp"
 
 ## attention to refer to only one file name
 file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*15Mb_1.final.summary")
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
+
+library(gtools)
+library(fs)
+library(stringr)
 
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/100KNe_swp")
 
@@ -40,31 +41,45 @@ for (generation in c("100_500G")){
         cat("\n",plot_name,"\n\n")
         
         if (plot_name %in% c("xx_100000Ne_200hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,2.0e4),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,6.0e4),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
             #log="xy",xlab="Years ago", ylab="Effective population size"
             title(line=2)
         } else if (plot_name %in% c("100000Ne_200hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,6.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
+            axis(side=2, at=c(500,1000,5000,25000,30000,40000,50000),label=c(format(c(500,1000,5000,25000,30000,40000,50000),scientific=FALSE)))
+
         } else if (plot_name %in% c("100000Ne_200hapS_2E_100_500G_2i_2i_20Chr_15Mb","100000Ne_200hapS_2E_100_500G_2e_i_2e_d_20Chr_15Mb","100000Ne_200hapS_2E_100_500G_2e_d_2e_i_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.0e4),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.5e5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
+            axis(side=2, at=c(25000,50000,70000,100000,150000,200000),label=c(format(c(25000,50000,70000,100000,150000,200000),scientific=FALSE)))
+
         } else {
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.0e4),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,6.0e4),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
         }
         ##turn scientific notion off
         #axis(side=1,at=c(50,100,500,1000,10000,100000,200000),las=0,label=c(format(c(50,100,500,1000,10000,100000,200000),scientific=TRUE)))
-        axis(side=2, at=c(500,1000,5000,7000,10000),label=c(format(c(500,1000,5000,7000,10000),scientific=FALSE)))
+        #axis(side=2, at=c(500,1000,5000,7000,10000),label=c(format(c(500,1000,5000,7000,10000),scientific=FALSE)))
         #eaxis(2, padj=0.5,cex.axis=1.5)
         
         ## rotating x axis labels
-        lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
-        axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-        text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 1300,srt = 38,pos = 3, xpd = TRUE)
+        lablist.x <- as.vector(c(1,50,100,500,1000,10000,100000,200000))
+        axis(side=1,at=c(1,50,100,500,1000,10000,100000,200000),labels=FALSE)
+        #text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 1300,srt = 38,pos = 3, xpd = TRUE)
+
+        ## distance to x axis
+        if (plot_name %in% c("100000Ne_200hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
+            text(x=c(1,50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 3500,srt = 38,pos = 3, xpd = TRUE)
+        } else if (plot_name %in% c("100000Ne_200hapS_2E_100_500G_2i_2i_20Chr_15Mb")) {
+            text(x=c(1,50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 15000,srt = 38,pos = 3, xpd = TRUE)
+        } else {
+            #,"1000000Ne_200hapS_2E_100_500G_2e_i_2e_d_20Chr_15Mb","1000000Ne_200hapS_2E_100_500G_2e_d_2e_i_20Chr_15Mb"
+            text(x=c(1,50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 15000,srt = 38,pos = 3, xpd = TRUE)
+        }
 
         ## add plot title in each plot
         mtext(side=3,text=paste0("100000Ne_200hapS_2E_",generation,"_",event,"_20Chr_15Mb"),cex=0.8,line=1.2)
@@ -134,17 +149,17 @@ for (generation in c("100_500G")){
                 if (x <= 100) {
                     return(50000*(1.0069^x))
                 } else if (100 < x & x <=500) {
-                    return(11855*(0.9983^x))
+                    return(117068*(0.9983^x))
                 } else {
-                    return(11855*(0.9983^500))
+                    return(117068*(0.9983^500))
                 }
             } else if (all(sapply(c("100_500G","2e_d_2e_i"), grepl, plot_name))) {
                 if (x <= 100) {
                     return(50000*(0.9931^x))
                 } else if (100 < x & x <=500) {
-                    return(2109*(1.0017^x))
+                    return(21386*(1.0017^x))
                 } else {
-                    return(2109*(1.0017^500))
+                    return(21386*(1.0017^500))
                 }
             } else {
             #    ## return empty value

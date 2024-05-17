@@ -1,6 +1,3 @@
-library(gtools)
-library(fs)
-library(stringr)
 
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp")
 final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp"
@@ -10,12 +7,16 @@ file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "fil
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
+library(gtools)
+library(fs)
+library(stringr)
+
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp")
 
 ## check the files
 #mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*100_500G*80hapS*.final.summary")))
 
-pdf(paste0("combined.1000000Ne_80hapS_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.pdf"),width = 20, height = 25)
+pdf(paste0("combined.1000000Ne_80hapS_5rep_10d_10d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.test_fun.pdf"),width = 20, height = 25)
 #pdf(paste0("combined.1000000Ne_80hapS_5rep.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
@@ -116,11 +117,16 @@ for (generation in c("100_500G")){
         #plot_name <- c("1000000Ne_80hapS_2E_1000G_1.1i_20Chr_15Mb","1000000Ne_80hapS_2E_1000G_1.5i_20Chr_15Mb","1000000Ne_80hapS_2E_1000G_1.9i_20Chr_15Mb","1000000Ne_80hapS_2E_1000G_0.5e_d_1.5i_20Chr_15Mb")
         
         ## category
+        ## correct
+        #"2e_d_2e_i" (2e_d:N0=500000,r1=-0.006931471,t1=100,λ1=e^r1=0.993093,Nt1=λ^t1;2e_i:t2=400,r2=0.00173275,λ2=e^r2=1.0017343,Nt2=Nt1*λ^t2)
+        #"2e_i_2e_d" (2e_i:N0=500000,r1=0.00693147,t1=100,λ1=e^r1=1.006955,Nt1=λ^t1;2e_d:t2=400,r2=-0.00173275,λ2=e^r2=0.5,Nt2=Nt1*λ^t2)
+        #"10d_10d" (r1=0.1,Ne1=r1*Ne=0.1*5000;r2=0.1),"2i_2i" (r1=2;r2=2) # nolint
+        
         ## "4e_d_4i","10e_d_10i","4e_i_4d","10e_i_10d"
-        ## 100G "2e_i_2e_d" (r=0.0069,t=100,λ=e^r=1.0069),"2e_d_2e_i" (r=-0.0069,λ=e^r=0.9931),"10d_10d" (r1=0.1,Ne1=r1*Ne=0.1*5000;r2=0.1),"2i_2i" (r1=2;r2=2) # nolint
-        ## 500G "2e_i_2e_d" (r=-0.0069,t=500,λ=e^r=0.9931),"2e_d_2e_i" (r=0.0069,λ=e^r=1.0069),"10d_10d" (r1=0.1,r2=0.1),"2i_2i" (r1=2;r2=2)
- 
-        ## 500G "2e_i_2e_d" (r=-0.0017,t=500,λ=e^r=0.9983),"2e_d_2e_i" (r=0.0017,λ=e^r=1.0017),"10d_10d" (r1=0.1,r2=0.1),"2i_2i" (r1=2;r2=2)
+        ## 100G "2e_i_2e_d" (r=0.0069,t=100,λ=e^r=1.0069),
+           
+        ## 500G "2e_i_2e_d" (r=-0.006931,t=500,λ=e^r=0.9931),"2e_d_2e_i" (r=0.0069,λ=e^r=1.0069),"10d_10d" (r1=0.1,r2=0.1),"2i_2i" (r1=2;r2=2)
+        ## 500G "2e_i_2e_d" (r=-0.0017,t=400,rt=-0.17,λ=e^rt=0.8437),"2e_d_2e_i" (r=0.0017,t=100,rt=0.17,λ=e^rt=1.1853),"10d_10d" (r1=0.1,r2=0.1),"2i_2i" (r1=2;r2=2)
  
         ## r -> rate; λ=e^r; (e^r)^t=λ^t
         ## lambda <- e^r
@@ -151,19 +157,19 @@ for (generation in c("100_500G")){
                 }
             } else if (all(sapply(c("100_500G","2e_i_2e_d"), grepl, plot_name))) {
                 if (x <= 100) {
-                    return(500000*(1.0069^x))
+                    return(500000*(exp(log(2)/100*x)))
                 } else if (100 < x & x <=500) {
-                    return(1170686*(0.9983^x))
+                    return(500000*(exp(log(2)/100*100))*(exp(log(1/2)/400*(x-100))))
                 } else {
-                    return(1170686*(0.9983^500))
+                    return(500000*(exp(log(2)/100*100))*(exp(log(1/2)/400*400)))
                 }
             } else if (all(sapply(c("100_500G","2e_d_2e_i"), grepl, plot_name))) {
                 if (x <= 100) {
-                    return(500000*(0.9931^x))
+                    return(500000*(exp(log(0.5)/100*x)))
                 } else if (100 < x & x <=500) {
-                    return(213862*(1.0017^x))
+                    return(500000*(exp(log(0.5)/100*100))*(exp(log(2)/400*(x-100))))
                 } else {
-                    return(213862*(1.0017^500))
+                    return(500000*(exp(log(0.5)/100*100))*(exp(log(2)/400*400)))
                 }
             } else {
             #    ## return empty value
