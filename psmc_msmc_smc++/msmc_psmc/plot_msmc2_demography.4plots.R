@@ -47,7 +47,7 @@ lines(get(paste0("a","1"))$left_time_boundary/mu*gen,(1/get(paste0("a","1"))$lam
 
 >>>>>>>>>>>>>>>>>> below checked <<<<<<<<<<<<<<<<<<
 
-pdf(paste0("MSMC_pas_vet_hae_mar.bootstrap.new4.pdf"),width = 20, height = 25)
+pdf(paste0("MSMC_pas_vet_hae_mar.bootstrap.grid.pdf"),width = 20, height = 25)
 ## set number of plot in a figure
 #par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 
@@ -71,51 +71,64 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
     print(head(paste0(group,"_Dat")))
     #plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1e3,5e7), ylim=c(1e5,1e6),log="x", xlab="Years ago", ylab="Effective population size")
     if (group %in% c("pas_REF_pas")) {
-        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,5.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="", ylab="Effective population size",yaxt='n')
+        ## axis label format: https://stackoverflow.com/questions/15480082/mathematical-expression-in-axis-label
+        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="", ylab=expression(paste(italic("N")["e"])),xaxt='n',yaxt='n')
+        x_label <- c(1000,10000,100000,1000000,10000000)        
         y_label <- c(1e4,2e5,4e5,6e5,8e5)
-        axis(side=2, at=y_label,label=c(formatC(y_label,format="e",digits=0)))
+        axis(side=1, at=x_label,label=c(formatC(x_label,format="f",digits=0)))         
+        axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
         mtext(side=3,text=paste0("MSMC_BomPas",substr(group,4,8),"BomPas"),cex=1.2,line=2)
 
     } else if (group %in% c("vet_REF_pas")) {
-        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,5.0e+7), ylim=c(1000,4.5e+6),log="x", xlab="", ylab="",yaxt='n')
+        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1000,4.5e+6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+        x_label <- c(1000,10000,100000,1000000,10000000)        
         y_label <- c(1000,500000,2000000,3000000,4000000)
         ## format axis label in desired scientific notation
         ## https://stackoverflow.com/questions/39623636/forcing-r-output-to-be-scientific-notation-with-at-most-two-decimals
-        axis(side=2, at=y_label,label=c(formatC(y_label,format="e",digits=0)))
+        axis(side=1, at=x_label,label=c(formatC(x_label,format="f",digits=0)))         
+        axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
         
         ## add plot title in each plot
         mtext(side=3,text=paste0("MSMC_BomVet",substr(group,4,8),"BomPas"),cex=1.2,line=2)
 
     } else if (group %in% c("hae_REF_hae")) {
-        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,5.0e+7), ylim=c(1000,4.5e+6),log="x", xlab="Years ago", ylab="Effective population size",yaxt='n')
+        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1000,4.5e+6),log="x", xlab="Years ago", ylab=expression(paste(italic("N")["e"])),xaxt='n',yaxt='n')
+        x_label <- c(1000,10000,100000,1000000,10000000)        
         y_label <- c(1000,500000,2000000,3000000,4000000)
-        axis(side=2, at=y_label,label=c(formatC(y_label,format="e",digits=0)))
+        axis(side=1, at=x_label,label=c(formatC(x_label,format="f",digits=0)))         
+        axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
         mtext(side=3,text=paste0("MSMC_AndHae",substr(group,4,8),"AndHae"),cex=1.2,line=2)
 
     } else if (group %in% c( "mar_REF_mar")) {
-        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,5.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="Years ago", ylab="",yaxt='n')
+        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+        x_label <- c(1000,10000,100000,1000000,10000000)        
         y_label <- c(1e4,2e5,4e5,6e5,8e5)
-        axis(side=2, at=y_label,label=c(formatC(y_label,format="e",digits=0)))
+        axis(side=1, at=x_label,label=c(formatC(x_label,format="f",digits=0)))         
+        axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
         mtext(side=3,text=paste0("MSMC_AndMar",substr(group,4,8),"AndMar"),cex=1.2,line=2)
 
     } else if (group %in% c( "mar_REF_hat")) {
-        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,5.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="Years ago", ylab="Effective population size",yaxt='n')
+        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="Years ago", ylab=expression(paste(italic("N")["e"])),xaxt='n',yaxt='n')
+        x_label <- c(1000,10000,100000,1000000,10000000)        
         y_label <- c(1e4,2e5,4e5,6e5,8e5)
-        axis(side=2, at=y_label,label=c(formatC(y_label,format="e",digits=0)))
+        axis(side=1, at=x_label,label=c(formatC(x_label,format="f",digits=0)))         
+        axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
         mtext(side=3,text=paste0("MSMC_AndMar",substr(group,4,8),"AndHat"),cex=1.2,line=2)
 
     } else if (group %in% c( "mar_REF_hae")) {
-        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,5.0e+7), ylim=c(1000,4.5e+7),log="x", xlab="Years ago", ylab="",yaxt='n')
+        plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1000,4.5e+7),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+        x_label <- c(1000,10000,100000,1000000,10000000)
         y_label <- c(1000,1000000,5000000,10000000,20000000,40000000)
-        axis(side=2, at=y_label,label=c(formatC(y_label,format="e",digits=0)))
+        axis(side=1, at=x_label,label=c(formatC(x_label,format="f",digits=0)))        
+        axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
         #axis(side=2, at=c(1000,250000,1000000,3000000,4000000,10000000),label=c(format(c(1000,250000,1000000,3000000,4000000,10000000),scientific=TRUE)))
 
         ## add plot title in each plot
@@ -127,12 +140,18 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
     ## without showing ticks xaxt='n',yaxt='n'
     title(line=4)
 
+    ## add grid
+    grid(nx = NULL, ny = NULL,
+        lty = 2,      # Grid line type
+        col = "gray", # Grid line color
+        lwd = 0.5)      # Grid line width
+
     ## add plot title in each plot
     #mtext(side=3,text=paste0("MSMC_",substr(group,)),cex=1.2,line=2)
 
     ## add line to indicate ice-age [11550-12800], Wiki
-    abline(h=500, v=12800,col="grey",lwd=1.8)  # add a vertical line at 13,000 years ago to indicate end of last glaction
-    abline(v=11550,col="grey",lwd=1.8)
+    abline(v=12800,col="darkorange",lwd=1)  # add a vertical line at 13,000 years ago to indicate end of last glaction
+    abline(v=11550,col="darkorange",lwd=1)
     #lines(c(1:100),rep(100,100), type="s", col="red")
     ## add replicate lines
     #par(new=TRUE)
@@ -156,7 +175,7 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
     
     ## add legend in specific plot
     if (all(sapply(c("pas_REF_pas"), grepl, group))) {
-    legend("topright",c("whole-genome","bootstrap"),col = adjustcolor(c("red","blue"), alpha = 0.8),cex=1.5,lty=c(1,1),lwd=c(2.5,2),bty="n")
+    legend("topleft",c("whole-genome","bootstrap","LGM"),col = adjustcolor(c("red","blue","darkorange"), alpha = 0.8),cex=1.5,lty=c(1,1),lwd=c(2.5,2,2),bty="n")
     } else {
         NULL
     }
