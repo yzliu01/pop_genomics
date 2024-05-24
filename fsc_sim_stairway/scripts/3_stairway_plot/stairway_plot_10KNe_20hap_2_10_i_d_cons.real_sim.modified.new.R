@@ -43,6 +43,11 @@ for (generation in c("50G","100G","500G","1000G")){
         ## conditional axis name plot
         plot_name <- paste0("10000Ne_20hapS_1E_",generation,"_",event,"_20Chr_15Mb")
         #print(plot_name)
+        ## print names with newline 
+        cat("\n",plot_name,"\n\n")
+## debug
+#    }
+#}
         
         if (plot_name %in% c("10000Ne_20hapS_1E_50G_2e_d_cons_20Chr_15Mb", "10000Ne_20hapS_1E_100G_2e_d_cons_20Chr_15Mb", "10000Ne_20hapS_1E_500G_2e_d_cons_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.5e4),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
@@ -101,7 +106,7 @@ for (generation in c("50G","100G","500G","1000G")){
         for (rep in c(1:5)){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_10000Ne_20hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*20hapS*.final.summary"))),header=T,sep="\t"))
-            ##print(head(get(paste0("a",rep)),n=2L))
+            print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_10000Ne_20hapS_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             ##print(head(data))

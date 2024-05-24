@@ -32,6 +32,11 @@ for (generation in c("50G","100G","500G","1000G")){
         ## conditional axis name plot
         plot_name <- paste0("10000Ne_20hapS_1E_",generation,"_",event,"_20Chr_15Mb")
         #print(plot_name)
+        ## print names with newline 
+        cat("\n",plot_name,"\n\n")
+## debug
+#    }
+#}
         
         if (plot_name %in% c("10000Ne_20hapS_1E_50G_cons_20Chr_15Mb", "10000Ne_20hapS_1E_100G_cons_20Chr_15Mb", "10000Ne_20hapS_1E_500G_cons_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
