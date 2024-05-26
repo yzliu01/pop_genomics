@@ -1,12 +1,12 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 10
-#SBATCH --mem 150g
-#SBATCH --array=2-5%4
+#SBATCH --mem 10g
+#SBATCH --array=1-6%6
 #SBATCH --time=2-00:00:00
-#SBATCH --error=popoolation_pi.New_REF_BomPas_AndHae_AndMar.%A_%a.e
-#SBATCH --output=popoolation_pi.New_REF_BomPas_AndHae_AndMar.%A_%a.o
-#SBATCH --job-name=popoolation_pi.New_REF_BomPas_AndHae_AndMar
+#SBATCH --error=popoolation_pi.vet_hae_mar.new.%A_%a.e
+#SBATCH --output=popoolation_pi.vet_hae_mar.new.%A_%a.o
+#SBATCH --job-name=popoolation_pi.vet_hae_mar
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -26,6 +26,7 @@ REF_INDEX_list=(
     "Bombus_pascuorum-GCA_905332965.1-softmasked.fa"
     "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa"
     "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa"
+    "Andrena_hattorfiana-GCA_944738655.1-softmasked.fa"
     "Andrena_marginata_GCA_963932335.1-softmasked.fa"
 )
 REF_INDEX=$(echo ${REF_INDEX_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
@@ -37,6 +38,7 @@ IN_BAM_list=(
     "Bomvet.New_REF_BomPas.sort.marked_dups.bam"
     "Andhae.New_REF_AndHae.sort.marked_dups.bam"
     "Andmar.New_REF_AndHae.sort.marked_dups.bam"
+    "Andmar.New_REF_AndHat.sort.marked_dups.bam"
     "Andmar.New_REF_AndMar.sort.marked_dups.bam"
 )
 IN_BAM=$(echo ${IN_BAM_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
@@ -44,20 +46,20 @@ IN_BAM=$(echo ${IN_BAM_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_mpileup
 ## pool size
 POOL_SIZE_list=(
-    68 58 78 80 80
+    68 58 78 80 80 80
 )
 POOL_SIZE=$(echo ${POOL_SIZE_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## array jobs
-time \
-samtools mpileup -f $REF_DIR/$REF_INDEX $BAM_DIR/$IN_BAM > \
-    $OUT_DIR/$IN_BAM.mpileup
+#time \
+#samtools mpileup -f $REF_DIR/$REF_INDEX $BAM_DIR/$IN_BAM > \
+#    $OUT_DIR/$IN_BAM.mpileup
 
 ## array jobs to calculate Tajima's pi
 cd $OUT_DIR
 
 time \
-perl $Variance_sliding_pl --measure pi --input $BAM_DIR/$IN_BAM.mpileup --output $OUT_DIR/$IN_BAM.mpileup.pi \
-    --min-count 3 --min-coverage 200 --max-coverage 1500 --window-size 10000 --step-size 10000 \
+perl $Variance_sliding_pl --measure pi --input $OUT_DIR/$IN_BAM.mpileup --output $OUT_DIR/$IN_BAM.mpileup.50kb.pi \
+    --min-count 2 --min-coverage 200 --max-coverage 1500 --window-size 50000 --step-size 50000 \
     --pool-size $POOL_SIZE --fastq-type illumina
 
 

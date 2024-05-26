@@ -102,11 +102,11 @@ for (generation in c("50G","100G","500G","1000G")){
         ##100000Ne_20hapS_1E_50G_10e_i_cons_20Chr_15Mb
         ## distance to x axis
         if (plot_name %in% c("100000Ne_20hapS_1E_50G_10e_i_cons_20Chr_15Mb","100000Ne_20hapS_1E_100G_10e_i_cons_20Chr_15Mb","100000Ne_20hapS_1E_500G_10e_i_cons_20Chr_15Mb","100000Ne_20hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 40000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 50000,srt = 38,pos = 3, xpd = TRUE)
         } else if (plot_name %in% c("100000Ne_20hapS_1E_50G_2e_i_cons_20Chr_15Mb","100000Ne_20hapS_1E_100G_2e_i_cons_20Chr_15Mb","100000Ne_20hapS_1E_500G_2e_i_cons_20Chr_15Mb","100000Ne_20hapS_1E_1000G_2e_i_cons_20Chr_15Mb")) {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 10000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 20000,srt = 38,pos = 3, xpd = TRUE)
         } else {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 4000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 14000,srt = 38,pos = 3, xpd = TRUE)
         }
 
         ## add plot title in each plot
