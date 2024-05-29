@@ -47,7 +47,7 @@ lines(get(paste0("a","1"))$left_time_boundary/mu*gen,(1/get(paste0("a","1"))$lam
 
 >>>>>>>>>>>>>>>>>> below checked <<<<<<<<<<<<<<<<<<
 
-pdf(paste0("MSMC_pas_vet_hae_mar.bootstrap.grid.pdf"),width = 20, height = 25)
+pdf(paste0("MSMC_pas_vet_hae_mar.bootstrap.grid.new.pdf"),width = 20, height = 25)
 ## set number of plot in a figure
 #par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 
@@ -79,7 +79,8 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
         axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
-        mtext(side=3,text=paste0("MSMC_BomPas",substr(group,4,8),"BomPas"),cex=1.2,line=2)
+        #mtext(side=3,text=paste0("MSMC_BomPas",substr(group,4,8),"BomPas"),cex=1.2,line=2)
+        mtext(side=3,text=expression(paste(bold("MSMC: "), bolditalic("B. pascuorum"), bold(" mapped to "), bolditalic("B. pascuorum"))),cex=1.2,line=2)
 
     } else if (group %in% c("vet_REF_pas")) {
         plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1000,4.5e+6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
@@ -91,7 +92,7 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
         axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
         
         ## add plot title in each plot
-        mtext(side=3,text=paste0("MSMC_BomVet",substr(group,4,8),"BomPas"),cex=1.2,line=2)
+        mtext(side=3,text=expression(paste(bold("MSMC: "), bolditalic("B. veteraunus"), bold(" mapped to "), bolditalic("B. pascuorum"))),cex=1.2,line=2)
 
     } else if (group %in% c("hae_REF_hae")) {
         plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1000,4.5e+6),log="x", xlab="Years ago", ylab=expression(paste(italic("N")["e"])),xaxt='n',yaxt='n')
@@ -101,7 +102,7 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
         axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
-        mtext(side=3,text=paste0("MSMC_AndHae",substr(group,4,8),"AndHae"),cex=1.2,line=2)
+        mtext(side=3,text=expression(paste(bold("MSMC: "), bolditalic("A. haemorrhoa"), bold(" mapped to "), bolditalic("A. haemorrhoa"))),cex=1.2,line=2)
 
     } else if (group %in% c( "mar_REF_mar")) {
         plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
@@ -111,7 +112,7 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
         axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
-        mtext(side=3,text=paste0("MSMC_AndMar",substr(group,4,8),"AndMar"),cex=1.2,line=2)
+        mtext(side=3,text=expression(paste(bold("MSMC: "), bolditalic("A. marginata"), bold(" mapped to "), bolditalic("A. marginata"))),cex=1.2,line=2)
 
     } else if (group %in% c( "mar_REF_hat")) {
         plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1.0e+4,8.0e+5),log="x", xlab="Years ago", ylab=expression(paste(italic("N")["e"])),xaxt='n',yaxt='n')
@@ -121,7 +122,7 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
         axis(side=2, at=y_label,label=c(formatC(y_label,format="f",digits=0)))
 
         ## add plot title in each plot
-        mtext(side=3,text=paste0("MSMC_AndMar",substr(group,4,8),"AndHat"),cex=1.2,line=2)
+        mtext(side=3,text=expression(paste(bold("MSMC: "), bolditalic("A. marginata"), bold(" mapped to "), bolditalic("A. hattorfiana"))),cex=1.2,line=2)
 
     } else if (group %in% c( "mar_REF_hae")) {
         plot(get(paste0(group,"_Dat"))$left_time_boundary/mu,(1/get(paste0(group,"_Dat"))$lambda/(2*mu)), type="n", xlim=c(1.0e+3,1.0e+7), ylim=c(1000,4.5e+7),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
@@ -132,7 +133,7 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
         #axis(side=2, at=c(1000,250000,1000000,3000000,4000000,10000000),label=c(format(c(1000,250000,1000000,3000000,4000000,10000000),scientific=TRUE)))
 
         ## add plot title in each plot
-        mtext(side=3,text=paste0("MSMC_AndMar",substr(group,4,8),"AndHae"),cex=1.2,line=2)
+        mtext(side=3,text=expression(paste(bold("MSMC: "), bolditalic("A. marginata"), bold(" mapped to "), bolditalic("A. haemorrhoa"))),cex=1.2,line=2)
     } else {
         NULL
     }

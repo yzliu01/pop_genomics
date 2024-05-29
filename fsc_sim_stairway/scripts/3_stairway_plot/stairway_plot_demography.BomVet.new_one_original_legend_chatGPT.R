@@ -29,15 +29,15 @@ file_list_a <- c(
                 )
 
 file_list_b <- c(             
-                "BomVet_REF_BomPas.no_singleton_174_1500x", 
-                "BomVet_REF_BomPas.no_singleton_290_1500x",
-                "BomVet_REF_BomPas.no_singleton_416_1500x",
-                "BomVet_REF_BomHyp.no_singleton_174_1500x",
-                "BomVet_REF_BomHyp.no_singleton_290_1500x",
-                "BomVet_REF_BomHyp.no_singleton_416_1500x",
-                "BomVet_REF_ApisMel.no_singleton_174_1500x",
-                "BomVet_REF_ApisMel.no_singleton_290_1500x",
-                "BomVet_REF_ApisMel.no_singleton_416_1500x"
+                expression(paste(bold("Ref_species_1: "), bolditalic("B. pascuorum"), bold(" | Coverage: 174-1500x"))), 
+                expression(paste(bold("Ref_species_1: "), bolditalic("B. pascuorum"), bold(" | Coverage: 290-1500x"))),
+                expression(paste(bold("Ref_species_1: "), bolditalic("B. pascuorum"), bold(" | Coverage: 416-1500x"))),
+                expression(paste(bold("Ref_species_2: "), bolditalic("B. hypnorum"), bold(" | Coverage: 174-1500x"))),
+                expression(paste(bold("Ref_species_2: "), bolditalic("B. hypnorum"), bold(" | Coverage: 290-1500x"))),
+                expression(paste(bold("Ref_species_2: "), bolditalic("B. hypnorum"), bold(" | Coverage: 416-1500x"))),
+                expression(paste(bold("Ref_species_3: "), bolditalic("A. mellifera"), bold(" | Coverage: 174-1500x"))),
+                expression(paste(bold("Ref_species_3: "), bolditalic("A. mellifera"), bold(" | Coverage: 290-1500x"))),
+                expression(paste(bold("Ref_species_3: "), bolditalic("A. mellifera"), bold(" | Coverage: 416-1500x")))
                 )
 
 ## initialize a list to store plot
@@ -52,8 +52,8 @@ plot_list <- list()
 ## get vector index: https://stackoverflow.com/questions/48205370/how-to-get-index-in-a-loop-in-r
 ## save pdf: https://stackoverflow.com/questions/44711236/set-the-size-of-ggsave-exactly
 ## format in label: https://www.geeksforgeeks.org/superscript-and-subscript-axis-labels-in-ggplot2-in-r/; 
-## https://stackoverflow.com/questions/17334759/subscript-letters-in-ggplot-axis-label; https://stackoverflow.com/questions/67320474/using-subscript-and-italics-in-ggplot2-axis-labels
-## https://stackoverflow.com/questions/37825558/how-to-use-superscript-in-axis-labels-with-ggplot2; https://stackoverflow.com/questions/32555531/how-to-italicize-part-one-or-two-words-of-an-axis-title
+## https://stackoverflow.com/questions/17334759/subscript-letters-in-ggplot-axis-label; https://stackoverflow.com/questions/67320474/using-subscript-and-bolditalics-in-ggplot2-axis-labels
+## https://stackoverflow.com/questions/37825558/how-to-use-superscript-in-axis-labels-with-ggplot2; https://stackoverflow.com/questions/32555531/how-to-bolditalicize-part-one-or-two-words-of-an-axis-title
 ## add title and adjust position: https://stackoverflow.com/questions/40675778/center-plot-title-in-ggplot2
 ## add background grid: https://r-charts.com/ggplot2/grid/
 ## ! add shaded area: https://stackoverflow.com/questions/68770379/how-to-color-shade-the-area-between-two-lines-in-ggplot2
@@ -69,13 +69,13 @@ for (i in 1:length(file_list_a)){
     data <- read.table(file_path,header=TRUE,sep="\t")
 
     ## Determine which titles to show based on the plot position
-    #y_axis_title <- ifelse(i %in% c(1, 4, 7), expression(paste(italic("N")["e"])), NULL)
+    #y_axis_title <- ifelse(i %in% c(1, 4, 7), expression(paste(bolditalic("N")["e"])), NULL)
     #x_axis_title <- ifelse(i %in% c(7, 8, 9), "Year ago", NULL)
 
     ## Determine which titles to show based on the plot position
     print(i) # Add this line to see the value of i
     if (i %in% c(1, 2, 3)) {
-        y_axis_title <- expression(paste(italic("N")["e"]))
+        y_axis_title <- expression(paste(bolditalic("N")["e"]))
     } else {
         y_axis_title <- NULL
     }
@@ -88,14 +88,14 @@ for (i in 1:length(file_list_a)){
 p1_initial <- ggplot(data = data, aes(x = year)) +
     #xlim(1,150000)+
     #ylim(1,650000)+
-    scale_x_continuous(limits= c(1,85000),labels = function(year) format(year, scientific = FALSE)) +
+    scale_x_continuous(limits= c(10,85000),labels = function(year) format(year, scientific = FALSE)) +
     scale_y_continuous(limits= c(1,100000),labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
     geom_line(aes(y = Ne_median, color = "Ne_median"), linewidth = 0.7) +
     geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5., fill = "75%_CI"), alpha = 0.2) +
     #geom_line(aes(y = df1$Ne_12.5),color = "blue") +                        
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
     ## add legend manually
-    scale_color_manual(values = c("Ne_median" = "red"), labels = expression(italic("N")["e"],"_median")) +
+    scale_color_manual(values = c("Ne_median" = "red"), labels = expression(bolditalic("N")["e"],"_median")) +
     scale_fill_manual(values = c("75%_CI" = "blue")) +
     ## legends: https://stackoverflow.com/questions/73235117/vertical-gap-between-2-legends-in-ggplot2-vertical-gap-between-2-keys-in-the-sa
     ## revise legend line width: https://stackoverflow.com/questions/28872875/ggplot2-applying-width-of-line-to-the-legend-key
@@ -103,7 +103,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
 
     ## frame to select area on the plot
-    annotate(geom = "rect",xmin = 1, xmax = 15000, ymin = 1000, ymax = 90000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
+    annotate(geom = "rect",xmin = 10, xmax = 15000, ymin = 1000, ymax = 90000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
     theme_pubr( base_size = 14, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 14), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
     axis.title = element_text(colour = "black",size = 15), axis.ticks = element_line(colour = "black", size = 1.2),
@@ -113,7 +113,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     legend.position = c(0.7,0.48), legend.key.width=unit(1,"cm"),
     ## space between two legends: https://stackoverflow.com/questions/73235117/vertical-gap-between-2-legends-in-ggplot2-vertical-gap-between-2-keys-in-the-sa
     legend.margin =  margin(-14,0,0,0,unit="pt")) +
-    #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(italic("N")["e"])))
+    #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(bolditalic("N")["e"])))
     labs(title = file_list_b[i], x = x_axis_title, y = y_axis_title)
     #ggtitle(group)
     #ylab(bquote(N[e]))
@@ -123,7 +123,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
 p1_initial <- ggplot(data = data, aes(x = year)) +
     #xlim(1,150000)+
     #ylim(1,650000)+
-    scale_x_continuous(limits= c(1,85000),labels = function(year) format(year, scientific = FALSE)) +
+    scale_x_continuous(limits= c(10,85000),labels = function(year) format(year, scientific = FALSE)) +
     scale_y_continuous(limits= c(1,100000),labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
     geom_line(aes(y = Ne_median), color = "red", linewidth = 0.5) +
     geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.), fill = "blue", alpha = 0.2) +
@@ -131,21 +131,21 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
 
     ## frame to select area on the plot
-    annotate(geom = "rect", xmin = 1, xmax = 15000, ymin = 1000, ymax = 90000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
+    annotate(geom = "rect", xmin = 10, xmax = 15000, ymin = 1000, ymax = 90000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
     theme_pubr( base_size = 14, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 14), axis.text.y = element_text(angle = 90, vjust = 1, hjust=0.5),
     axis.title = element_text(colour = "black",size = 15), axis.ticks = element_line(colour = "black", size = 1.2),
     plot.title = element_text(hjust = 0.5, size=16), panel.border = element_rect(linewidth = 1.5),
     panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2)) +
-    #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(italic("N")["e"])))
+    #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(bolditalic("N")["e"])))
     labs(title = file_list_b[i], x = x_axis_title, y = y_axis_title)
     #ggtitle(group)
     #ylab(bquote(N[e]))
 }
     # axis of select area for zoom
 p1_zoom <- ggplot(data = data, aes(x = year)) +
-    #ylim(1,100000)+
-    scale_x_log10(lim= c(1,15000),labels = function(year) format(year, scientific = FALSE)) +
+    ylim(1,90000)+
+    scale_x_log10(lim= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
     geom_line(aes(y = (Ne_median)), color = "red", linewidth = 0.5) +
     geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.),fill = "blue",alpha = 0.2) +
     #geom_line(aes(y = df1$Ne_12.5),color = "blue") +                        
@@ -154,9 +154,9 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     #ylim (0, 70000) +
     theme_pubr( base_size = 12,border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 12), axis.title = element_text(colour = "black",size = 14),
-    panel.border = element_rect(linewidth = 1), panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
+    panel.border = element_rect(linewidth = 1.2), panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     axis.ticks = element_line(colour = "black", size = 1)) +
-    labs(x="Year ago (log transformed)",y=expression(paste(italic("N")["e"])))
+    labs(x="Year ago (log transformed)",y=expression(paste(bolditalic("N")["e"])))
     #scale_x_continuous(labels = function(year) format(year, scientific = FALSE))
 
 p1_final <- p1_initial + 
@@ -178,7 +178,7 @@ p1_final <- p1_initial +
 #***************************
 
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 3)
-pdf_file <- file.path(result_path,"BomVet_combined_plot.pdf")
+pdf_file <- file.path(result_path,"BomVet_combined_plot.new.pdf")
 ggsave(pdf_file,combined_plot,width = 20, height = 20)
 
 

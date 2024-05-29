@@ -1,4 +1,7 @@
 
+awk -F " " 'NR > 7 && NR < 10 {sum+=$2}END{print sum}' $BomVet_BomPas_COV
+less qualimap_mean_CocDP.txt | awk '{count++; Sum += $2} END {print Sum/count}'
+
 cd /home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned
 ## https://juejin.cn/s/linux%20%E6%89%B9%E9%87%8F%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%8D
 

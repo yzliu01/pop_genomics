@@ -88,3 +88,10 @@ out_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_st
 AndHae_pi=$out_dir/Andhae.New_REF_AndHae.sort.marked_dups.bam.mpileup.pi
 cd $out_dir
 perl $Visualise_output --input $AndHae_pi --output $AndHae_pi.pdf --ylab pi --chromosomes "1 2 3 4 5 6 7"
+
+
+## calculate mean pi
+grep -v 'na' Bompas.New_REF_BomPas.sort.marked_dups.bam.mpileup.COV4_400.pi | awk -F " " '{sum += $5;count++} END 
+{print sum/count}' 
+0.00381073
+

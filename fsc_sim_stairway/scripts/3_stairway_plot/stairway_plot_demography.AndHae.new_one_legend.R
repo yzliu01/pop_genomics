@@ -28,16 +28,17 @@ file_list_a <- c(
                 "AndHae_New_REF_BomPas.no_singleton_sfs_546_1500x_sm_genic"
                 )
 
-file_list_b <- c(             
-                "AndHae_REF_AndHae.no_singleton_234_1500x", 
-                "AndHae_REF_AndHae.no_singleton_390_1500x",
-                "AndHae_REF_AndHae.no_singleton_546_1500x",
-                "AndHae_REF_AndHat.no_singleton_234_1500x",
-                "AndHae_REF_AndHat.no_singleton_390_1500x",
-                "AndHae_REF_AndHat.no_singleton_546_1500x",
-                "AndHae_REF_BomPas.no_singleton_234_1500x",
-                "AndHae_REF_BomPas.no_singleton_390_1500x",
-                "AndHae_REF_BomPas.no_singleton_546_1500x"
+file_list_b <- c(       
+                #expression(paste("Ref1: ", bolditalic("B. pascuorum"), " (Coverage: 174-1500x")),       
+                expression(paste(bold("Ref_species_1: "), bolditalic("A. haemorrhoa"), bold(" | Coverage: 234_1500x"))), 
+                expression(paste(bold("Ref_species_1: "), bolditalic("A. haemorrhoa"), bold(" | Coverage: 390-1500x"))),
+                expression(paste(bold("Ref_species_1: "), bolditalic("A. haemorrhoa"), bold(" | Coverage: 546-1500x"))),
+                expression(paste(bold("Ref_species_2: "), bolditalic("A. hattorfiana"), bold(" | Coverage: 234-1500x"))),
+                expression(paste(bold("Ref_species_2: "), bolditalic("A. hattorfiana"), bold(" | Coverage: 390-1500x"))),
+                expression(paste(bold("Ref_species_2: "), bolditalic("A. hattorfiana"), bold(" | Coverage: 546-1500x"))),
+                expression(paste(bold("Ref_species_3: "), bolditalic("B. pascuorum"), bold(" | Coverage: 234-1500x"))),
+                expression(paste(bold("Ref_species_3: "), bolditalic("B. pascuorum"), bold(" | Coverage: 390-1500x"))),
+                expression(paste(bold("Ref_species_3: "), bolditalic("B. pascuorum"), bold(" | Coverage: 546-1500x")))
                 )
 
 ## initialize a list to store plot
@@ -88,7 +89,7 @@ for (i in 1:length(file_list_a)){
 p1_initial <- ggplot(data = data, aes(x = year)) +
     #xlim(1,150000)+
     #ylim(1,650000)+
-    scale_x_continuous(limits= c(1,200000),labels = function(year) format(year, scientific = FALSE)) +
+    scale_x_continuous(limits= c(10,200000),labels = function(year) format(year, scientific = FALSE)) +
     scale_y_continuous(limits= c(1,750000),labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
     geom_line(aes(y = Ne_median, color = "Ne_median"), linewidth = 0.7) +
     geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5., fill = "75%_CI"), alpha = 0.2) +
@@ -103,7 +104,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
 
     ## frame to select area on the plot
-    annotate(geom = "rect", xmin = 1, xmax = 15000, ymin = 1000, ymax = 700000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
+    annotate(geom = "rect", xmin = 10, xmax = 15000, ymin = 1000, ymax = 700000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
     theme_pubr( base_size = 14, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 14), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
     axis.title = element_text(colour = "black",size = 15), axis.ticks = element_line(colour = "black", size = 1.2),
@@ -123,7 +124,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
 p1_initial <- ggplot(data = data, aes(x = year)) +
     #xlim(1,150000)+
     #ylim(1,650000)+
-    scale_x_continuous(limits= c(1,200000),labels = function(year) format(year, scientific = FALSE)) +
+    scale_x_continuous(limits= c(10,200000),labels = function(year) format(year, scientific = FALSE)) +
     scale_y_continuous(limits= c(1,750000),labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
     geom_line(aes(y = Ne_median), color = "red", linewidth = 0.5) +
     geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.), fill = "blue", alpha = 0.2) +
@@ -131,7 +132,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
 
     ## frame to select area on the plot
-    annotate(geom = "rect", xmin = 1, xmax = 15000, ymin = 1000, ymax = 700000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
+    annotate(geom = "rect", xmin = 10, xmax = 15000, ymin = 1000, ymax = 700000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
     theme_pubr( base_size = 14, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 14), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
     axis.title = element_text(colour = "black",size = 15), axis.ticks = element_line(colour = "black", size = 1.2),
@@ -144,9 +145,9 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
 }
     # axis of select area for zoom
 p1_zoom <- ggplot(data = data, aes(x = year)) +
-    #ylim(1,100000)+
+    #ylim(1,700000) +
     geom_line(aes(y = (Ne_median)), color = "red", linewidth = 0.5) +
-    geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.),fill = "blue",alpha = 0.2) +
+    geom_ribbon(aes(ymin = Ne_12.5., ymax = Ne_87.5.), fill = "blue", alpha = 0.2) +
     #geom_line(aes(y = df1$Ne_12.5),color = "blue") +                        
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
     #xlim (1, 200000) +
@@ -156,12 +157,12 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     panel.border = element_rect(linewidth = 1.2),panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     axis.ticks = element_line(colour = "black", size = 1))+
     labs(x="Year ago (log transformed)",y=expression(paste(italic("N")["e"]))) +
-    scale_x_log10(limits= c(1,15000),labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(labels = function(Ne_median) format(Ne_median, scientific = FALSE))
+    scale_x_log10(limits= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
+    scale_y_continuous(limits = c(1000,700000), labels = function(Ne_median) format(Ne_median, scientific = FALSE))
 
 p1_final <- p1_initial + 
     ## position of zoom plot
-    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 200000, ymin = 300000, ymax = 750000) +
+    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 200000, ymin = 300000, ymax = 750000) +    
     ## position of annotation frame
     geom_rect(aes(xmin = 50000, xmax = 200000, ymin = 300000, ymax = 750000), color='black', linetype='dashed', linewidth=0.5, alpha=0) +
     ## conncetion line to one side of the frame [geom_rect]
@@ -177,7 +178,7 @@ p1_final <- p1_initial +
 #***************************
 
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 3)
-pdf_file <- file.path(result_path,"AndHae_combined_plot.pdf")
+pdf_file <- file.path(result_path,"AndHae_combined_plot.new.pdf")
 ggsave(pdf_file,combined_plot,width = 20, height = 20)
 
 
