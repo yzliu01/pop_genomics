@@ -90,16 +90,14 @@ sed -e 's/OU.*.chromosome:\s/chr/' -e 's/OU.*.mitochondrion/mt/' -e 's/\sBombus.
 grep '>' iyAndHatt_8785v1_2.fa | sed -e 's/\sAndrena.*.sequence//'
 sed -e 's/\sAndrena.*.sequence//' iyAndHatt_8785v1_2.fa > iyAndHatt_8785v1_2.md.fa
 
-***************************  NEW REF ********************************************
-
+#***************************  NEW REF ********************************************
 1. # index fasta file - bwa index -a bwtsw reference.fa 
 conda create -n variant_calling bwa samtools bamtools freebayes
 conda create -n variant_calling picard gatk vcftools bcftools plink
 conda install picard gatk vcftools bcftools plink
 conda rename -n variant_calling variant_calling_mapping
 
-bwa/0.7.17
-
+#bwa/0.7.17
 
 conda activate variant_calling_mapping
 ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/
@@ -116,6 +114,7 @@ bwa index -a bwtsw Amel_HAv3_1.md_chr.fa
 
 ## softmasked reference genome
 for masked_ref in `ls *softmasked.fa`
+for masked_ref in `ls -t *softmasked.fa | head -4`
     do
     bwa index -a bwtsw $masked_ref
 done
@@ -136,6 +135,7 @@ samtools faidx iyBomHypn_7925v1_2.md_chr.fa
 samtools faidx Amel_HAv3_1.md_chr.fa
 
 for masked_ref in `ls *softmasked.fa`
+for masked_ref in `ls -t *softmasked.fa | head -4`
     do
     samtools faidx $masked_ref
 done
@@ -196,6 +196,7 @@ done
 ## use self softmasked REF
 conda activate gatk_4.3.0.0
 for masked_ref_dick in `ls Andrena_marginata*softmasked.fa`
+for masked_ref_dick in `ls -t *softmasked.fa | head -4`
     do
     out_masked_ref_dick=${masked_ref_dick/.fa/}
     gatk CreateSequenceDictionary \

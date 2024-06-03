@@ -108,6 +108,7 @@ for Ref_New in `ls *-softmasked.fa`
     fasta_generate_regions.py $Ref_New 2000000 > $Regions_New/$Out_Region_Name
 done
 
+## final plan
 for Ref_New in `ls *-softmasked.fa`
     do
     Out_Region_Name=${Ref_New/.fa/.fb_100kb.regions}
@@ -121,6 +122,22 @@ for Ref_New in `ls Andrena_marginata*-softmasked.fa`
     fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
 done
 ## count=2976 segments
+
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+REF1_list=(
+            #"Andrena_fulva-GCA_946251845.1-softmasked.fa"
+            #"Andrena_trimmerana-GCA_951215215.1-softmasked.fa"
+            #"Bombus_hortorum-GCA_905332935.1-softmasked.fa"
+            #"Bombus_hortorum-GCA_905332935.1-softmasked.fa"
+            "Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
+            "Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
+            )
+
+for Ref_New in `ls -t *-softmasked.fa | head -4`
+    do
+    Out_Region_Name=${Ref_New/.fa/.fb_100kb.regions}
+    fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
+done
 
 ##
 AndHat_Ref_Regions=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions/Andrena_hattorfiana-GCA_944738655.1-softmasked.fb_2Mb.regions
