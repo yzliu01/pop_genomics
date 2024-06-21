@@ -3,9 +3,13 @@
 
 ## mean + sd in R
 
+## old_pi
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_mpileup")
+## new_pi
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/stats")
 
 pi_files <- list.files(pattern="COV4_400.pi$")
+pi_files <- list.files(pattern=".allele.freq.pi")
 pi_files[1]
 pi_BomPas_REF_BomPas <- read.table("Bompas.New_REF_BomPas.sort.marked_dups.bam.mpileup.COV4_400.pi",header=F,sep="\t")
 head(pi_BomPas_REF_BomPas)
@@ -40,12 +44,23 @@ pi_list <- c(
     "Bomvet.New_REF_BomPas.sort.marked_dups.bam.mpileup.COV4_400.pi"
 )
 
+pi_list <- c(
+    "vcf_hae2hae.allele.freq.pi",
+    "vcf_mar2mar.allele.freq.pi",
+    "vcf_pas2pas.allele.freq.pi",
+    "vcf_vet2pas.allele.freq.pi"
+)
+
 #pi_data <- file.path(pi_files_path,pi_list[2])
 #df2 <- read.table(pi_data,header=F,sep="\t")
 
 
 pi_files_path <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_mpileup"
 setwd(pi_files_path)
+
+## new_pi
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/stats")
+pi_files_path <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/stats"
 
 ## create a function to read data
 read_table <- function(x){
@@ -63,8 +78,43 @@ df3 <- read_table(3)
 df4 <- read_table(4)
 df5 <- read_table(5)
 df6 <- read_table(6)
-#head(df1)
+
+head(df1)
 #head(df5)
+********************************
+# vcf_hae2hae
+DP234_1500x
+294076304
+vcf_hae2hae_mean_across_genome <- sum(df1$V7)/294076304
+0.001042363
+vcf_hae2hae_sd <- sd(as.numeric(df1$V7/294076304),na.rm = TRUE)
+5.221605e-10
+
+# vcf_mar2mar
+DP240_1500x
+284858344
+vcf_mar2mar_mean_across_genome <- sum(df2$V7)/262425280
+0.0005090196
+vcf_mar2mar_sd <- sd(as.numeric(df2$V7/262425280),na.rm = TRUE)
+6.708226e-10
+
+# vcf_pas2pas
+DP204_1500x
+262425280
+vcf_pas2pas_mean_across_genome <- sum(df3$V7)/262425280
+0.0007684911
+vcf_pas2pas_sd <- sd(as.numeric(df3$V7/262425280),na.rm = TRUE)
+5.488684e-10
+
+# vcf_vet2pas
+DP174_1500x
+236253189
+vcf_vet2pas_mean_across_genome <- sum(df4$V7)/236253189
+0.0004966835
+vcf_vet2pas_sd <- sd(as.numeric(df4$V7/236253189),na.rm = TRUE)
+6.69808e-10
+
+*********************************
 str(df2)
 df1$V6 <- rep("AndHae_REF_AndHae",33260)
 df2$V6 <- rep("AndMar_REF_AndHae",33099)

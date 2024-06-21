@@ -2,6 +2,12 @@
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/1MNe_200_300G
 out_sfs_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep/templates
 
+## remove old comfiled sfs files
+for sample_size in {20,80,200};do
+    rm $out_sfs_dir/sfs_1000000Ne_"$sample_size"hapS_200_300G_5rep_10_2_e_id_cons.txt
+done
+
+## create new comfiled sfs files
 for sample_size in {20,80,200};do
     ## different sort orders
     sfs1=`find -maxdepth 2 -print | grep "1000000Ne" | grep "1E" | egrep *[0-2]\{1,2\}e_[di]_cons | grep "15Mb/" | grep "$sample_size"hapS | grep "15Mb_MAFpop0.obs$" | sort -V`

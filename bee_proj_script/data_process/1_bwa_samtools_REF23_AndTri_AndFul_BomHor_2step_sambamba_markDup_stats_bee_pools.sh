@@ -102,6 +102,22 @@ samtools stats -in $MARKED_BAM > ./bam_stats/samtools_stats/$MARKED_BAM
 
 exit 0
 
+*********************************************************
+## stats
+bam_list=(
+    "Bompas.New_REF_BomHor-.sort.marked_dups.bam"
+    "Bomvet.New_REF_BomHor-.sort.marked_dups.bam"
+)
+
+for bam in "${bam_list[@]}" # print out all items
+    do
+    printf $bam"\n"
+    #done
+    bamtools stats -in $bam > ./bam_stats/bamtools_stats/$bam
+    samtools stats -in $bam > ./bam_stats/samtools_stats/$bam
+done
+
+*********************************************************
 # view RG in bam
 samtools view -h SRR24680726.sort.bam | less -S
 @HD     VN:1.6  SO:coordinate

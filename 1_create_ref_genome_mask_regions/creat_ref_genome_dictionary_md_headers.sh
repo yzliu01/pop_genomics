@@ -16,6 +16,7 @@ bwa index -a bwtsw /crex/proj/snic2021-23-365/nobackup/tuuli/termites/M_bel/New_
 2.
 module load samtools/1.2
 #samtools faidx reference.fa 
+## fai file: https://manpages.ubuntu.com/manpages/trusty/en/man5/faidx.5.html
 samtools faidx /crex/proj/snic2021-23-365/nobackup/tuuli/termites/M_bel/New_ref_Mbel/New_Mbel_midified_contig_name.fa
 
 3. Create dictionary

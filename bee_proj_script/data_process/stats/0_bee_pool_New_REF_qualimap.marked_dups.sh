@@ -2,10 +2,10 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 10
 #SBATCH --mem 100g
-#SBATCH --array=13%1
+#SBATCH --array=14-19%6
 #SBATCH --time=04:00:00
-#SBATCH --error=qualimap_bee_pool.New_REF_marked_dups.%A_%a.e.txt
-#SBATCH --output=qualimap_bee_pool.New_REF_marked_dups.%A_%a.o.txt
+#SBATCH --error=qualimap_bee_pool.New_REF_marked_dups.%A_%a.e
+#SBATCH --output=qualimap_bee_pool.New_REF_marked_dups.%A_%a.o
 #SBATCH --job-name=New_REF_marked_dups.qualimap_bee_pool
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
@@ -42,6 +42,7 @@ qualimap bamqc -nt 20 -cl 400 -dl 90 -sd -c -bam $bam_list --java-mem-size=100G 
 -outformat PDF:HTML
 
 exit 0
+
 ## multiqc plot
 conda activate multiqc
 multiqc .
@@ -60,6 +61,7 @@ qualimap multi-bamqc -nt 10 -r -cl 300 -dl 60 -d $bam_list_path_group --java-mem
 
 
 exit 0
+
 ## bam_list_path_group
 sort -k1 -n describing_samples.list | awk 'BEGIN{FS=OFS="\t"}{$1=$1".sort.marked_dups.bam";$2="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate"}1' \
     > multi_bamqc_describing_samples.list

@@ -1,10 +1,10 @@
 *********** create list of each blueprint file (non-pruned SNP) ************
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint
-sfs_20_80_200=sfs_Ne1000000_hapS_200_300G_20_80_200_5rep_10_2_e_id_cons.blueprint.txt
+cd /home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint
+sfs_20_80_200=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.blueprint.txt
 
-#blueprint_output_folder_list_5rep=ft_sim_1000000Ne_20_80_200_5rep_200S_1E_00_01_05_09d_05i_20Chr_15Mb.5rep_blueprint.output_dir_name.list
+#blueprint_output_folder_list_5rep=ft_sim_1000000Ne_20_80_200_200S_1E_00_01_05_09d_05i_20Chr_15Mb.5rep_blueprint.output_dir_name.list
 
-blueprint_file_list_5rep=sfs_Ne1000000_hapS_200_300G_20_80_200_5rep_10_2_e_id_cons.5rep_blueprint.file_name.list
+blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
 ## take the 3rd column
 #sed 's/\.blueprint//g' $sfs_20_80_200 | awk '{print $NF}' > $blueprint_output_folder_list_5rep
 awk '{print $NF".blueprint"}' $sfs_20_80_200 > $blueprint_file_list_5rep
@@ -12,18 +12,18 @@ awk '{print $NF".blueprint"}' $sfs_20_80_200 > $blueprint_file_list_5rep
 
 ***************** non-pruned (new) *********************
 ## make blueprint replicate (5) files
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint
-blueprint_file_list_5rep=sfs_Ne1000000_hapS_200_300G_20_80_200_5rep_10_2_e_id_cons.5rep_blueprint.file_name.list
+cd /home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint
+blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
 ## blueprint file name
 ## ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1.blueprint
-stairway_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep
+stairway_dir=/home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep
 
 # rm ./1000000Ne_5rep/*20hapS*.blueprint
 for size in {20,80,200};do
     for bp_file in `grep "$size"hapS $blueprint_file_list_5rep`;do
         ## 1000000Ne,100000Ne,1000000Ne
         #echo $bp_file by using templates
-        cat ./1000000Ne_5rep/templates/ft_sim_1000000Ne_"$size"hapS_1E_50G_cons_20Chr_15Mb_0.blueprint > $stairway_dir/$bp_file
+        cat ft_sim_1000000Ne_"$size"hapS_1E_50G_00d_20Chr_15Mb_1_0_MSFS.blueprint > $stairway_dir/$bp_file
     done
 done
 
@@ -31,12 +31,13 @@ done
 ****************** non-pruned                         **********
 ## blueprint files
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint
-#blueprint_file_list_5rep=sfs_Ne1000000_hapS_200_300G_20_80_200_5rep_10_2_e_id_cons.5rep_blueprint.file_name.list
+#blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
 ## ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1.blueprint
 
-sfs_FilePlotName_20_80_200=sfs_Ne1000000_hapS_200_300G_20_80_200_5rep_10_2_e_id_cons.blueprint.txt
+sfs_FilePlotName_20_80_200=sfs_Ne1000000_hapS_20_80_200_10_2_e_id_cons_non_pruned.blueprint.txt
 
-for i in {1..40};do
+## i the total number for each sample_size in the file: sfs_Ne1000000_hapS_20_80_200_10_2_e_id_cons_non_pruned.blueprint.txt
+for i in {1..80};do
     for sample_size in {20hapS,80hapS,200hapS};do
         ## sfs file
         ## modify AA and CC with pop_name and proj_dir_name in column (NF-1)
@@ -59,18 +60,14 @@ for i in {1..40};do
     done
 done
 
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep
-ls -t | head -120 | xargs sed -i '8s/#smallest_size_of_SFS/smallest_size_of_SFS/'
-ls -t | head -120 | xargs rename "1000000Ne_" "1000000Ne_no_single_"
-ls -t | head -120 | xargs rename "1000000Ne_no_single_" "1000000Ne_no_singleton_"
-
 ## modify if include singletons or not
 #line 8: #smallest_size_of_SFS_bin_used_for_estimation: 2
-for hap in "200hapS" "80hapS" "20hapS"
+for hap in "200hapS" "80hapS"
     do
-    for gen in "300G" "200G"
+#for hap in "200hapS" "80hapS"
+    for gen in "1000G" "500G" "100G" "50G"
         do
-        echo ft_sim_1000000Ne_"$hap"_1E_"$gen"_10e_i_cons_20Chr_15Mb*.blueprint
+        #echo ft_sim_1000000Ne_"$hap"_1E_"$gen"_10e_i_cons_20Chr_15Mb*.blueprint
         #sed -i '8s/#smallest_size_of_SFS_bin/smallest_size_of_SFS_bin/' ft_sim_1000000Ne_"$hap"_1E_"$gen"_10e_i_cons_20Chr_15Mb*.blueprint
         ## rename file names
         #rename "1000000Ne_" "1000000Ne_no_singleton" ft_sim_1000000Ne_"$hap"_1E_"$gen"_10e_i_cons_20Chr_15Mb*.blueprint

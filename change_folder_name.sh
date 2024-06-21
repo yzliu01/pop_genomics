@@ -1,6 +1,25 @@
 
+## sum of column
 awk -F " " 'NR > 7 && NR < 10 {sum+=$2}END{print sum}' $BomVet_BomPas_COV
 less qualimap_mean_CocDP.txt | awk '{count++; Sum += $2} END {print Sum/count}'
+
+## sum of each row
+sfs_file_11_20=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/1000000Ne_5rep/ft_sim_1000000Ne_20hapS_1E_500G_10e_i_cons_11_20Chr_15Mb/ft_sim_1000000Ne_20hapS_1E_500G_10e_i_cons_11_20Chr_15Mb_MAFpop0.obs
+sfs_file_10=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/1000000Ne_5rep/ft_sim_1000000Ne_20hapS_1E_500G_10e_i_cons_10Chr_15Mb/ft_sim_1000000Ne_20hapS_1E_500G_10e_i_cons_10Chr_15Mb_MAFpop0.obs
+
+## each column +i
+awk '{c=0;for(i=1;i<=NF;++i){c+=$i};print $0, "Sum:", c}' $sfs_file
+
+## chatGPT "add values in each column in the same rows from the second row in two files in linux and meanwhile keeping header line"
+paste $sfs_file_10 $sfs_file_11_20 | awk '{for (i=1; i<=NF/2; i++) printf "%d ", $i + $(i+NF/2); printf "\n"}'
+
+## keep space after "{ }"
+## space-separated
+{ head -n 2 $sfs_file_10; paste <(tail -n +3 $sfs_file_10) <(tail -n +3 $sfs_file_11_20) | awk '{for (i=1; i<=NF/2; i++) printf "%d ", $i + $(i+NF/2); printf "\n"}'; } > combined_data_1MNe_500G_10e_i_con_20Chr_15Mb.MAF.obs
+## tab-separated
+{ head -n 2 $sfs_file_10; paste <(tail -n +3 $sfs_file_10) <(tail -n +3 $sfs_file_11_20) | awk '{for (i=1; i<=NF/2; i++) printf "%s\t ", $i + $(i+NF/2); printf "\n"}'; } > combined_data_1MNe_500G_10e_i_con_20Chr_15Mb.MAF.obs
+
+
 
 cd /home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned
 ## https://juejin.cn/s/linux%20%E6%89%B9%E9%87%8F%E4%BF%AE%E6%94%B9%E6%96%87%E4%BB%B6%E5%A4%B9%E5%90%8D

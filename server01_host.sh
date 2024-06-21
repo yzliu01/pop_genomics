@@ -147,6 +147,15 @@ net use /del *
 net use del Z:
 net use /del *
 
+*********************************** data files on UPPMAX *****************
+
+INPUT_FILE=/crex/proj/snic2020-6-58/private/seq_data/P23261_feb22_bombus_osmia/SYL/new_variant_calling_ploidy/combined_vcf_genotyping
+ls P23261_feb22_bombus_osmia
+BAL  gcc-10.2.0  gcc-10.2.0.tar.gz  OSM  PAS  Sweden_Colorado  SYL  UN
+
+ls /crex/proj/snic2020-6-58/private/yzliu/
+bumblebees_pcr  reference_genome  software  swedish_bumblebee  test  test_ln.txt
+
 ---------------------------------------------------------------
 https://groups.google.com/g/winfsp/c/8RsLm_Ye-OQ
 ------------------
