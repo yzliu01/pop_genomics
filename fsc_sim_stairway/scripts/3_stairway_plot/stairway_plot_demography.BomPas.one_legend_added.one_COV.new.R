@@ -18,46 +18,46 @@ setwd(result_path)
 
 file_list_a <- c(             
                 "BomPas_New_REF_BomPas.no_singleton_sfs_204_1500x_sm_genic", 
-                "BomPas_New_REF_BomPas.no_singleton_sfs_340_1500x_sm_genic",
-                "BomPas_New_REF_BomPas.no_singleton_sfs_476_1500x_sm_genic",
+                #"BomPas_New_REF_BomPas.no_singleton_sfs_340_1500x_sm_genic",
+                #"BomPas_New_REF_BomPas.no_singleton_sfs_476_1500x_sm_genic",
 
                 #"BomPas_New_REF_BomHor.no_singleton_sfs_204_1500x_sm_genic",
                 #"BomPas_New_REF_BomHor.no_singleton_sfs_340_1500x_sm_genic",
                 #"BomPas_New_REF_BomHor.no_singleton_sfs_476_1500x_sm_genic",
 
                 "BomPas_New_REF_BomHyp.no_singleton_sfs_204_1500x_sm_genic",
-                "BomPas_New_REF_BomHyp.no_singleton_sfs_340_1500x_sm_genic",
-                "BomPas_New_REF_BomHyp.no_singleton_sfs_476_1500x_sm_genic",
+                #"BomPas_New_REF_BomHyp.no_singleton_sfs_340_1500x_sm_genic",
+                #"BomPas_New_REF_BomHyp.no_singleton_sfs_476_1500x_sm_genic",
 
                 #"BomPas_New_REF_BomCon.no_singleton_sfs_204_1500x_sm_genic",
                 #"BomPas_New_REF_BomCon.no_singleton_sfs_340_1500x_sm_genic",
                 #"BomPas_New_REF_BomCon.no_singleton_sfs_476_1500x_sm_genic",
 
-                "BomPas_New_REF_ApisMel.no_singleton_sfs_204_1500x_sm_genic",
-                "BomPas_New_REF_ApisMel.no_singleton_sfs_340_1500x_sm_genic",
-                "BomPas_New_REF_ApisMel.no_singleton_sfs_476_1500x_sm_genic"
+                "BomPas_New_REF_ApisMel.no_singleton_sfs_204_1500x_sm_genic"
+                #"BomPas_New_REF_ApisMel.no_singleton_sfs_340_1500x_sm_genic",
+                #"BomPas_New_REF_ApisMel.no_singleton_sfs_476_1500x_sm_genic"
                 )
 
 file_list_b <- c(      
                 expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 3X")), 
-                expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 5X")),
-                expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 7X")),
+                #expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 5X")),
+                #expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 7X")),
 
                 #expression(paste("Closer Ref1: ", italic("B. hortorum"), " | Divergence Time: 21.2 Mya | Cov: 3X")),
                 #expression(paste("Closer Ref1: ", italic("B. hortorum"), " | Divergence Time: 21.2 Mya | Cov: 5X")),
                 #expression(paste("Closer Ref1: ", italic("B. hortorum"), " | Divergence Time: 21.2 Mya | Cov: 7X")),
 
                 expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 3X")),
-                expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 5X")),
-                expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 7X")),
+                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 5X")),
+                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 7X")),
 
                 #expression(paste("Closer Ref3: ", italic("B. confusus"), " | Divergence Time: 30.8 Mya | Cov: 3X")),
                 #expression(paste("Closer Ref3: ", italic("B. confusus"), " | Divergence Time: 30.8 Mya | Cov: 5X")),
                 #expression(paste("Closer Ref3: ", italic("B. confusus"), " | Divergence Time: 30.8 Mya | Cov: 7X")),
 
-                expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 3X")),
-                expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 5X")),
-                expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 7X"))
+                expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 3X"))
+                #expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 5X")),
+                #expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 7X"))
                 )
 
 ## initialize a list to store plot
@@ -94,14 +94,14 @@ for (i in 1:length(file_list_a)){
 
     ## Determine which titles to show based on the plot position
     print(i) # Add this line to see the value of i
-    if (i %in% c(1,2,3)) {
-        y_axis_title <- expression(paste(italic("N")["e"]))
+    if (i %in% c(1)) {
+        y_axis_title <- expression(paste(italic("N")["e"]," ","(",italic("B. pascuorum"),")"))
     } else {
         y_axis_title <- NULL
     }
     print(y_axis_title) # Add this line to see the value of y_axis_title
     
-    x_axis_title <- if (i %in% c(1,2,3,4,5,6,7,8,9)) "Year ago" else NULL
+    x_axis_title <- if (i %in% c(4,5,6,7,8,9)) "Year ago" else NULL
     ##print(x_axis_title) # Add this line to see the value of x_axis_title
 
     if (i == 1){
@@ -125,13 +125,14 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
 
     ## frame to select area on the plot
     annotate(geom = "rect", xmin = 10, xmax = 15000, ymin = 1000, ymax = 550000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
-    theme_pubr( base_size = 14, border = TRUE) +
-    theme(axis.text = element_text(colour = "black",size = 14), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
-    axis.title = element_text(colour = "black",size = 14), axis.ticks = element_line(colour = "black", size = 1.2),
-    plot.title = element_text(hjust = 0.5, size=14),panel.border = element_rect(linewidth = 1.5),
+    theme_pubr( base_size = 10, border = TRUE) +
+    theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
+    axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
+    plot.title = element_text(hjust = 0.5, size = 10),panel.border = element_rect(linewidth = 1.5),
     panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
+    panel.spacing = unit(1, "cm", data = NULL),
     ## legend line length
-    legend.position = c(0.7,0.3), legend.key.width=unit(1,"cm"),
+    legend.position = c(0.7,0.3), legend.key.width=unit(1,"cm"), legend.text = element_text(size = 12),
     ## space between two legends: https://stackoverflow.com/questions/73235117/vertical-gap-between-2-legends-in-ggplot2-vertical-gap-between-2-keys-in-the-sa
     legend.margin =  margin(-14,0,0,0,unit="pt")) +
     #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(italic("N")["e"])))
@@ -153,11 +154,12 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
 
     ## frame to select area on the plot
     annotate(geom = "rect", xmin = 10, xmax = 15000, ymin = 1000, ymax = 550000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
-    theme_pubr( base_size = 14, border = TRUE) +
-    theme(axis.text = element_text(colour = "black",size = 14), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
-    axis.title = element_text(colour = "black",size = 14), axis.ticks = element_line(colour = "black", size = 1.2),
-    plot.title = element_text(hjust = 0.5, size=14),panel.border = element_rect(linewidth = 1.5),
-    panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2)) +
+    theme_pubr( base_size = 10, border = TRUE) +
+    theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
+    axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
+    plot.title = element_text(hjust = 0.5, size = 10),panel.border = element_rect(linewidth = 1.5),
+    panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
+    panel.spacing = unit(1, "cm", data = NULL)) +
     #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(italic("N")["e"])))
     labs(title = file_list_b[i], x = x_axis_title, y = y_axis_title)
     #ggtitle(group)
@@ -172,8 +174,8 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
     #xlim (1, 200000) +
     #ylim (0, 70000) +
-    theme_pubr( base_size = 12,border = TRUE) +
-    theme(axis.text = element_text(colour = "black",size = 12),axis.title = element_text(colour = "black",size = 14),
+    theme_pubr( base_size = 9.5,border = TRUE) +
+    theme(axis.text = element_text(colour = "black",size = 9),axis.title = element_text(colour = "black",size = 9.5),
     panel.border = element_rect(linewidth = 1.2),panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     axis.ticks = element_line(colour = "black", size = 1))+
     labs(x="Year ago (log transformed)",y=expression(paste(italic("N")["e"]))) +
@@ -198,8 +200,10 @@ p1_final <- p1_initial +
 
 #***************************
 
-combined_plot3 <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 1, 
+combined_plot3 <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 1, top=NULL,
                             layout_matrix = matrix(seq_len(3), nrow = 1, byrow = FALSE))
+
+print(combined_plot3)
 
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 3, 
                             layout_matrix = matrix(seq_len(9), nrow = 3, byrow = FALSE))

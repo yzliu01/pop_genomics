@@ -128,7 +128,8 @@ ggmap(bumblebee_map)+
 
 
 ## danmark bee excel data
-install.packages("readxl")
+library(ggmap)
+#install.packages("readxl")
 library("readxl", help, pos = 2, lib.loc = NULL)
 library(ggplot2, help, pos = 2, lib.loc = NULL)
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script")
@@ -139,17 +140,18 @@ bee_site <- read.table("organized_bee_lat_lon.tsv",sep = "\t",header = T,na.stri
 head(bee_site)
 bee_map <- get_stadiamap(bbox = c(left = 7.7, bottom = 54.76906, right =12.5, top = 57.7), zoom = 10, maptype = "stamen_terrain")
 #install.packages(c("sf","maptools"))
-devtools::install_github('oswaldosantos/ggsn')
-install.packages("devtools",denpendencies=TRUE)
-library(devtools, help, pos = 2, lib.loc = NULL)
+#devtools::install_github('oswaldosantos/ggsn')
+#install.packages("devtools",denpendencies=TRUE)
+#library(devtools, help, pos = 2, lib.loc = NULL)
 #install.packages("https://cran.r-project.org/src/contrib/Archive/ggsn/ggsn_0.5.0.tar.gz",repos=NULL,method="libcurl",dependencies= TRUE)
 bee_site_plot <- ggmap(bee_map) +
-                geom_point(data = bee_site, mapping = aes(x = as.numeric(Longitude), y = as.numeric(Latitude), col = Species_name), size=2,alpha=0.4) + 
-                scale_colour_manual(values =c("red", "orange", "black","blue")) +
+                geom_point(data = bee_site, mapping = aes(x = as.numeric(Longitude), y = as.numeric(Latitude), col = Species), size=2,alpha=1) + 
+                scale_colour_manual(values =c("firebrick4", "orange", "black","blue")) +
                 theme(legend.position = c(0.2,0.9),legend.text = element_text(size=12), legend.background = element_rect(fill=NA))                 
                 geom_label(aes(x=10, y=10, label="N"), size=3, label.padding=unit(1,"mm"), label.r=unit(1,"lines")) 
-
-ggsave(filename="bee_site_plot_transparent_legend.new.pdf",height = 20, width =20, units = "cm", bee_site_plot)
+getwd()
+#ggsave(filename="bee_site_plot_transparent_legend.new.pdf",height = 20, width =20, units = "cm", bee_site_plot)
+ggsave(filename="bee_site_plot_legend.new.pdf",height = 20, width =20, units = "cm", bee_site_plot)
 
 
 

@@ -35,6 +35,7 @@ species_list <- c(
     "BomPas_REF_BomPas",
     "BomVet_REF_BomPas"
 )
+## windows pi
 pi_list <- c(
     "Andhae.New_REF_AndHae.sort.marked_dups.bam.mpileup.COV4_400.pi",
     "Andmar.New_REF_AndHae.sort.marked_dups.bam.mpileup.COV4_400.pi",
@@ -42,13 +43,6 @@ pi_list <- c(
     "Andmar.New_REF_AndMar.sort.marked_dups.bam.mpileup.COV4_400.pi",
     "Bompas.New_REF_BomPas.sort.marked_dups.bam.mpileup.COV4_400.pi",
     "Bomvet.New_REF_BomPas.sort.marked_dups.bam.mpileup.COV4_400.pi"
-)
-
-pi_list <- c(
-    "vcf_hae2hae.allele.freq.pi",
-    "vcf_mar2mar.allele.freq.pi",
-    "vcf_pas2pas.allele.freq.pi",
-    "vcf_vet2pas.allele.freq.pi"
 )
 
 #pi_data <- file.path(pi_files_path,pi_list[2])
@@ -59,16 +53,23 @@ pi_files_path <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/
 setwd(pi_files_path)
 
 ## new_pi
+pi_list <- c(
+    "vcf_hae2hae.allele.freq.pi",
+    "vcf_mar2mar.allele.freq.pi",
+    "vcf_pas2pas.allele.freq.pi",
+    "vcf_vet2pas.allele.freq.pi"
+)
+
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/stats")
 pi_files_path <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/stats"
 
 ## create a function to read data
 read_table <- function(x){
 pi_data <- file.path(pi_files_path,pi_list[x])
-#file.path(pi_files_path,pi_list[3])
+#pi_data <- file.path(pi_files_path,pi_list[3])
 df_pi <- read.table(pi_list[x],header=F,sep="\t")
 #df_pi <- read.table(pi_data,header=F,sep="\t")
-
+#head(df_pi)
 return(df_pi)
 }
 
@@ -76,6 +77,7 @@ df1 <- read_table(1)
 df2 <- read_table(2)
 df3 <- read_table(3)
 df4 <- read_table(4)
+
 df5 <- read_table(5)
 df6 <- read_table(6)
 
@@ -87,6 +89,12 @@ DP234_1500x
 294076304
 vcf_hae2hae_mean_across_genome <- sum(df1$V7)/294076304
 0.001042363
+# mean
+mean(df1$V7) # larger number of site 1801295
+0.1701743
+mean(df1$V8)
+5.786737e-10
+# standard deviation - sd
 vcf_hae2hae_sd <- sd(as.numeric(df1$V7/294076304),na.rm = TRUE)
 5.221605e-10
 
@@ -95,6 +103,12 @@ DP240_1500x
 284858344
 vcf_mar2mar_mean_across_genome <- sum(df2$V7)/262425280
 0.0005090196
+# mean
+mean(df2$V7) # smaller number of site 647385
+0.2063372
+mean(df2$V8)
+7.243505e-10
+# standard deviation - sd
 vcf_mar2mar_sd <- sd(as.numeric(df2$V7/262425280),na.rm = TRUE)
 6.708226e-10
 
@@ -115,7 +129,9 @@ vcf_vet2pas_sd <- sd(as.numeric(df4$V7/236253189),na.rm = TRUE)
 6.69808e-10
 
 *********************************
+str(df1)
 str(df2)
+## windows pi
 df1$V6 <- rep("AndHae_REF_AndHae",33260)
 df2$V6 <- rep("AndMar_REF_AndHae",33099)
 df3$V6 <- rep("AndMar_REF_AndHat",42873)
@@ -123,17 +139,25 @@ df4$V6 <- rep("AndMar_REF_AndMar",29726)
 df5$V6 <- rep("BomPas_REF_BomPas",30794)
 df6$V6 <- rep("BomVet_REF_BomPas",30792)
 #head(df1)
-#tail(df5)
+#tail(df4)
 
-df1$V5 <- as.numeric(df1$V5)
-df4$V5 <- as.numeric(df4$V5)
-df5$V5 <- as.numeric(df5$V5)
-df6$V5 <- as.numeric(df6$V5)
+## vcf pi
+tail(df1)
+str(df1)
+df1$V9 <- rep("AndHae_REF_AndHae",1801295)
+df2$V9 <- rep("AndMar_REF_AndMar",647385)
+df3$V9 <- rep("BomPas_REF_BomPas",1307275)
+df4$V9 <- rep("BomVet_REF_BomPas",544848)
+
+df1$V7 <- as.numeric(df1$V7)
+df4$V7 <- as.numeric(df4$V7)
+df5$V7 <- as.numeric(df5$V7)
+df6$V7 <- as.numeric(df6$V7)
 
 combined_df <- rbind(df1,df2,df3,df4,df5,df6)
-combined_df_new <- rbind(df1,df4,df5,df6)
+combined_df_new <- rbind(df1,df2,df3,df4)
 #str(combined_df)
-#tail(combined_df)
+#tail(combined_df_new)
 
 ## convert the 5th column of the combined dataset from chr to numeric 
 combined_df$V5 <- as.numeric(combined_df$V5)
@@ -156,9 +180,16 @@ ad.test(df1$V5)
 #        Anderson-Darling normality test
 #data:  df1$V5
 #A = 196.03, p-value < 2.2e-16
+# windows
 ad.test(df4$V5)
 ad.test(df5$V5)
 ad.test(df6$V5)
+
+# per site
+ad.test(df1$V7)
+ad.test(df2$V7)
+ad.test(df3$V7)
+ad.test(df4$V7)
 
 # create three related groups of data
 group1 <- c(23, 25, 26, 24, 22, 21, 28, 27, 26, 23)
@@ -168,10 +199,44 @@ group3 <- c(17, 19, 21, 20, 22, 23, 24, 26, 28, 27)
 data <- cbind(group1, group2,group3)
 # perform Friedman test
 result <- friedman.test(data)
-data_df <- cbind(df1$V5,df4$V5,df5$V5,df6$V5)
+
+data_df <- cbind(df1$V7,df2$V7,df3$V7,df4$V7)
+str(df1$V7)
+length(df1$V7)
+str(data_df)
 head(data_df)
+tail(data_df)
 colnames(data_df) <- c("Hae","Mar","Pas","Vet")
 result <- friedman.test(data_df)
+***********************************************************
+# Determine the maximum length of the columns
+max_length <- max(length(df1$V7), length(df2$V7), length(df3$V7), length(df4$V7))
+
+# Create a function to pad columns with NA
+pad_with_na <- function(column, max_length) {
+  length_diff <- max_length - length(column)
+  c(column, rep(NA, length_diff))
+}
+
+# Pad each column to the maximum length
+padded_df1_V7 <- pad_with_na(df1$V7, max_length)
+padded_df2_V7 <- pad_with_na(df2$V7, max_length)
+padded_df3_V7 <- pad_with_na(df3$V7, max_length)
+padded_df4_V7 <- pad_with_na(df4$V7, max_length)
+
+# Combine the padded columns
+data_df <- cbind(padded_df1_V7, padded_df2_V7, padded_df3_V7, padded_df4_V7)
+tail(data_df)
+colnames(data_df) <- c("Hae","Mar","Pas","Vet")
+result <- friedman.test(data_df)
+
+#result
+#        Friedman rank sum test
+#
+#data:  data_df
+#Friedman chi-squared = 41821, df = 3, p-value < 2.2e-16
+
+***********************************************************
 
 # summarize Friedman test results
 #summary(result)
@@ -185,6 +250,14 @@ pairwise.wilcox.test(t(data_df), g = seq(1,4), p.adjust.method = "bonferroni")
 pairwise.wilcox.test(t(data_df), g = seq(1,4))
 pairwise.wilcox.test(t(data_df), g = letters[1:4])
 
+data:  t(data_df) and letters[1:4] 
+
+  a       b       c      
+b < 2e-16 -       -      
+c 3.3e-13 < 2e-16 -      
+d < 2e-16 < 2e-16 < 2e-16
+
+## pairwise.wilcox.test(t(data_df), g = seq(1,4), p.adjust.method = "bonferroni")
 #        Pairwise comparisons using Wilcoxon rank sum test with continuity correction 
 
 #data:  t(data_df) and seq(1, 4) 
@@ -199,7 +272,7 @@ pairwise.wilcox.test(t(data_df), g = letters[1:4])
 **********************************************************************''''
 # Create boxplot using ggplot2
 #summary_df <- combined_df %>% group_by(V6) %>% summarize(m=mean(V5))
-pi_plot <- ggplot(combined_df_new, aes(x = V6, y = V5)) +
+pi_plot <- ggplot(combined_df_new, aes(x = V9, y = V7)) +
     geom_boxplot() +
     ## chatGPT
     stat_summary(fun = mean, geom = "text", aes(label = paste(round(..y.., 4)), vjust = -0.5), size = 3, color = "red") +  # Add mean labels
@@ -211,9 +284,9 @@ pi_plot <- ggplot(combined_df_new, aes(x = V6, y = V5)) +
     panel.border=element_rect(linewidth=1.5), 
     panel.grid.major = element_line(color = "gray", size = 0.5, linetype = 2),
     panel.grid.minor = element_line(color = "gray", size = 0.5, linetype = 2)) +
-    labs(title = "pi by Species_REF_Species", x = "Combination", y = "pi")
+    labs(title = "pi by Species", x = "Combination", y = "pi per site")
 
-ggsave("pi_plot_new.pdf",pi_plot,width=15,height=15,unit="cm")
+ggsave("pi_plot_neutral_sites.pdf",pi_plot,width=15,height=15,unit="cm")
 
 
 

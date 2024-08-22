@@ -47,7 +47,7 @@ lines(get(paste0("a","1"))$left_time_boundary/mu*gen,(1/get(paste0("a","1"))$lam
 
 >>>>>>>>>>>>>>>>>> below checked <<<<<<<<<<<<<<<<<<
 
-pdf(paste0("MSMC_pas_vet_hae_mar.bootstrap.grid.new.pdf"),width = 20, height = 25)
+pdf(paste0("MSMC_pas_vet_hae_mar.bootstrap.grid.new1.pdf"),width = 15, height = 20)
 ## set number of plot in a figure
 #par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 
@@ -151,8 +151,8 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
     #mtext(side=3,text=paste0("MSMC_",substr(group,)),cex=1.2,line=2)
 
     ## add line to indicate ice-age [11550-12800], Wiki
-    abline(v=12800,col="darkorange",lwd=1)  # add a vertical line at 13,000 years ago to indicate end of last glaction
-    abline(v=11550,col="darkorange",lwd=1)
+    #abline(v=12800,col="darkorange",lwd=1)  # add a vertical line at 13,000 years ago to indicate end of last glaction
+    abline(v=11700,col="darkorange",lwd=1)
     #lines(c(1:100),rep(100,100), type="s", col="red")
     ## add replicate lines
     #par(new=TRUE)
@@ -176,7 +176,7 @@ for (group in c("pas_REF_pas", "vet_REF_pas", "hae_REF_hae", "mar_REF_mar")){
     
     ## add legend in specific plot
     if (all(sapply(c("pas_REF_pas"), grepl, group))) {
-    legend("topleft",c("whole-genome","bootstrap","LGM"),col = adjustcolor(c("red","blue","darkorange"), alpha = 0.8),cex=1.5,lty=c(1,1),lwd=c(2.5,2,2),bty="n")
+    legend("topleft",c("whole-genome","bootstrap","LGP"),col = adjustcolor(c("red","blue","darkorange"), alpha = 0.8),cex=1.5,lty=c(1,1),lwd=c(2.5,2,2),bty="n")
     } else {
         NULL
     }

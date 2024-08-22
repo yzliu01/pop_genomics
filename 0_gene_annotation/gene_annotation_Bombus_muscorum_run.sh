@@ -1,8 +1,7 @@
 #!/bin/bash
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 8
-#SBATCH --mem 10g
-##SBATCH --array=1-6%6
+#SBATCH --mem 50g
 #SBATCH --time=15:00:00
 #SBATCH --error=gene_annotation_BomMus.%A.e
 #SBATCH --output=gene_annotation_BomMus.%A.o
@@ -16,7 +15,7 @@ gene_rediction_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data
 
 cd $gene_rediction_dir
 ## folder of $braker_output_dir_for_protseq must be not existing before
-rm -r braker_BomCon_results_for_protseq
+rm -r braker_BomMus_results_for_protseq
 
 mkdir /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomMus_results_for_protseq
 braker_output_dir_for_protseq=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomMus_results_for_protseq
@@ -25,17 +24,14 @@ cd $braker_output_dir_for_protseq
 ## reference genome
 #Andrena_marginata_softmask_simple_header_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_marginata_GCA_963932335.1-softmasked.simple_header_new.fa
 Bombus_muscorum_softmask_simple_header_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.simple_header_new.fa
+#Bombus_muscorum_softmask_simple_header_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971125.1.simple_header_new.fa
 Apodiea_gene_AA=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db/orthodb/Apodiea_gene_AA.fa
 
-## gff file from Prothint
-prothint_augustus_gff=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results/prothint_augustus.gff
-#prothint_augustus_gff_old=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results/prothint_augustus.old.gff
-
 ## the fasta header name affect GeneMark
-#sed 's/|/_/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.simple_header_new.fa
-#sed 's/|/_/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1-softmasked.simple_header.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1-softmasked.simple_header_new.fa
-
-#e.g., ENA|OZ010659|OZ010659.1	--->  ENA_OZ010659_OZ010659.1 (working with this form)
+#sed -e 's/|/_/g' -e 's/\.1.*/.1/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.simple_header_new.fa
+#sed -e 's/|/_/g' -e 's/\.1.*/.1/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971125.1.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971125.1.simple_header_new.fa
+# ENA|OZ020127|OZ020127.1 Bombus muscorum genome assembly, chromosome: 1 ---> ENA_OZ020127_OZ020127.1
+# ENA|OZ010659|OZ010659.1	--->  ENA_OZ010659_OZ010659.1 (working with this form)
 
 ## activate Braker3 Env
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
@@ -52,6 +48,7 @@ braker.pl --genome="$Bombus_muscorum_softmask_simple_header_genome" --prot_seq="
     --makehub --email=yuanzhen.liu2@gmail.com
 
 exit 0
+
 ## use the final "baker.gtf" file for applying neutral variants
 ## /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomCon_results_for_protseq/braker.gtf
 
@@ -68,6 +65,11 @@ gzip
 
 >>>>>>>>>> method II gave results <<<<<<<<<<
 ## run braker3 with prothint result gff file
+
+## gff file from Prothint
+prothint_augustus_gff=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results_BomMus/prothint_augustus.gff
+#prothint_augustus_gff_old=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results/prothint_augustus.old.gff
+
 braker.pl --genome="$Bombus_muscorum_softmask_simple_header_genome" --hints="$prothint_augustus_gff" \
     --workingdir=$braker_output_dir --threads 4 \
     --PROTHINT_PATH=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/gmetp_linux_64/bin/gmes/ProtHint/bin \

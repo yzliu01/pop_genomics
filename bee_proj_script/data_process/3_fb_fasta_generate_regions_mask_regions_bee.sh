@@ -98,6 +98,7 @@ fasta_generate_regions.py $REF_ApisMel --chunks 60 \
 
 ## new Ref-softmasked-no-modification
 Pas_Ref_New=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
+
 Regions_New=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
 ## spilt fast into N length pieces
 fasta_generate_regions.py $Pas_Ref_New 2000000 > $Regions_New/Pas_New.fb_2Mb.regions
@@ -123,18 +124,27 @@ for Ref_New in `ls Andrena_marginata*-softmasked.fa`
 done
 ## count=2976 segments
 
+conda activate variant_calling_mapping
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF1_list=(
+Regions_New=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
+REF_list=(
             #"Andrena_fulva-GCA_946251845.1-softmasked.fa"
             #"Andrena_trimmerana-GCA_951215215.1-softmasked.fa"
             #"Bombus_hortorum-GCA_905332935.1-softmasked.fa"
             #"Bombus_hortorum-GCA_905332935.1-softmasked.fa"
-            "Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
-            "Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
+            #"Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
+            #"Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
+            "Bombus_muscorum-GCA_963971185.1.fa"
+            "Andrena_bicolor-GCA_960531205.1.fa"
+            "Bombus_sylvestris-GCA_911622165.2-softmasked.fa"
             )
 
 for Ref_New in `ls -t *-softmasked.fa | head -4`
+for Ref_New in ${REF_list[@]}
+for Ref_New in `ls Bombus_muscorum-GCA_963971125.1.fa`
     do
+    #echo $Ref_New
+#done
     Out_Region_Name=${Ref_New/.fa/.fb_100kb.regions}
     fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
 done

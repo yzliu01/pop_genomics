@@ -14,12 +14,12 @@ file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "fil
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
-pdf(paste0("combined.100000Ne_200hapS_5rep_2_10_i_d_cons_non_pruned.rotated_x_lab.pdf"),width = 20, height = 25)
-#pdf(paste0("combined.100000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
+pdf(paste0("combined.50000Ne_100S_5rep_2_10_i_d_cons_non_pruned.pdf"),width = 12, height = 12)
+#pdf(paste0("combined.50000Ne_100S_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
-par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+par(mfcol=c(4,4),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.4, lwd=2) # cex.axis=1,
+layout(matrix(c(1:16),nrow=4,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
@@ -33,61 +33,61 @@ for (generation in c("50G","100G","500G","1000G")){
 
         ## key step
         ## conditional axis name plot
-        plot_name <- paste0("100000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb")
+        plot_name <- paste0("50000Ne_100S_1E_",generation,"_",event,"_20Chr_15Mb")
         #print(plot_name)
         ## print names with newline 
         cat("\n",plot_name,"\n\n")
         
-        if (plot_name %in% c("100000Ne_200hapS_1E_50G_2e_d_cons_20Chr_15Mb", "100000Ne_200hapS_1E_100G_2e_d_cons_20Chr_15Mb", "100000Ne_200hapS_1E_500G_2e_d_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,5.5e4),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
+        if (plot_name %in% c("50000Ne_100S_1E_50G_2e_d_cons_20Chr_15Mb", "50000Ne_100S_1E_100G_2e_d_cons_20Chr_15Mb", "50000Ne_100S_1E_500G_2e_d_cons_20Chr_15Mb")){
+            plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,5.5e4),log="x", cex.axis= 0.8, xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
             #log="xy",xlab="Years ago", ylab="Effective population size"
             title(line=2)
             axis(side=2, at=c(15000,25000,50000,55000),label=c(format(c(15000,25000,50000,55000),scientific=FALSE)))
 
-        } else if (plot_name %in% c("100000Ne_200hapS_1E_1000G_2e_d_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
+        } else if (plot_name %in% c("50000Ne_100S_1E_1000G_2e_d_cons_20Chr_15Mb")){
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", cex.axis= 0.8, xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
             axis(side=2, at=c(15000,25000,50000,55000),label=c(format(c(15000,25000,50000,55000),scientific=FALSE)))
 
-        } else if (plot_name %in% c("100000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.2e5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+        } else if (plot_name %in% c("50000Ne_100S_1E_1000G_2e_i_cons_20Chr_15Mb")){
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.2e5),log="x", cex.axis= 0.8, xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(15000,25000,50000,75000,100000,120000),label=c(format(c(15000,25000,50000,75000,100000,120000),scientific=FALSE)))
+            axis(side=2, at=c(15000,25000,50000,75000,100000),label=c(format(c(15000,25000,50000,75000,100000),scientific=FALSE)))
 
-        } else if (plot_name %in% c("100000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.2e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+        } else if (plot_name %in% c("50000Ne_100S_1E_50G_2e_i_cons_20Chr_15Mb","50000Ne_100S_1E_100G_2e_i_cons_20Chr_15Mb","50000Ne_100S_1E_500G_2e_i_cons_20Chr_15Mb")){
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.2e5),log="x", cex.axis= 0.8, xlab="", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(15000,25000,50000,75000,100000,120000),label=c(format(c(15000,25000,50000,75000,100000,120000),scientific=FALSE)))
+            axis(side=2, at=c(15000,25000,50000,75000,100000),label=c(format(c(15000,25000,50000,75000,100000),scientific=FALSE)))
 
-        } else if (plot_name %in% c("100000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb")){
+        } else if (plot_name %in% c("50000Ne_100S_1E_50G_10e_i_cons_20Chr_15Mb","50000Ne_100S_1E_100G_10e_i_cons_20Chr_15Mb","50000Ne_100S_1E_500G_10e_i_cons_20Chr_15Mb")){
             
             ## high Ne (attention to duplicate)
 
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e5),log="x", cex.axis= 0.8, xlab="", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(25000,50000,75000,95000,150000,300000,450000,500000,520000),label=c(format(c(25000,50000,75000,95000,150000,300000,450000,500000,520000),scientific=FALSE)))
+            axis(side=2, at=c(50000,150000,300000,500000),label=c(format(c(50000,150000,300000,500000),scientific=FALSE)))
 
-        } else if (plot_name %in% c("100000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+        } else if (plot_name %in% c("50000Ne_100S_1E_1000G_10e_i_cons_20Chr_15Mb")){
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e5),log="x", cex.axis= 0.8, xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(25000,50000,75000,95000,150000,300000,450000,500000,520000),label=c(format(c(25000,50000,75000,95000,150000,300000,450000,500000,520000),scientific=FALSE)))
+            axis(side=2, at=c(50000,150000,300000,500000),label=c(format(c(50000,150000,300000,500000),scientific=FALSE)))
 
-        } else if (plot_name %in% c("100000Ne_200hapS_1E_1000G_10e_d_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+        } else if (plot_name %in% c("50000Ne_100S_1E_1000G_10e_d_cons_20Chr_15Mb")){
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", cex.axis= 0.8, xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(2000,5000,8000,10000,15000,25000,50000,55000),label=c(format(c(2000,5000,8000,10000,15000,25000,50000,55000),scientific=FALSE)))
+            axis(side=2, at=c(5000,15000,25000,50000,55000),label=c(format(c(5000,15000,25000,50000,55000),scientific=FALSE)))
 
         } else {#50G_100G_500G_10e_d_cons
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e4),log="x", cex.axis= 0.8, xlab="", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(2000,5000,8000,10000,15000,25000,50000,55000),label=c(format(c(2000,5000,8000,10000,15000,25000,50000,55000),scientific=FALSE)))
+            axis(side=2, at=c(5000,15000,25000,50000,55000),label=c(format(c(5000,15000,25000,50000,55000),scientific=FALSE)))
 
         }
         ##turn scientific notion off
@@ -101,18 +101,18 @@ for (generation in c("50G","100G","500G","1000G")){
         
         #text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 8000,srt = 38,pos = 3, xpd = TRUE)
         
-        ##100000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb
+        ##50000Ne_100S_1E_50G_10e_i_cons_20Chr_15Mb
         ## distance to x axis
-        if (plot_name %in% c("100000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 50000,srt = 38,pos = 3, xpd = TRUE)
-        } else if (plot_name %in% c("100000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb","100000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb")) {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 11000,srt = 38,pos = 3, xpd = TRUE)
+        if (plot_name %in% c("50000Ne_100S_1E_50G_10e_i_cons_20Chr_15Mb","50000Ne_100S_1E_100G_10e_i_cons_20Chr_15Mb","50000Ne_100S_1E_500G_10e_i_cons_20Chr_15Mb","50000Ne_100S_1E_1000G_10e_i_cons_20Chr_15Mb")){
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 80000,srt = 45,pos = 3, xpd = TRUE)
+        } else if (plot_name %in% c("50000Ne_100S_1E_50G_2e_i_cons_20Chr_15Mb","50000Ne_100S_1E_100G_2e_i_cons_20Chr_15Mb","50000Ne_100S_1E_500G_2e_i_cons_20Chr_15Mb","50000Ne_100S_1E_1000G_2e_i_cons_20Chr_15Mb")) {
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 19000,srt = 45,pos = 3, xpd = TRUE)
         } else {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 5000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 9000,srt = 45,pos = 3, xpd = TRUE)
         }
 
         ## add plot title in each plot
-        mtext(side=3,text=paste0("100000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb"),cex=0.8,line=1.2)
+        mtext(side=3,text=paste0("50000Ne_100S_1E_",generation,"_",event),cex=0.8,line=1.2)
         ## add line to indicate ice-age
         #abline(v=13000,col="grey",lwd=1.8)  # add a vertical line at 13,000 years ago to indicate end of last glaction
 
@@ -123,7 +123,7 @@ for (generation in c("50G","100G","500G","1000G")){
             ## assign variable to read_data
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_100000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*.final.summary"))),header=T,sep="\t"))
             print(head(get(paste0("a",rep)),n=2L))
-            #paste0("data_ft_sim_100000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb")
+            #paste0("data_ft_sim_50000Ne_100S_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             #print(head(data,n=2L))
             ## https://stackoverflow.com/questions/77616764/how-to-use-paste0-to-get-the-column-of-a-table-in-r
@@ -142,7 +142,7 @@ for (generation in c("50G","100G","500G","1000G")){
         ## https://stackoverflow.com/questions/30180281/how-can-i-check-if-multiple-strings-exist-in-another-string
 
         x <- 0:100000
-        #plot_name <- c("100000Ne_200hapS_1E_1000G_1.1i_20Chr_15Mb","100000Ne_200hapS_1E_1000G_1.5i_20Chr_15Mb","100000Ne_200hapS_1E_1000G_1.9i_20Chr_15Mb","100000Ne_200hapS_1E_1000G_0.5e_d_1.5i_20Chr_15Mb")
+        #plot_name <- c("50000Ne_100S_1E_1000G_1.1i_20Chr_15Mb","50000Ne_100S_1E_1000G_1.5i_20Chr_15Mb","50000Ne_100S_1E_1000G_1.9i_20Chr_15Mb","50000Ne_100S_1E_1000G_0.5e_d_1.5i_20Chr_15Mb")
         ## category
         ## 50G "G_2e_d_cons" (r=-0.0139,er=0.9862),"G_2e_i_cons" (r=0.0139,er=1.0140),"G_10e_d_cons" (r=-0.0461,er=0.9549),"G_10e_i_cons" (r=0.0461,er=1.0472) # nolint
         ## 100G "G_2e_d_cons" (r=-0.0069,er=0.9931),"G_2e_i_cons" (r=0.0069,er=1.0069),"G_10e_d_cons" (r=-0.0230,er=0.9773),"G_10e_i_cons" (r=0.0230,er=1.0233)

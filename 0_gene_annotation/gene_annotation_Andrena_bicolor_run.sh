@@ -27,15 +27,10 @@ cd $braker_output_dir_for_protseq
 Andrena_bicolor_softmask_simple_header_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1.simple_header_new.fa
 Apodiea_gene_AA=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db/orthodb/Apodiea_gene_AA.fa
 
-## gff file from Prothint
-prothint_augustus_gff=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results/prothint_augustus.gff
-#prothint_augustus_gff_old=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results/prothint_augustus.old.gff
-
 ## the fasta header name affect GeneMark
-#sed 's/|/_/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1.simple_header_new.fa
-#sed 's/|/_/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1-softmasked.simple_header.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1-softmasked.simple_header_new.fa
-
-#e.g., ENA|OZ010659|OZ010659.1	--->  ENA_OZ010659_OZ010659.1 (working with this form)
+#sed -e 's/|/_/g' -e 's/\.1.*/.1/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1.simple_header_new.fa
+# ENA|OY482664|OY482664.1 Andrena bicolor genome assembly, chromosome: 1 ---> ENA_OY482664_OY482664.1
+# ENA|OZ010659|OZ010659.1	--->  ENA_OZ010659_OZ010659.1 (working with this form)
 
 ## activate Braker3 Env
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
@@ -52,6 +47,7 @@ braker.pl --genome="$Andrena_bicolor_softmask_simple_header_genome" --prot_seq="
     --makehub --email=yuanzhen.liu2@gmail.com
 
 exit 0
+
 ## use the final "baker.gtf" file for applying neutral variants
 ## /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomCon_results_for_protseq/braker.gtf
 
@@ -68,6 +64,10 @@ gzip
 
 >>>>>>>>>> method II gave results <<<<<<<<<<
 ## run braker3 with prothint result gff file
+
+## gff file from Prothint
+prothint_augustus_gff=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results_And_Bic/prothint_augustus.gff
+
 braker.pl --genome="$Andrena_bicolor_softmask_simple_header_genome" --hints="$prothint_augustus_gff" \
     --workingdir=$braker_output_dir --threads 4 \
     --PROTHINT_PATH=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/gmetp_linux_64/bin/gmes/ProtHint/bin \

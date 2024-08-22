@@ -1,0 +1,12 @@
+
+
+61at7399.gff
+BUSCO_Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
+NC_037652.1	miniprot	mRNA	5695750	5715006	21561	-	.	ID=MP050795;Rank=1;Identity=0.9202;Positive=0.9557;Target=61at7399_7 1 4462
+NC_037652.1	miniprot	CDS	5714769	5715006	369	-	0	Parent=MP050795;Rank=1;Identity=0.8750;Target=61at7399_7 1 79
+NC_037652.1	miniprot	CDS	5714458	5714690	346	-	2	Parent=MP050795;Rank=1;Identity=0.8701;Target=61at7399_7 80 157
+
+BUSCO_Vespula_vulgaris-GCA_905475345.1-softmasked.fa
+2	miniprot	mRNA	8764859	8785809	20813	-	.	ID=MP050315;Rank=1;Identity=0.8685;Positive=0.9310;Target=61at7399_9 1 4538
+2	miniprot	CDS	8785581	8785809	147	-	0	Parent=MP050315;Rank=1;Identity=0.5455;Target=61at7399_9 1 70
+2	miniprot	CDS	8780895	8781137	371	-	2	Parent=MP050315;Rank=1;Identity=0.8642;Target=61at7399_9 71 151

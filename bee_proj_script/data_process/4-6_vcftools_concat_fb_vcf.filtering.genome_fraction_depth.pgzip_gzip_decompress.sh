@@ -79,6 +79,23 @@ ls ./fb_per_region_BomVet_New_REF_BomCon/Bomvet.New_REF_BomCon.100kb_1500x_regio
 ls ./fb_per_region_BomPas_New_REF_BomHor/Bompas.New_REF_BomHor.100kb_1500x_region_*.g.vcf | sort -V > BomPas_New_REF_BomHor.individual_100kb_1500x_region_vcf_file.list
 ls ./fb_per_region_BomVet_New_REF_BomHor/Bomvet.New_REF_BomHor.100kb_1500x_region_*.g.vcf | sort -V > BomVet_New_REF_BomHor.individual_100kb_1500x_region_vcf_file.list
 
+## new
+ls ./fb_per_region_AndMar_New_REF_AndBic/Andmar.New_REF_AndBic.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_AndBic.individual_100kb_1500x_region_vcf_file.list
+ls ./fb_per_region_BomPas_New_alt_REF_BomMus/Bompas.New_alt_REF_BomMus.100kb_1500x_region_*.g.vcf | sort -V > BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list
+## contain empty files
+ls |sort -V | xargs grep -L '^#CHR' | less -S 
+ls |sort -V | xargs grep -L '^#CHR' | less -S | ls -lh | less
+## list non-empty files
+find ./fb_per_region_BomPas_New_alt_REF_BomMus -maxdepth 1 -type f -size +0 -print | sort -V  > BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list
+## remove redundant file 
+ls -t | tail -n +3501 | xargs rm
+## delete reduncances
+for i in {1627..2867};do rm Bompas.New_alt_REF_BomMus.100kb_1500x_region_$i.g.vcf; done
+
+ls ./fb_per_region_BomPas_New_REF_BomSyl/Bompas.New_REF_BomSyl.100kb_1500x_region_*.g.vcf | sort -V > BomPas_New_REF_BomSyl.individual_100kb_1500x_region_vcf_file.list
+ls ./fb_per_region_BomVet_New_REF_BomSyl/Bomvet.New_REF_BomSyl.100kb_1500x_region_*.g.vcf | sort -V > BomVet_New_REF_BomSyl.individual_100kb_1500x_region_vcf_file.list
+
+
 #ls ./fb_per_region_AndMar_New_REF_AndMar/Andmar.New_REF_AndMar.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_AndMar.individual_100kb_1500x_region_vcf_file.list
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
@@ -92,11 +109,6 @@ vcf_list5=AndMar_New_REF_AndMar.individual_100kb_1500x_region_vcf_file.list
 vcf_list6=AndMar_New_REF_AndTri.individual_100kb_1500x_region_vcf_file.list
 AndHae_New_REF_AndFul.individual_100kb_1500x_region_vcf_file.list
 BomPas_New_REF_BomCon.individual_100kb_1500x_region_vcf_file.list
-vcf-concat --files $vcf_list1 | bgzip -c > ./concated_vcf_each_species_REF/concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.vcf.gz
-vcf-concat --files $vcf_list2 | bgzip -c > ./concated_vcf_each_species_REF/concated.BomVet_New_REF_BomPas.100kb_g1500x_regions.vcf.gz
-vcf-concat --files $vcf_list3 | bgzip -c > ./concated_vcf_each_species_REF/concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.vcf.gz
-vcf-concat --files $vcf_list4 | bgzip -c > ./concated_vcf_each_species_REF/concated.AndMar_New_REF_AndHae.100kb_g1500x_regions.vcf.gz
-vcf-concat --files $vcf_list5 | bgzip -c > ./concated_vcf_each_species_REF/concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.vcf.gz
 
 ## sort chr according to ref
 cd ./concated_vcf_each_species_REF
@@ -150,16 +162,29 @@ list=( "fb_per_region_BomPas_New_REF_BomPas"
     "fb_per_region_AndHae_New_REF_AndHae"
     )
 
-****************** New mapping *******************
+****************** New mapping step I: concat in for loop *******************
 
-## step I: concat in for loop
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 
-for vcf_list in $(ls -t *.list | head -6)
+conda activate variant_calling_mapping
+
+## check vcf files without headers line (empty files)
+ls |sort -V | xargs grep -L '^#CHR' | less -S
+## contain empty files
+ls |sort -V | xargs grep -L '^#CHR' | less -S 
+ls |sort -V | xargs grep -L '^#CHR' | less -S | ls -lh | less
+## list non-empty files
+find ./fb_per_region_BomPas_New_alt_REF_BomMus -type f -size +0 -print | sort -V > BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_BomPas_New_alt_REF_BomMus
+
+for vcf_list in $(ls -t *.list | head -1)
     do
     conc_name="${vcf_list/.individual_100kb_1500x_region_vcf_file.list/}"
-    for dir in `ls -t -d fb_per_region* | head -7`
+    for dir in `ls -t -d fb_per_region* | head -4 | sort`
         do
+#        echo $dir
+#    done
+#done
         ## when meet multiple condition
         if [[ $vcf_list == *BomPas*New_REF_BomPas* && $dir == fb_per_region*BomPas*New_REF_BomPas* ]]
         then
@@ -223,6 +248,27 @@ for vcf_list in $(ls -t *.list | head -6)
         then
             echo $vcf_list $dir
             time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+## add four new mappings        
+        elif [[ $vcf_list == *AndMar*New_REF_AndBic* && $dir == fb_per_region*AndMar*New_REF_AndBic* ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+        elif [[ $vcf_list == *BomPas*New_alt_REF_BomMus* && $dir == fb_per_region*BomPas*New_alt_REF_BomMus* ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+        elif [[ $vcf_list == *BomPas*New_REF_BomSyl* && $dir == fb_per_region*BomPas*New_REF_BomSyl* ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+        elif [[ $vcf_list == *BomVet*New_REF_BomSyl* && $dir == fb_per_region*BomVet*New_REF_BomSyl* ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
         else
             echo "no_concat"
         fi
@@ -292,14 +338,14 @@ for species_vcf in  ${vcf_list[*]}
     vcf-concat --files $species_vcf | bgzip -c > ./concated_vcf_each_species_REF/concated.$concat_vcf.vcf.gz
 done
 
-********************** reorder the chromosome order ***********************
+********************** Step II: reorder the chromosome order ***********************
 ## issued vcf
 ## Step II: reorder the chromosome order
 conda activate gatk_4.3.0.0
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 ## New_REF New_mapping
 #for vcf in `ls concated*.100kb_g1500x_regions.vcf.gz`
-for vcf in `ls -t concated*.100kb_g1500x_regions.vcf.gz | head -6`
+for vcf in `ls -t concated*.100kb_g1500x_regions.vcf.gz | head -4`
     do 
     vcf_sorted_chr=${vcf/.vcf.gz/}
     gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.all_chr.sorted.vcf.gz
@@ -875,6 +921,11 @@ Bomvet.New_REF_BomHor-.sort.marked_dups.bam
 Andhae.New_REF_AndFul.sort.marked_dups.bam
 Andmar.New_REF_AndTri.sort.marked_dups.bam
 
+Andmar.New_REF_AndBic.sort.marked_dups.bam
+Bompas.New_alt_REF_BomMus.sort.marked_dups.bam
+Bompas.New_REF_BomSyl.sort.marked_dups.bam
+#Bompas.New_REF_BomMus.sort.marked_dups.bam
+Bomvet.New_REF_BomSyl.sort.marked_dups.bam
 
 
 ## New REF for pooled bees
@@ -888,7 +939,7 @@ for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_his
 done
 
 ## ls -td *dups.bam | head -6
-## grep 'Bompas.New_REF - BomHor- BomCon'
+## grep 'Bompas.New_REF - BomHor- BomCon - New_alt_REF - Syl'
 for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 204 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'

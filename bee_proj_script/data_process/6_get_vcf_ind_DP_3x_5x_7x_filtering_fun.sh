@@ -3,7 +3,9 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 10g
 ##SBATCH --array=1-12%12
-#SBATCH --array=14-19%6
+##SBATCH --array=14-19%6
+##SBATCH --array=20-23%4
+#SBATCH --array=23%1
 #SBATCH --time=06:00:00
 #SBATCH --error=get_vcf_ind_DP_3x_5x_7x.%A_%a.e
 #SBATCH --output=get_vcf_ind_DP_3x_5x_7x.%A_%a.o
@@ -34,6 +36,11 @@ New_REF_AndTri_mask_region=$REF_MASKED_DIR/Andrena_trimmerana-GCA_951215215.1-so
 New_REF_BomCon_mask_region=$REF_MASKED_DIR/Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked_ref_gene.conca_sorted.bed
 New_REF_BomHor_mask_region=$REF_MASKED_DIR/Bombus_hortorum-GCA_905332935.1-softmasked_ref_gene.conca_sorted.bed
 
+New_REF_AndBic_mask_region=$REF_MASKED_DIR/Andrena_bicolor-GCA_960531205.1-softmasked_ref_gene.conca_sorted.bed
+New_REF_alt_BomMus_mask_region=$REF_MASKED_DIR/Bombus_muscorum-GCA_963971125.1-softmasked_ref_gene.conca_sorted.bed
+New_REF_BomSyl_mask_region=$REF_MASKED_DIR/Bombus_sylvestris-GCA_911622165.2-softmasked_ref_gene.conca_sorted.bed
+
+
 ## only softmasked_regions bed file
 #New_REF_AndHae_mask_region=$REF_MASKED_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.bed
 #New_REF_AndHat_mask_region=$REF_MASKED_DIR/Andrena_hattorfiana-GCA_944738655.1-softmasked.bed
@@ -50,11 +57,16 @@ REF_BomPas=$REF_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
 REF_BomHyp=$REF_DIR/Bombus_hypnorum-GCA_911387925.1-softmasked.fa
 REF_ApisMel=$REF_DIR/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
 REF_AndMar=$REF_DIR/Andrena_marginata_GCA_963932335.1-softmasked.fa
-
+## new
 REF_BomCon=$REF_DIR/Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa
 REF_BomHor=$REF_DIR/Bombus_hortorum-GCA_905332935.1-softmasked.fa
 REF_AndTri=$REF_DIR/Andrena_trimmerana-GCA_951215215.1-softmasked.fa
 REF_AndFul=$REF_DIR/Andrena_fulva-GCA_946251845.1-softmasked.fa
+
+## new
+REF_AndBic=$REF_DIR/Andrena_bicolor-GCA_960531205.1.fa
+REF_BomMus=$REF_DIR/Bombus_muscorum-GCA_963971125.1.fa
+REF_BomSyl=$REF_DIR/Bombus_sylvestris-GCA_911622165.2-softmasked.fa
 
 ## vcf
 concated_vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
@@ -107,6 +119,19 @@ Bompas_New_REF_BomHor_VCF=concated.BomPas_New_REF_BomHor.100kb_g1500x_regions.al
 Bompas_New_REF_BomHor_VCF_filter=${Bompas_New_REF_BomHor_VCF/.vcf.gz/}
 Bomvet_New_REF_BomHor_VCF=concated.BomVet_New_REF_BomHor.100kb_g1500x_regions.all_chr.sorted.vcf.gz
 Bomvet_New_REF_BomHor_VCF_filter=${Bomvet_New_REF_BomHor_VCF/.vcf.gz/}
+
+## 23 June 2024
+Andmar_New_REF_AndBic_VCF=concated.AndMar_New_REF_AndBic.100kb_g1500x_regions.vcf.gz
+Andmar_New_REF_AndBic_VCF_filter=${Andmar_New_REF_AndBic_VCF/.vcf.gz/}
+
+##Bompas_New_alt_REF_BomMus_VCF=concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.all_chr.sorted.vcf.gz
+Bompas_New_alt_REF_BomMus_VCF=concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.vcf.gz
+Bompas_New_alt_REF_BomMus_VCF_filter=${Bompas_New_alt_REF_BomMus_VCF/.vcf.gz/}
+
+Bompas_New_REF_BomSyl_VCF=concated.BomPas_New_REF_BomSyl.100kb_g1500x_regions.vcf.gz
+Bompas_New_REF_BomSyl_VCF_filter=${Bompas_New_REF_BomSyl_VCF/.vcf.gz/}
+Bomvet_New_REF_BomSyl_VCF=concated.BomVet_New_REF_BomSyl.100kb_g1500x_regions.vcf.gz
+Bomvet_New_REF_BomSyl_VCF_filter=${Bomvet_New_REF_BomSyl_VCF/.vcf.gz/}
 
 ## >>>>>>>>>>>>>>>>>>>>>>>>>>>>>  NEW  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ## keep biallelic snp, remove duplicates and normalize snp with long base (bcftools norm -d none/-m-snps), also remove monomorphic snps
@@ -341,6 +366,56 @@ bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
 done
 }
 
+
+## 20. Andmar_New_REF_AndBic_VCF
+Andmar_New_REF_AndBic_VCF(){
+for depth in {240,400,560}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_AndBic_mask_region $Andmar_New_REF_AndBic_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndBic | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Andmar_New_REF_AndBic_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
+
+## 21. Bompas_New_alt_REF_BomMus_VCF
+Bompas_New_alt_REF_BomMus_VCF(){
+for depth in {204,340,476}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_alt_BomMus_mask_region $Bompas_New_alt_REF_BomMus_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomMus | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Bompas_New_alt_REF_BomMus_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
+
+## 22. Bompas_New_REF_BomSyl_VCF
+Bompas_New_REF_BomSyl_VCF(){
+for depth in {204,340,476}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomSyl_mask_region $Bompas_New_REF_BomSyl_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomSyl | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Bompas_New_REF_BomSyl_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
+
+## 23. Bomvet_New_REF_BomSyl_VCF
+Bomvet_New_REF_BomSyl_VCF(){
+for depth in {174,290,416}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomSyl_mask_region $Bomvet_New_REF_BomSyl_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomSyl | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Bomvet_New_REF_BomSyl_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
+
+
 ## function list of array jobs
 function_list=(
     "Bomvet_New_REF_BomPas_VCF"
@@ -362,6 +437,10 @@ function_list=(
     "Bomvet_New_REF_BomCon_VCF"
     "Bompas_New_REF_BomHor_VCF"
     "Bomvet_New_REF_BomHor_VCF"
+    "Andmar_New_REF_AndBic_VCF"
+    "Bompas_New_REF_BomSyl_VCF"
+    "Bomvet_New_REF_BomSyl_VCF"
+    "Bompas_New_alt_REF_BomMus_VCF"
 
 )
 
