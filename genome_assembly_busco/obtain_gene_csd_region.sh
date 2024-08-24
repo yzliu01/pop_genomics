@@ -13,7 +13,7 @@ grep -v "^#" full_table.tsv | awk '$2 == "Complete"' | less -S > ../../busco_com
 bedtools sort -chrThenSizeA -i /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_complete_gene_cds_bed/Apis_mel_GCF_003254395.2-softmasked+.bed | tail
 
 
-*************************   obtain annotation results *****************
+*************************   step I: obtain annotation results *****************
 # positive (sense - sequence of RNA transcripts) and negative strand (antisense - template strand) in the gff files
 # most organisms make use of both strands
 ## https://en.wikipedia.org/wiki/Sense_(molecular_biology)
@@ -60,7 +60,7 @@ busco_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
 #busco_species_dir=$busco_dir/BUSCO_Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa/run_hymenoptera_odb10/busco_sequences
 
 busco_Apis_mel=$busco_dir/BUSCO_Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
-busco_And_bio=$busco_dir/BUSCO_Andrena_bicolor-GCA_960531205.1.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
+busco_And_bic=$busco_dir/BUSCO_Andrena_bicolor-GCA_960531205.1.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_And_ful=$busco_dir/BUSCO_Andrena_fulva-GCA_946251845.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_And_hae=$busco_dir/BUSCO_Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_And_hat=$busco_dir/BUSCO_Andrena_hattorfiana-GCA_944738655.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
@@ -70,13 +70,14 @@ busco_Bom_con=$busco_dir/BUSCO_Bombus_confusus-GCA_014737475.1_ASM1473747v1-soft
 busco_Bom_hor=$busco_dir/BUSCO_Bombus_hortorum-GCA_905332935.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_Bom_hyp=$busco_dir/BUSCO_Bombus_hypnorum-GCA_911387925.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_Bom_mus=$busco_dir/BUSCO_Bombus_muscorum-GCA_963971125.1.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
+busco_Bom_pas=$busco_dir/BUSCO_Bombus_pascuorum-GCA_905332965.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_Bom_syl=$busco_dir/BUSCO_Bombus_sylvestris-GCA_911622165.2-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_Ves_vul=$busco_dir/BUSCO_Vespula_vulgaris-GCA_905475345.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 
 
 species_list=(
     "busco_Apis_mel"
-    "busco_And_bio"
+    "busco_And_bic"
     "busco_And_ful"
     "busco_And_hae"
     "busco_And_hat"
@@ -86,11 +87,12 @@ species_list=(
     "busco_Bom_hor"
     "busco_Bom_hyp"
     "busco_Bom_mus"
+    "busco_Bom_pas"
     "busco_Bom_syl"
     "busco_Ves_vul"
 )
 
-## retrieve CDS of single_copy_busco_sequences
+********** step II: retrieve complete CDS of single_copy_busco_sequences *********
 for busco_species in `echo ${species_list[@]}`
     do
     cd `echo ${!busco_species}`
@@ -102,7 +104,7 @@ for busco_species in `echo ${species_list[@]}`
 done
 
 
-## get common busco id of amino sequences
+********* step III: get common busco id of amino sequences **********
 for busco_species in `echo ${species_list[@]}`
     do
     cd `echo ${!busco_species}`
@@ -112,23 +114,18 @@ for busco_species in `echo ${species_list[@]}`
     cd ..
 done
 
-## go the the folder containing list for each species
+## go to the folder containing list for each species
 cd  /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/busco_id
 ## count the total number of shared single copy genes 
+
 ## https://stackoverflow.com/questions/43472246/finding-common-value-across-multiple-files-containing-single-column-values
-awk '{a[$1]++} END{for(k in a) if(a[k]==ARGC-1) print k}' busco*.id | sort -V | wc -l
-4959
+#awk '{a[$1]++} END{for(k in a) if(a[k]==ARGC-1) print k}' busco*.id | sort -V | wc -l
+#4959
 ## output the list
 awk '{a[$1]++} END{for(k in a) if(a[k]==ARGC-1) print k}' busco*.id | sort -V > common_busco_id.txt
 
-#busco_id_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/busco_id
-#busco_id=`cat $busco_id_dir/common_busco_id.txt`
-#for id in $busco_id
-#    do
-#    echo $id
-#done
 
-## retrite the shared single_copy_busco_sequences by all these species into separate file
+****** step IV: procure (fetch) the shared single_copy_busco_sequences by all these species into separate file ******
 busco_id_dir=$busco_dir/busco_species_single_copy_complete_CDS/busco_id
 busco_id=`cat $busco_id_dir/common_busco_id.txt`
 
@@ -149,26 +146,14 @@ for id in $busco_id
 done
 
 
-## filter out FASTA sequences that not start with the amino acid M (Methionine) after the header line
-#!/bin/bash
-
-# List of files to check and potentially exclude
-files_to_check=(
-    "31641at7399.faa"
-    "31666at7399.faa"
-    "31703at7399.faa"
-    "31714at7399.faa"
-    "31727at7399.faa"
-    "31737at7399.faa"
-    "31749at7399.faa"
-)
-
-#for file in "${files_to_check[@]}"; do
-****************************************************************
+********* step V: filter out FASTA sequences that not start with the amino acid M (Methionine) after the header line **********
 ## https://stackoverflow.com/questions/26479562/what-does-ifs-do-in-this-bash-loop-cat-file-while-ifs-read-r-line-do
 
+******************** step V_a: obtain amino acide sequences of each busco_id ********************
+## codes from chatGPT
 #!/bin/bash
 # Loop through all .faa files
+cd $busco_id_dir
 for file in `ls *aa.faa | sort -V`; do
     exclude=false
     seq=""
@@ -196,12 +181,12 @@ for file in `ls *aa.faa | sort -V`; do
         exclude=true
     fi
 
-    # If any sequence did not start with M, rename the file
+    # If any sequence did not start with M, rename the file and delete them
     if $exclude; then
         echo "Excluding $file as it contains sequences not starting with M."
         # Uncomment the following line to delete the file
         # rm "$file"
-        # Alternatively, rename the file with .retained.faa extension
+        # Alternatively, rename the file with .retained.faa extension, and delete those without starting "M"
         cp "$file" "$file.without_start_M.faa"
         rm "$file"
     else
@@ -209,18 +194,27 @@ for file in `ls *aa.faa | sort -V`; do
     fi
 done
 
-***********************************
-ls *aa.faa | sort -V > busco_id.retained.list
-cp busco_id.retained.list busco_id.retained.gff.list
-sed 's/shared_aa.faa/gff/g' busco_id.retained.gff.list > busco_id.retained.gff.new.list
 
-## retrite the shared single_copy_busco_sequences by all these species into separate file
+************ step V_b: get the shared single_copy_busco_sequences by all these species into separate file **********
+busco_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
 busco_id_dir=$busco_dir/busco_species_single_copy_complete_CDS/busco_id
-busco_id=`head -2 $busco_id_dir/busco_id.retained.gff.new.list`
+
+cd $busco_id_dir
+# ls *aa.faa | wc -l
+# 10001at7399.shared_aa.faa
+# 1887
+ls *aa.faa | sort -V > busco_id.retained.list
+sed 's/shared_aa.faa/gff/g' busco_id.retained.list > busco_id.retained.gff.list
+rm busco_id.retained.list busco_id.retained.gff.new.list
+
+busco_id=`cat $busco_id_dir/busco_id.retained.gff.list`
+shared_CDS_with_M_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M
+cd $shared_CDS_with_M_dir
 
 for id in $busco_id
     do
     echo $id
+    ## e.g., 10765at7399.gff
     for busco_species in `echo ${species_list[@]}`
         do
         cd `echo ${!busco_species}`
@@ -230,6 +224,7 @@ for id in $busco_id
         ## standard bed file: https://en.wikipedia.org/wiki/BED_(file_format); cut does not reorder the column, need to use awk
         #find -type f -name "$id" -exec grep -h 'CDS' {} \+ | cut -f 1,4,5,3,6- | sort -k1,1V -k2,2n > "$busco_dir"/busco_species_single_copy_complete_CDS/shared_CDS_with_M/"$id.$busco_species".single_CDS_with_M.bed
         find -type f -name "$id" -exec grep -h 'CDS' {} \+ | awk 'BEGIN{OFS="\t"}{print $1,$4,$5,$3,$6,$7,$8,$9}' | sort -k1,1V -k2,2n > "$busco_dir"/busco_species_single_copy_complete_CDS/shared_CDS_with_M/"$id.$busco_species".single_CDS_with_M.bed
+        ## 10191at7399.gff.busco_Bom_hyp.single_CDS_with_M.bed
 
     done
     cd $busco_dir
@@ -237,15 +232,7 @@ for id in $busco_id
 done
 
 
-***********************************
-
-## extract sequences according to sense or antisense strands
-
-
-
-
 **************** test *************
-
 ## use Busco id of all single_copy_busco_sequences and multi_copy_busco_sequences in 
 # # Busco id	Status	Sequence	Gene Start	Gene End	Strand
 
@@ -258,104 +245,7 @@ find "$(pwd -P)" -type f -name '*.gff' -print
 cd multi_copy_busco_sequences
 cd single_copy_busco_sequences
 
-## print lines with 'CDS' after file names are printed: https://unix.stackexchange.com/questions/42407/pipe-find-into-grep-v
-find -type f -name '*.gff' -print -exec grep -h 'CDS' {} \+ | sort -k1
-
-./14261at7399.gff
-./16555at7399.gff
-./20580at7399.gff
-./20899at7399.gff
-./21041at7399.gff
-./21712at7399.gff
-./26491at7399.gff
-NC_037638.1     miniprot        CDS     18548619        18548694        134     -       0       Parent=MP024547;Rank=1;Identity=1.0000;Target=21041at7399 1 25
-NC_037638.1     miniprot        CDS     18548368        18548462        153     -       2       Parent=MP024547;Rank=1;Identity=1.0000;Target=21041at7399 26 57
-
-
-## print lines with 'CDS' without file names
-find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | sort -k1
-
-NC_037638.1     miniprot        CDS     18548619        18548694        134     -       0       Parent=MP024547;Rank=1;Identity=1.0000;Target=21041at7399 1 25
-NC_037638.1     miniprot        CDS     18548368        18548462        153     -       2       Parent=MP024547;Rank=1;Identity=1.0000;Target=21041at7399 26 57
-
-## for loop
-
-cd $busco_dir
-
-dir_list=("single_copy_busco_sequences"
-        #"multi_copy_busco_sequences"
-        )
-for dir in `echo ${dir_list[@]}`
-    do
-    cd $dir
-    ## get list of all columns of gff files
-    #find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | sort -k1 >> ../single_multiple_complete_CDS.txt ## save results in folder: busco_sequences
-    
-    ## make bed file (0-based) with seq names and cds start and end position from gff files (1-based)
-
-    #find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | cut -f 1,4- | sort -k1 >> ../single_copy_complete_CDS.bed ## save results in folder: busco_sequences
-    ## sort the first columns (-V natural sort of numbers) and second solumn (numeric sort)
-    find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | cut -f 1,4- | sort -k1,1V -k2,2n >> ../single_copy_complete_CDS.bed ## save results in folder: busco_sequences
-
-    cd ..
-done
-
-## example data
-NC_037638.1	10230692	10231239	229	+	0	Parent=MP027497;Rank=1;Identity=0.4148;Frameshift=1;Target=22512at7399_3 399 575
-NC_037638.1	1031817	1031945	173	+	0	Parent=MP055793;Rank=1;Identity=0.8372;Target=8132at7399_3 1 43
-NC_037638.1	1032010	1032188	147	+	0	Parent=MP055793;Rank=1;Identity=0.5246;Target=8132at7399_3 44 103
-
-
-
-
-## merge regions that are located in others using bedtools
-conda activate variant_calling_mapping
-
-ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-
-busco_Apis_mel=$ref_dir/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
-busco_And_bio=$ref_dir/Andrena_bicolor-GCA_960531205.1.fa
-busco_And_ful=$ref_dir/Andrena_fulva-GCA_946251845.1-softmasked.fa
-busco_And_hae=$ref_dir/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
-busco_And_hat=$ref_dir/Andrena_hattorfiana-GCA_944738655.1-softmasked.fa
-busco_And_mar=$ref_dir/Andrena_marginata_GCA_963932335.1-softmasked.fa
-busco_And_tri=$ref_dir/Andrena_trimmerana-GCA_951215215.1-softmasked.fa
-busco_Bom_con=$ref_dir/Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa
-busco_Bom_hor=$ref_dir/Bombus_hortorum-GCA_905332935.1-softmasked.fa
-busco_Bom_hyp=$ref_dir/Bombus_hypnorum-GCA_911387925.1-softmasked.fa
-busco_Bom_mus=$ref_dir/Bombus_muscorum-GCA_963971125.1.fa
-busco_Bom_syl=$ref_dir/Bombus_sylvestris-GCA_911622165.2-softmasked.fa
-busco_Ves_vul=$ref_dir/Vespula_vulgaris-GCA_905475345.1-softmasked.fa
-
-ref_list=(
-    "busco_Apis_mel"
-    "busco_And_bio"
-    "busco_And_ful"
-    "busco_And_hae"
-    "busco_And_hat"
-    "busco_And_mar"
-    "busco_And_tri"
-    "busco_Bom_con"
-    "busco_Bom_hor"
-    "busco_Bom_hyp"
-    "busco_Bom_mus"
-    "busco_Bom_syl"
-    "busco_Ves_vul"
-)
-
-## dir for single_copy_busco_sequences
-for busco_species_ref in `echo ${ref_list[@]}`
-    do
-    cd `echo ${!busco_species_ref}`
-    ## Variable Expansion: The species_list contains the names of variables as strings. To get the value of each variable in the loop, I used the syntax ${!busco_species} which performs indirect expansion, resolving the value of the variable whose name is stored in busco_species.
-    pwd
-    find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | cut -f 1,4- | sort -k1,1V -k2,2n > $busco_dir/busco_species_single_copy_complete_CDS/$busco_species.single_copy_complete_CDS.bed ## save results in folder: busco_sequences
-    cd $busco_dir
-    pwd
-done
-
-
-*********** test data ***********
+*********** test data o-based and 1-based ***********
 # bedtools sort -chrThenSizeA -i Apis_mel_GCF_003254395.2-softmasked+.bed | tail
 
 ## convert bed file (1-based) bed from gff files (start and end position) to bedtools bed files (0-based)
@@ -381,59 +271,264 @@ NC_037647.1     4482999 4483635
 NC_037647.1     4483915 4484037
 
 
-*************  formal steps  ***********
-cut -f 1-3 single_copy_complete_CDS.bed | sort -k1,1 -k2,2n -k3,3n | bedtools merge -i stdin  | awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3-1}' | bedtools getfasta -fi $busco_apis_mel -bed stdin -fo Api_mel.out_single_copy_CDS_merge.fa
-
-***** variable loop *****
+***** step VI: variable loop to get shared busco_id and differentiate positive (+) and negative (-) strand *****
 ## dir for single_copy_busco_sequences
+busco_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
 shared_CDS_with_M_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M
 cd $shared_CDS_with_M_dir
 
-busco_id_dir=$busco_dir/busco_species_single_copy_complete_CDS/busco_id
-busco_id=`cat $busco_id_dir/busco_id.retained.gff.new.list`
+conda activate variant_calling_mapping
 
-for id in $busco_id
+busco_id_dir=$busco_dir/busco_species_single_copy_complete_CDS/busco_id
+#busco_id=`head -2 $busco_id_dir/busco_id.retained.gff.new.list`
+busco_id_list=$busco_id_dir/busco_id.retained.gff.list
+
+#cd ./test_+-
+#busco_id="6606at7399.gff" 
+## example data of a negative record
+# /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M/6606at7399.gff.busco_And_bic.single_CDS_with_M.bed
+# ENA|OY482664|OY482664.1	36492416	36492744	CDS	466	-	2	Parent=MP051924;Rank=1;Identity=0.7909;Target=6606at7399_2
+# ENA|OY482664|OY482664.1	36492986	36493175	CDS	273	-	0	Parent=MP051924;Rank=1;Identity=0.8438;Target=6606at7399_2
+# ENA|OY482664|OY482664.1	36493265	36493349	CDS	116	-	1	Parent=MP051924;Rank=1;Identity=0.7500;Target=6606at7399_2
+
+*********** reference data directory ************
+ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+
+busco_Apis_mel=$ref_dir/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
+busco_And_bic=$ref_dir/Andrena_bicolor-GCA_960531205.1.fa
+busco_And_ful=$ref_dir/Andrena_fulva-GCA_946251845.1-softmasked.fa
+busco_And_hae=$ref_dir/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
+busco_And_hat=$ref_dir/Andrena_hattorfiana-GCA_944738655.1-softmasked.fa
+busco_And_mar=$ref_dir/Andrena_marginata_GCA_963932335.1-softmasked.fa
+busco_And_tri=$ref_dir/Andrena_trimmerana-GCA_951215215.1-softmasked.fa
+busco_Bom_con=$ref_dir/Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa
+busco_Bom_hor=$ref_dir/Bombus_hortorum-GCA_905332935.1-softmasked.fa
+busco_Bom_hyp=$ref_dir/Bombus_hypnorum-GCA_911387925.1-softmasked.fa
+busco_Bom_mus=$ref_dir/Bombus_muscorum-GCA_963971125.1.fa
+busco_Bom_pas=$ref_dir/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
+busco_Bom_syl=$ref_dir/Bombus_sylvestris-GCA_911622165.2-softmasked.fa
+busco_Ves_vul=$ref_dir/Vespula_vulgaris-GCA_905475345.1-softmasked.fa
+
+ref_list=(
+    "busco_Apis_mel"
+    "busco_And_bic"
+    "busco_And_ful"
+    "busco_And_hae"
+    "busco_And_hat"
+    "busco_And_mar"
+    "busco_And_tri"
+    "busco_Bom_con"
+    "busco_Bom_hor"
+    "busco_Bom_hyp"
+    "busco_Bom_mus"
+    "busco_Bom_pas"
+    "busco_Bom_syl"
+    "busco_Ves_vul"
+)
+
+#cd ..
+
+for id in `cat $busco_id_list`
+#for id in `echo $busco_id`
     do
 
     echo $id
-
-    for busco_species_ref in `echo ${ref_list[@]}`
+#done
+    for busco_species_ref in ${ref_list[@]}
         do
         #pwd
         echo $busco_species_ref
         echo ${!busco_species_ref}
         ## folder_dir: $ref_dir/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
         ref=`echo ${!busco_species_ref}`
-    ##done # test code
+
+        strand=`cut -f 6 $shared_CDS_with_M_dir/"$id.$busco_species_ref".single_CDS_with_M.bed | uniq`
+        echo "$shared_CDS_with_M_dir/"$id.$busco_species_ref".single_CDS_with_M.bed"
+        if [[ $strand == "+" ]]
+        then
+            echo "negative strand +"
+            awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3,$4,$5,$6,$7,$8,$9}' $shared_CDS_with_M_dir/"$id.$busco_species_ref".single_CDS_with_M.bed \
+            | bedtools getfasta -fi $ref -bed stdin -s > "$id.$busco_species_ref".single_CDS_with_M+.fa
+        else
+            echo "positive strand -"
+            ## https://github.com/davetang/defining_genomic_regions
+            ## https://www.biostars.org/p/84686/
+            ## Tutorial:Cheat Sheet For One-Based Vs Zero-Based Coordinate Systems
+            ## only column START:$n-1
+            awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3,$4,$5,$6,$7,$8,$9}' $shared_CDS_with_M_dir/"$id.$busco_species_ref".single_CDS_with_M.bed \
+            | bedtools getfasta -fi $ref -bed stdin -s > "$id.$busco_species_ref".single_CDS_with_M-.fa
+
+            ## reverse the order of records in fasta files
+            # https://www.biostars.org/p/9462522/
+            paste - - < "$id.$busco_species_ref".single_CDS_with_M-.fa | tac | tr "\t" "\n" > "$id.$busco_species_ref".single_CDS_with_M-RC.fa
+
+        fi
+    done
+
+done # test code
+
+******* following not working properly *******
         ## get list of all columns of gff files
         #find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | sort -k1 >> ../single_multiple_complete_CDS.txt ## save results in folder: busco_sequences
         
         ## make bed file (0-based) with seq names and cds start and end position from gff files (1-based)
 
+        ## According to the results of retrieved sequences, it is necessary to use only column START:$n-1, otherwhise it causes issues with start codons 
+
         #find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | cut -f 1,4- | sort -k1 >> ../single_copy_complete_CDS.bed ## save results in folder: busco_sequences
         ## sort the first columns (-V natural sort of numbers) and second solumn (numeric sort)
-
-        awk '{if ($5 == "+") print $0}' "$id$busco_species_ref".single_CDS_withM.bed | sort -k1,1 -k2,2n -k3,3n | bedtools merge -i stdin  | awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3-1}' | bedtools getfasta -fi $ref -bed stdin -fo "$id$busco_species_ref".single_CDS_withM+.fa
-        awk '{if ($5 == "-") print $0}' "$id$busco_species_ref".single_CDS_withM.bed | sort -k1,1 -k2,2n -k3,3n | bedtools merge -i stdin  | awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3-1}' | bedtools getfasta -fi $ref -bed stdin -fo "$id$busco_species_ref".single_CDS_withM-.fa
-        #cut -f 1-4 "$id$busco_species_ref".single_CDS_withM.bed | sort -k1,1 -k2,2n -k3,3n | bedtools merge -i stdin  | awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3-1}' | bedtools getfasta -fi $ref -bed stdin -fo "$id$busco_species_ref".single_CDS_withM.fa
+        awk '{if ($6 == "+") print $0}' $shared_CDS_with_M_dir/"$id.$busco_species_ref".single_CDS_with_M.bed | awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3,$4,$5,$6,$7,$8,$9}' | bedtools getfasta -fi $ref -bed stdin -s > "$id.$busco_species_ref".single_CDS_with_M+.fa
+        
+        awk '{if ($6 == "-") print $0}' $shared_CDS_with_M_dir/"$id.$busco_species_ref".single_CDS_with_M.bed | awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3,$4,$5,$6,$7,$8,$9}' | bedtools getfasta -fi $ref -bed stdin -s > "$id.$busco_species_ref".single_CDS_with_M-.fa
+        
+        ## reverse the order of records in fasta files
+        #paste - - < "$id.$busco_species_ref".single_CDS_with_M-.fa | tac | tr "\t" "\n" > "$id.$busco_species_ref".single_CDS_with_M-RC.fa
+        
+        ##cut -f 1-4 "$id$busco_species_ref".single_CDS_withM.bed | sort -k1,1 -k2,2n -k3,3n | bedtools merge -i stdin  | awk 'BEGIN{OFS="\t"}{print $1,$2-1,$3-1}' | bedtools getfasta -fi $ref -bed stdin -fo "$id$busco_species_ref".single_CDS_withM.fa
     done
-
 done
+
+
+********** test codes for above step VI: reverse complementary sequences from negative strand ************
 # - 
 And_bio_bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M/31at7399.gff.busco_And_bio.single_CDS_with_M.bed
 bedtools getfasta -fi $ref_dir/Andrena_bicolor-GCA_960531205.1.fa -s -bed $And_bio_bed | head | less -S
+# + (without M)
+And_bio_bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/BUSCO_Andrena_bicolor-GCA_960531205.1.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences/32167at7399.gff
+bedtools getfasta -fi $ref_dir/Andrena_bicolor-GCA_960531205.1.fa -s -bed $And_bio_bed | head | less -S
+
+
 # +
 And_tri_bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/BUSCO_Andrena_trimmerana-GCA_951215215.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences/31at7399.gff
 bedtools getfasta -fi $ref_dir/Andrena_trimmerana-GCA_951215215.1-softmasked.fa -s -bed $And_tri_bed | head
 
 ## reverse the order of **records with (-)** in a fasta file
+shared_CDS_with_M=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M
+
+grep "+" -l *with_M.bed | head -5
+
+busco_assess_neg=`grep "-" -l *with_M.bed | head -2`
+for busco_id in $busco_assess_neg
+    do
+    echo $busco_id
+    bedtools getfasta -fi $ref_dir/Andrena_bicolor-GCA_960531205.1.fa -s -bed $And_bio_bed
+    paste - - < `echo $busco_id` | tac | tr "\t" "\n";
+done
+
 paste - - < test.fa | tac | tr "\t" "\n"
+## working
+paste - - < 31at7399.aa2nuc.And_bio.fa | tac | tr "\t" "\n"
 
+************* step VII: combine multi-sequence into a single one ***************
+webtool: https://www.bioinformatics.org/sms2/combine_fasta.html for a small number of files
 
+************* loop ************
+busco_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
+shared_CDS_with_M_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M
+cd $shared_CDS_with_M_dir
 
-## webtool - combine multi-sequence into a single one: https://www.bioinformatics.org/sms2/combine_fasta.html
+grep -v '>' 31769at7399.gff.busco_Bom_con.single_CDS_with_M-RC.fa | tr -d "\n"
+## list a large number of files with "M+" or "M-RC" and just print file names without directory
+find . -name '*gff.busco*M+*' -o -name '*gff.busco*M-RC*' -printf "%f\n"
+## find and delete empty files
+find . -type f -empty -delete
 
-## align multiple sequences
+************* loop - final ************
+## find files with name "*gff.busco*M+*" or "*gff.busco*M-RC*", and print only file name without directory
+## \( -name '*gff.busco*M+*' -o -name '*gff.busco*M-RC*' \): Groups the -name conditions with -o for logical OR. The escaped parentheses \( and \) ensure that the conditions are evaluated together.
+## they are with space.
+for fa in `find . \( -name '*gff.busco*M+*' -o -name '*gff.busco*M-RC*' \) -printf "%f\n" | sort -V`
+
+## check with the first a few items
+#for fa in $(find . \( -name '*gff.busco*M+*' -o -name '*gff.busco*M-RC*' \) -printf "%f\n" | sort -V | head -30)
+#for fa in "10027at7399.gff.busco_And_bic.single_CDS_with_M+.fa.copy" ## moved to "test_+-" folder
+    do
+    echo $fa
+## check file names
+#done
+
+    # fa item: 31769at7399.gff.busco_Bom_con.single_CDS_with_M-RC.fa
+    if [[ "$fa" == *single_CDS_with_M+*.fa ]]; then
+    temp_file_name="${fa/single_CDS_with_M+.fa/combined.fa}"
+    elif [[ "$fa" == *single_CDS_with_M-RC*.fa ]]; then
+    temp_file_name="${fa/single_CDS_with_M-RC.fa/combined.fa}"
+    fi
+    echo $temp_file_name
+
+    new_file_name_header=${temp_file_name/fa/header.fa}
+    echo $new_file_name_header
+    head_line=${new_file_name_header/.header.fa/}
+    
+    grep -v '>' $fa | tr -d "\n" > $temp_file_name # 31769at7399.gff.busco_Bom_con.combine.fa
+    ## in-place edit a header to the first line
+    sed "1 i\\>$head_line" $temp_file_name > $new_file_name_header
+    ## delete temporary file    
+    rm $temp_file_name
+
+done
+
+************ extract unique busco_id  and merge sequences from each species *********
+## step 1: extract unique busco_id from the file names
+
+#e.g., 1at7399.gff.busco_And_ful.combined.header.fa
+
+uniq_prefix=$(
+for file in *.gff.busco_*.combined.header.fa
+    do
+    prefix=$(echo "$file" | sed 's/\.busco.*//')
+    echo "$prefix"
+    # e.g., 1at7399.gff
+
+    ## sort out output in one step
+done | sort -V | uniq
+    )
+
+busco_species=$(
+for file in $(ls *.gff.busco_*.combined.header.fa | head -40)
+    do
+    species=$(echo "$file" | sed -E 's/.*gff\.busco_([^.]+)\.combined\.header\.fa/\1/')
+    echo "$species"
+    # e.g., And_ful, Bom_hor
+
+    ## sort out output in one step
+done | sort -V | uniq
+    )
+
+## takes 2m9s
+echo "sort and uniq are done!"
+
+## step 2: list all files matching each unique prefix and then concatenate their sequences
+for prefix in $uniq_prefix
+    ## e.g. 32123at7399.gff
+    do
+    echo -e "\nfiles matching pattern: $prefix"
+
+    ## list files of unique busco_id and concatenate all with a newline space between each
+    # ${prefix}* | xargs cat
+    for file in ${prefix}*combined.header.fa
+    ## e.g.
+    #for file in `ls 1at7399.gff*header*`
+        do
+        echo $file
+        ## check for each species
+        #e.g., 1at7399.gff.busco_And_ful.combined.header.fa
+        #for species in $busco_species
+        #    do
+            #cat $file >> 1at7399.gff.combined_share.fa
+            #echo -e "\n" >> 1at7399.gff.combined_share.fa
+            #cat $file.busco_$species.combined.header.fa >> $prefix.combined_share.fa
+            cat $file >> $prefix.combined_share.fa
+            echo -e "\n" >> $prefix.combined_share.fa
+        #done
+    done
+done
+
+11660at7399.gff.busco_And_mar.combined.header.fa
+11660at7399.gff.busco_And_tri.single_CDS_with_M-RC.fa
+11660at7399.gff.busco_And_tri.combined.fa
+11660at7399.gff.busco_And_tri.combined.header.fa
+
+************* step VIII: align multiple sequences ***************
 ## https://mafft.cbrc.jp/alignment/software/; https://github.com/rcedgar/muscle
 ## reasons to choose different program: https://help.geneious.com/hc/en-us/articles/360044627712-Which-multiple-alignment-algorithm-should-I-use
 conda activate myproject
@@ -445,12 +540,72 @@ cat *seq.fa > busco_all_CDS_seq.fa
 ## mafft --thread 4 busco_all_CDS_seq.fa > busco_all_CDS_seq.output.msa
 mafft --phylipout --thread 4 busco_all_CDS_seq.fa > busco_all_CDS_seq.output.phy
 
+mafft --auto --thread 4 32320at7399.gff.combined_share.fa > 32320at7399.gff.combined_share.mafft
+cp 32320at7399.gff.combined_share.mafft 32320at7399.gff.combined_share.mafft.copy
+
+muscle -align 32320at7399.gff.combined_share.fa -output ./test_+-/32320at7399.gff.combined_share_align.new.afa
+muscle -align 32232at7399.gff.combined_share.fa -output ./test_+-/32232at7399.gff.combined_share_align.new.afa
+
+./test_+-/32232at7399.gff.combined_share_align.afa
+./test_+-/32320at7399.gff.combined_share_align.afa
+
+#    -phyiout ./test_+-/32320at7399.gff.combined_share_align.phyi \
+#    -physout ./test_+-/32320at7399.gff.combined_share_align.phys
+
+## concatenate aligned fasta files for each gene
+## https://github.com/nylander/catfasta2phyml
+catfasta2phyml=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/catfasta2phyml.py
+chmod +x /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/catfasta2phyml.py
+$catfasta2phyml -h
+cd test_+-/
+$catfasta2phyml -f *align.afa > out.32232at7399_32232at7399.afa
+
+$catfasta2phyml -f 32320at7399.gff.combined_share.mafft \
+    32320at7399.gff.combined_share.mafft.copy > out.32320at7399_twice.afa
+
+## https://github.com/ballesterus/Utensils
+geneStitcher=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/geneStitcher.py
+python $geneStitcher -h
+
+Traceback (most recent call last):
+  File "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/geneStitcher.py", line 6, in <module>
+    from partBreaker import WritePresAb
+ModuleNotFoundError: No module named 'partBreaker'
+
+
+## https://jlsteenwyk.com/PhyKIT/usage/index.html#create-concatenation-matrix
+conda search phykit
+conda install phykit
+phykit create_concat -a file -p prefix.name.out
+phykit create_concat -a conc_two_gene_align.list -p conc_32320at7399_32232at7399.align.afa
+
+
 ## Run AMAS to obtain various kinds of information about each alignment
 ## https://github.com/marekborowiec/AMAS
 AMAS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/AMAS/amas
 #cd $AMAS_dir
 python $AMAS_dir/AMAS.py -h
 
+
+
+
+******* potential sulution *******
+# Input and output file names
+input_file="31at7399.aa2nuc.And_bio.fa"
+output_file="reversed_output.fa"
+
+# Extract records, treating '>' as a record delimiter
+# Reverse records with '(-)' in the header
+awk -v RS='>' '/\(-\)/ {print ">"$0}' "$input_file" | tac > temp_reversed.fasta
+
+# Extract records without '(-)'
+awk -v RS='>' '!/\(-\)/ {print ">"$0}' "$input_file" > temp_non_reversed.fasta
+
+# Combine both parts into the final output
+cat temp_reversed.fasta temp_non_reversed.fasta > "$output_file"
+
+# Clean up temporary files
+rm temp_reversed.fasta temp_non_reversed.fasta
 
 
 

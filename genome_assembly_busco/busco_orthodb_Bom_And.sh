@@ -4,7 +4,7 @@
 #SBATCH --mem 20g
 #SBATCH --time=06:15:00
 ##SBATCH --array=1-13%13
-#SBATCH --array=14%1
+#SBATCH --array=1%1
 #SBATCH --error=busco_genome_assembly_Bom_And.%A_%a.e
 #SBATCH --output=busco_genome_assembly_Bom_And.%A_%a.o
 #SBATCH --job-name=busco_genome_assembly_Bom_And
@@ -42,7 +42,7 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
 ## function list of array jobs
 species_list=(
     "REF_BomPas"
-    #"REF_BomVet"
+    #"REF_BomVet" # not published
     "REF_BomHyp"
     "REF_BomCon"
     "REF_BomHor"
