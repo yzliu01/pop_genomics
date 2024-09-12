@@ -28,7 +28,7 @@ for (generation in c("50G","100G","500G","1000G")){
 
     ## difficult to simulate
     #for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
-    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons")){
+    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
         ## solo axis name plot
         #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
         ##log="xy",xlab="Years ago", ylab="Effective population size"

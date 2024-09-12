@@ -3,12 +3,12 @@
 #sfs_20_80_200=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.blueprint.txt
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint
-sfs_20_80_200=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.blueprint.txt
+sfs_20_80_200=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.blueprint.txt
 
 #blueprint_output_folder_list_5rep=ft_sim_10000Ne_20_80_200_200S_1E_00_01_05_09d_05i_20Chr_15Mb.5rep_blueprint.output_dir_name.list
 
 #blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
-blueprint_file_list_5rep=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.5rep_blueprint.file_name.list
+blueprint_file_list_5rep=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.5rep_blueprint.file_name.list
 ## take the (last) 3rd column
 #sed 's/\.blueprint//g' $sfs_20_80_200 | awk '{print $NF}' > $blueprint_output_folder_list_5rep
 awk '{print $NF".blueprint"}' $sfs_20_80_200 > $blueprint_file_list_5rep
@@ -20,7 +20,7 @@ awk '{print $NF".blueprint"}' $sfs_20_80_200 > $blueprint_file_list_5rep
 #blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint
-blueprint_file_list_5rep=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.5rep_blueprint.file_name.list
+blueprint_file_list_5rep=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.5rep_blueprint.file_name.list
 
 ## blueprint file name
 ## ft_sim_10000Ne_20hapS_2E_100_500G_10d_10d_20Chr_15Mb_1.blueprint
@@ -44,11 +44,11 @@ done
 #blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint
-#blueprint_file_list_5rep=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.5rep_blueprint.file_name.list
+#blueprint_file_list_5rep=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.5rep_blueprint.file_name.list
 ## ft_sim_10000Ne_20hapS_2E_100_500G_10d_10d_20Chr_15Mb_1.blueprint
 
 #sfs_FilePlotName_20_80_200=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.blueprint.txt
-sfs_FilePlotName_20_80_200=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.blueprint.txt
+sfs_FilePlotName_20_80_200=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.blueprint.txt
 ## ft_sim_10000Ne_20hapS_2E_100_500G_10d_10d_20Chr_15Mb_1
 ## ft_sim_10000Ne_20hapS_2E_100_500G_10d_10d_20Chr_15Mb_2
 

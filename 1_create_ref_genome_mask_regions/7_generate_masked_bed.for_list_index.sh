@@ -1,3 +1,7 @@
+## identify repeative regions using RepeatModeler
+/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/0_RepeatModeler/repeatmodeler_install_use_array.sh
+
+
 ## create masked reference genome bed file in two steps
 ## https://www.danielecook.com/generate-a-bedfile-of-masked-ranges-a-fasta-file/
 

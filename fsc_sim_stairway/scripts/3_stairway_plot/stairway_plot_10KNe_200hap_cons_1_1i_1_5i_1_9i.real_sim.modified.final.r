@@ -3,20 +3,21 @@ library(gtools)
 library(fs)
 library(stringr)
 
+## old directory
 setwd("/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned")
-final_summary <- "/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned"
+#final_summary <- "/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned"
 
 ## attention to refer to only one file name
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*15Mb_1.final.summary")
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
-pdf(paste0("combined.10000Ne_200hapS_5rep_cons_1_1i_1_5i_1_9i_non_pruned.rotated_x_lab_final.pdf"),width = 20, height = 25)
+pdf(paste0("combined.10000Ne_200hapS_5rep_cons_1_1i_1_5i_1_9i_non_pruned.rotated_x_lab_final.pdf"),width = 12, height = 12)
 #pdf(paste0("combined.10000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
-par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.4,cex.lab=1.6, cex.axis=1.3,lwd=2)
-layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+par(mfcol=c(5,4),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2) # cex.axis=1,
+layout(matrix(c(1:16),nrow=4,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
@@ -63,7 +64,7 @@ for (generation in c("50G","100G","500G","1000G")){
         ## rotating x axis labels
         lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
         axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-        text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 900,srt = 38,pos = 3, xpd = TRUE)
+        text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 1400,srt = 38,pos = 3, xpd = TRUE)
 
         ## add plot title in each plot
         mtext(side=3,text=paste0("10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb"),cex=0.8,line=1.2)
@@ -75,7 +76,7 @@ for (generation in c("50G","100G","500G","1000G")){
         for (rep in c(1:5)){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*200hapS*.final.summary"))),header=T,sep="\t"))
-            print(head(get(paste0("a",rep)),n=2L))
+            ##print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_10000Ne_200hapS_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             ##print(head(data))

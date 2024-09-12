@@ -20,6 +20,10 @@ for sample_size in {20,80,200};do
             ## https://unix.stackexchange.com/questions/638196/how-to-print-in-only-one-column-if-condition-with-awk
             #BEGIN{FS=OFS="\t"}
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_1000000Ne_"$sample_size"hapS_5rep_final.txt
+            
+            ## delete old files
+            # ls $out_sfs_dir/*hapS_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final* | grep -v '200_300G' | xargs rm
+
         done
         for increase in $sfs2;do
             #    echo -e "\n"

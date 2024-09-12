@@ -131,9 +131,16 @@ prothint_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/gmetp_linux_64/b
 ## identify repeative regions for Andrena marginata first
 Andrena_marginata_softmask_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/MaskerOutput/Andrena_marginata_GCA_963932335.1.fa.masked
 Bombus_muscuorum_softmask_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.fa
+Andrena_bicolor_softmask_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_bicolor-GCA_960531205.1.fa
+Bombus_confusus_softmask_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa
+
 Apodiea_gene_AA=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db/orthodb/Apodiea_gene_AA.fa
+
 output_dir_AndMar=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results_AndMar
 output_dir_BomMus=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results_BomMus
+
+output_dir_AndBic=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results_AndBic
+output_dir_BomCon=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results_BomCon
 
 cd $output_dir
 conda activate braker3
@@ -144,6 +151,10 @@ time $prothint_py $Andrena_marginata_softmask_genome $Apodiea_gene_AA --workdir 
 44m8s
 
 time $prothint_py $Bombus_muscuorum_softmask_genome $Apodiea_gene_AA --workdir $output_dir_BomMus
+
+time $prothint_py $Bombus_confusus_softmask_genome $Apodiea_gene_AA --workdir $output_dir_BomCon
+
+time $prothint_py $Andrena_bicolor_softmask_genome $Apodiea_gene_AA --workdir $output_dir_AndBic
 
 >>>>>>>>>>>>>>>>>>>>>    Step I: prepare protein sequences for prothint.py <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ## prepare protein sequences for prothint.py in above step

@@ -1,10 +1,11 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 50g
-##SBATCH --mem 5g
-#SBATCH --time=16:00:00
-#SBATCH --array=2%1
+#SBATCH --mem 5g
+#SBATCH --time=00:05:00
+##SBATCH --mem 50g
+##SBATCH --time=16:00:00
+#SBATCH --array=0%1
 #SBATCH --error=detect_Ref_softmask.%A_%a.e
 #SBATCH --output=detect_Ref_softmask.%A_%a.o
 #SBATCH --job-name=detect_Ref_softmask
@@ -24,33 +25,38 @@ cd $REF_dir
 #BuildDatabase -name Bombus_muscorum Bombus_muscorum-GCA_963971185.1.fa
 #BuildDatabase -name Bombus_muscorum_alt Bombus_muscorum-GCA_963971125.1.fa
 
+# BuildDatabase -name Bombus_veteranus Bombus_veteranus.hifi_asm_pl2.fa
+
 ## step II: detect repeats
 species_list=(
-    "Andrena_bicolor"
-    #"Bombus_muscorum"
-    "Bombus_muscorum_alt"
+    #"Andrena_bicolor"
+    
+    #"Bombus_muscorum_alt"
+    "Bombus_veteranus"
 )
 ## chapgpt
-species=${species_list[$SLURM_ARRAY_TASK_ID-1]}
+species=${species_list[$SLURM_ARRAY_TASK_ID]}
 
+## run RepeatModeler
 #RepeatModeler -database Andrena_marginata -threads 20 > Andrena_marginata_repeat_out.new.log
 #RepeatModeler -database "$species" -threads 20 > "$species"_repeat_out.new.log
+RepeatModeler -database "$species" -threads 20 > "$species"_repeat_out.new.log
 
-#exit 0
+exit 0
+
+## Step III: mask regions run after step II is done to have a consensi_fa id
 
 # -LTRStruct (optional)
 mkdir MaskerOutput
 
 consensi_fa=(
-    "RM_2598087.SatJun220724542024"
-    "RM_3898646.WedJun261101442024"
+    "xxx----RM_2598087.SatJun220724542024"
 )
-consensi=${consensi_fa[$SLURM_ARRAY_TASK_ID-1]}
+consensi=${consensi_fa[$SLURM_ARRAY_TASK_ID]}
 out_fa=(
-    "Andrena_bicolor-GCA_960531205.1.fa"
-    "Bombus_muscorum-GCA_963971125.1.fa"
+    "Bombus_veteranus.hifi_asm_pl2.fa"
 )
-out=${out_fa[$SLURM_ARRAY_TASK_ID-1]}
+out=${out_fa[$SLURM_ARRAY_TASK_ID]}
 #consensi_fa_classified_dir=./RM_1536747.WedApr101949002024
 #RepeatMasker -pa 20 -gff -lib ./RM_1536747.WedApr101949002024/consensi.fa.classified -dir MaskerOutput Andrena_marginata_GCA_963932335.1.fa \
 #    -html -xsmall

@@ -101,8 +101,9 @@ conda rename -n variant_calling variant_calling_mapping
 #bwa/0.7.17
 
 conda activate variant_calling_mapping
-ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/
+ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 cd $ref_dir
+
 bwa index -a bwtsw D_melanogaster.7509v1.md_chr.fa
 
 bwa index -a bwtsw iyAndHaem1_1.md_chr.fa
@@ -134,6 +135,12 @@ bwa index -a bwtsw Andrena_marginata_GCA_963932335.1-softmasked.fa
 ## alternative ref
 bwa index -a bwtsw Bombus_muscorum-GCA_963971125.1.fa
 
+## self assemblied genome
+## order in header assending order
+bwa index -a bwtsw Bombus_veteranus.hifi_asm_pl2.sorted.fa
+## order in length
+bwa index -a bwtsw Bombus_veteranus.hifi_asm_pl2.fa
+
 2.
 samtools/1.2
 samtools-1.19
@@ -145,6 +152,10 @@ samtools faidx iyAndHatt_8785v1_2.md_chr.fa
 samtools faidx iyBomPasc1_1.md_chr.fa
 samtools faidx iyBomHypn_7925v1_2.md_chr.fa
 samtools faidx Amel_HAv3_1.md_chr.fa
+
+## self assemblied genome
+samtools faidx Bombus_veteranus.hifi_asm_pl2.sorted.fa
+samtools faidx Bombus_veteranus.hifi_asm_pl2.fa
 
 for masked_ref in `ls *softmasked.fa`
 for masked_ref in `ls -t *softmasked.fa | head -4`
@@ -201,6 +212,13 @@ conda activate gatk_4.3.0.0
 gatk CreateSequenceDictionary \
 -R Bombus_muscorum-GCA_963971125.1.fa \
 -O Bombus_muscorum-GCA_963971125.1.fa.dict
+
+## Bombus vestranus
+conda activate gatk_4.3.0.0
+gatk CreateSequenceDictionary \
+-R Bombus_veteranus.hifi_asm_pl2.fa \
+-O Bombus_veteranus.hifi_asm_pl2.dict
+
 
 ## Ref with chr not modified
 ## out name should be noted

@@ -1,6 +1,4 @@
 ************ non-pruned ( tab separated) *******************************************
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/steps/systematic_fsc_test3/1000000Ne_5rep
-out_sub_dir=/home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep/templates
 out_sub_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint

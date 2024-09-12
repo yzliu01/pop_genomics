@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 8
-#SBATCH --mem 10g
+#SBATCH --mem 20g
 ##SBATCH --array=1-6%6
 #SBATCH --time=15:00:00
 #SBATCH --error=gene_annotation_BomCon.%A.e

@@ -12,6 +12,46 @@ out_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/stats
 
 cd $out_dir
 
+## conda did not work
+## conda install conda-forge::pixy
+mamba install -n pixy -c conda-forge pixy
+install -c bioconda htslib
+tabix $vcf_mar2mar
+
+mamba activate pixy
+ref=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+pop_file=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/analysis/pooled_data_analysis/pi_fst/pool_population.list
+out_pi_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/analysis/pooled_data_analysis/pi_fst
+cd $out_pi_dir
+## only tab is acctptes (sample_name pop_name)
+pixy --stats pi --vcf $vcf_mar2mar --bypass_invariant_check yes --window_size 20 \
+    --bed_file $ref/Andrena_marginata_GCA_963932335.1-softmasked_ref_gene.conca_sorted.complement.bed \
+    --population $pop_file > stat_vcf_mar2mar.pi
+
+## check pi > 0 in the column
+head pixy_pi.txt
+pop     chromosome      window_pos_1    window_pos_2    avg_pi  no_sites        count_diffs     count_comparisons       count_missing
+Andmar  ENA|OZ010661|OZ010661.1 2285    3892    0.0     7       0       7       0
+Andmar  ENA|OZ010661|OZ010661.1 4786    5378    0.0     1       0       1       0
+Andmar  ENA|OZ010661|OZ010661.1 5408    5719    NA      0       NA      NA      NA
+Andmar  ENA|OZ010661|OZ010661.1 13524   14893   NA      0       NA      NA      NA
+Andmar  ENA|OZ010661|OZ010661.1 14930   15253   NA      0       NA      NA      NA
+
+awk '($5 ~ /^[0-9]+(\.[0-9]+)?$/ && $5 > 0) {print $0}' pixy_pi.txt | head
+
+Andmar  ENA|OZ010661|OZ010661.1 668717  670588  0.1428571428571428      7       1       7       0
+Andmar  ENA|OZ010661|OZ010661.1 1348819 1351180 0.1111111111111111      9       1       9       0
+Andmar  ENA|OZ010661|OZ010661.1 1611506 1612142 0.2     5       1       5       0
+Andmar  ENA|OZ010661|OZ010661.1 1923832 1926279 0.0909090909090909      11      1       11      0
+Andmar  ENA|OZ010661|OZ010661.1 2037126 2042524 0.03125 32      1       32      0
+
+
+conda activate variant_calling_mapping
+
+bedtools complement -i $ref/ref_masked_bed/Andrena_marginata_GCA_963932335.1-softmasked_ref_gene.conca_sorted.bed \
+    -g $ref/Andrena_marginata_GCA_963932335.1-softmasked.fa.fai \
+    > $ref/Andrena_marginata_GCA_963932335.1-softmasked_ref_gene.conca_sorted.complement.bed
+    
 ## add headers
 
 #bcftools query -f '%CHROM\t%POS\t%REF\t%ALT\t%AF\n' $vcf_pas2hyp | less -S > $out_dir/vcf_pas2hyp.allele.freq
@@ -68,9 +108,14 @@ head vcf_mar2mar.allele_1_2.freq
 #     Pi_total: for the total Pi the allele frequencies of the two
 #         populations are averaged and Pi is calculated as shown above
 
+# vcf_mar2mar
+no. of called site with filtering: 3x
+284858344
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_mar2mar.allele_1_2.freq > vcf_mar2mar.allele_1_2.freq.pi
+
 ## with headers
-vcf_mar2mar.allele_1_2.freq.pi
-CHR	POS	REF	ALT	AF_1	AF_2	1
+head vcf_mar2mar.allele_1_2.freq.pi
+CHR	POS	REF	ALT	AF_1	AF_2	per_site_pi
 ENA|OZ010659|OZ010659.1	2761	T	G	0.0375	0.9625	0.0721875
 ENA|OZ010659|OZ010659.1	2939	A	T	0.2625	0.7375	0.387188
 ENA|OZ010659|OZ010659.1	2944	A	G	0.175	0.825	0.28875
@@ -79,12 +124,39 @@ ENA|OZ010659|OZ010659.1	3014	G	A	0.05	0.95	0.095
 ## 1st line data
 1-0.0375^2-0.9625^2
 [1] 0.0721875
-# vcf_mar2mar
-no. of called site with filtering: 3x
-284858344
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_mar2mar.allele_1_2.freq > vcf_mar2mar.allele_1_2.freq.pi
+
 awk '{count++;sum += $7}END{print sum/count}' vcf_mar2mar.allele_1_2.freq.pi
 0.206338
+
+*********************************************
+
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_hae2hae.allele_1_2.freq > vcf_hae2hae.allele_1_2.freq.pi
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_pas2pas.allele_1_2.freq > vcf_pas2pas.allele_1_2.freq.pi
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_vet2pas.allele_1_2.freq > vcf_vet2pas.allele_1_2.freq.pi
+
+# no header
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/284858344}' vcf_mar2mar.allele.freq > vcf_mar2mar.allele.freq.pi
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)*647386/284858344}' vcf_mar2mar.allele.freq > vcf_mar2mar.allele.freq.across_genomw.pi
+
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/294076304}' vcf_hae2hae.allele.freq > vcf_hae2hae.allele.freq.pi
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/262425280}' vcf_pas2pas.allele.freq > vcf_pas2pas.allele.freq.pi
+awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/236253189}' vcf_vet2pas.allele.freq > vcf_vet2pas.allele.freq.pi
+
+
+*** average ***
+# vcf_mar2mar
+## per site average
+**** across the genome ****
+awk '{count++;sum += $8}END{print sum}' vcf_mar2mar.allele.freq.pi
+0.000468933
+
+awk '{count++;sum += $8}END{print sum/count}' vcf_mar2mar.allele.freq.across_genomw.pi
+0.000468934
+
+**** across the genome ****
+awk '{count++;sum += $7}END{print sum/284858344}' vcf_mar2mar.allele.freq.pi
+
+
 
 *** without headers ***
 
@@ -101,27 +173,6 @@ ENA|OZ010659|OZ010659.1 4346    G       C       0.15    0.85    0.255   8.95182e
 ENA|OZ010659|OZ010659.1 4436    T       G       0.0875  0.9125  0.159687        5.60586e-10
 
 *** average ***
-# vcf_mar2mar
-## per site average
-awk '{count++;sum += $8}END{print sum/count}' vcf_mar2mar.allele.freq.pi
-7.2435e-10
-## across the genome
-awk '{count++;sum += $7}END{print sum/284858344}' vcf_mar2mar.allele.freq.pi
-0.000468933
-
-*********************************************
-
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_hae2hae.allele_1_2.freq > vcf_hae2hae.allele_1_2.freq.pi
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_pas2pas.allele_1_2.freq > vcf_pas2pas.allele_1_2.freq.pi
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2}' vcf_vet2pas.allele_1_2.freq > vcf_vet2pas.allele_1_2.freq.pi
-
-# no header
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/284858344}' vcf_mar2mar.allele.freq > vcf_mar2mar.allele.freq.pi
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/294076304}' vcf_hae2hae.allele.freq > vcf_hae2hae.allele.freq.pi
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/262425280}' vcf_pas2pas.allele.freq > vcf_pas2pas.allele.freq.pi
-awk 'BEGIN{FS=OFS="\t"}{print $0,1-$5^2-$6^2,(1-$5^2-$6^2)/236253189}' vcf_vet2pas.allele.freq > vcf_vet2pas.allele.freq.pi
-
-*** average ***
 # vcf_mar2mar: 0.0011543482911495785
 
 # vcf_hae2hae
@@ -133,6 +184,8 @@ awk '{count++;sum += $7}END{print sum/count}' vcf_hae2hae.allele_1_2.freq.pi
 
 ## across the genome
 awk '{count++;sum += $7}END{print sum/294076304}' vcf_hae2hae.allele.freq.pi
+0.00104236
+awk '{count++;sum += $8}END{print sum}' vcf_hae2hae.allele.freq.pi
 0.00104236
 
 # vcf_pas2pas

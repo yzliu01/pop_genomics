@@ -1,0 +1,37 @@
+[pixy] pixy 1.2.10.beta2
+[pixy] See documentation at https://pixy.readthedocs.io/en/latest/
+
+[pixy] Validating VCF and input parameters...
+[pixy] Checking write access...OK
+[pixy] Checking CPU configuration...OK
+[pixy] Checking for invariant sites...WARNING
+[pixy] EXTREME WARNING: --bypass_invariant_check is set to 'yes'. Note that a lack of invariant sites will result in incorrect estimates.
+[pixy] Checking chromosome data...OK
+[pixy] Checking intervals/sites...WARNING
+[pixy] WARNING: the following chromosomes in the BED file do not occur in the VCF and will be ignored: ['ENA|OZ010665|OZ010665.1']
+[pixy] Checking sample data...OK
+[pixy] All initial checks past!
+
+[pixy] Preparing for calculation of summary statistics: pi
+[pixy] Data set contains 1 population(s), 6 chromosome(s), and 1 sample(s)
+[pixy] Windows sourced from: /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_marginata_GCA_963932335.1-softmasked_ref_gene.conca_sorted.complement.bed
+
+[pixy] Started calculations at 20:49:16 on 2024-08-30
+[pixy] Using 1 out of 64 available CPU cores
+
+[pixy] Processing chromosome/contig ENA|OZ010661|OZ010661.1...
+[pixy] Processing chromosome/contig ENA|OZ010660|OZ010660.1...
+[pixy] Processing chromosome/contig ENA|OZ010662|OZ010662.1...
+[pixy] Processing chromosome/contig ENA|OZ010663|OZ010663.1...
+[pixy] Processing chromosome/contig ENA|OZ010664|OZ010664.1...
+[pixy] Processing chromosome/contig ENA|OZ010659|OZ010659.1...
+
+[pixy] All calculations complete at 21:15:26 on 2024-08-30
+[pixy] Time elapsed: 00:26:09
+[pixy] Output files written to: /faststorage/project/eDNA/yzliu/DK_proj/population_genomics/bee_proj_script/analysis/pooled_data_analysis/pi_fst/
+
+[pixy] NOTE: There are pixy temp files in /faststorage/project/eDNA/yzliu/DK_proj/population_genomics/bee_proj_script/analysis/pooled_data_analysis/pi_fst/
+[pixy] If these are not actively being used (e.g. by another running pixy process), they can be safely deleted.
+
+[pixy] If you use pixy in your research, please cite the following paper:
+[pixy] Korunes, KL and K Samuk. pixy: Unbiased estimation of nucleotide diversity and divergence in the presence of missing data. Mol Ecol Resour. 2021 Jan 16. doi: 10.1111/1755-0998.13326.

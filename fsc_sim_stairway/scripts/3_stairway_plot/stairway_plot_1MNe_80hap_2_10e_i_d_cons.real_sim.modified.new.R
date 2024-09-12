@@ -17,18 +17,13 @@ pdf(paste0("combined.1000000Ne_80hapS_5rep_2_10_i_d_cons.rotated_x_lab.pdf"),wid
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
 par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-
-layout(matrix(c(1,2,3,0,4,5,6,0,7,8,9,0,10:17),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
-#layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
     #for (event in c("00d","01d","05d","09d","05i")){
     ## modified naming format
-
-    ## difficult to simulate
-    #for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
-    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons")){
+    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
         ## solo axis name plot
         #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
         ##log="xy",xlab="Years ago", ylab="Effective population size"
@@ -37,7 +32,6 @@ for (generation in c("50G","100G","500G","1000G")){
         ## key step
         ## conditional axis name plot
         plot_name <- paste0("1000000Ne_80hapS_1E_",generation,"_",event,"_20Chr_15Mb")
-        #print(plot_name)
         ## print names with newline 
         cat("\n",plot_name,"\n\n")
         
@@ -69,19 +63,19 @@ for (generation in c("50G","100G","500G","1000G")){
             
             ## high Ne (attention to duplicate)
 
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
             axis(side=2, at=c(250000,500000,750000,950000,1500000,3000000,4500000,5000000,5200000),label=c(format(c(250000,500000,750000,950000,1500000,3000000,4500000,5000000,5200000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_80hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e6),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
             axis(side=2, at=c(25000,50000,75000,95000,150000,300000,450000,500000,520000),label=c(format(c(25000,50000,75000,95000,150000,300000,450000,500000,520000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_80hapS_1E_1000G_10e_d_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(5,5.5e5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
             axis(side=2, at=c(20000,50000,80000,100000,150000,250000,500000,550000),label=c(format(c(20000,50000,80000,100000,150000,250000,500000,550000),scientific=FALSE)))
@@ -103,7 +97,7 @@ for (generation in c("50G","100G","500G","1000G")){
         axis(side=1,at=c(50,100,500,1000,10000,100000,200000),labels=FALSE)
         
         #text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 8000,srt = 38,pos = 3, xpd = TRUE)
-        
+
         ## distance to x axis
         if (plot_name %in% c("1000000Ne_80hapS_1E_50G_10e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_100G_10e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_500G_10e_i_cons_20Chr_15Mb","1000000Ne_80hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
             text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 400000,srt = 38,pos = 3, xpd = TRUE)
@@ -281,4 +275,3 @@ for (generation in c("50G","100G","500G","1000G")){
 }
 
 dev.off()
-

@@ -72,39 +72,30 @@ busco_Bom_hyp=$busco_dir/BUSCO_Bombus_hypnorum-GCA_911387925.1-softmasked.fa/run
 busco_Bom_mus=$busco_dir/BUSCO_Bombus_muscorum-GCA_963971125.1.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_Bom_pas=$busco_dir/BUSCO_Bombus_pascuorum-GCA_905332965.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 busco_Bom_syl=$busco_dir/BUSCO_Bombus_sylvestris-GCA_911622165.2-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
-busco_Ves_vul=$busco_dir/BUSCO_Vespula_vulgaris-GCA_905475345.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
-
+#busco_Ves_vul=$busco_dir/BUSCO_Vespula_vulgaris-GCA_905475345.1-softmasked.fa/run_hymenoptera_odb10/busco_sequences/single_copy_busco_sequences
 
 species_list=(
-    "busco_Apis_mel"
     "busco_And_bic"
     "busco_And_ful"
     "busco_And_hae"
     "busco_And_hat"
     "busco_And_mar"
     "busco_And_tri"
+    "busco_Apis_mel"
     "busco_Bom_con"
     "busco_Bom_hor"
     "busco_Bom_hyp"
     "busco_Bom_mus"
     "busco_Bom_pas"
     "busco_Bom_syl"
-    "busco_Ves_vul"
+    #"busco_Ves_vul" ## exclude outgroup species
 )
 
 ********** step II: retrieve complete CDS of single_copy_busco_sequences *********
-for busco_species in `echo ${species_list[@]}`
-    do
-    cd `echo ${!busco_species}`
-    ## Variable Expansion: The species_list contains the names of variables as strings. To get the value of each variable in the loop, I used the syntax ${!busco_species} which performs indirect expansion, resolving the value of the variable whose name is stored in busco_species.
-    pwd
-    find -type f -name '*.gff' -exec grep -h 'CDS' {} \+ | cut -f 1,4- | sort -k1,1V -k2,2n > $busco_dir/busco_species_single_copy_complete_CDS/$busco_species.single_copy_complete_CDS.bed ## save results in folder: busco_sequences
-    cd $busco_dir
-    pwd
-done
-
-
+ # deleted
 ********* step III: get common busco id of amino sequences **********
+
+cd $busco_dir
 for busco_species in `echo ${species_list[@]}`
     do
     cd `echo ${!busco_species}`
@@ -121,14 +112,15 @@ cd  /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_sin
 ## https://stackoverflow.com/questions/43472246/finding-common-value-across-multiple-files-containing-single-column-values
 #awk '{a[$1]++} END{for(k in a) if(a[k]==ARGC-1) print k}' busco*.id | sort -V | wc -l
 #4959
-## output the list
+## output the list of commonly shared busco_id (chatGPT)
 awk '{a[$1]++} END{for(k in a) if(a[k]==ARGC-1) print k}' busco*.id | sort -V > common_busco_id.txt
 
 
-****** step IV: procure (fetch) the shared single_copy_busco_sequences by all these species into separate file ******
+****** step IV: procure (fetch) the shared single_copy_busco_amino_acid_sequences shared by all these species into separate file ******
+busco_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
 busco_id_dir=$busco_dir/busco_species_single_copy_complete_CDS/busco_id
 busco_id=`cat $busco_id_dir/common_busco_id.txt`
-
+cd $busco_id_dir
 for id in $busco_id
     do
     #busco_id_dir=$busco_dir/busco_species_single_copy_complete_CDS/busco_id
@@ -140,16 +132,14 @@ for id in $busco_id
         pwd
         new_busco_id=${id/.faa/}
         cat $id >> $busco_id_dir/"$new_busco_id".shared_aa.faa
+        echo "$new_busco_id".shared_aa.faa
     done
-    cd $busco_dir
-    pwd
 done
-
 
 ********* step V: filter out FASTA sequences that not start with the amino acid M (Methionine) after the header line **********
 ## https://stackoverflow.com/questions/26479562/what-does-ifs-do-in-this-bash-loop-cat-file-while-ifs-read-r-line-do
 
-******************** step V_a: obtain amino acide sequences of each busco_id ********************
+******************** step V_a: obtain amino acide sequences for each busco_id if starting with M ********************
 ## codes from chatGPT
 #!/bin/bash
 # Loop through all .faa files
@@ -195,6 +185,54 @@ for file in `ls *aa.faa | sort -V`; do
 done
 
 
+************************ change header names in animo acid fasta files, xxx.faa starting with M *********************
+species=busco_Bom_pas
+for species in ${species_list[@]}
+do
+    #sed 's/|.*//g' 32232at7399.shared_aa.faa
+    sed "s/7399|.*/7399.$species/g" 32232at7399.shared_aa.faa
+done
+
+******** chatgpt *******
+ls *shared_aa.faa | wc -l
+2546
+
+for each_aa_file in $(ls *shared_aa.faa | head -2)
+
+cd $busco_id_dir
+rm *.shared_aa.new_header.faa
+
+for each_aa_file in $(ls *shared_aa.faa)
+do
+# Initialize the species index
+species_index=0
+
+# Process the input FASTA file
+while IFS= read -r line; do
+    if [[ $line == \>*at7399* ]]; then
+        # Replace everything after "at7399" with the current species
+        new_header=$(echo $line | sed "s/7399.*/7399.gff.${species_list[$species_index]}.combined/") # make them have the same header names as that for combined nuc sequences
+        #new_header="${line%%at7399*}at7399.gff.${species_list[$species_index]}" 
+        #echo $new_header >> 32232at7399.shared_aa.new_header.faa
+        new_file_name=${each_aa_file/faa/new_header.faa}
+        echo $new_header >> $new_file_name
+        ((species_index++))
+    else
+        # Print the sequence lines as is
+        #echo "$line" >> 32232at7399.shared_aa.new_header.faa
+        echo "$line" >> $new_file_name
+    fi
+#done < 32232at7399.shared_aa.faa
+done < $each_aa_file
+done
+
+## delete test results files
+rm *.shared_aa.new_header.faa
+
+less 1012at7399.shared_aa.new_header.faa
+>1012at7399.gff.busco_Apis_mel
+MSSSFIIEPQESGLEKKDDTLIIIVNDDGT
+
 ************ step V_b: get the shared single_copy_busco_sequences by all these species into separate file **********
 busco_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
 busco_id_dir=$busco_dir/busco_species_single_copy_complete_CDS/busco_id
@@ -231,6 +269,7 @@ for id in $busco_id
     pwd
 done
 
+find . -type f -name "*.single_CDS_with_M.bed" -print | head
 
 **************** test *************
 ## use Busco id of all single_copy_busco_sequences and multi_copy_busco_sequences in 
@@ -307,26 +346,27 @@ busco_Bom_hyp=$ref_dir/Bombus_hypnorum-GCA_911387925.1-softmasked.fa
 busco_Bom_mus=$ref_dir/Bombus_muscorum-GCA_963971125.1.fa
 busco_Bom_pas=$ref_dir/Bombus_pascuorum-GCA_905332965.1-softmasked.fa
 busco_Bom_syl=$ref_dir/Bombus_sylvestris-GCA_911622165.2-softmasked.fa
-busco_Ves_vul=$ref_dir/Vespula_vulgaris-GCA_905475345.1-softmasked.fa
+#busco_Ves_vul=$ref_dir/Vespula_vulgaris-GCA_905475345.1-softmasked.fa
 
 ref_list=(
-    "busco_Apis_mel"
     "busco_And_bic"
     "busco_And_ful"
     "busco_And_hae"
     "busco_And_hat"
     "busco_And_mar"
     "busco_And_tri"
+    "busco_Apis_mel"
     "busco_Bom_con"
     "busco_Bom_hor"
     "busco_Bom_hyp"
     "busco_Bom_mus"
     "busco_Bom_pas"
     "busco_Bom_syl"
-    "busco_Ves_vul"
+    #"busco_Ves_vul"
 )
 
-#cd ..
+cd $shared_CDS_with_M_dir
+conda activate variant_calling_mapping
 
 for id in `cat $busco_id_list`
 #for id in `echo $busco_id`
@@ -455,9 +495,9 @@ for fa in `find . \( -name '*gff.busco*M+*' -o -name '*gff.busco*M-RC*' \) -prin
     fi
     echo $temp_file_name
 
-    new_file_name_header=${temp_file_name/fa/header.fa}
+    new_file_name_header=${temp_file_name/fa/header.13species.fa}
     echo $new_file_name_header
-    head_line=${new_file_name_header/.header.fa/}
+    head_line=${new_file_name_header/.header.13species.fa/}
     
     grep -v '>' $fa | tr -d "\n" > $temp_file_name # 31769at7399.gff.busco_Bom_con.combine.fa
     ## in-place edit a header to the first line
@@ -473,7 +513,7 @@ done
 #e.g., 1at7399.gff.busco_And_ful.combined.header.fa
 
 uniq_prefix=$(
-for file in *.gff.busco_*.combined.header.fa
+for file in *.gff.busco_*.combined.header.13species.fa
     do
     prefix=$(echo "$file" | sed 's/\.busco.*//')
     echo "$prefix"
@@ -484,9 +524,9 @@ done | sort -V | uniq
     )
 
 busco_species=$(
-for file in $(ls *.gff.busco_*.combined.header.fa | head -40)
+for file in $(ls *.gff.busco_*.combined.header.13species.fa | head -40)
     do
-    species=$(echo "$file" | sed -E 's/.*gff\.busco_([^.]+)\.combined\.header\.fa/\1/')
+    species=$(echo "$file" | sed -E 's/.*gff\.busco_([^.]+)\.combined\.header\.13species\.fa/\1/')
     echo "$species"
     # e.g., And_ful, Bom_hor
 
@@ -505,7 +545,7 @@ for prefix in $uniq_prefix
 
     ## list files of unique busco_id and concatenate all with a newline space between each
     # ${prefix}* | xargs cat
-    for file in ${prefix}*combined.header.fa
+    for file in ${prefix}*combined.header.13species.fa
     ## e.g.
     #for file in `ls 1at7399.gff*header*`
         do
@@ -517,51 +557,296 @@ for prefix in $uniq_prefix
             #cat $file >> 1at7399.gff.combined_share.fa
             #echo -e "\n" >> 1at7399.gff.combined_share.fa
             #cat $file.busco_$species.combined.header.fa >> $prefix.combined_share.fa
-            cat $file >> $prefix.combined_share.fa
-            echo -e "\n" >> $prefix.combined_share.fa
+            cat $file >> $prefix.combined_share.13species.fa
+            echo -e "\n" >> $prefix.combined_share.13species.fa
+            echo $prefix.combined_share.13species.fa
         #done
     done
 done
 
-11660at7399.gff.busco_And_mar.combined.header.fa
-11660at7399.gff.busco_And_tri.single_CDS_with_M-RC.fa
-11660at7399.gff.busco_And_tri.combined.fa
-11660at7399.gff.busco_And_tri.combined.header.fa
+less 32320at7399.gff.combined_share.13species.fa
+>32320at7399.gff.busco_And_bic.combined
+ATGCGTATTACGAGTATACTATTTTATAAGGTGCATAA
 
 ************* step VIII: align multiple sequences ***************
 ## https://mafft.cbrc.jp/alignment/software/; https://github.com/rcedgar/muscle
 ## reasons to choose different program: https://help.geneious.com/hc/en-us/articles/360044627712-Which-multiple-alignment-algorithm-should-I-use
 conda activate myproject
-conda install bioconda::mafft
+#conda install bioconda::mafft
 
-CDS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS
-cd $CDS_dir
-cat *seq.fa > busco_all_CDS_seq.fa
-## mafft --thread 4 busco_all_CDS_seq.fa > busco_all_CDS_seq.output.msa
-mafft --phylipout --thread 4 busco_all_CDS_seq.fa > busco_all_CDS_seq.output.phy
+busco_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test
+shared_CDS_with_M_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M
+cd $shared_CDS_with_M_dir
 
+********* use --auto to get precise alignment and mafft keep order of faster headers *********
+## https://mafft.cbrc.jp/alignment/software/manual/manual.html
+mafft --auto --thread 4 3803at7399.gff.combined_share.fa >> ./test_+-/3803at7399.gff.combined_share.auto.mafft
+mafft --localpair --maxiterate 1000 --thread 4 3803at7399.gff.combined_share.fa >> ./test_+-/3803at7399.gff.combined_share.L_INS.mafft
 mafft --auto --thread 4 32320at7399.gff.combined_share.fa > 32320at7399.gff.combined_share.mafft
 cp 32320at7399.gff.combined_share.mafft 32320at7399.gff.combined_share.mafft.copy
 
+seq="1at7399.gff.combined_share.fa"
+mafft --auto --thread 20 $seq > ../shared_CDS_with_M_seq_align/1at7399.gff.combined_share.mafft_auto.fasta
+## Strategy:
+## FFT-NS-2 (Fast but rough)
+## Progressive method (guide trees were built 2 times.)
+
+## accurate strategy: L-INS-i
+mafft --localpair --maxiterate 1000 --thread 20 $seq > ../shared_CDS_with_M_seq_align/1at7399.gff.combined_share.mafft_L-INS-i.fasta
+
+
+revtrans=/home/yzliu/miniforge3/envs/RevTrans/bin/revtrans.py
+conda activate RevTrans
+$revtrans 10027at7399.gff.busco_Bom_pas.combined.header.fa 10027at7399.faa -match trans
+$revtrans 10027at7399.gff.combined_share.fa 10027at7399.shared_aa.faa.mafft.fa -match trans
+## issue
+No cross-reference, skipping peptide sequence 10027at7399_2|17:588553-590785|- <unknown description>
+
+conda activate myproject
+seq=10027at7399.shared_aa.rename_header.faa 
+mafft --localpair --maxiterate 1000 --thread 20 $seq > ./$seq.mafft.fa # 10027at7399.shared_aa.rename_header.faa.mafft.fa
+
+conda activate RevTrans
+## attention to number of seq and match option
+$revtrans 10027at7399.gff.combined_share.fa 10027at7399.shared_aa.rename_header.faa.mafft.fa \
+    -match name > 10027at7399.gff.combined_share.revtrans.fa
+
+***** for loop ****
+revtrans=/home/yzliu/miniforge3/envs/RevTrans/bin/revtrans.py
+conda activate RevTrans # contains mafft
+## 1. align amino acid sequences 
+shared_CDS_with_M_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M
+busco_id=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/busco_id
+revtrans_align_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M_seq_align/revtrans_align
+cd $busco_id
+## assign an array instead of string
+id=($(ls *new_header.faa | sort -V | head -2 | sed 's/\.shared.*//')) ## the first two have issue so they were run separately
+echo ${id[1]}
+## check the length of an array
+echo ${#id[@]}
+length=${#id[@]}
+for ((index=0; index < length; index++))
+do
+cd $busco_id
+echo -e "\n"$index
+aa_seq_file=${id[index]}.shared_aa.new_header.faa   # 0at7399.shared_aa.new_header.faa
+nuc_seq_file=${id[index]}.gff.combined_share.13species.fa  # (ls -t *share*fa | head) 32320at7399.gff.combined_share.13species.fa
+echo -e "aa: "$aa_seq_file"\nnuc: "$nuc_seq_file
+
+## aligh aa sequence
+aligned_file_name=${aa_seq_file/faa/mafft.fasta}  # 0at7399.shared_aa.new_header.mafft.fasta
+mafft --localpair --maxiterate 1000 --thread 20 $busco_id/$aa_seq_file > $revtrans_align_dir/$aligned_file_name
+echo  "mafft_aligned: "$aligned_file_name
+
+## run revtrans: control of the alignment process by supplying a pre-computed peptide alignment.
+## RevTrans will then use this as the scaffold for the DNA alignment.
+cd $revtrans_align_dir
+revtrans_out_nuc_name=${nuc_seq_file/fa/revtrans.fasta}
+$revtrans $shared_CDS_with_M_dir/$nuc_seq_file $aligned_file_name -match name > $revtrans_out_nuc_name
+echo $revtrans_out_nuc_name
+
+done
+
+
+
+
+
+********* muscle change order of fasta headers **********
 muscle -align 32320at7399.gff.combined_share.fa -output ./test_+-/32320at7399.gff.combined_share_align.new.afa
 muscle -align 32232at7399.gff.combined_share.fa -output ./test_+-/32232at7399.gff.combined_share_align.new.afa
 
-./test_+-/32232at7399.gff.combined_share_align.afa
-./test_+-/32320at7399.gff.combined_share_align.afa
+muscle -align 3803at7399.gff.combined_share.fa -output ./test_+-/3803at7399.gff.combined_share_align.muscle.fasta
 
-#    -phyiout ./test_+-/32320at7399.gff.combined_share_align.phyi \
-#    -physout ./test_+-/32320at7399.gff.combined_share_align.phys
 
-## concatenate aligned fasta files for each gene
+## prank: align cds sequence while considering codon structure
+conda activate myproject
+conda install prank
+test_folder=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M_seq_align/test
+cd $test_folder
+
+prank -h
+prank -d=10027at7399.gff.combined_share.fa -o=../shared_CDS_with_M_seq_align/10027at7399.gff.combined_share.prank.fa -codon -F
+## https://ariloytynoja.github.io/prank-msa/#methods
+## PRANK can do translated alignments of protein-coding DNA sequences or align them using the codon model. 
+## Translation is selected with the options -translate (standard code) or -mttranslate (mitochondrial code), 
+## and the codon alignment with the option -codon. 
+
+dna_And_bic=10027at7399.gff.busco_And_bic.combined.header.13species.fa
+codon_output_file=${dna_And_bic/fa/prank_codon.fa}
+prank -d=./And_bic_10027at7399_busco/$dna_And_bic \
+    -o=./And_bic_10027at7399_busco/$codon_output_file -codon -F
+
+## conda install bioconda::gffread
+#gff_species=$test_folder/apis_mel_10027at7399_busco/10027at7399.gff
+gff_species=$test_folder/And_bic_10027at7399_busco/10027at7399.gff
+ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+#ref_apis_mel=$ref_dir/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
+ref_And_bic=$ref_dir/Andrena_bicolor-GCA_960531205.1.fa
+
+#gffread_output=${gff_species/gff/gff.gffread.fa}
+#gffread -w $gffread_output -g $ref_apis_mel $gff_species
+
+gffread_output=${gff_species/gff/gff.gffread_cds.fa}
+gffread -x $gffread_output -g $ref_And_bic $gff_species
+
+**** different length
+prank -d=10027at7399.gff.combined_share.fa -o=../shared_CDS_with_M_seq_align/10027at7399.gff.combined_share.prank_translated.fa -translate -F
+## log data
+Input for the analysis
+ - aligning sequences in '10027at7399.gff.combined_share.fa'
+ - using inferred alignment guide tree
+ - external tools available:
+    MAFFT for initial alignment
+
+Warning: Unknown codons replaced with 'NNN'.
+Correcting (arbitrarily) for multifurcating nodes.
+Correcting (arbitrarily) for multifurcating nodes.
+
+Generating multiple alignment: iteration 1.
+#13#(13/13): 73% computed                    
+Alignment score: 2823
+Correcting (arbitrarily) for multifurcating nodes.
+
+Generating multiple alignment: iteration 2.
+#13#(13/13): 91% aligned                    
+Alignment score: 2369
+Segmentation fault (core dumped)
+
+## new file
+conda activate myproject
+## still 14
+prank -d=10027at7399.gff.combined_share.13species.fa -o=../shared_CDS_with_M_seq_align/10027at7399.gff.combined_share.real_13species.prank_translated.fa -translate -F
+cd ../shared_CDS_with_M_seq_align
+prank -d=10027at7399.gff.combined_share.real_13species.fa -o=10027at7399.gff.combined_share.real_13species.prank_translated.fa -translate -F
+
+
+prank -d=10027at7399.gff.combined_share.fa     -o=../shared_CDS_with_M_seq_align/10027at7399.gff.combined_share.prank_codon.fa     -co
+don -F
+## codon sequence length is not multiple of three!
+
+for species in ${species_list[@]}
+    do
+    echo $species
+    prank -d="10027at7399.gff.$species.combined.header.fa" -o=../shared_CDS_with_M_seq_align/"10027at7399.gff.$species.combined.header.prank.fa" -codon -F
+done
+
+**** short length
+prank -d=32232at7399.gff.combined_share.fa -o=../shared_CDS_with_M_seq_align/32232at7399.gff.combined_share.prank_translated.fa -trans
+late -F
+## log
+Alignment score: 219
+Correcting (arbitrarily) for multifurcating nodes.
+
+Generating multiple alignment: iteration 5.
+
+Alignment score: 219
+
+
+Writing
+ - alignment to '../shared_CDS_with_M_seq_align/32232at7399.gff.combined_share.prank_codon.fa.best.fas'
+
+Analysis done. Total time 11s
+
+
+
+
+
+********* all files **************
+ls *gff.combined_share.fa | wc -l
+2159
+
+for seq in $(ls *gff.combined_share.fa | sort -V | head)
+    ## seq file name: 31737at7399.gff.combined_share.fa
+    ## seq header: >32320at7399.gff.busco_Ves_vul.
+    
+    do
+    align_name=${seq/fa/muscle.fasta}
+    muscle -align $seq -output ../shared_CDS_with_M_seq_align/$align_name
+
+    ## modify headers of fasta sequences
+    ## >32320at7399.gff.busco_Bom_syl.combined -> >busco_Bom_syl
+    sed -i 's/>.*gff\.\(.*\)\.combined/>\1/' ../shared_CDS_with_M_seq_align/$align_name
+
+    # Input: 14 seqs, avg length 19272, max 25276
+    # 00:00 19Mb   CPU has 64 cores, defaulting to 20 threads
+    # Segmentation fault (core dumped)iors
+
+    # Input: 14 seqs, avg length 14915, max 15534
+    # 00:00 19Mb   CPU has 64 cores, defaulting to 20 threads
+    # 00:51 172Gb    42.9% Calc posteriors
+    # 02:44 90.1Gb  100.0% Calc posteriors
+    # 03:20 5.1Gb   100.0% Consistency (1/2)
+    # 03:24 4.2Gb   100.0% Consistency (2/2)
+    # 03:24 1.5Gb   100.0% UPGMA5           
+    # 04:37 1.5Gb   100.0% Refining
+
+done
+
+******* reorders of headers of fasta sequences after muscle aligning ********
+## >32320at7399.gff.busco_Bom_syl.combined -> >busco_Bom_syl
+less ./test_+-/32320at7399.gff.combined_share_align.new.afa | sed 's/>.*gff\.\(.*\)\.combined/>\1/'
+
+## taxa_name_order
+shared_CDS_with_M_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M
+cd $shared_CDS_with_M_dir
+
+seq="1078at7399.gff.combined_share.fa"
+#grep '>' $seq | sed 's/>.*gff\.\(.*\)\.combined/>\1/' > ../taxa_name_order.list
+cd ../shared_CDS_with_M_seq_align
+align_name=${seq/fa/muscle.fasta}
+reorder_taxa_name=${align_name/fasta/reordered.fasta}
+
+awk '/^>/ {if (seq) print seq; print; seq=""; next} {seq=seq$0} END {if (seq) print seq}' input.fasta | \
+    awk '{if (substr($0,1,1)==">") header=$0; else print header"\t"$0}' | \
+    sort -k1,1 | tr "\t" "\n" > reordered.fasta
+
+awk 'NR==FNR {order[$1]; next} /^>/ {h=$0; if (h in order) p=1; else p=0} p {print h; getline; print}' \
+    ../taxa_name_order.list ../shared_CDS_with_M_seq_align/$align_name > $reorder_taxa_name
+
+
+******* concatenate aligned fasta files for each gene ********
+******* require the same header names for each taxon to be concatenated ********
+## modify header names
+# >32320at7399.gff.busco_And_bic.combined
+# atgcgtattacgagtatactattttataaggtgcataaca
+******** realign the sequences *********
+
+revtrans_align_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M_seq_align/revtrans_align
+cd $revtrans_align_dir
+
+for aligned_nuc_file in $(ls *.gff.combined_share.13species.revtrans.fasta | sort -V | head -2)
+do
+
+realigned_nuc_file_name=${aligned_nuc_file/revtrans.fasta/revtrans_realign.fasta}
+mafft --localpair --maxiterate 1000 --thread 20 $aligned_nuc_file > $realigned_nuc_file_name
+echo  "mafft_realigned: "$realigned_nuc_file_name
+realigned_nuc_file_new_name=${realigned_nuc_file_name/revtrans_realign.fasta/revtrans_realign.header_md.fasta}
+#sed 's/>\(.*\)busco_/>/' $realigned_nuc_file_name > $realigned_nuc_file_new_name
+## keep only patterns between gff and .combined
+sed -E 's/(.*busco_)([^.]*)(\.combined.*)/>\2/' $realigned_nuc_file_name > $realigned_nuc_file_new_name
+echo  "header_md: "$realigned_nuc_file_new_name
+done
+
+
+
+*.13species.revtrans.header_md.fasta
+
 ## https://github.com/nylander/catfasta2phyml
 catfasta2phyml=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/catfasta2phyml.py
-chmod +x /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/catfasta2phyml.py
+#chmod +x /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/catfasta2phyml.py
 $catfasta2phyml -h
 cd test_+-/
-$catfasta2phyml -f *align.afa > out.32232at7399_32232at7399.afa
+$catfasta2phyml -f *align.afa > out.32232at7399_32232at7399.afa ## -f --fasta Print outout in FASTA format
 
 $catfasta2phyml -f 32320at7399.gff.combined_share.mafft \
     32320at7399.gff.combined_share.mafft.copy > out.32320at7399_twice.afa
+
+revtrans_align_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M_seq_align/revtrans_align
+## -p --phylip Print outout in PHYLIP format: strict with header names <= 10 characters
+$catfasta2phyml -p *.13species.revtrans_realign.header_md.fasta > conca_13psecies_2busco_id.revtrans_realign.header_md.phy 2> conca_13psecies_2busco_id.revtrans_realign.header_md.partitions
+## -f --fasta Print outout in FASTA format
+$catfasta2phyml -f *.13species.revtrans_realign.header_md.fasta > conca_13psecies_2busco_id.revtrans_realign.header_md.fasta 2> conca_13psecies_2busco_id.revtrans_realign.header_md.partitions
+
 
 ## https://github.com/ballesterus/Utensils
 geneStitcher=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/geneStitcher.py
@@ -586,6 +871,15 @@ AMAS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/AMAS/amas
 #cd $AMAS_dir
 python $AMAS_dir/AMAS.py -h
 
+## get summary statistics
+aligned_seq_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/shared_CDS_with_M_seq_align
+cd $aligned_seq_dir
+python $AMAS_dir/AMAS.py summary -h
+python $AMAS_dir/AMAS.py summary -f fasta -d dna -i 82at7399.gff.combined_share.muscle.fasta > ../reorder_test_summary/sum.82at7399.txt
+
+cut -f 6 /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/test/busco_species_single_copy_complete_CDS/reorder_test/summary.txt
+Missing_percent
+0.154
 
 
 
@@ -613,8 +907,30 @@ rm temp_reversed.fasta temp_non_reversed.fasta
 
 Rearranging to Solve for Substitution Rate:
 
-To isolate the substitution rate rr, you rearrange the formula:
+To isolate the substitution rate r, you rearrange the formula:
 r=D/2T
+
+## Introduction to Evolutionary Genomics by Saitou Naruya, 2018
+According to the neutral theory, the evolutionary rate (λ,lamada) is equal to the mutation rate (μ) in the genome region under pure neutral evolution
+where D is the evolutionary distance between genomes A and B, and T is the divergence time between the two genomes. 
+Because the two o lineages going to genomes A and B experience the same evolutionary time T from their common ancestral genome, 
+the total divergence time between the two genomes is 2T.
+
+This procedure is called the indirect method. For example, the substitutional difference (D) between human and chimpanzee is 1.23% [55]. 
+If we assume that the divergence time (T) of these two species is 6 million years, λ = D/2T =1 10−9/ site/year. 
+Because the application of the direct method usually takes large amount of resources, 
+this indirect method has been widely used from the advent of the molecular evolutionary studies. 
+For example, Wu and Li [56] showed that rodents seem to have higher mutation rate than primates. 
+It should be noted that T in Eq. 3.1 is the divergence time (Tg) of two genomes, 
+and this is longer than the species (or population) divergence time Ts as shown in Fig. 3.19 (see Chap. 4 for details). 
+Therefore, if Tg is much larger than Ts, the estimated mutation rate using Tg may be a gloss overestimation, 
+for Ts, that can be inferred from fossil records, has been implicitly assumed to be equal to Tg.
+
+λ=μ=8.9*e-8
+λ=D/(2T)
+D=1.23%
+T= 6 mya?
+T=D/(2μ)
 
 Applications:
 

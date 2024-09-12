@@ -804,6 +804,7 @@ for vcf in `ls *GQ_issue.SNP_softmasked_bi_FMT_DP*_noMS_AO3*vcf.gz`
     less $vcf | grep -v '^#' | wc -l | tr -d '\n'
     echo -e "\t$vcf"
 done
+
 ## concated_vcf_REF_hyp
 for vcf in ${concated_vcf_REF_hyp[*]}
     do  out_vcf_prefix=${vcf/.vcf.list.vcf.gz/}

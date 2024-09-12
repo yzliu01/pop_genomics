@@ -16,35 +16,39 @@ for sample_size in {20,80,200};do
         for stable_decrease in $sfs1;do
             #    echo -e "\n"
             #   tr -d # delete newline characters 
-            awk -v var=$stable_decrease 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $stable_decrease | cut -f 2-11,22-24 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
+            awk -v var=$stable_decrease 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $stable_decrease | cut -f 2-11,22-24 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
             ## https://unix.stackexchange.com/questions/638196/how-to-print-in-only-one-column-if-condition-with-awk
             #BEGIN{FS=OFS="\t"}
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt
+
+            ## delete old files
+            # ls $out_sfs_dir/*hapS_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final* | grep -v '200_300G' | xargs rm
+
         done
         for increase in $sfs2;do
             #    echo -e "\n"
             #   tr -d # delete newline characters 
-            awk -v var=$increase 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $increase | cut -f 2-11,22-24 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
+            awk -v var=$increase 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $increase | cut -f 2-11,22-24 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
             #BEGIN{FS=OFS="\t"}
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt
         done
     elif [ $sample_size == 80 ];then
         for stable_decrease in $sfs1;do
             #printf $sfs"\n"
-            awk -v var=$stable_decrease 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $stable_decrease | cut -f 2-41,82-84 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
+            awk -v var=$stable_decrease 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $stable_decrease | cut -f 2-41,82-84 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
             #awk 'NR>=3,NR<=5' $i | cut -d " " -f 2-41 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt;
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt
         done
         for increase in $sfs2;do
             #    echo -e "\n"
             #   tr -d # delete newline characters 
-            awk -v var=$increase 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $increase | cut -f 2-41,82-84 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
+            awk -v var=$increase 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $increase | cut -f 2-41,82-84 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
             #BEGIN{FS=OFS="\t"}
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt
         done
     else
         for stable_decrease in $sfs1;do
-            awk -v var=$stable_decrease 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $stable_decrease | cut -f 2-101,202-204 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
+            awk -v var=$stable_decrease 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $stable_decrease | cut -f 2-101,202-204 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
             #awk 'NR>=3,NR<=5' $i | cut -d " " -f 2-101 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt;
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt
             ## result file: sfs_10000Ne_200hapS_5rep_final.txt
@@ -52,7 +56,7 @@ for sample_size in {20,80,200};do
         for increase in $sfs2;do
             #    echo -e "\n"
             #   tr -d # delete newline characters 
-            awk -v var=$increase 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $increase | cut -f 2-101,202-204 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
+            awk -v var=$increase 'BEGIN{FS=OFS="\t"}NR>=3,NR<=5{print $0 var OFS var}' $increase | cut -f 2-101,202-204 >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_2i_2d_2d_2i_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei_final.txt;
             #BEGIN{FS=OFS="\t"}
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_10000Ne_"$sample_size"hapS_5rep_final.txt
         done
