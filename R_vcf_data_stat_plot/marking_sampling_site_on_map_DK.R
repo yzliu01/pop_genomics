@@ -146,14 +146,17 @@ bee_map <- get_stadiamap(bbox = c(left = 7.7, bottom = 54.76906, right =12.5, to
 #install.packages("https://cran.r-project.org/src/contrib/Archive/ggsn/ggsn_0.5.0.tar.gz",repos=NULL,method="libcurl",dependencies= TRUE)
 bee_site_plot <- ggmap(bee_map) +
                 geom_point(data = bee_site, mapping = aes(x = as.numeric(Longitude), y = as.numeric(Latitude), col = Species), size=2,alpha=1) + 
-                scale_colour_manual(values =c("firebrick4", "orange", "black","blue")) +
+                #scale_colour_manual(values =c("firebrick4", "orange", "black","blue")) +
+                # use color matched with phylogeny tree
+                scale_colour_manual(values =c("#009E73", "#0072B2", "#D55E00","#CC79A7")) +
                 theme(legend.position = c(0.2,0.9),legend.text = element_text(size=12), legend.background = element_rect(fill=NA))                 
                 geom_label(aes(x=10, y=10, label="N"), size=3, label.padding=unit(1,"mm"), label.r=unit(1,"lines")) 
 getwd()
 #ggsave(filename="bee_site_plot_transparent_legend.new.pdf",height = 20, width =20, units = "cm", bee_site_plot)
-ggsave(filename="bee_site_plot_legend.new.pdf",height = 20, width =20, units = "cm", bee_site_plot)
+ggsave(filename="bee_site_plot_legend.new1.pdf",height = 20, width =20, units = "cm", bee_site_plot)
 
-
+# stairway plot
+#c("A.haemorrhoa" = "#009E73", "A.marginata" = "#0072B2", "B.pascuorum" = "#D55E00", "B.veteranus" = "#CC79A7")
 
 
 #  scale_colour_manual(values = rainbow(9)) 

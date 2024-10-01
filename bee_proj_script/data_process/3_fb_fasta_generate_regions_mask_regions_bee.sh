@@ -134,20 +134,26 @@ REF_list=(
             #"Bombus_hortorum-GCA_905332935.1-softmasked.fa"
             #"Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
             #"Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
-            "Bombus_muscorum-GCA_963971185.1.fa"
-            "Andrena_bicolor-GCA_960531205.1.fa"
-            "Bombus_sylvestris-GCA_911622165.2-softmasked.fa"
+            #"Bombus_muscorum-GCA_963971185.1.fa"
+            #"Andrena_bicolor-GCA_960531205.1.fa"
+            #"Bombus_sylvestris-GCA_911622165.2-softmasked.fa"
+            "Bombus_veteranus.hifi_asm_pl2.fa"
             )
 
 for Ref_New in `ls -t *-softmasked.fa | head -4`
 for Ref_New in ${REF_list[@]}
 for Ref_New in `ls Bombus_muscorum-GCA_963971125.1.fa`
+for Ref_New in `ls Bombus_veteranus.hifi_asm_pl2.fa`
     do
     #echo $Ref_New
 #done
     Out_Region_Name=${Ref_New/.fa/.fb_100kb.regions}
     fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
 done
+
+## check number of regions
+less $Regions_New/Bombus_veteranus.hifi_asm_pl2.fb_100kb.regions | wc -l
+3979
 
 ##
 AndHat_Ref_Regions=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions/Andrena_hattorfiana-GCA_944738655.1-softmasked.fb_2Mb.regions

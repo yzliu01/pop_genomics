@@ -1,0 +1,16 @@
+
+
+tree=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_annotation/primary_transcripts/new_transcript_id_14species/SpeciesTree_rooted.txt
+tree_node_label=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_annotation/primary_transcripts/new_transcript_id_14species/SpeciesTree_rooted_node_labels.txt
+tree_node_label=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/orthofinder_get_single_copy_genes_annotation_divergence_time/mcmctree_divergence_time/SpeciesTree_rooted.trees
+#sed 's/-G*.[^:]*transcript_id\.new:/:/g' $tree
+sed 's/-G*.[^:]*transcript_id\.new:/:/g' $tree_node_label
+
+#(((Andrena_hattorfiana:0.0206254,(Andrena_trimmerana:0.0327071,(Andrena_bicolor:0.020336,Andrena_marginata:0.0184104)0.612222:0.0209569)0.201028:0.0147978)0.180468:0.0148187,(Andrena_fulva:0.027575,Andrena_haemorrhoa:0.030754)0.223872:0.0179333)0.812678:0.0629045,(Apis_mellifera:0.107062,(Bombus_confusus:0.0301586,((Bombus_hypnorum:0.0123976,Bombus_hortorum:0.0121439)0.154769:0.0176453,(Bombus_sylvestris:0.0123019,((Bombus_muscorum:0.0181333,Bombus_veteranus:0.240831)0.247858:0.0255894,Bombus_pascuorum:0.00571453)0.209595:0.0171565)0.0879497:0.0081377)0.325528:0.0163912)0.680183:0.061677)0.812678:0.0629045);
+
+(((Andrena_hattorfiana:0.0206254,(Andrena_trimmerana:0.0327071,(Andrena_bicolor:0.020336,Andrena_marginata:0.0184104)0.612222:0.0209569)0.201028:0.0147978)0.180468:0.0148187,(Andrena_fulva:0.027575,Andrena_haemorrhoa:0.030754)0.223872:0.0179333)0.812678:0.0629045,(Apis_mellifera:0.107062,(Bombus_confusus:0.0301586,((Bombus_hypnorum:0.0123976,Bombus_hortorum:0.0121439)0.154769:0.0176453,(Bombus_sylvestris:0.0123019,((Bombus_muscorum:0.0181333,Bombus_veteranus:0.240831)0.247858:0.0255894,Bombus_pascuorum:0.00571453)0.209595:0.0171565)0.0879497:0.0081377)0.325528:0.0163912)0.680183:0.061677)0.812678:0.0629045);
+
+#(((Andrena_hattorfiana:0.0206254,(Andrena_trimmerana:0.0327071,(Andrena_bicolor:0.020336,Andrena_marginata:0.0184104)N8:0.0209569)N6:0.0147978)N3:0.0148187,(Andrena_fulva:0.027575,Andrena_haemorrhoa:0.030754)N4:0.0179333)N1:0.0629045,(Apis_mellifera:0.107062,(Bombus_confusus:0.0301586,((Bombus_hypnorum:0.0123976,Bombus_hortorum:0.0121439)N9:0.0176453,(Bombus_sylvestris:0.0123019,((Bombus_muscorum:0.0181333,Bombus_veteranus:0.240831)N12:0.0255894,Bombus_pascuorum:0.00571453)N11:0.0171565)N10:0.0081377)N7:0.0163912)N5:0.061677)N2:0.0629045)N0;
+(((Andrena_hattorfiana:0.0206254,(Andrena_trimmerana:0.0327071,(Andrena_bicolor:0.020336,Andrena_marginata:0.0184104)N8:11.22)N6:14.08)N3:15.37,(Andrena_fulva:0.027575,Andrena_haemorrhoa:0.030754)N4:15.07)N1:19.71,(Apis_mellifera:0.107062,(Bombus_confusus:0.0301586,((Bombus_hypnorum:0.0123976,Bombus_hortorum:0.0121439)N9:8.13,(Bombus_sylvestris:0.0123019,((Bombus_muscorum:0.0181333,Bombus_veteranus:0.240831)N12:4.43,Bombus_pascuorum:0.00571453)N11:3.99)N10:10.87)N7:9.91)N5:17.53)N2:87.82)N0:191.71;
+
+(((((((Bombus_pascuorum:6,Bombus_veteranus:6):6,Bombus_hortorum:21.2),Bombus_hypnorum:23.7),Bombus_confusus:30.8),Apis_mellifera:54),((Andrena_haemorrhoa:12.5,Andrena_fulva:12.5):5,((Andrena_trimmerana:12.5,Andrena_marginata:12.5):1,Andrena_hattofiana:13.5):4):88.5):106,Philanthus_triangulum:128);

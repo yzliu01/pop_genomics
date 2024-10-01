@@ -68,9 +68,15 @@ mv Bombus_muscorum-GCA_963971125.1.fa.masked Bombus_muscorum-GCA_963971125.1-sof
 
 for masked_ref in `ls -t *-softmasked.fa | head -2`
 for masked_ref in `ls -t Bombus_sylvestris*-softmasked.fa | head -2`
+
+masked_ref=Bombus_veteranus.hifi_asm_pl2-softmasked.fa
+
+for masked_ref in `ls -t Bombus_veteranus.hifi_asm_pl2-softmasked.fa`
     do
     out_softmasked_genome=${masked_ref/.fa/}
-    grep -v "^>"tr $masked_ref | tr "[atcg]" "N" > $out_softmasked_genome.N.fa
+    #grep -v "^>"tr $masked_ref | tr "[atcg]" "N" > $out_softmasked_genome.N.fa ## wrong
+    sed '/^>/! s/[atcg]/N/g' $masked_ref > $out_softmasked_genome.N.fa
+    #awk '/^>/ {print; next} {gsub(/[atcgATCG]/, "N"); print}' $masked_ref
     python $generate_masked_region_md_py $out_softmasked_genome.N.fa > ./ref_masked_bed/$out_softmasked_genome.bed
 done
 
@@ -94,12 +100,21 @@ sed 's/^/chr/' $REF_PAS_softmasked_region > $fasta_generate_regions_DIR/Bombus_p
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 REF_PAS_GTF=/home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data/BomPas_GCA_905332965.1/genes.gtf.gz
 
+## self assemblied
+REF_VET_GTF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomVet_results_for_protseq/braker.gtf
+REF_VET_GTF_new=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomVet_results_for_protseq/braker.new_chr.gtf
 ## get gene regions
 ## chr GTF bed file should be less than that of the reference insex file 
 less -S $REF_PAS_GTF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4,$5}}' | sed -e 's/^/chr/' -e '/chrCAJ/d' > $OUT_BED_DIR/BomPas_GCA_905332965.1_gene_region.bed
 
 ** $4-1 **
 less -S $REF_PAS_GTF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | sed -e 's/^/chr/' -e '/chrCAJ/d' > $OUT_BED_DIR/BomPas_GCA_905332965.1_gene_region_1.bed
+
+
+less -S $REF_VET_GTF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | sed -e 's/^/chr/' -e '/chrCAJ/d' > $OUT_BED_DIR/BomVet_hifi_asm.gene_region_1.bed
+# ptg000001l_[Bombuseteranus]     AUGUSTUS        gene 
+# ptg000001l     AUGUSTUS        gene 
+sed -E 's/_\[Bombus_veteranus\]//g' $REF_VET_GTF > $REF_VET_GTF_new
 
 *********************** step II: new added species **************************
 ## decompress the files, replace _ with |, and compress the files
@@ -133,6 +148,10 @@ for ref in $ref_folder
     less -S $ref/genes.gtf.gz | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' \
         > $OUT_BED_DIR/"$ref"_gene_region_1.bed
 done
+
+
+less -S $REF_VET_GTF_new | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' \
+    > $OUT_BED_DIR/"Bombus_veteranus-hifiasm_gene_region-1.bed"
 
 ## check the number of new bed files and replace _ with |
 for bed in `ls -t *.bed | head -3`
@@ -342,9 +361,10 @@ chr1    37526   46635
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 REF_gene_region_list=(
-    "BomMus_alt-GCA_963971125.1_gene_region-1.sorted.bed"
-    "BomSyl-GCA_911622165.2_gene_region-1.sorted.bed"
-    "AndBic-GCA_960531205.1_gene_region-1.sorted.bed"
+    #"BomMus_alt-GCA_963971125.1_gene_region-1.sorted.bed"
+    #"BomSyl-GCA_911622165.2_gene_region-1.sorted.bed"
+    #"AndBic-GCA_960531205.1_gene_region-1.sorted.bed"
+    "Bombus_veteranus-hifiasm_gene_region-1.bed"
     #"AndTri-GCA_951215215.1_gene_region-1.sorted.new.bed"
     #"AndFlu-GCA_946251845.1_gene_region-1.sorted.bed"
     #"BomHor-GCA_905332935.1_gene_region-1.sorted.bed"
@@ -358,16 +378,17 @@ REF_gene_region_list=(
     #"DroMel_GCF_000001215.4_Release_6_plus_ISO1_MT_gene_region-1.sorted.bed"
 )
 
-ls -t *masked.bed | head -3
-Bombus_muscorum-GCA_963971125.1-softmasked.bed
-Bombus_sylvestris-GCA_911622165.2-softmasked.bed
-Andrena_bicolor-GCA_960531205.1-softmasked.bed
+#ls -t *masked.bed | head -3
+#Bombus_muscorum-GCA_963971125.1-softmasked.bed
+#Bombus_sylvestris-GCA_911622165.2-softmasked.bed
+#Andrena_bicolor-GCA_960531205.1-softmasked.bed
 
 REF_softmasked_region_list=(
 
-    "Bombus_muscorum-GCA_963971125.1-softmasked.bed"
-    "Bombus_sylvestris-GCA_911622165.2-softmasked.bed"
-    "Andrena_bicolor-GCA_960531205.1-softmasked.bed"
+    #"Bombus_muscorum-GCA_963971125.1-softmasked.bed"
+    #"Bombus_sylvestris-GCA_911622165.2-softmasked.bed"
+    #"Andrena_bicolor-GCA_960531205.1-softmasked.bed"
+    "Bombus_veteranus.hifi_asm_pl2-softmasked.bed"
     #"Andrena_trimmerana-GCA_951215215.1-softmasked.bed"
     #"Andrena_fulva-GCA_946251845.1-softmasked.bed"
     #"Bombus_hortorum-GCA_905332935.1-softmasked.bed"

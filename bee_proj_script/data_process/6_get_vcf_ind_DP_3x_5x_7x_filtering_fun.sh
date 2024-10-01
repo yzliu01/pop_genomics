@@ -40,6 +40,7 @@ New_REF_AndBic_mask_region=$REF_MASKED_DIR/Andrena_bicolor-GCA_960531205.1-softm
 New_REF_alt_BomMus_mask_region=$REF_MASKED_DIR/Bombus_muscorum-GCA_963971125.1-softmasked_ref_gene.conca_sorted.bed
 New_REF_BomSyl_mask_region=$REF_MASKED_DIR/Bombus_sylvestris-GCA_911622165.2-softmasked_ref_gene.conca_sorted.bed
 
+New_REF_BomVet_mask_region=$REF_MASKED_DIR/Bombus_veteranus.hifi_asm_pl2-softmasked_ref_gene.conca_sorted.bed
 
 ## only softmasked_regions bed file
 #New_REF_AndHae_mask_region=$REF_MASKED_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.bed
@@ -67,6 +68,8 @@ REF_AndFul=$REF_DIR/Andrena_fulva-GCA_946251845.1-softmasked.fa
 REF_AndBic=$REF_DIR/Andrena_bicolor-GCA_960531205.1.fa
 REF_BomMus=$REF_DIR/Bombus_muscorum-GCA_963971125.1.fa
 REF_BomSyl=$REF_DIR/Bombus_sylvestris-GCA_911622165.2-softmasked.fa
+
+REF_BomVet=$REF_DIR/Bombus_veteranus.hifi_asm_pl2.fa
 
 ## vcf
 concated_vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
@@ -132,6 +135,9 @@ Bompas_New_REF_BomSyl_VCF=concated.BomPas_New_REF_BomSyl.100kb_g1500x_regions.vc
 Bompas_New_REF_BomSyl_VCF_filter=${Bompas_New_REF_BomSyl_VCF/.vcf.gz/}
 Bomvet_New_REF_BomSyl_VCF=concated.BomVet_New_REF_BomSyl.100kb_g1500x_regions.vcf.gz
 Bomvet_New_REF_BomSyl_VCF_filter=${Bomvet_New_REF_BomSyl_VCF/.vcf.gz/}
+
+Bomvet_New_REF_BomVet_VCF=concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.vcf.gz
+Bomvet_New_REF_BomVet_VCF_filter=${Bomvet_New_REF_BomVet_VCF/.vcf.gz/}
 
 ## >>>>>>>>>>>>>>>>>>>>>>>>>>>>>  NEW  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ## keep biallelic snp, remove duplicates and normalize snp with long base (bcftools norm -d none/-m-snps), also remove monomorphic snps
@@ -415,8 +421,19 @@ bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
 done
 }
 
+## 24. Bomvet_New_REF_BomVet_VCF
+Bomvet_New_REF_BomVet_VCF(){
+for depth in {174,290,416}
+do
+bcftools filter --soft-filter mask --mask-file $New_REF_BomVet_mask_region $Bomvet_New_REF_BomVet_VCF | \
+bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomVet | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Bomvet_New_REF_BomVet_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
 
-## function list of array jobs
+*********  function list of array jobs   *************
 function_list=(
     "Bomvet_New_REF_BomPas_VCF"
     "Bomvet_New_REF_BomHyp_VCF"

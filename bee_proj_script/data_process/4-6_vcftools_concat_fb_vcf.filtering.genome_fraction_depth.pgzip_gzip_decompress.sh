@@ -177,10 +177,15 @@ ls |sort -V | xargs grep -L '^#CHR' | less -S | ls -lh | less
 find ./fb_per_region_BomPas_New_alt_REF_BomMus -type f -size +0 -print | sort -V > BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_BomPas_New_alt_REF_BomMus
 
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
+find ./fb_per_region_BomVet_New_REF_BomVet -type f -size +0 -print | sort -V > BomVet_New_REF_BomVet.individual_100kb_1500x_region_vcf_file.list
+#cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_BomVet_New_REF_BomVet
+
 for vcf_list in $(ls -t *.list | head -1)
     do
     conc_name="${vcf_list/.individual_100kb_1500x_region_vcf_file.list/}"
-    for dir in `ls -t -d fb_per_region* | head -4 | sort`
+    #for dir in `ls -t -d fb_per_region* | head -4 | sort`
+    for dir in `ls -t -d fb_per_region* | head -1 | sort`
         do
 #        echo $dir
 #    done
@@ -232,6 +237,13 @@ for vcf_list in $(ls -t *.list | head -1)
         then
             echo $vcf_list $dir
             time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+# new assembly        
+        elif [[ $vcf_list == *BomVet*New_REF_BomVet* && $dir == fb_per_region*BomVet*New_REF_BomVet* ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+
         elif [[ $vcf_list == *BomPas*New_REF_ApisMel* && $dir == fb_per_region*BomPas*New_REF_ApisMel* ]]
         then
             echo $vcf_list $dir
@@ -274,6 +286,11 @@ for vcf_list in $(ls -t *.list | head -1)
         fi
     done
 done
+
+BomVet_Vet_vcf=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.all_chr.sorted.vcf.gz
+BomVet_Vet_vcf_out=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.all_chr.sorted.new.vcf.gz
+
+less $BomVet_Vet_vcf | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > $BomVet_Vet_vcf_out
 
 ## sort chromosome order with SortVcf (indexed automatically)
 conda activate gatk_4.3.0.0
@@ -346,9 +363,11 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vc
 ## New_REF New_mapping
 #for vcf in `ls concated*.100kb_g1500x_regions.vcf.gz`
 for vcf in `ls -t concated*.100kb_g1500x_regions.vcf.gz | head -4`
-    do 
+for vcf in `ls -t concated*.100kb_g1500x_regions.vcf.gz | head -1`
+    do
+    echo $vcf
     vcf_sorted_chr=${vcf/.vcf.gz/}
-    gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.all_chr.sorted.vcf.gz
+    gatk SortVcf --INPUT $vcf --OUTPUT $vcf_sorted_chr.all_chr.sorted.new.vcf.gz
 done
 
 ****************************************************************************************
@@ -953,6 +972,7 @@ for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_his
     sed '1d' $COV | awk -F " " 'NR > 174 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP174_1500x\t$COV \n"
 done
+
 ## grep 'Bomvet.New_REF - BomHor- BomCon'
 for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
     do
@@ -1136,11 +1156,13 @@ bcftools view -S $sample_list $vcf_SE_BomPas | bcftools filter -e 'AC==0 || AC =
 less Se_subset_7_BomPas_inds.vcf.gz | grep -v '#' | wc -l
 2102389
 
-## count SNP number
+## count SNP number of SNP
 less /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g1500x_regions.all_chr.sorted_chr.vcf.gz.bi_MQ20_DP160_1500.vcf.gz | \
     grep -v '^#' | wc -l
 
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 for vcf in `ls *GQ*AO3.vcf.gz`
+for vcf in `ls *BomVet*New_REF_BomVet*noMS.vcf.gz`
     do
     less $vcf | grep -v '^#' | wc -l | tr -d '\n'
     echo -e "\t$vcf"

@@ -126,10 +126,12 @@ for (i in 1:length(file_list_a)){
 p1_initial <- ggplot(data = data, aes(x = year)) +
     #xlim(1,150000)+
     #ylim(1,650000)+
-    scale_x_continuous(limits= c(10,110000),labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(limits= c(1,100000),labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
-    geom_line(aes(y = Ne_median, color = "Ne_median"), linewidth = 0.7) +
-    geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5., fill = "75%_CI"), alpha = 0.2) +
+    scale_x_continuous(limits= c(10,100000),labels = function(year) format(year, scientific = FALSE)) +
+    scale_y_continuous(limits= c(1,200000), labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+    # add labels on y axis: breaks = seq(0, 150000, by = 25000),
+    geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5., fill = "75%_CI"), alpha = 0.3) +
+    # showing legend
+    geom_line(aes(y = Ne_median, color = "Ne_median"), linewidth = 0.7, alpha = 0.8) +
     #geom_line(aes(y = df1$Ne_12.5),color = "blue") +                        
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
 
@@ -142,7 +144,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
 
     ## frame to select area on the plot
-    annotate(geom = "rect",xmin = 10, xmax = 15000, ymin = 1000, ymax = 90000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
+    annotate(geom = "rect",xmin = 10, xmax = 15000, ymin = 1, ymax = 150000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
     theme_pubr( base_size = 10, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
     axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
@@ -150,7 +152,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     panel.spacing = unit(1, "cm", data = NULL),
     ## legend line length
-    legend.position = c(0.7,0.3), legend.key.width=unit(1,"cm"), legend.text = element_text(size = 12),
+    legend.position = c(0.7,0.4), legend.key.width=unit(1,"cm"), legend.text = element_text(size = 12),
     ## space between two legends: https://stackoverflow.com/questions/73235117/vertical-gap-between-2-legends-in-ggplot2-vertical-gap-between-2-keys-in-the-sa
     legend.margin =  margin(-14,0,0,0,unit="pt")) +
     #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(italic("N")["e"])))
@@ -163,15 +165,17 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
 p1_initial <- ggplot(data = data, aes(x = year)) +
     #xlim(1,150000)+
     #ylim(1,650000)+
-    scale_x_continuous(limits= c(10,110000),labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(limits= c(1,100000),labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
-    geom_line(aes(y = Ne_median), color = "red", linewidth = 0.5) +
-    geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.), fill = "blue", alpha = 0.2) +
+    scale_x_continuous(limits= c(10,100000),labels = function(year) format(year, scientific = FALSE)) +
+    scale_y_continuous(limits= c(1,200000),labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+    # breaks = seq(0, 150000, by = 25000),
+    geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.), fill = "blue", alpha = 0.3) +
+    # without showing legend
+    geom_line(aes(y = Ne_median), color = "red", linewidth = 0.7, alpha = 0.8) +
     #geom_line(aes(y = df1$Ne_12.5),color = "blue") +                        
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
 
     ## frame to select area on the plot
-    annotate(geom = "rect", xmin = 10, xmax = 15000, ymin = 1000, ymax = 90000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
+    annotate(geom = "rect", xmin = 10, xmax = 15000, ymin = 1, ymax = 150000, color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1) +
     theme_pubr( base_size = 10, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 1, hjust=0.5),
     axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
@@ -186,8 +190,8 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     # axis of select area for zoom
 p1_zoom <- ggplot(data = data, aes(x = year)) +
     #ylim(1,100000)+
-    geom_line(aes(y = (Ne_median)), color = "red", linewidth = 0.5) +
-    geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.),fill = "blue",alpha = 0.2) +
+    geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.),fill = "blue",alpha = 0.3) +
+    geom_line(aes(y = Ne_median), color = "red", linewidth = 0.7, alpha = 0.8) +
     #geom_line(aes(y = df1$Ne_12.5),color = "blue") +                        
     #geom_line(aes(y = df1$Ne_87.5),color = "blue") +
     #xlim (1, 200000) +
@@ -198,17 +202,18 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     axis.ticks = element_line(colour = "black", size = 1))+
     labs(x="Year ago (log transformed)",y=expression(paste(italic("N")["e"]))) +
     scale_x_log10(lim= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(limits = c(1000,90000), labels = function(Ne_median) format(Ne_median, scientific = FALSE))
-
+    scale_y_continuous(limits = c(1,200000), labels = function(Ne_median) format(Ne_median, scientific = FALSE))
+    # breaks = seq(0, 150000, by = 25000), 
+    
 p1_final <- p1_initial + 
     ## position of zoom plot
-    annotation_custom(ggplotGrob(p1_zoom), xmin = 35000, xmax = 110000, ymin = 65000, ymax = 100000) +
+    annotation_custom(ggplotGrob(p1_zoom), xmin = 20000, xmax = 100000, ymin = 100000, ymax = 200000) +
     ## position of annotation frame
-    geom_rect(aes(xmin = 35000, xmax = 110000, ymin = 65000, ymax = 100000), color='black', linetype='dashed', linewidth=0.5, alpha=0) +
+    geom_rect(aes(xmin = 20000, xmax = 100000, ymin = 100000, ymax = 200000), color='black', linetype='dashed', linewidth=0.5, alpha=0) +
     ## conncetion line to one side of the frame [geom_rect]
     geom_path(aes(x,y,group=grp), 
                 #[selected-annotation:left-right]
-                data=data.frame(x = c(15000,35000), y=c(90000,100000),grp=c(1,1,2,2)),
+                data=data.frame(x = c(15000,20000), y=c(150000,200000),grp=c(1,1,2,2)),
                 linewidth=0.5,linetype='dashed')
     
     ## add plot to the list
@@ -220,10 +225,12 @@ p1_final <- p1_initial +
 
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 5, nrow = 3, 
                             layout_matrix = matrix(seq_len(15), nrow = 3, byrow = FALSE))
-pdf_file <- file.path(result_path,"AndMar_combined_added_plot.3_COV.pdf")
+pdf_file <- file.path(result_path,"AndMar_combined_added_plot.4_COV.pdf")
 ggsave(pdf_file,combined_plot,width = 22.5, height = 13.5, limitsize = FALSE)
+
 ## 4.5/width/height
-combined_plot2 <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(3), nrow = 1, byrow = FALSE))
+
+combined_plot2 <- marrangeGrob(grobs = plot_list[c(1,7,10,13)],ncol = 3, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(4), nrow = 1, byrow = FALSE))
 
 print(combined_plot2)

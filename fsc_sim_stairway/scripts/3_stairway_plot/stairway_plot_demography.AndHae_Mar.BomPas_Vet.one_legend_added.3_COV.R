@@ -20,7 +20,7 @@ file_list_a <- c(
                 "AndHae_New_REF_AndHae.no_singleton_sfs_234_1500x_sm_genic",
                 "AndMar_New_REF_AndMar.no_singleton_sfs_240_1500x_sm_genic",
                 "BomPas_New_REF_BomPas.no_singleton_sfs_204_1500x_sm_genic",
-                "BomVet_New_REF_BomPas.no_singleton_sfs_174_1500x_sm_genic"               
+                "BomVet_New_REF_BomVet.no_singleton_sfs_174_1500x_sm_genic"               
                 )
 
 file_list_b <- c(
@@ -31,11 +31,11 @@ file_list_b <- c(
                 # pas
                 expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 3X")),          
                 # vet
-                expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 6 Mya | Cov: 3X"))
+                expression(paste("Closest Ref: ", italic("B. veteranus"), " | Divergence Time: 0 Mya | Cov: 3X"))
                 )
 
 ## initialize a list to store plot
-plot_list <- list()
+#plot_list <- list()
 
 #************************* chatGTP *********************
 ## plot a zoom inside a plot: https://stackoverflow.com/questions/66409781/how-to-plot-a-zoom-of-the-plot-inside-the-same-plot-area-using-ggplot2
@@ -61,9 +61,9 @@ str(data_hae)
 species <- rep("A.haemorrhoa",30401)
 data_hae_new <- cbind(species,data_hae)
 head(data_hae_new)
-merged_data[30400:30405, ]
-str(merged_data)
-unique(merged_data$species)
+#merged_data[30400:30405, ]
+#str(merged_data)
+#unique(merged_data$species)
 
 file_path_mar <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[2]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
 file_path_mar <- file_path_mar[1]
@@ -85,6 +85,7 @@ file_path_vet <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[4]), recurse
 file_path_vet <- file_path_vet[1]
 data_vet <- read.table(file_path_vet,header=TRUE,sep="\t")
 str(data_vet)
+head(data_vet)
 species <- rep("B.veteranus",22401)
 data_vet_new <- cbind(species,data_vet)
 head(data_vet_new)
@@ -92,6 +93,7 @@ head(data_vet_new)
 ## merge all data frames
 merged_data <- rbind(data_hae_new,data_mar_new,data_pas_new,data_vet_new)
 
+##########  test plot #############
 p1_initial <- ggplot(data = merged_data, aes(x = year)) +
     #xlim(1,150000)+
     #ylim(1,650000)+
@@ -154,7 +156,15 @@ print(plot)
 ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species, color = species)) +
   geom_ribbon(aes(ymin = Ne_12.5., ymax = Ne_87.5., fill = species), size = 0.1, alpha = 0.1) +  # Ribbon for the range
   geom_line(size = 1, alpha = 0.8) +  # Line for Ne_median
-  labs(title = "Ne_median with CI by Species",
+    ## add legend manually
+    #scale_color_manual(values = c("Ne_median" = "red"), labels = expression(paste(italic("N")["e"]," median"))) +
+    #scale_fill_manual(values = c("75%_CI" = "blue"), labels = "75% CI") +
+    ## legends: https://stackoverflow.com/questions/73235117/vertical-gap-between-2-legends-in-ggplot2-vertical-gap-between-2-keys-in-the-sa
+    ## revise legend line width: https://stackoverflow.com/questions/28872875/ggplot2-applying-width-of-line-to-the-legend-key
+    #guides(color = guide_legend(title = NULL,order = 1, override.aes = list(linewidth = 1.5)),
+    #fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
+
+  labs(title = "Ne_median with 75% CI by Species",
        y = "Ne",
        x = "Year") +  # Correct label for the x-axis
   #theme_minimal() +
@@ -173,7 +183,7 @@ ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species, color = sp
   scale_fill_manual(values = c("A.haemorrhoa" = "#009E73", "A.marginata" = "#0072B2", "B.pascuorum" = "#D55E00", "B.veteranus" = "#CC79A7")) +  # Custom fill colors
   scale_x_log10(limits = c(10, 1000000))  # Set x-axis limits between 1 and 100,000
 
-ggsave("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new/plot_in_one_3x.new1.pdf",width=6,height=6)
+ggsave("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new/plot_in_one_3x.new2.pdf",width=6,height=6)
 
 
 

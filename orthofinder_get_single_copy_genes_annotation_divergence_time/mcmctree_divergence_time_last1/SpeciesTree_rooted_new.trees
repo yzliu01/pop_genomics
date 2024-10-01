@@ -1,0 +1,4 @@
+ 14  1
+(((And_ful,And_hae),((And_tri,(And_bic,And_mar)),And_hat) '>.16<.18'),(Apis_mel,(Bom_con,((Bom_syl,(Bom_pas,(Bom_vet,Bom_mus))),(Bom_hyp,Bom_hor) '>.20<.22'))'>.25<.40') '>.9<1.2');
+//end of file
+(((And_ful,And_hae),((And_tri,(And_bic,And_mar)),And_hat) 'B(.16, .18)'),(Apis_mel,(Bom_con,((Bom_syl,(Bom_pas,(Bom_vet,Bom_mus))),(Bom_hyp,Bom_hor)'B(.20, .22)'))'B(.25, .40)')'B(.9, 1.2)');
