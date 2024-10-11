@@ -1,0 +1,46 @@
+
+BASEML (in paml version 4.9j, February 2020)  brown.nuc  HKY85 dGamma (ncatG=5)
+Frequencies..
+                                    T      C      A      G
+Human                          0.25698 0.33073 0.30503 0.10726 GC = 0.438
+Chimpanzee                     0.26480 0.32402 0.31061 0.10056 GC = 0.425
+Gorilla                        0.25810 0.32514 0.31173 0.10503 GC = 0.430
+Orangutan                      0.23687 0.34525 0.31508 0.10279 GC = 0.448
+Gibbon                         0.24916 0.31955 0.31732 0.11397 GC = 0.434
+
+Homogeneity statistic: X2 = 0.00429 G = 0.00428 
+
+Average                        0.25318 0.32894 0.31196 0.10592
+
+# constant sites:    613 (68.49%)
+ln Lmax (unconstrained) = -2476.965133
+
+Distances:HKY85 (kappa)  (alpha set at 0.50)
+This matrix is not used in later m.l. analysis.
+
+Human            
+Chimpanzee         0.1227(42.4634)
+Gorilla            0.1508(31.9110)  0.1533(28.5860)
+Orangutan          0.2862(11.3980)  0.3125(13.1537)  0.3088(13.5463)
+Gibbon             0.3311( 9.5815)  0.3473(10.5068)  0.3470(10.2059)  0.3428( 8.2174)
+
+TREE #  1:  (((1, 2), 3), 4, 5);  MP score: 357.00
+lnL(ntime:  7  np:  9):  -2621.554340    +0.000000
+   6..7     7..8     8..1     8..2     7..3     6..4     6..5  
+ 0.116029 0.033500 0.059487 0.074847 0.078037 0.296863 0.449333 22.975280 0.229124
+
+tree length =   1.10810
+
+(((Human, Chimpanzee), Gorilla), Orangutan, Gibbon);
+
+(((Human: 0.059487, Chimpanzee: 0.074847): 0.033500, Gorilla: 0.078037): 0.116029, Orangutan: 0.296863, Gibbon: 0.449333);
+
+Detailed output identifying parameters
+
+Parameters (kappa) in the rate matrix (HKY85) (Yang 1994 J Mol Evol 39:105-111):
+ 22.97528
+
+alpha (gamma, K=5) =  0.22912
+rate:   0.00048  0.01948  0.16074  0.75101  4.06828
+freq:   0.20000  0.20000  0.20000  0.20000  0.20000
+

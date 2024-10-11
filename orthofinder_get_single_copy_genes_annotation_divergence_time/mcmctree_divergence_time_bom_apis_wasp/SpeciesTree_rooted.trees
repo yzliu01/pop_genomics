@@ -1,0 +1,4 @@
+ 9  1
+((((((((Bom_pas,Bom_vet),Bom_mus),Bom_syl),Bom_hor),Bom_hyp),Bom_con),Apis_mel) '>.25<.40',Ves_vul) '>1.5<1.8';
+//end of file
+((((((((Bom_pas,Bom_vet),Bom_mus),Bom_syl),Bom_hor),Bom_hyp),Bom_con),Apis_mel) '>.25<.40',Ves_vul 'B(1.5, 1.8)') 'B(1.5, 1.8)';

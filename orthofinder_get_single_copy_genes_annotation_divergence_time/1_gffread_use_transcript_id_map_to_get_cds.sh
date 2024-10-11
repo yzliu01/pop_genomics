@@ -135,6 +135,16 @@ input_fa_ref_annotation=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_geno
 output_new_transcript_id_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_annotation/primary_transcripts/new_transcript_id
 
 species_list=(
+        "Ves_vul"
+)
+gtf_list=(
+    "Vespula_vulgaris-GCA_905475345.1-2021_11-genes.gtf"
+)
+fa_list=(
+    "Vespula_vulgaris-GCA_905475345.1-2021_11-pep.fa.transcript_id.fa"
+)
+
+species_list=(
     "And_ful"
     "And_hae"
     "And_hat"

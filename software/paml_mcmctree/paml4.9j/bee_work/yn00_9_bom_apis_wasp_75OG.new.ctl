@@ -1,0 +1,16 @@
+      seqfile = /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_annotation/primary_transcripts/extracted_cds_new/new_transcript_id_9_bom_apis_wasp/cat.out.9_species_75OG.trimmed_stop_codon.prank_codon.iterate2.same_header.phy * sequence data file name
+      outfile = /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_annotation/primary_transcripts/extracted_cds_new/new_transcript_id_9_bom_apis_wasp/substitution_rate_yn00_9_bom_apis_wasp_75OG.log           * main result file
+      verbose = 0  * 1: detailed output (list sequences), 0: concise output
+
+        icode = 0  * 0:universal code; 1:mammalian mt; 2-10:see below
+
+    weighting = 0  * weighting pathways between codons (0/1)?
+   commonf3x4 = 0  * use one set of codon freqs for all pairs (0/1)? 
+*       ndata = 1
+
+
+* Genetic codes: 0:universal, 1:mammalian mt., 2:yeast mt., 3:mold mt.,
+* 4: invertebrate mt., 5: ciliate nuclear, 6: echinoderm mt., 
+* 7: euplotid mt., 8: alternative yeast nu. 9: ascidian mt., 
+* 10: blepharisma nu.
+* These codes correspond to transl_table 1 to 11 of GENEBANK.
