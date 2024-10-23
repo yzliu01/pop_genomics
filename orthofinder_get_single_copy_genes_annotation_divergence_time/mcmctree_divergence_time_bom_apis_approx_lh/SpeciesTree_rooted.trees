@@ -1,0 +1,4 @@
+ 8  1
+(((((((Bom_mus,Bom_vet),Bom_pas),Bom_syl),Bom_hor),Bom_hyp),Bom_con),Apis_mel) '>.25<.40';
+//end of file
+(((((((Bom_mus,Bom_vet),Bom_pas),Bom_syl),Bom_hor),Bom_hyp),Bom_con),Apis_mel) 'B(.25, .40)';

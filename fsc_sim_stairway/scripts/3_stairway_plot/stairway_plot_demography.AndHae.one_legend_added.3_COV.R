@@ -21,13 +21,13 @@ file_list_a <- c(
                 "AndHae_New_REF_AndHae.no_singleton_sfs_390_1500x_sm_genic",
                 "AndHae_New_REF_AndHae.no_singleton_sfs_546_1500x_sm_genic",
 
-                "AndHae_New_REF_AndFul.no_singleton_sfs_234_1500x_sm_genic",
-                "AndHae_New_REF_AndFul.no_singleton_sfs_390_1500x_sm_genic",
-                "AndHae_New_REF_AndFul.no_singleton_sfs_546_1500x_sm_genic",
-
                 "AndHae_New_REF_AndHat.no_singleton_sfs_234_1500x_sm_genic",
                 "AndHae_New_REF_AndHat.no_singleton_sfs_390_1500x_sm_genic",
                 "AndHae_New_REF_AndHat.no_singleton_sfs_546_1500x_sm_genic",
+
+                "AndHae_New_REF_AndFul.no_singleton_sfs_234_1500x_sm_genic",
+                "AndHae_New_REF_AndFul.no_singleton_sfs_390_1500x_sm_genic",
+                "AndHae_New_REF_AndFul.no_singleton_sfs_546_1500x_sm_genic",
 
                 "AndHae_New_REF_BomPas.no_singleton_sfs_234_1500x_sm_genic",
                 "AndHae_New_REF_BomPas.no_singleton_sfs_390_1500x_sm_genic",
@@ -36,21 +36,21 @@ file_list_a <- c(
 
 file_list_b <- c(       
                 #expression(paste("Ref1: ", bolditalic("B. pascuorum"), " (Coverage: 174-1500x")),           
-                expression(paste("Closest Ref: ", italic("A. haemorrhoa"), " | Divergence Time: 0 Mya | Cov: 3X")), 
-                expression(paste("Closest Ref: ", italic("A. haemorrhoa"), " | Divergence Time: 0 Mya | Cov: 5X")),
-                expression(paste("Closest Ref: ", italic("A. haemorrhoa"), " | Divergence Time: 0 Mya | Cov: 7X")),
+                expression(paste("Ref1: ", italic("A. haemorrhoa"), " | d", italic("S"), ":  0 | Cov: 3X")), 
+                expression(paste("Ref1: ", italic("A. haemorrhoa"), " | d", italic("S"), ":  0 | Cov: 5X")),
+                expression(paste("Ref1: ", italic("A. haemorrhoa"), " | d", italic("S"), ":  0 | Cov: 7X")),
 
-                expression(paste("Closer Ref1: ", italic("A. fulva"), " | Divergence Time: 12.5 Mya | Cov: 3X")),
-                expression(paste("Closer Ref1: ", italic("A. fulva"), " | Divergence Time: 12.5 Mya | Cov: 5X")),
-                expression(paste("Closer Ref1: ", italic("A. fulva"), " | Divergence Time: 12.5 Mya | Cov: 7X")),
+                expression(paste("Ref2: ", italic("A. hattorfiana"), " | d", italic("S"), ":  (0.1507, 0.1510) | Cov: 3X")),
+                expression(paste("Ref2: ", italic("A. hattorfiana"), " | d", italic("S"), ":  (0.1507, 0.1510) | Cov: 5X")),
+                expression(paste("Ref2: ", italic("A. hattorfiana"), " | d", italic("S"), ":  (0.1507, 0.1510) | Cov: 7X")),
 
-                expression(paste("Closer Ref2: ", italic("A. hattorfiana"), " | Divergence Time: 17.5 Mya | Cov: 3X")),
-                expression(paste("Closer Ref2: ", italic("A. hattorfiana"), " | Divergence Time: 17.5 Mya | Cov: 5X")),
-                expression(paste("Closer Ref2: ", italic("A. hattorfiana"), " | Divergence Time: 17.5 Mya | Cov: 7X")),
+                expression(paste("Ref3: ", italic("A. fulva"), " | d", italic("S"), ":  (0.1527, 0.1531) | Cov: 3X")),
+                expression(paste("Ref3: ", italic("A. fulva"), " | d", italic("S"), ":  (0.1527, 0.1531)  | Cov: 5X")),
+                expression(paste("Ref3: ", italic("A. fulva"), " | d", italic("S"), ":  (0.1527, 0.1531)  | Cov: 7X")),
 
-                expression(paste("Distant Ref: ", italic("B. pascuorum"), " | Divergence Time: 106 Mya | Cov: 3X")),
-                expression(paste("Distant Ref: ", italic("B. pascuorum"), " | Divergence Time: 106 Mya | Cov: 5X")),
-                expression(paste("Distant Ref: ", italic("B. pascuorum"), " | Divergence Time: 106 Mya | Cov: 7X"))
+                expression(paste("Ref4: ", italic("B. pascuorum"), " | d", italic("S"), ":  (1.1801, 1.1831) | Cov: 3X")),
+                expression(paste("Ref4: ", italic("B. pascuorum"), " | d", italic("S"), ":  (1.1801, 1.1831) | Cov: 5X")),
+                expression(paste("Ref4: ", italic("B. pascuorum"), " | d", italic("S"), ":  (1.1801, 1.1831) | Cov: 7X"))
                 )
 
 ## initialize a list to store plot
@@ -130,7 +130,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     theme_pubr( base_size = 10, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
     axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
-    plot.title = element_text(hjust = 0.5, size = 10),panel.border = element_rect(linewidth = 1.5),
+    plot.title = element_text(hjust = 0.5, size = 12),panel.border = element_rect(linewidth = 1.5),
     panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     panel.spacing = unit(0.5, "cm", data = NULL),
     ## legend line length
@@ -160,7 +160,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     theme_pubr( base_size = 10, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
     axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
-    plot.title = element_text(hjust = 0.5, size = 10),panel.border = element_rect(linewidth = 1.5),
+    plot.title = element_text(hjust = 0.5, size = 12),panel.border = element_rect(linewidth = 1.5),
     panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     panel.spacing = unit(1, "cm", data = NULL)) +
     #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(italic("N")["e"])))
@@ -204,7 +204,7 @@ p1_final <- p1_initial +
 
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 4, nrow = 3,
                             layout_matrix = matrix(seq_len(12), nrow = 3, byrow = FALSE))
-pdf_file <- file.path(result_path,"AndHae_combined_added_plot.4_COV.pdf")
+pdf_file <- file.path(result_path,"AndHae_combined_added_plot.dS.pdf")
 ggsave(pdf_file,combined_plot,width = 18, height = 13.5)
 
 combined_plot1 <- marrangeGrob(grobs = plot_list[c(1,4,7,10)],ncol = 3, nrow = 1, top=NULL,

@@ -43,29 +43,29 @@ file_list_a <- c(
                 )
 
 file_list_b <- c(  
-                expression(paste("Closest Ref: ", italic("B. veteranus"), " | Divergence Time: 0 Mya | Cov: 3X")), 
-                expression(paste("Closest Ref: ", italic("B. veteranus"), " | Divergence Time: 0 Mya | Cov: 5X")),
-                expression(paste("Closest Ref: ", italic("B. veteranus"), " | Divergence Time: 0 Mya | Cov: 7X")),
+                expression(paste("Ref1: ", italic("B. veteranus"), " | d", italic("S"), ": 0 | Cov: 3X")), 
+                expression(paste("Ref1: ", italic("B. veteranus"), " | d", italic("S"), ": 0 | Cov: 5X")),
+                expression(paste("Ref1: ", italic("B. veteranus"), " | d", italic("S"), ": 0 | Cov: 7X")),
 
-                expression(paste("Closer Ref1: ", italic("B. pascuorum"), " | Divergence Time: 6 Mya | Cov: 3X")), 
-                expression(paste("Closer Ref1: ", italic("B. pascuorum"), " | Divergence Time: 6 Mya | Cov: 5X")),
-                expression(paste("Closer Ref1: ", italic("B. pascuorum"), " | Divergence Time: 6 Mya | Cov: 7X")),
+                expression(paste("Ref2: ", italic("B. pascuorum"), " | d", italic("S"), ": (0.0199, 0.0200) | Cov: 3X")), 
+                expression(paste("Ref2: ", italic("B. pascuorum"), " | d", italic("S"), ": (0.0199, 0.0200) | Cov: 5X")),
+                expression(paste("Ref2: ", italic("B. pascuorum"), " | d", italic("S"), ": (0.0199, 0.0200) | Cov: 7X")),
 
-                expression(paste("Closer Ref2: ", italic("B. hortorum"), " | Divergence Time: 21.2 Mya | Cov: 3X")),
-                expression(paste("Closer Ref2: ", italic("B. hortorum"), " | Divergence Time: 21.2 Mya | Cov: 5X")),
-                expression(paste("Closer Ref2: ", italic("B. hortorum"), " | Divergence Time: 21.2 Mya | Cov: 7X")),
+                expression(paste("Ref3: ", italic("B. hortorum"), " | d", italic("S"), ": (0.0637, 0.0641) | Cov: 3X")),
+                expression(paste("Ref3: ", italic("B. hortorum"), " | d", italic("S"), ": (0.0637, 0.0641) | Cov: 5X")),
+                expression(paste("Ref3: ", italic("B. hortorum"), " | d", italic("S"), ": (0.0637, 0.0641) | Cov: 7X")),
 
-                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 3X")),
-                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 5X")),
-                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | Divergence Time: 23.7 Mya | Cov: 7X")),
+                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | d", italic("S"), ": 23.7 Mya | Cov: 3X")),
+                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | d", italic("S"), ": 23.7 Mya | Cov: 5X")),
+                #expression(paste("Closer Ref2: ", italic("B. hypnorum"), " | d", italic("S"), ": 23.7 Mya | Cov: 7X")),
 
-                expression(paste("Closer Ref3: ", italic("B. confusus"), " | Divergence Time: 30.8 Mya | Cov: 3X")),
-                expression(paste("Closer Ref3: ", italic("B. confusus"), " | Divergence Time: 30.8 Mya | Cov: 5X")),
-                expression(paste("Closer Ref3: ", italic("B. confusus"), " | Divergence Time: 30.8 Mya | Cov: 7X")),
+                expression(paste("Ref4: ", italic("B. confusus"), " | d", italic("S"), ": (0.1081, 0.1084) | Cov: 3X")),
+                expression(paste("Ref4: ", italic("B. confusus"), " | d", italic("S"), ": (0.1081, 0.1084) | Cov: 5X")),
+                expression(paste("Ref4: ", italic("B. confusus"), " | d", italic("S"), ": (0.1081, 0.1084) | Cov: 7X")),
 
-                expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 3X")),
-                expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 5X")),
-                expression(paste("Distant Ref: ", italic("A. mellifera"), " | Divergence Time: 54 Mya | Cov: 7X"))
+                expression(paste("Ref5: ", italic("A. mellifera"), " | d", italic("S"), ": (0.5946, 0.5964) | Cov: 3X")),
+                expression(paste("Ref5: ", italic("A. mellifera"), " | d", italic("S"), ": (0.5946, 0.5964) | Cov: 5X")),
+                expression(paste("Ref5: ", italic("A. mellifera"), " | d", italic("S"), ": (0.5946, 0.5964) | Cov: 7X"))
                 )
 
 ## initialize a list to store plot
@@ -144,7 +144,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     theme_pubr(base_size = 10, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
     axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
-    plot.title = element_text(hjust = 0.5, size = 10),panel.border = element_rect(linewidth = 1.5),
+    plot.title = element_text(hjust = 0.5, size = 12),panel.border = element_rect(linewidth = 1.5),
     panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     panel.spacing = unit(0.5, "cm", data = NULL),
     ## legend line length
@@ -177,7 +177,7 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
     theme_pubr(base_size = 10, border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 1, hjust=0.5),
     axis.title = element_text(colour = "black",size = 12), axis.ticks = element_line(colour = "black", size = 1.2),
-    plot.title = element_text(hjust = 0.5, size = 10), panel.border = element_rect(linewidth = 1.5),
+    plot.title = element_text(hjust = 0.5, size = 12), panel.border = element_rect(linewidth = 1.5),
     panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     panel.spacing = unit(0.5, "cm", data = NULL)) +
     #labs(title = file_list_b[i], x="Year ago (log transformed)",y=expression(paste(bolditalic("N")["e"])))
@@ -225,7 +225,7 @@ combined_plot <- marrangeGrob(grobs = plot_list,ncol = 5, nrow = 3,
                             layout_matrix = matrix(seq_len(15), nrow = 3, byrow = FALSE))
 
 
-pdf_file <- file.path(result_path,"BomVet_combined_added_plot.4_COV.issue.pdf")
+pdf_file <- file.path(result_path,"BomVet_combined_added_plot.dS.issue.pdf")
 ggsave(pdf_file,combined_plot,width = 22.5, height = 13.5,limitsize = FALSE)
 
 # get the first three plots in the first column
@@ -326,7 +326,7 @@ all_combined_plots_padded <- gtable_add_padding(all_combined_plots, padding = un
 # Save the combined plots to a PDF
 #pdf("all_combined_plots.pdf", width = 18, height = 26) # Adjust the width and height as needed
 #pdf("all_combined_plots.pdf", width = 15, height = 20) # Adjust the width and height as needed
-pdf("all_combined_plots.new4.pdf", width = 18, height = 18)
+pdf("all_combined_plots.dS.pdf", width = 18, height = 18)
 grid.draw(all_combined_plots_padded)
 
 #grid.draw(all_combined_plots)

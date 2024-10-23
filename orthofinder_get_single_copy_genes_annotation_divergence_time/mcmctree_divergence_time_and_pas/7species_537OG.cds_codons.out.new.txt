@@ -1,4 +1,0 @@
-MCMCTREE (paml version 4.9j, February 2020) 7species_537OG.cds_codons.txt
-
-
-*** Locus 1 ***

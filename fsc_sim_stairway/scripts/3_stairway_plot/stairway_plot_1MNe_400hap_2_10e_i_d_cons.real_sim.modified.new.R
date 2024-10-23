@@ -12,13 +12,16 @@ setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stai
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
-pdf(paste0("combined.1000000Ne_400hapS_5rep_2_10_i_d_cons.rotated_x_lab.pdf"),width = 20, height = 25)
-#pdf(paste0("combined.1000000Ne_400hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
-#par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-#par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
-par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-#layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
-layout(matrix(c(1,2,3,0,4,5,6,0,7,8,9,0,10:17),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+pdf(paste0("combined.1000000Ne_400hapS_5rep_2_10_i_d_cons.new.pdf"),width = 12, height = 12)
+##pdf(paste0("combined.1000000Ne_400hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
+##par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
+##par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
+#par(mfcol=c(4,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
+##layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+#layout(matrix(c(1,2,3,0,4,5,6,0,7,8,9,0,10:12,0),nrow=4,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+
+par(mfcol=c(4,4),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2) # cex.axis=1,
+layout(matrix(c(1,2,3,0,4,5,6,0,7,8,9,0,10:12,0),nrow=4,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
@@ -120,7 +123,7 @@ for (generation in c("50G","100G","500G","1000G")){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             ## assign variable to read_data
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_1000000Ne_400hapS_1E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*400hapS*.final.summary"))),header=T,sep="\t"))
-            print(head(get(paste0("a",rep)),n=2L))
+            #print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_1000000Ne_400hapS_1E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             #print(head(data,n=2L))

@@ -131,6 +131,10 @@ for folder_name in $folder_name_list
     $catfasta2phyml -f ./bootstraps/$filal_folder_name/OG*cds.8_species*iterate2.same_header*.fas > ./bootstraps/cat.out.$filal_folder_name.fas
 done
 
+ Number of sequences: 8    Number of sequences used: 8
+ Selected region: 1-273993   Number of sites: 273993
+ Total number of sites (excluding sites with gaps / missing data): 228642
+
 ********* check if each folder contains the right number of fas file ***********
 ls /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_annotation/primary_transcripts/extracted_cds_new/new_transcript_id_8_bom_apis/bootstraps/OG_cds_8_species_same_header_fas.shuf_211OG_103/*.fas | wc -l
 ls /bootstraps/OG_cds_8_species_same_header_fas.shuf_211OG_103/*.fas | wc -l
@@ -152,6 +156,13 @@ $catfasta2phyml -ps OG*7_species.trimmed.trimmed_stop_codon.prank_codon.iterate2
 
 # final cat
 $catfasta2phyml -f OG*7_species.trimmed.trimmed_stop_codon.prank_codon.iterate2.same_header.fas > cat.out.7_species.trimmed.trimmed_stop_codon.prank_codon.iterate2.same_header.fas
+OG0009620.cds.7_species.trimmed.trimmed_stop_codon.prank_codon.iterate2.same_header.fas = 811069-812337
+OG0009622.cds.7_species.trimmed.trimmed_stop_codon.prank_codon.iterate2.same_header.fas = 812338-813084
+
+ Number of sequences: 7    Number of sequences used: 7
+ Selected region: 1-813084   Number of sites: 813084
+ Total number of sites (excluding sites with gaps / missing data): 666780
+
 
 ## remove old run results
 #rm -r ./bootstraps/*
@@ -277,8 +288,8 @@ cd $boostrap_dS
 mkdir -p temp
 
 ## change species folders
-cd ./bom_apis_8/
-#cd ./and_pas_7/
+#cd ./bom_apis_8/
+cd ./and_pas_7/
 
 ## use index for each bootstrap
 index=0
@@ -290,18 +301,18 @@ do
 #done
 ## delete strings before rst
 out_name=${dS#*/rst}
-echo "bom_apis_8.rst$out_name"_"$index"
-#echo "and_pas_7.rst$out_name"_"$index"
+#echo "bom_apis_8.rst$out_name"_"$index"
+echo "and_pas_7.rst$out_name"_"$index"
 
 ## read just the 6th column of dS
-awk 'NR > 5 && NR < 34 {print $6}' OFS="\t" $dS > ../temp_dS/"bom_apis_8.rst$out_name"_"$index".dS.temp
-#awk 'NR > 5 && NR < 34 {print $6}' OFS="\t" $dS > ../temp_dS/"and_pas_7.rst$out_name"_"$index".dS.temp
+#awk 'NR > 5 && NR < 34 {print $6}' OFS="\t" $dS > ../temp_dS/"bom_apis_8.rst$out_name"_"$index".dS.temp
+awk 'NR > 5 && NR < 34 {print $6}' OFS="\t" $dS > ../temp_dS/"and_pas_7.rst$out_name"_"$index".dS.temp
 
 done
 
 ## combine each dS
-paste ../temp_dS/bom_apis_8*.dS.temp > ../combined_1000_bootstraps.bom_apis_8.dS
-#paste ../temp_dS/and_pas_7*.dS.temp > ../combined_1000_bootstraps.and_pas_7.dS
+#paste ../temp_dS/bom_apis_8*.dS.temp > ../combined_1000_bootstraps.bom_apis_8.dS
+paste ../temp_dS/and_pas_7*.dS.temp > ../combined_1000_bootstraps.and_pas_7.dS
 
 ## find empty files
 find . -type f -name bom_apis_8*dS.temp | wc -l
@@ -317,6 +328,8 @@ awk 'NR > 5 && NR < 34 {print $6}' OFS="\t" $dS > ../temp_dS/"bom_apis_8.rst$out
 
 ## check number of columns
 awk 'END{print NF}' ../combined_1000_bootstraps.bom_apis_8.dS
+awk -F '\t' 'END{print NF}' ../combined_1000_bootstraps.and_pas_7.dS
+awk -F '\t' '{print NF; exit}' ../combined_1000_bootstraps.and_pas_7.dS
 
 ## delete temp files
 rm ../temp_dS/bom_apis_8*.temp
@@ -331,11 +344,18 @@ python $ci_calculator_py -h
 python ci_calculator.py <input_file> <output_file>
 
 cd $boostrap_dS
+
+## bom_apis
 python $ci_calculator_py combined_1000_bootstraps.bom_apis_8.dS combined_1000_bootstraps.bom_apis_8.95p.dS
 
 paste <(echo -e "S_1\tS_2"; awk 'NR > 5 && NR < 34 {print $1,$2}' OFS="\t" ./bom_apis_8/codeml_8_bom_apis_211OG_bootstrap_1/rst) \
     combined_1000_bootstraps.bom_apis_8.95p.dS > combined_1000_bootstraps.bom_apis_8.95p.final.dS
 
+## and_pas
+python $ci_calculator_py combined_1000_bootstraps.and_pas_7.dS combined_1000_bootstraps.and_pas_7.95p.dS
+
+paste <(echo -e "S_1\tS_2"; awk 'NR > 5 && NR < 34 {print $1,$2}' OFS="\t" ./and_pas_7/codeml_7_and_pas_537OG_bootstrap_1/rst) \
+    combined_1000_bootstraps.and_pas_7.95p.dS > combined_1000_bootstraps.and_pas_7.95p.final.dS
 
 **********                  fossile calibrated dating                         ************
 ********** 4_6_trim_stop_codon_concatenate_seq_align_divide_codon_by_position ************
