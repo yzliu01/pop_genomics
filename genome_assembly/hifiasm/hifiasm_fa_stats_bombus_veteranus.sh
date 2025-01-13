@@ -108,6 +108,7 @@ export PATH=$PATH:/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics
 #hifiadaptorfilt=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/genome_assembly/hifiasm/HiFiAdapterFilt-master/hifiapterfilt.sh
 #$hifiadaptorfilt -o filtered
 pbadaptorfilt=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/genome_assembly/hifiasm/HiFiAdapterFilt/pbadapterfilt.sh
+# run pbadaptorfilt.sh in the folder
 $pbadaptorfilt
 
 # move files to folder filtered

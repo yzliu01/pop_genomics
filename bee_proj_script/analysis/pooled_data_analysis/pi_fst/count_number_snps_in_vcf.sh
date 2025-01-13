@@ -3,7 +3,7 @@
 vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 cd $vcf_dir
 
-#x=234 390 400
+#x=234 390 546
 and_hae_hae=concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP*_1500x_noMS.vcf.gz
 and_hae_ful=concated.AndHae_New_REF_AndFul.100kb_g1500x_regions.all_chr.sorted.SNP_softmask_genic_bi_FMT_DP*_1500x_noMS.vcf.gz
 and_hae_hat=concated.AndHae_New_REF_AndHat.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP*_1500x_noMS.vcf.gz
@@ -72,11 +72,13 @@ $bom_pas_apis_mel
 )
 
 for vcf in $(echo ${vcf_list[*]})
+for vcf in $(echo ${and_hae_hae[*]})
+for vcf in $(echo ${and_hae_bom_pas[*]})
     do
     for i in $vcf
     do
     less $vcf | grep -v '^#' | wc -l | tr -d '\n'
     echo -e "\t$i"
-done
+    done
 done
 
