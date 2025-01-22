@@ -120,8 +120,25 @@ ref_list=(
             "Andrena_bicolor-GCA_960531205.1.fa"
             "Bombus_sylvestris-GCA_911622165.2-softmasked.fa"
 )
+
+## 10 new pool data
+
+ref_list=(
+    "Aphodius_sticticus-GCA_963966075.1.fa"
+    "Stenurella_melanura-GCA_963583905.1.fa"
+    "Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa"
+    "Megachile_leachella-GCA_963576845.1-softmasked.fa"
+    "Ochropleura_plecta-GCA_905475445.1-softmasked.fa"
+    "Cerceris_rybyensis-GCA_910591515.1-softmasked.fa"
+    "Bombylius_major-GCA_932526495.1-softmasked.fa"
+    "Ephemera_danica-GCA_000507165.2.fa"
+    "Rutpela_maculata-GCA_936432065.2-softmasked.fa"
+    "Notonecta_glauca.hifi_asm_pl2.fa"
+)
+
 for masked_ref in `ls *softmasked.fa`
 for masked_ref in `ls -t *softmasked.fa | head -4`
+
 for masked_ref in ${ref_list[@]}
     do
 #    echo $masked_ref
@@ -141,6 +158,11 @@ bwa index -a bwtsw Bombus_veteranus.hifi_asm_pl2.sorted.fa
 ## order in length
 bwa index -a bwtsw Bombus_veteranus.hifi_asm_pl2.fa
 
+## Notonecta glauca
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+bwa index -a bwtsw Notonecta_glauca.hifi_asm_pl2.fa
+
+
 2.
 samtools/1.2
 samtools-1.19
@@ -159,6 +181,7 @@ samtools faidx Bombus_veteranus.hifi_asm_pl2.fa
 
 for masked_ref in `ls *softmasked.fa`
 for masked_ref in `ls -t *softmasked.fa | head -4`
+
 for masked_ref in ${ref_list[@]}
     do
     samtools faidx $masked_ref
@@ -235,7 +258,8 @@ done
 conda activate gatk_4.3.0.0
 for masked_ref in `ls Andrena_marginata*softmasked.fa`
 for masked_ref in `ls -t *softmasked.fa | head -4`
-for masked_ref in ${ref_list[@]}
+for masked_ref in `ls -t *.fa | head -10` # 10 new pools in Jan 2025
+#for masked_ref in ${ref_list[@]}
     do
     out_masked_ref=${masked_ref/.fa/}
     gatk CreateSequenceDictionary \
