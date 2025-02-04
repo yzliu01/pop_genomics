@@ -5,7 +5,7 @@ output_SFS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS
 
 ********    softmasked+gene_regions   ********
 ## list all concatenated vcf file for each species
-for vcf in `ls -t *SNP_softmask_genic_bi_FMT*vcf.gz | sort`
+for vcf in `ls -t *_0_*SNP_softmask_genic_bi_FMT*vcf.gz | head -18 | sort`
 
     do
     output_sfs_name=${vcf/vcf.gz/equal_self}

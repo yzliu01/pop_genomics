@@ -1,4 +1,13 @@
 
+# rename file names
+ls -t *blueprint | head -24 | xargs rename 'no_doubleton' 'no_singleton'
+
+ls -t *blueprint | head -24 | xargs sed -i '8s/smallest_size_of_SFS_bin_used_for_estimation: 3/smallest_size_of_SFS_b
+in_used_for_estimation: 2/'
+
+ls -t *blueprint | head -24 | xargs sed -i 's/doubleton/singleton/g'
+
+
 sed -i '12s/systematic_ft_non_pruned/systematic_ft_non_pruned\/10KNe_swp/' *.blueprint
 
 

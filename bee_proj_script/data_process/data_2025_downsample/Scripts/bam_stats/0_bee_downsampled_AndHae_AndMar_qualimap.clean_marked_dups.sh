@@ -1,13 +1,13 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 10
-#SBATCH --mem 100g
-#SBATCH --array=1-10%10
-##SBATCH --array=24%1
-#SBATCH --time=10:00:00
-#SBATCH --error=qualimap_bee_10_pool.marked_dups.%A_%a.e
-#SBATCH --output=qualimap_bee_10_pool.marked_dups.%A_%a.o
-#SBATCH --job-name=qualimap_bee_10_pool.marked_dups
+#SBATCH --mem 200g
+#SBATCH --array=2,5%2
+##SBATCH --array=1-6%6
+#SBATCH --time=05:00:00
+#SBATCH --error=qualimap_bee_downsampled_AndHae_AndMar.marked_dups.%A_%a.e
+#SBATCH --output=qualimap_bee_downsampled_AndHae_AndMar.marked_dups.%A_%a.o
+#SBATCH --job-name=qualimap_bee_downsampled_AndHae_AndMar.marked_dups
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -22,7 +22,7 @@ BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 ## mark duplicates
 #SORTED_BAM=$(cat $BAM_DIR/bee_spools.bam.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
 #OUT_FILENAME=${SORTED_BAM/.bam/.bam.qualimap}
-OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/data_2025
+OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
 #OUT_FILE=$OUT_DIR/$OUT_FILENAME
 
 #cd $BAM_DIR/qualimap
@@ -32,11 +32,12 @@ cd $BAM_DIR
 ##-bam flag must be given a file
 ##bam_list=$(ls *sort.marked_dups.new.bam | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
-ls -t *sort.marked_dups.bam | head -10 > bee_10_pools.sort.marked_dups.bam.list
+## create a bam file list
+ls -t *sort.marked_dups.0_*.bam | sort > bee_downsampled_AndHae_AndMar.sort.marked_dups.bam.list
 #Andhae.New_REF_AndHae.sort.marked_dups.bam
 #Andmar.New_REF_AndHae.sort.marked_dups.bam
 # Aphsti.REF_AphSti.sort.marked_dups.bam
-bam_list=$(cat bee_10_pools.sort.marked_dups.bam.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
+bam_list=$(cat bee_downsampled_AndHae_AndMar.sort.marked_dups.bam.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 #qualimap bamqc -nt 6 -bam $SORTED_BAM -outdir $OUT_DIR -outformat HTML -c
 #--output-genome-coverage 300
@@ -65,6 +66,14 @@ qualimap multi-bamqc -nt 10 -r -cl 300 -dl 60 -d $bam_list_path_group --java-mem
 
 
 exit 0
+
+## samtools stat
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_stats
+
+for stat in `ls -t *sort.marked_dups.bam | head -10`
+do echo -e "\n$stat" >> compiled_samtools_stat
+grep SN $stat >> compiled_samtools_stat
+done
 
 ## bam_list_path_group
 sort -k1 -n describing_samples.list | awk 'BEGIN{FS=OFS="\t"}{$1=$1".sort.marked_dups.bam";$2="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/cleanfastq_sortbam_markduplicate"}1' \

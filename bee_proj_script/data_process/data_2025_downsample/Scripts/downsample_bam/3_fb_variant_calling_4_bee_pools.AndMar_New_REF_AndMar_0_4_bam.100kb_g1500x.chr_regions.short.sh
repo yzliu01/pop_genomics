@@ -1,14 +1,13 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
-#SBATCH --mem 20g
+#SBATCH --mem 50g
 #SBATCH --array=1-2976%600
 ##SBATCH --time=20:00:00 # take less time than mapping to REF AndHae
-#SBATCH --time=03:00:00
-##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar.100kb_g1500x.chr_regions.%A_%a.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar.100kb_g1500x.chr_regions.%A_%a.o
-#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar
+#SBATCH --time=20:00:00
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar_0_4_bam.100kb_g1500x.chr_regions.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar_0_4_bam.100kb_g1500x.chr_regions.%A_%a.o
+#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar_0_4_bam
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -22,9 +21,9 @@ BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 VCF_OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 
 ## mkdir $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
-mkdir $VCF_OUT_DIR/fb_per_region_AndMar_New_REF_AndMar
+mkdir $VCF_OUT_DIR/fb_per_region_AndMar_New_REF_AndMar_0_4_bam
 #cd $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
-cd $VCF_OUT_DIR/fb_per_region_AndMar_New_REF_AndMar
+cd $VCF_OUT_DIR/fb_per_region_AndMar_New_REF_AndMar_0_4_bam
 
 ## path to your ref genome
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
@@ -39,7 +38,7 @@ REF=$REF_DIR/Andrena_marginata_GCA_963932335.1-softmasked.fa
 
 ## for pooled data
 #SAMPLE=$SEQDIR/Andhae_Andmar.REF_Andhae.bam.list
-SAMPLE=Andmar.New_REF_AndMar.sort.marked_dups.bam
+SAMPLE=Andmar.New_REF_AndMar.sort.marked_dups.0_4.bam
 ## Bompas.New_REF_BomPas.sort.marked_dups.bam
 ## Bomvet.New_REF_BomPas.sort.marked_dups.bam
 
@@ -60,6 +59,17 @@ freebayes --region $Each_Region_Ref --fasta-reference $REF \
 
 ## not execute after this line
 exit 0
+
+## submit scripts
+downsample_bam_scripts=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025_downsample/Scripts/downsample_bam
+#cd $downsample_bam_scripts
+
+for i in `ls 3_fb_variant_calling_4_bee_pools.And*_0_*bam*sh | sort`;
+for i in `ls -t *.sh | head -6 | tail -n +3 | sort`
+for i in `ls -t *.sh $downsample_bam_scripts | head -4 | sort`
+do sbatch $i;
+done
+
 
 # ref list
 REF1_list=("iyAndHaem1_1.md_chr.fa" "iyAndHaem1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa")

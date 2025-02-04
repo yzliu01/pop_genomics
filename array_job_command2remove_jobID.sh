@@ -10,7 +10,6 @@ OpenBLAS blas_thread_init: RLIMIT_NPROC 1000 current, 1000 max
 
 export OPENBLAS_NUM_THREADS=1
 
-
 ## squeue sort
 squeue -u yzliu | sort -t "t" -k1 -h
 ## check unfinished job

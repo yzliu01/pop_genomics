@@ -82,7 +82,22 @@ ls ./fb_per_region_BomVet_New_REF_BomHor/Bomvet.New_REF_BomHor.100kb_1500x_regio
 ## new
 ls ./fb_per_region_AndMar_New_REF_AndBic/Andmar.New_REF_AndBic.100kb_1500x_region_*.g.vcf | sort -V > AndMar_New_REF_AndBic.individual_100kb_1500x_region_vcf_file.list
 ls ./fb_per_region_BomPas_New_alt_REF_BomMus/Bompas.New_alt_REF_BomMus.100kb_1500x_region_*.g.vcf | sort -V > BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list
+
+## downsample
+ls ./fb_per_region_AndHae_New_REF_AndHae_0_2_bam/Andhae.New_REF_AndHae.100kb_1500x_region_*.g.vcf | sort -V > Andhae.New_REF_AndHae_0_2.100kb_1500x_region_vcf_file.list
+ls ./fb_per_region_AndHae_New_REF_AndHae_0_4_bam/Andhae.New_REF_AndHae.100kb_1500x_region_*.g.vcf | sort -V > Andhae.New_REF_AndHae_0_4.100kb_1500x_region_vcf_file.list
+ls ./fb_per_region_AndHae_New_REF_AndHae_0_6_bam/Andhae.New_REF_AndHae.100kb_1500x_region_*.g.vcf | sort -V > Andhae.New_REF_AndHae_0_6.100kb_1500x_region_vcf_file.list
+
+ls ./fb_per_region_AndMar_New_REF_AndMar_0_2_bam/Andmar.New_REF_AndMar.100kb_1500x_region_*.g.vcf | sort -V > Andmar.New_REF_AndMar_0_2.100kb_1500x_region_vcf_file.list
+ls ./fb_per_region_AndMar_New_REF_AndMar_0_4_bam/Andmar.New_REF_AndMar.100kb_1500x_region_*.g.vcf | sort -V > Andmar.New_REF_AndMar_0_4.100kb_1500x_region_vcf_file.list
+ls ./fb_per_region_AndMar_New_REF_AndMar_0_6_bam/Andmar.New_REF_AndMar.100kb_1500x_region_*.g.vcf | sort -V > Andmar.New_REF_AndMar_0_6.100kb_1500x_region_vcf_file.list
+
+
+
+
 ## contain empty files
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_AndMar_New_REF_AndMar_0_4_bam
+
 ls |sort -V | xargs grep -L '^#CHR' | less -S 
 ls |sort -V | xargs grep -L '^#CHR' | less -S | ls -lh | less
 ## list non-empty files
@@ -181,11 +196,16 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 find ./fb_per_region_BomVet_New_REF_BomVet -type f -size +0 -print | sort -V > BomVet_New_REF_BomVet.individual_100kb_1500x_region_vcf_file.list
 #cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_BomVet_New_REF_BomVet
 
-for vcf_list in $(ls -t *.list | head -1)
+#for vcf_list in $(ls -t *.list | head -1)
+## downsample
+for vcf_list in $(ls -t *.list | head -6 | sort)
     do
-    conc_name="${vcf_list/.individual_100kb_1500x_region_vcf_file.list/}"
+    #conc_name="${vcf_list/.individual_100kb_1500x_region_vcf_file.list/}"
+    conc_name="${vcf_list/.100kb_1500x_region_vcf_file.list/}"
     #for dir in `ls -t -d fb_per_region* | head -4 | sort`
-    for dir in `ls -t -d fb_per_region* | head -1 | sort`
+    #for dir in `ls -t -d fb_per_region* | head -1 | sort`
+    ## downsample
+    for dir in `ls -t -d fb_per_region* | head -6 | sort`
         do
 #        echo $dir
 #    done
@@ -281,6 +301,36 @@ for vcf_list in $(ls -t *.list | head -1)
             echo $vcf_list $dir
             time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
 
+        ## downsample AndHae AndMar ~500x (0.2, 0.4, 0.6)
+        elif [[ $vcf_list == Andhae.New_REF_AndHae_0_2.100kb_1500x_region_vcf_file.list && $dir == fb_per_region_AndHae_New_REF_AndHae_0_2_bam ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+        elif [[ $vcf_list == Andhae.New_REF_AndHae_0_4.100kb_1500x_region_vcf_file.list && $dir == fb_per_region_AndHae_New_REF_AndHae_0_2_bam ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+        elif [[ $vcf_list == Andhae.New_REF_AndHae_0_6.100kb_1500x_region_vcf_file.list && $dir == fb_per_region_AndHae_New_REF_AndHae_0_2_bam ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+        elif [[ $vcf_list == Andmar.New_REF_AndMar_0_2.100kb_1500x_region_vcf_file.list && $dir == fb_per_region_AndMar_New_REF_AndMar_0_2_bam ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+        elif [[ $vcf_list == Andmar.New_REF_AndMar_0_4.100kb_1500x_region_vcf_file.list && $dir == fb_per_region_AndMar_New_REF_AndMar_0_4_bam ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+        elif [[ $vcf_list == Andmar.New_REF_AndMar_0_6.100kb_1500x_region_vcf_file.list && $dir == fb_per_region_AndMar_New_REF_AndMar_0_6_bam ]]
+        then
+            echo $vcf_list $dir
+            time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
+
+        
         else
             echo "no_concat"
         fi
@@ -947,9 +997,60 @@ Bompas.New_REF_BomSyl.sort.marked_dups.bam
 #Bompas.New_REF_BomMus.sort.marked_dups.bam
 Bomvet.New_REF_BomSyl.sort.marked_dups.bam
 
-
+## downsample
 ## New REF for pooled bees
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+
+## 1x per sample
+## grep 'Andhae.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep '\.0_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 78 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP78_1500x\t$COV \n"
+done
+
+## 1.5x per sample
+## grep 'Andhae.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep '\.0_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 117 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP117_1500x\t$COV \n"
+done
+
+## 2x per sample
+## grep 'Andhae.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep '\.0_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 156 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP156_1500x\t$COV \n"
+done
+
+## 1x per sample
+## grep 'Andmar.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep '\.0_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 80 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP80_1500x\t$COV \n"
+done
+
+## 1.5x per sample
+## grep 'Andmar.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep '\.0_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 120 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP120_1500x\t$COV \n"
+done
+
+## 2x per sample
+## grep 'Andmar.New_REF'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep '\.0_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 160 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP160_1500x\t$COV \n"
+done
+
+
+
 ## 3x per sample: NR > 200 (&& NR < 1500: fb variant calling)
 ## grep 'Bompas.New_REF'
 for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`

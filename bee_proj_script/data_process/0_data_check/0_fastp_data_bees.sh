@@ -28,9 +28,9 @@ conda activate variant_calling_mapping
 conda activate fastp
 clean_seq1=${seq1/.fq.gz/.fq.clean.gz} ### SRR13647737_1.fastq.clean.gz
 clean_seq2=${seq2/.fq.gz/.fq.clean.gz} ### SRR13647737_2.fastq.clean.gz
-out_html=${seq2/_fastq2.fq.gz/_fastq2.html}
+out_html=${seq2/_fastq2.fq.gz/_fastq.html}
 ## default parameter: -q 15 -n 4 -u 40 -l 15 -A default (specify --disable_adapter_trimming)
-fastp -w 6 -z 5 -n 10 -l 50 -i $seq1 -I $seq2 -o $OUTPUT/$clean_seq1 -O $OUTPUT/$clean_seq2 -h $out_html
+fastp -w 6 -z 5 -n 10 -l 50 -i $seq1 -I $seq2 -o $OUTPUT/$clean_seq1 -O $OUTPUT/$clean_seq2 -h $OUTPUT/$out_html
 
 exit 0
 

@@ -3,16 +3,14 @@
 #SBATCH --cpus-per-task 6
 #SBATCH --mem 20g
 #SBATCH --array=1-4%4
-#SBATCH --time=12:04:00
-#SBATCH --error=fastqc_fastp_clean_bee_proj.%A.e.txt
-#SBATCH --output=fastqc_fastp_clean_bee_proj.%A.o.txt
+#SBATCH --time=12:00:00
+#SBATCH --error=fastqc_fastp_clean_bee_proj.%A_%a.e
+#SBATCH --output=fastqc_fastp_clean_bee_proj.%A_%a.o
 #SBATCH --job-name=fastqc_fastp_clean_bee_proj
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
 # fastq sequence dir
-#SEQDIR=/faststorage/project/eDNA/yzliu/BACKUP/pool_raw_data
-#mkdir emp_dro_mel_fastqc/temp
 OUTPUT=/faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/fastq_clean
 cd $OUTPUT
 seq1=$(ls *fq.clean.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
@@ -43,6 +41,9 @@ conda create -n fastp -c bioconda fastp -y
 
 File1=${seq1/.fastq.gz/.fastq.clean.gz} ### SRR13647737_1.fastq.clean.gz
 File2=${seq2/.fastq.gz/.fastq.clean.gz} ### SRR13647737_2.fastq.clean.gz
-
+out_html=${seq2/_R2_001.fastq.gz/.fq.clean.html}
 ## default parameter: -q 15 -n 4 -u 40 -l 15 -A default (specify --disable_adapter_trimming)
 fastp -w 6 -z 5 -n 10 -l 50 -i $seq1 -I $seq2 -o $File1 -O $File2 -h xxx
+
+fastp -w 6 -z 5 -n 10 -l 50 -i $seq1 -I $seq2 -o $OUTPUT/$clean_seq1 -O $OUTPUT/$clean_seq2 -h $OUTPUT/$out_html
+

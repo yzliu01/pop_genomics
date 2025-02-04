@@ -1,14 +1,12 @@
 #!/bin/sh
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
-#SBATCH --mem 20g
-#SBATCH --array=1-2976%600
-##SBATCH --time=20:00:00 # take less time than mapping to REF AndHae
-#SBATCH --time=03:00:00
-##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar.100kb_g1500x.chr_regions.%A_%a.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar.100kb_g1500x.chr_regions.%A_%a.o
-#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndMar_New_REF_AndMar
+#SBATCH --mem 50g
+#SBATCH --array=1-3537%600
+#SBATCH --time=20:00:00
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae_0_3_bam.100kb_g1500x.chr_regions.short.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae_0_3_bam.100kb_g1500x.chr_regions.short.%A_%a.o
+#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae_0_3_bam
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -22,13 +20,13 @@ BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 VCF_OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 
 ## mkdir $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
-mkdir $VCF_OUT_DIR/fb_per_region_AndMar_New_REF_AndMar
+mkdir $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae_0_3_bam
 #cd $VCF_OUT_DIR/fb_per_contig_BomPas_REF_BomPas
-cd $VCF_OUT_DIR/fb_per_region_AndMar_New_REF_AndMar
+cd $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae_0_3_bam
 
 ## path to your ref genome
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF=$REF_DIR/Andrena_marginata_GCA_963932335.1-softmasked.fa
+REF=$REF_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
 
 ## example
 #Run freebayes in parallel on 100000bp chunks of the ref (fasta_generate_regions.py is also
@@ -37,29 +35,40 @@ REF=$REF_DIR/Andrena_marginata_GCA_963932335.1-softmasked.fa
 #fasta_generate_regions.py $REF_DIR/Bombus_sylvicola_v1.fna.fai 100000 > $REF_DIR/syl.ref.fa.100kbp.regions.freebayes
 ## https://github.com/freebayes/freebayes/issues/73
 
-## for pooled data
+## for downsampled pooled data
 #SAMPLE=$SEQDIR/Andhae_Andmar.REF_Andhae.bam.list
-SAMPLE=Andmar.New_REF_AndMar.sort.marked_dups.bam
+SAMPLE=Andhae.New_REF_AndHae.sort.marked_dups.0_3.bam
 ## Bompas.New_REF_BomPas.sort.marked_dups.bam
 ## Bomvet.New_REF_BomPas.sort.marked_dups.bam
 
 Each_Region_Dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
-Ref_Region=Andrena_marginata_GCA_963932335.1-softmasked.fb_100kb.regions
+Ref_Region=Andrena_haemorrhoa-GCA_910592295.1-softmasked.fb_100kb.regions
 Each_Region_Ref=$(cat $Each_Region_Dir/$Ref_Region | sed -n ${SLURM_ARRAY_TASK_ID}p)
 # 1:0-2000000
 # 1:2000000-4000000
 # 1:4000000-6000000
+Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed/BomPas_GCA_905332965.1_gene_region_1.softmasked_chr_name.sorted.bed
 
 ## run freebayes with single core
 freebayes --region $Each_Region_Ref --fasta-reference $REF \
-    --ploidy 80 --pooled-discrete --genotype-qualities --use-best-n-alleles 3 --min-alternate-fraction 0 --min-alternate-count 2 \
+    --ploidy 78 --pooled-discrete --genotype-qualities --use-best-n-alleles 3 --min-alternate-fraction 0 --min-alternate-count 2 \
     --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf \
-    > ./"Andmar.New_REF_AndMar.100kb_1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
-#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_AndMar_New_REF_AndHae/"Bompas.New_REF_BomPas.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
+    > ./"Andhae.New_REF_AndHae.100kb_1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
+#    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_AndHae_New_REF_AndHae/"Bompas.New_REF_BomPas.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcffilter -f "QUAL > 20"
 
 ## not execute after this line
 exit 0
+
+## submit scripts
+downsample_bam_scripts=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025_downsample/Scripts/downsample_bam
+#cd $downsample_bam_scripts
+
+for i in `ls 3_fb_variant_calling_4_bee_pools.And*_0_*bam*sh | sort`;
+for i in `ls -t *.sh | head -6 | tail -n +3 | sort`
+for i in `ls -t $downsample_bam_scripts/*.sh | head -4 | sort`
+do sbatch $i;
+done
 
 # ref list
 REF1_list=("iyAndHaem1_1.md_chr.fa" "iyAndHaem1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa" "iyBomPasc1_1.md_chr.fa")

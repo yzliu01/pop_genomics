@@ -1,4 +1,7 @@
 
+## downsample
+for i in `ls -t *.blueprint | head -6`; do cp $i "$i.0_3";done
+for i in `ls -t *.blueprint.0_3`; do sed -i 's/_0_2/_0_3/g' $i;done
 
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/bee_pools_blueprint
