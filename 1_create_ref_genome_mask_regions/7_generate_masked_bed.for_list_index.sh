@@ -1,5 +1,9 @@
+
+## preparation step
 ## identify repeative regions using RepeatModeler
-/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/0_RepeatModeler/repeatmodeler_install_use_array.sh
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/0_RepeatModeler
+
+repeatmodeler_install_use_array.sh
 
 
 ## create masked reference genome bed file in two steps
@@ -14,6 +18,7 @@ GAGAGAATTAACTACCTTAACCTGAACCTAAACCTACCGATAACCTAACTCTAAACTATACCTTTAACCCCTAAACCCTA
 CACCTAAGTCCTAAACCAATAACCTTAACCCTAACAACTATATAAAACACTAACCTATAACCTAATCCCCTAACTACTAA (160)
 ActactaacctaacctaaaactatatacctaacctaaaccttaCCCTAACCATAACCTATTACTCTAACCCTACCAAGAG
 *********
+## convert ref genome to the one with N
 out_softmasked_genome_Amel=${softmasked_genome_Amel/.fa/}
 grep -v "^>"tr $softmasked_genome_Amel | tr "[atcg]" "N" > $softmasked_genome_Amel.N.fa
 

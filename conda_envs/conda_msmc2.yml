@@ -1,0 +1,9 @@
+name: conda_msmc2
+channels:
+  - gwforg
+  - conda-forge
+  - bioconda
+  - genomedk
+dependencies:
+  - msmc2=2.1.4=hdfd78af_0
+prefix: /home/yzliu/miniforge3/envs/conda_msmc2

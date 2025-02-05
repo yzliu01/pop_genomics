@@ -1,0 +1,9 @@
+name: ms
+channels:
+  - gwforg
+  - conda-forge
+  - bioconda
+  - genomedk
+dependencies:
+  - ms=2014_03_04=0
+prefix: /home/yzliu/miniforge3/envs/ms

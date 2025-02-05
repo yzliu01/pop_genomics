@@ -1,0 +1,7 @@
+name: docker_use
+channels:
+  - gwforg
+  - conda-forge
+  - bioconda
+  - genomedk
+prefix: /home/yzliu/miniforge3/envs/docker_use

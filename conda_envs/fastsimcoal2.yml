@@ -1,0 +1,9 @@
+name: fastsimcoal2
+channels:
+  - gwforg
+  - conda-forge
+  - bioconda
+  - genomedk
+dependencies:
+  - fastsimcoal2=27093=hdfd78af_0
+prefix: /home/yzliu/miniforge3/envs/fastsimcoal2

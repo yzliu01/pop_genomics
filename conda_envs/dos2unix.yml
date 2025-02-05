@@ -1,0 +1,14 @@
+name: dos2unix
+channels:
+  - gwforg
+  - conda-forge
+  - bioconda
+  - genomedk
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - dos2unix=7.4.1=0
+  - gettext=0.21.1=h27087fc_0
+  - libgcc-ng=13.2.0=h807b86a_3
+  - libgomp=13.2.0=h807b86a_3
+prefix: /home/yzliu/miniforge3/envs/dos2unix

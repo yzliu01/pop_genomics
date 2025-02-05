@@ -1,0 +1,41 @@
+name: RevTrans
+channels:
+  - gwforg
+  - conda-forge
+  - bioconda
+  - genomedk
+dependencies:
+  - _libgcc_mutex=0.1=conda_forge
+  - _openmp_mutex=4.5=2_gnu
+  - ca-certificates=2024.7.4=hbcca054_0
+  - certifi=2019.11.28=py27h8c360ce_1
+  - gawk=5.3.0=ha916aea_0
+  - gettext=0.22.5=he02047a_3
+  - gettext-tools=0.22.5=he02047a_3
+  - gmp=6.3.0=hac33072_2
+  - ld_impl_linux-64=2.40=hf3520f5_7
+  - libasprintf=0.22.5=he8f35ee_3
+  - libasprintf-devel=0.22.5=he8f35ee_3
+  - libffi=3.2.1=he1b5a44_1007
+  - libgcc-ng=14.1.0=h77fa898_0
+  - libgettextpo=0.22.5=he02047a_3
+  - libgettextpo-devel=0.22.5=he02047a_3
+  - libgomp=14.1.0=h77fa898_0
+  - libsqlite=3.46.0=hde9e2c9_0
+  - libstdcxx-ng=14.1.0=hc0a3c3a_0
+  - libzlib=1.2.13=h4ab18f5_6
+  - mafft=7.526=h4bc722e_0
+  - mpfr=4.2.1=h38ae2d0_2
+  - ncurses=6.5=he02047a_1
+  - openssl=1.1.1w=hd590300_0
+  - pip=20.1.1=pyh9f0ad1d_0
+  - python=2.7.15=h5a48372_1011_cpython
+  - python_abi=2.7=1_cp27mu
+  - readline=8.2=h8228510_1
+  - revtrans=1.4=py_1
+  - setuptools=44.0.0=py27_0
+  - sqlite=3.46.0=h6d4b2fc_0
+  - tk=8.6.13=noxft_h4845f30_101
+  - wheel=0.37.1=pyhd8ed1ab_0
+  - zlib=1.2.13=h4ab18f5_6
+prefix: /home/yzliu/miniforge3/envs/RevTrans
