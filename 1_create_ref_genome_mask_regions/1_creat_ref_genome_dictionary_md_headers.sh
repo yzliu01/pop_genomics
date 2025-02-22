@@ -123,6 +123,35 @@ ref_list=(
 
 ## 10 new pool data
 
+# uncompress .gz files
+Leptopterna_dolobrata-GCA_954871275.1.fasta.gz
+Aelia_acuminata-GCA_911387785.2-softmasked.fa.gz
+Gerris_lacustris-GCA_951217055.1-softmasked.fa.gz
+Noctua_pronuba-GCA_905220335.1-softmasked.fa.gz
+Amphimallon_solstitiale-GCA_963170755.1-softmasked.fa.gz
+Malachius_bipustulatus-GCA_910589415.1-softmasked.fa.gz
+Dorcus_parallelipipedus-GCA_958336345.1-softmasked.fa.gz
+Phosphuga_atrata-GCA_944588485.1-softmasked.fa.gz
+Pterostichus_niger-GCA_947425015.1-softmasked.fa.gz
+Tachina_fera-GCA_905220375.1-softmasked.fa.gz
+Eristalis_intricaria-GCA_964034865.1-softmasked.fa.gz
+Rhagonycha_fulva-GCA_905340355.1-softmasked.fa.gz
+Lasioglossum_morio-GCA_916610235.2-softmasked.fa.gz
+Eristalis_pertinax-GCA_907269125.1-softmasked.fa.gz
+Bibio_marci-GCA_910594885.2-softmasked.fa.gz
+
+ls -t *.gz | head -15 | less -N
+
+fa_gz_list=`ls -t *.gz | head -15 | tr "\n" " "`
+for fa_gz in $fa_gz_list
+#do echo $fa_gz
+do gunzip -d $fa_gz
+
+done
+## make consistent ref file names
+rename ".fasta" ".fa" Leptopterna_dolobrata-GCA_954871275.1.fasta
+
+
 ref_list=(
     "Aphodius_sticticus-GCA_963966075.1.fa"
     "Stenurella_melanura-GCA_963583905.1.fa"

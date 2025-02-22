@@ -152,6 +152,15 @@ REF_list=(
     "Ephemera_danica-GCA_000507165.2.fa"
     "Rutpela_maculata-GCA_936432065.2-softmasked.fa"
     "Notonecta_glauca.hifi_asm_pl2.fa"
+
+    # extra ref genomes
+    "Panurgus_banksianus.hifi_asm_pl2.fa" # assembling
+    "Tholera_decimalis-GCA_943138885.2.fa"
+    "Xestia_c-nigrum-GCA_916618015.1.fa"
+    "Chorthippus_brunneus.hifi_asm_pl2.fa" # assembling
+    #"Pseudochorthippus_parallelus.hifi_asm_pl2.fa" # assembling
+    "Mystacides_longicornis-GCA_963576905.1.fa"
+    "Porcellio_scaber-GCA_034700385.1.fa"
 )
 
 for Ref_New in `ls -t *-softmasked.fa | head -4`

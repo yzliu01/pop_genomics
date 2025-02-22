@@ -1,5 +1,6 @@
 
-## preparation step
+**  preparation step **
+
 ## identify repeative regions using RepeatModeler
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/0_RepeatModeler
 
@@ -62,9 +63,17 @@ for masked_ref in `ls Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_IS
 done
 Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fa
 
-****************************** step I: obtain repeative regions ****************************************************
-## get softmasked regions (final)
 
+
+
+
+****************************** step I: obtain repeative regions ****************************************************
+## path to ref directory
+REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+cd $REF_DIR
+generate_masked_region_md_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome_mask_regions/generate_masked_region_md.py
+
+## get softmasked regions (final)
 ** Andrena marginata and more species **
 #for masked_ref in `ls Andrena_marginata_GCA_963932335.1-softmasked.fa`
 for masked_ref in `ls -t *-softmasked.fa | head -4`
@@ -73,10 +82,66 @@ mv Bombus_muscorum-GCA_963971125.1.fa.masked Bombus_muscorum-GCA_963971125.1-sof
 
 for masked_ref in `ls -t *-softmasked.fa | head -2`
 for masked_ref in `ls -t Bombus_sylvestris*-softmasked.fa | head -2`
-
-masked_ref=Bombus_veteranus.hifi_asm_pl2-softmasked.fa
-
 for masked_ref in `ls -t Bombus_veteranus.hifi_asm_pl2-softmasked.fa`
+for masked_ref in `ls -t Bombus_veteranus.hifi_asm_pl2-softmasked.fa`
+
+## 2025 new ref
+run_trial_list=(
+    # originally softmasked
+    #"Cerceris_rybyensis-GCA_910591515.1-softmasked.fa" # test for stairway plot
+    #"Megachile_leachella-GCA_963576845.1-softmasked.fa" # test for stairway plot
+    #"Rutpela_maculata-GCA_936432065.2-softmasked.fa" # test for stairway plot
+    Bombylius_major-GCA_932526495.1-softmasked.fa
+    Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa
+    Ochropleura_plecta-GCA_905475445.1-softmasked.fa
+
+    # self softmasked
+    "Aphodius_sticticus-GCA_963966075.1-softmasked.fa"
+    "Ephemera_danica-GCA_000507165.2-softmasked.fa"
+    #"Notonecta_glauca.hifi_asm_pl2-softmasked.fa" # self assembly: not the best
+    "Notonecta_glauca.hifi_asm_pl3-softmasked.fa" # self assembly: best
+    "Stenurella_melanura-GCA_963583905.1-softmasked.fa"
+
+    # more
+    "Chorthippus_brunneus.hifi_asm_pl2-softmasked.fa" # assembling
+    #"Pseudochorthippus_parallelus.hifi_asm_pl2-softmasked.fa" # no data
+    "Chorthippus_parallelus.hifi_asm_pl2-softmasked.fa" # assembling
+    "Panurgus_banksianus.hifi_asm_pl3-softmasked.fa" # assembling
+
+    # self softmasked
+    "Agelastica_alni-GCA_950111635.2-softmasked.fa"
+    "Leptopterna_dolobrata-GCA_954871275.1-softmasked.fa"
+    "Mystacides_longicornis-GCA_963576905.1-softmasked.fa"
+    "Porcellio_scaber-GCA_034700385.1-softmasked.fa"
+    "Tholera_decimalis-GCA_943138885.2-softmasked.fa"
+    "Xestia_c-nigrum-GCA_916618015.1-softmasked.fa"
+
+    # originally softmasked
+    "Amphimallon_solstitiale-GCA_963170755.1-softmasked.fa"
+    "Aelia_acuminata-GCA_911387785.2-softmasked.fa"
+    "Bibio_marci-GCA_910594885.2-softmasked.fa"
+    "Dorcus_parallelipipedus-GCA_958336345.1-softmasked.fa"
+    "Eristalis_intricaria-GCA_964034865.1-softmasked.fa"
+    "Eristalis_pertinax-GCA_907269125.1-softmasked.fa"
+    "Gerris_lacustris-GCA_951217055.1-softmasked.fa"
+    "Malachius_bipustulatus-GCA_910589415.1-softmasked.fa"
+    "Noctua_pronuba-GCA_905220335.1-softmasked.fa"
+    "Phosphuga_atrata-GCA_944588485.1-softmasked.fa"
+    "Pterostichus_niger-GCA_947425015.1-softmasked.fa"
+    "Tachina_fera-GCA_905220375.1-softmasked.fa"
+    "Rhagonycha_fulva-GCA_905340355.1-softmasked.fa"
+    "Lasioglossum_morio-GCA_916610235.2-softmasked.fa"
+    
+
+
+
+
+
+)
+
+for masked_ref in `echo ${run_trial_list[*]}`
+#    do echo $masked_ref
+#done
     do
     out_softmasked_genome=${masked_ref/.fa/}
     #grep -v "^>"tr $masked_ref | tr "[atcg]" "N" > $out_softmasked_genome.N.fa ## wrong
@@ -86,6 +151,14 @@ for masked_ref in `ls -t Bombus_veteranus.hifi_asm_pl2-softmasked.fa`
 done
 
 
+## 2025 new ref genomes
+ls -t *softmasked*fa | head -20
+Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa
+Megachile_leachella-GCA_963576845.1-softmasked.fa
+Ochropleura_plecta-GCA_905475445.1-softmasked.fa
+Cerceris_rybyensis-GCA_910591515.1-softmasked.fa
+Bombylius_major-GCA_932526495.1-softmasked.fa
+Rutpela_maculata-GCA_936432065.2-softmasked.fa
 
 ************************************** step II: obtain gene regions *******************************************
 ## mask gene regions

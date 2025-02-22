@@ -1,37 +1,45 @@
 #!/bin/sh
 #SBATCH --account eDNA
-#SBATCH --time=02:05:00
+##SBATCH --time=5:05:00
+#SBATCH --time=15:05:00
 #SBATCH --cpus-per-task 20
 #SBATCH --ntasks=1
 #SBATCH --mem 100g
-#SBATCH --array=1%1
-#SBATCH --array=1-3%3
-#SBATCH --job-name=hifiasm_purging_0_1_2_Bom_vet
-#SBATCH --error=hifiasm_purging_0_1_2_Bom_vet.%A_%a.e
-#SBATCH --output=hifiasm_purging_0_1_2_Bom_vet.%A_%a.o
+#SBATCH --array=1-4%4
+#SBATCH --job-name=hifiasm_purging_0_1_2_3_Pan_ban
+#SBATCH --error=hifiasm_purging_0_1_2_3_Pan_ban.%A_%a.e
+#SBATCH --output=hifiasm_purging_0_1_2_3_Pan_ban.%A_%a.o
+#SBATCH --mail-type=all
+#SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
+# step III
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 conda activate HiFiAsm
 
 # filtered fastq dir
-filtered_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi/bombus_veteranus/filtered
+filtered_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi/Panurgus_banksianus/filtered
 cd $filtered_dir
 
-file1=HMW_Bom_m84108_240904_160210_s2.hifi_reads.bc2055.filt.fastq.gz
-file2=HMW_Bom_m84108_240904_180129_s3.hifi_reads.bc2055.filt.fastq.gz
-#purge_level_list=(0 1 2)
-purge_level_list=(3)
+#file1=ERR12370431.fastq.gz
+#file2=ERR12370431.fastq.gz
+file=ERR123704*.filt.fastq.gz
+purge_level_list=(0 1 2 3)
+#purge_level_list=(3)
 purge_level=$(echo ${purge_level_list[@]} | tr ' ' '\n'| sed -n ${SLURM_ARRAY_TASK_ID}p)
 # length of array
 # echo ${#purge_level[@]}
 # For inbred or homozygous genomes, you may disable purging with option -l0
 # purge level. 0: no purging; 1: light; 2/3: aggressive [0 for trio; 3 for unzip]
-time hifiasm -o Bombus_veteranus.pl_$purge_level.asm $file1 $file2 -t 20 -l"$purge_level" \
-    > ./Bombus_veteranus.pl_$purge_level.out 2>./Bombus_veteranus.pl_$purge_level.error
+time hifiasm -o Panurgus_banksianus.pl_$purge_level.asm $file -t 20 -l"$purge_level" \
+    > ./Panurgus_banksianus.pl_$purge_level.out 2>./Panurgus_banksianus.pl_$purge_level.error
 
 exit 0
 
-# step IV: convert .gfa file to .fasta file
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submission
+sbatch 
+
+# step IV: convert primary contig: .asm.bp.p_ctg.gfa file to .fasta file
+mkdir assembly_fa_stats
 
 for gfa in $(ls | grep '.asm.bp.p_ctg.gfa')
 do
@@ -41,35 +49,50 @@ awk '/^S/{print ">"$2;print $3}' $gfa > ./assembly_fa_stats/$gfa.fa
 done
 
 # purging level 3
-gfa=Bombus_veteranus.pl_3.asm.bp.p_ctg.gfa
+gfa=Panurgus_banksianus.pl_3.asm.bp.p_ctg.gfa
 awk '/^S/{print ">"$2;print $3}' $gfa > ./assembly_fa_stats/$gfa.fa
 
+less -S Panurgus_banksianus.pl_0.asm.bp.p_ctg.gfa.fa
+>ptg000001l
+ATACGGGTCACTGGGC
+>ptg000002l
+ACGAAGAGTGGTTTTC
 
 # step V: stats of assembly fasta
-conda install bioconda::assembly-stats
-conda install bioconda::quast
+conda activate HiFiAsm
+#conda install bioconda::assembly-stats
+#conda install bioconda::quast
 # help
 assembly-stats
 ....
 
 cd ./assembly_fa_stats
-assembly-stats Bombus_veteranus.pl*.asm.bp.p_ctg.gfa.fa > stats_hifi_asm_with_fail.log
-assembly-stats Bombus_veteranus.pl_3.asm.bp.p_ctg.gfa.fa >> stats_hifi_asm_with_fail.log
+assembly-stats Panurgus_banksianus.pl*.asm.bp.p_ctg.gfa.fa > stats_hifi_asm_with_fail.log
+assembly-stats Panurgus_banksianus.pl_3.asm.bp.p_ctg.gfa.fa >> stats_hifi_asm_with_fail.log
 
+# need BUSCO mapping to assess the quality of ref genome (No. of single copy genes and complete genes)
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/hifi_asm/busco_summary
+# according to earlier analysis/assembly, puring level at 2 gave better assembly.
 
-
-# step VI: assessment of completeness of genome assemblies or annotations by BUSCO
+** step VI: assessment of completeness of genome assemblies or annotations by BUSCO **
 # best assembly
-And_mar_raw_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-#Bombus_veteranus.pl_2.asm.bp.p_ctg.gfa.fa
-cd $And_mar_raw_genome
+#raw_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+raw_genome=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi/Panurgus_banksianus/filtered/assembly_fa_stats
+# Panurgus_banksianus.pl_2.asm.bp.p_ctg.gfa.fa
+cd $raw_genome
+
 # step VII: rename fasta headers and reorder them
 hifi_asm=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/hifi_asm
-sed 's/\(>ptg.*\)/\1 \[Bombus veteranus\]/' Bombus_veteranus.pl_2.asm.bp.p_ctg.gfa.fa | less -S | grep '^>' | sed 's/>//' | sort -V > $hifi_asm/Bom_vet_fasta_headers.list
-sed 's/\(>ptg.*\)/\1 \[Bombus veteranus\]/' Bombus_veteranus.pl_2.asm.bp.p_ctg.gfa.fa > Bombus_veteranus.hifi_asm_pl2.fa
+sed 's/\(>ptg.*\)/\1 \[Notonecta glauca\]/' Panurgus_banksianus.pl_2.asm.bp.p_ctg.gfa.fa | less -S
+# >ptg000001l [Notonecta glauca]
+# ATTTGGTTGTTGCTTTGCACATAGTACAAT
+sed 's/\(>ptg.*\)/\1 \[Notonecta glauca\]/' Panurgus_banksianus.pl_2.asm.bp.p_ctg.gfa.fa | less -S | grep '^>' | sed 's/>//' | sort -V > $hifi_asm/Not_gla_fasta_headers.list
+sed 's/\(>ptg.*\)/\1 \[Notonecta glauca\]/' Panurgus_banksianus.pl_2.asm.bp.p_ctg.gfa.fa > Panurgus_banksianus.hifi_asm_pl2.fa
 
 # script to reorder fasta headers
 reorder_fasta_sequences=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/genome_assembly_busco/reorder_fasta_sequences_post_muscle_align.sh
+
+
 
 # step I
 # download bam files from the server of provider

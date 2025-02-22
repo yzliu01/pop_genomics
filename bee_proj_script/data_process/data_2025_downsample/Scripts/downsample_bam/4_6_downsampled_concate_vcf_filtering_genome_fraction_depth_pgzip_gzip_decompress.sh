@@ -84,6 +84,24 @@ done
 ## downsample
 ## New REF for pooled bees
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/data_2025
+
+## new pools 2025
+# 1.5x
+# 50*2*1.5=150
+for COV in `find -maxdepth 3 -print | grep '.REF_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 150 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP150_1500x\t$COV \n"
+done
+
+# 2x
+# 50*2*2=200
+for COV in `find -maxdepth 3 -print | grep '.REF_' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 200 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP200_1500x\t$COV \n"
+done
 
 ## 1x per sample
 ## grep 'Andhae.New_REF'

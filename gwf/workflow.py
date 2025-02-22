@@ -14,5 +14,5 @@ gwf.target('TargetC', inputs=['x.txt', 'y.txt'], outputs=['z.txt']) << """
 sleep 10 && cat x.txt y.txt > z.txt
 """
 
-eval "$(conda shell.bash hook)"
-conda activate env
+#eval "$(conda shell.bash hook)"
+#conda activate env

@@ -1,4 +1,36 @@
-## data download guide: https://3478602.fs1.hubspotusercontent-na1.net/hubfs/3478602/2019-03 GEN NGS - ATAC-Seq FAQs/13012-M&G-EU 0223 sFTP Data Download Guide EU (3).pdf
+## download hifi reads
+# https://portal.darwintreeoflife.org/data/root/details/Chorthippus%20brunneus
+# https://www.ebi.ac.uk/ena/browser/view/PRJEB71307
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi/Chorthippus_brunneus
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR102/076/ERR10224876/ERR10224876.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR102/077/ERR10224877/ERR10224877.fastq.gz
+
+76-91
+
+for file in `seq 77 91`
+#do echo order_$file
+do wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR102/0"$file"/ERR102248"$file"/ERR102248"$file".fastq.gz
+done
+
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi
+mkdir Panurgus_banksianus
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR123/031/ERR12370431/ERR12370431.fastq.gz
+
+#https://portal.darwintreeoflife.org/data/root/details/Chorthippus%20parallelus
+mkdir /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi/Chorthippus_parallelus
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi/Chorthippus_parallelus
+
+61-75
+
+for file in `seq 61 75`
+#do echo order_$file
+#done
+# ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR102/062/ERR10224862/ERR10224862.fastq.gz
+do wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/ERR102/0"$file"/ERR102248"$file"/ERR102248"$file".fastq.gz
+done
+
+
+## sequencing data download guide: https://3478602.fs1.hubspotusercontent-na1.net/hubfs/3478602/2019-03 GEN NGS - ATAC-Seq FAQs/13012-M&G-EU 0223 sFTP Data Download Guide EU (3).pdf
 
 Project	Sample ID	Barcode Sequence	# Reads	Yield (Mbases)	Mean Quality Score	% Bases >= 30
 90-1123022345	Aphsti	CGGCCTGTTA+GCTCAATACA	165,803,020	49,741	38.65	93.51
@@ -77,5 +109,4 @@ Registered Office: Frankfurt a. M.
 Register Court: Frankfurt a. M., HRB 109853
 Managing Directors: Jason Joseph, David Francis Pietrantoni 
 This email message, including any attachments, may contain confidential and proprietary information for the sole use of the intended recipient. If you are not the intended recipient, you are hereby notified that any use, copying or dissemination of this message is strictly prohibited. If you received this message in error, please notify GENEWIZ Germany GmbH immediately by reply email or by calling GENEWIZ European Headquarters at +49 341 520 122-0. Then delete this message from your system, without making any copy or distribution.Thank you. 
-
 

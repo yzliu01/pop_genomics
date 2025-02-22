@@ -1,10 +1,10 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 50g
-#SBATCH --time=04:00:00
-##SBATCH --array=0-3%4
-#SBATCH --array=0
+#SBATCH --mem 500g
+##SBATCH --time=3-10:00:00 # RepeatModeler
+#SBATCH --time=1-10:00:00  # RepeatMasker
+#SBATCH --array=0-3%4
 #SBATCH --error=0_RepeatMasker_detect_2025_Ref_softmask.%A_%a.e
 #SBATCH --output=0_RepeatMasker_detect_2025_Ref_softmask.%A_%a.o
 #SBATCH --job-name=0_RepeatMasker_detect_2025_Ref_softmask
@@ -37,6 +37,7 @@ species_list=(
     "Stenurella_melanura"
 
 )
+## Ste_mel need more mem and time to be done
 ref_list=(
     "Aphodius_sticticus-GCA_963966075.1.fa"
     "Ephemera_danica-GCA_000507165.2.fa"
@@ -54,9 +55,9 @@ BuildDatabase -name $species $species_ref
 
 ## run RepeatModeler
 #RepeatModeler -database Andrena_marginata -threads 20 > Andrena_marginata_repeat_out.new.log
-RepeatModeler -database "$species" -threads 20 > "$species"_repeat_out.log
 
-exit 0
+#RepeatModeler -database "$species" -threads 20 > "$species"_repeat_out.log
+#exit 0
 
 ## Step III: mask regions run after step II is done to have a consensi_fa id
 
@@ -64,11 +65,19 @@ exit 0
 mkdir MaskerOutput
 
 consensi_fa=(
-    "RM_2298508.ThuSep121905222024"
+    
+    "RM_1128091.MonFeb101858392025"
+    "RM_634679.MonFeb101858532025"
+    "RM_1286427.MonFeb101858422025"
+    "RM_806318.MonFeb101858362025"
 )
 consensi=${consensi_fa[$SLURM_ARRAY_TASK_ID]}
+
 out_fa=(
-    "Bombus_veteranus.hifi_asm_pl2.fa"
+    "Aphodius_sticticus-GCA_963966075.1.fa"
+    "Stenurella_melanura-GCA_963583905.1.fa"
+    "Notonecta_glauca.hifi_asm_pl2.fa"
+    "Ephemera_danica-GCA_000507165.2.fa"
 )
 out=${out_fa[$SLURM_ARRAY_TASK_ID]}
 #consensi_fa_classified_dir=./RM_1536747.WedApr101949002024
