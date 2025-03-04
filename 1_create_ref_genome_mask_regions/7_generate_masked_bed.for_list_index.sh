@@ -8,7 +8,7 @@ repeatmodeler_install_use_array.sh
 
 
 ## create masked reference genome bed file in two steps
-## https://www.danielecook.com/generate-a-bedfile-of-masked-ranges-a-fasta-file/
+## https://www.danielecook.com/enerate-a-bedfile-of-masked-ranges-a-fasta-file/
 
 ## I - replace bases in lowercase into N
 softmasked_genome_Amel=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Amel_HAv3_1.fa
@@ -46,7 +46,7 @@ rename Amel Apis_mellifera Amel_HAv-GCF*
 
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 cd $REF_DIR
-generate_masked_region_md_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome_mask_regions/generate_masked_region_md.py
+generate_masked_region_md_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome_mask_regions/enerate_masked_region_md.py
 
 for masked_ref in `ls *softmasked.fa`
     do
@@ -71,7 +71,7 @@ Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmask
 ## path to ref directory
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 cd $REF_DIR
-generate_masked_region_md_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome_mask_regions/generate_masked_region_md.py
+generate_masked_region_md_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/1_create_ref_genome_mask_regions/enerate_masked_region_md.py
 
 ## get softmasked regions (final)
 ** Andrena marginata and more species **
@@ -145,7 +145,7 @@ for masked_ref in `echo ${run_trial_list[*]}`
     do
     out_softmasked_genome=${masked_ref/.fa/}
     #grep -v "^>"tr $masked_ref | tr "[atcg]" "N" > $out_softmasked_genome.N.fa ## wrong
-    sed '/^>/! s/[atcg]/N/g' $masked_ref > $out_softmasked_genome.N.fa
+    sed '/^>/! s/[atcg]/N/' $masked_ref > $out_softmasked_genome.N.fa
     #awk '/^>/ {print; next} {gsub(/[atcgATCG]/, "N"); print}' $masked_ref
     python $generate_masked_region_md_py $out_softmasked_genome.N.fa > ./ref_masked_bed/$out_softmasked_genome.bed
 done
@@ -174,13 +174,13 @@ head $REF_PAS_softmasked_region
 sed 's/^/chr/' $REF_PAS_softmasked_region > $fasta_generate_regions_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked.fb_2Mb_chr.regions
 
 ## make subtract and complement region bed file using bedtools
-## https://github.com/davetang/defining_genomic_regions
+## https://ithub.com/davetang/defining_genomic_regions
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
-REF_PAS_GTF=/home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data/BomPas_GCA_905332965.1/genes.gtf.gz
+REF_PAS_GTF=/home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data/BomPas_GCA_905332965.1/enes.gtf.gz
 
 ## self assemblied
-REF_VET_GTF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomVet_results_for_protseq/braker.gtf
-REF_VET_GTF_new=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_BomVet_results_for_protseq/braker.new_chr.gtf
+REF_VET_GTF=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/ene_annotation/braker_BomVet_results_for_protseq/braker.gtf
+REF_VET_GTF_new=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/ene_annotation/braker_BomVet_results_for_protseq/braker.new_chr.gtf
 ## get gene regions
 ## chr GTF bed file should be less than that of the reference insex file 
 less -S $REF_PAS_GTF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4,$5}}' | sed -e 's/^/chr/' -e '/chrCAJ/d' > $OUT_BED_DIR/BomPas_GCA_905332965.1_gene_region.bed
@@ -192,17 +192,17 @@ less -S $REF_PAS_GTF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}
 less -S $REF_VET_GTF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | sed -e 's/^/chr/' -e '/chrCAJ/d' > $OUT_BED_DIR/BomVet_hifi_asm.gene_region_1.bed
 # ptg000001l_[Bombuseteranus]     AUGUSTUS        gene 
 # ptg000001l     AUGUSTUS        gene 
-sed -E 's/_\[Bombus_veteranus\]//g' $REF_VET_GTF > $REF_VET_GTF_new
+sed -E 's/_\[Bombus_veteranus\]//' $REF_VET_GTF > $REF_VET_GTF_new
 
 *********************** step II: new added species **************************
 ## decompress the files, replace _ with |, and compress the files
 for gene_gtf in `ls -t | head -3`
 do 
     echo $gene_gtf
-    gunzip -d $gene_gtf/genes.gtf.gz
-    file=$gene_gtf/genes.gtf.gz
-    out=${file/genes.gtf.gz/genes.gtf}
-    sed -i 's/_/|/g' $out
+    gunzip -d $gene_gtf/enes.gtf.gz
+    file=$gene_gtf/enes.gtf.gz
+    out=${file/enes.gtf.gz/enes.gtf}
+    sed -i 's/_/|/' $out
     gzip ./$out
 done
 
@@ -211,29 +211,32 @@ gunzip -d Bombus_sylvestris-GCA_911622165.2-2023_03-genes.gtf.gz
 mv Bombus_sylvestris-GCA_911622165.2-2023_03-genes.gtf genes.gtf
 gzip genes.gtf
 
+******* find codes *******
 genes_gtf_dir=/home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data
 cd $genes_gtf_dir
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 
-ref_folder=`find . -maxdepth 2 -print | grep 'genes.gtf.gz' | ls -t | head -3`
+#ref_folder=`find . -maxdepth 2 -print | grep 'genes.gtf.gz' | ls -t | head -3`
+ref_folder=`find . -maxdepth 2 -print | grep 'genes.gtf.gz' | ls -t | head -28`
 
 for ref in $ref_folder
     do
-#    echo ./$ref/genes.gtf.gz
+#    echo ./$ref/enes.gtf.gz
 #done
-    #less $ref/genes.gtf.gz | head -2
+    #less $ref/enes.gtf.gz | head -2
     ## $4-1 beginning pos
-    less -S $ref/genes.gtf.gz | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' \
+    less -S $ref/*genes.gtf.gz | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' \
         > $OUT_BED_DIR/"$ref"_gene_region_1.bed
 done
 
+***************************
 
 less -S $REF_VET_GTF_new | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' \
     > $OUT_BED_DIR/"Bombus_veteranus-hifiasm_gene_region-1.bed"
 
 ## check the number of new bed files and replace _ with |
 for bed in `ls -t *.bed | head -3`
-do sed -i 's/_/|/g' $bed
+do sed -i 's/_/|/' $bed
 done
 
 
@@ -241,30 +244,64 @@ done
 ## use for loop
 conda activate variant_calling_mapping
 cd /home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data
-
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
-
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 
 REF_list=(
-    "./AndHae_GCA_910592295.1/genes.gtf.gz"
-    "./AndHat_GCA_944738655.1/genes.gtf.gz"
-    "./Amel_HAv3_1/genes.gtf.gz"
-    "./BomHyp_GCA_911387925.1/genes.gtf.gz"
-    "./BomPas_GCA_905332965.1/genes.gtf.gz"
-    "./DroMel-GCF_000001215.4_Release_6_plus_ISO1_MT/genes.gtf.gz"
+    "./AndHae_GCA_910592295.1/enes.gtf.gz"
+    "./AndHat_GCA_944738655.1/enes.gtf.gz"
+    "./Amel_HAv3_1/enes.gtf.gz"
+    "./BomHyp_GCA_911387925.1/enes.gtf.gz"
+    "./BomPas_GCA_905332965.1/enes.gtf.gz"
+    "./DroMel-GCF_000001215.4_Release_6_plus_ISO1_MT/enes.gtf.gz"
 )
-REF_list=(
-    "./BomMus_alt-GCA_963971125.1/genes.gtf.gz"
-    "./BomSyl-GCA_911622165.2/genes.gtf.gz"
-    "./AndBic-GCA_960531205.1/genes.gtf.gz"
 
-    #"./BomCon-GCA_014737475.1/genes.gtf.gz"
-    #"./AndTri-GCA_951215215.1/genes.gtf.gz"
-    #"./BomHor-GCA_905332935.1/genes.gtf.gz"
-    #"./AndFlu-GCA_946251845.1/genes.gtf.gz"
-    #"./AndMar_GCA_963932335.1/genes.gtf.gz"
+********* chr names in gtf file may differ from those in genome fasta file *********
+
+REF_list=(
+    #"./BomMus_alt-GCA_963971125.1/enes.gtf.gz"
+    #"./BomSyl-GCA_911622165.2/enes.gtf.gz"
+    #"./AndBic-GCA_960531205.1/enes.gtf.gz"
+
+    #"./BomCon-GCA_014737475.1/enes.gtf.gz"
+    #"./AndTri-GCA_951215215.1/enes.gtf.gz"
+    #"./BomHor-GCA_905332935.1/enes.gtf.gz"
+    #"./AndFlu-GCA_946251845.1/enes.gtf.gz"
+    #"./AndMar_GCA_963932335.1/enes.gtf.gz"
+
+    # 2025
+
+    #"Aphodius_sticticus-GCA_963966075.1.xxxxxx"
+    "./Bombylius_major-GCA_932526495.1/Bombylius_major-GCA_932526495.1-2022_07-genes.gtf.gz"
+    "./Cerceris_rybyensis-GCA_910591515.1/Cerceris_rybyensis-GCA_910591515.1-2021_11-genes.gtf.gz"
+    #"Ephemera_danica-GCA_000507165.2.fa.fai"
+    "./Megachile_leachella-GCA_963576845.1/Megachile_leachella-GCA_963576845.1-2024_04-genes.gtf.gz"
+    #"Notonecta_glauca.hifi_asm_pl2.xxxxx"
+    "./Ochropleura_plecta-GCA_905475445.1/Ochropleura_plecta-GCA_905475445.1-2021_12-genes.gtf.gz"
+    "./Phragmatobia_fuliginosa-GCA_932526445.1/Phragmatobia_fuliginosa-GCA_932526445.1-2022_07-genes.gtf.gz"
+    #"./Rutpela_maculata-GCA_936432065.2/Rutpela_maculata-GCA_936432065.2-2023_05-genes.gtf.gz" ## chr names in gtf file differ from those in genome fasta file
+    "./Rutpela_maculata-GCA_936432065.2/Rutpela_maculata-GCA_936432065.2-2023_05-issue_modified-genes.gtf.gz"
+    #"Stenurella_melanura-GCA_963583905.1.xxxxx"
+
+
+    #"./Aelia_acuminata-GCA_911387785.2/Aelia_acuminata-GCA_911387785.2-2023_05-genes.gtf.gz"
+    #"./Amphimallon_solstitiale-GCA_963170755.1/Amphimallon_solstitiale-GCA_963170755.1-2024_03-genes.gtf.gz"
+    #"./Bibio_marci-GCA_910594885.2/Bibio_marci-GCA_910594885.2-2024_05-genes.gtf.gz"
+    #"./Dorcus_parallelipipedus-GCA_958336345.1/Dorcus_parallelipipedus-GCA_958336345.1-2024_03-genes.gtf.gz"
+    #"./Eristalis_intricaria-GCA_964034865.1/Eristalis_intricaria-GCA_964034865.1-2024_05-genes.gtf.gz"
+    #"./Eristalis_pertinax-GCA_907269125.1/Eristalis_pertinax-GCA_907269125.1-2021_12-genes.gtf.gz"
+    #"./Gerris_lacustris-GCA_951217055.1/Gerris_lacustris-GCA_951217055.1-2023_07-genes.gtf.gz"
+    #"./Lasioglossum_morio-GCA_916610235.2/Lasioglossum_morio-GCA_916610235.2-2022_03-genes.gtf.gz"
+    #"./Malachius_bipustulatus-GCA_910589415.1/Malachius_bipustulatus-GCA_910589415.1-2022_02-genes.gtf.gz"
+    #"./Noctua_pronuba-GCA_905220335.1/Noctua_pronuba-GCA_905220335.1-2021_12-genes.gtf.gz"
+    #"./Phosphuga_atrata-GCA_944588485.1/Phosphuga_atrata-GCA_944588485.1-2022_08-genes.gtf.gz"
+    #"./Pterostichus_niger-GCA_947425015.1/Pterostichus_niger-GCA_947425015.1-2024_04-genes.gtf.gz"
+    #"./Rhagonycha_fulva-GCA_905340355.1/Rhagonycha_fulva-GCA_905340355.1-2021_12-genes.gtf.gz"
+    #"./Tachina_fera-GCA_905220375.1/Tachina_fera-GCA_905220375.1-2021_12-genes.gtf.gz"
+    #"./Tholera_decimalis-GCA_943138885.2/Tholera_decimalis-GCA_943138885.2-2023_07-genes.gtf.gz"
+
 )
+
 #echo ${REF_list[*]}
 #REF_INDEX_list=(`ls *softmasked.fa.fai`)
 ## https://superuser.com/questions/121627/how-to-get-elements-from-list-in-bash
@@ -282,32 +319,160 @@ REF_INDEX_list=(
     "Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.fa.fai"
 )
 
+# 2025
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-ls -t ./*.fai | head -4
+ls -t ./*.fai | head -10 | sort -n
 
 REF_INDEX_list=(
-    "Bombus_muscorum-GCA_963971125.1.fa.fai"
-    "Bombus_sylvestris-GCA_911622165.2-softmasked.fa.fai"
-    "Andrena_bicolor-GCA_960531205.1.fa.fai"
+    #"Bombus_muscorum-GCA_963971125.1.fa.fai"
+    #"Bombus_sylvestris-GCA_911622165.2-softmasked.fa.fai"
+    #"Andrena_bicolor-GCA_960531205.1.fa.fai"
+
     #"Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa.fai"
     #"Andrena_trimmerana-GCA_951215215.1-softmasked.fa.fai"
     #"Bombus_hortorum-GCA_905332935.1-softmasked.fa.fai"
     #"Andrena_fulva-GCA_946251845.1-softmasked.fa.fai"
     #"Andrena_marginata_GCA_963932335.1-softmasked.fa.fai"
+
+    # 2025
+
+    #"Aphodius_sticticus-GCA_963966075.1.fa.fai"
+    "Bombylius_major-GCA_932526495.1-softmasked.fa.fai"
+    "Cerceris_rybyensis-GCA_910591515.1-softmasked.fa.fai"
+    #"Ephemera_danica-GCA_000507165.2.fa.fai"
+    "Megachile_leachella-GCA_963576845.1-softmasked.fa.fai"
+    #"Notonecta_glauca.hifi_asm_pl2.fa.fai"
+    "Ochropleura_plecta-GCA_905475445.1-softmasked.fa.fai"
+    "Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa.fai"
+    "Rutpela_maculata-GCA_936432065.2-softmasked.fa.fai"
+    #"Stenurella_melanura-GCA_963583905.1.fa.fai"
 )
+
 #echo ${REF_INDEX_list[0]}
 ## Two variables in for-loop
 ## https://stackoverflow.com/questions/13210880/replace-one-substring-for-another-string-in-shell-script
 ## https://stackoverflow.com/questions/68358789/using-bash-to-get-two-variables-in-for-loop-form-two-different-lists
-cd /home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data
 
-***********
+*********** gtf chr issue, different from that of fa.fai file (Rutpela_maculata) ***********
+cd /home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data
+## gtf
+gtf=/home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data/Rutpela_maculata-GCA_936432065.2/Rutpela_maculata-GCA_936432065.2-2023_05-genes_issue.gtf
+modified_gtf=/home/yzliu/miniforge3/envs/snpEff/share/snpeff-5.2-0/data/Rutpela_maculata-GCA_936432065.2/Rutpela_maculata-GCA_936432065.2-2023_05-issue_modified-genes.gtf
+#!genome-date 2022-10
+#!genome-build-accession GCA_936432065.2
+#!genebuild-last-updated 2023-05
+1       ensembl gene    176474031       176475216
+
+## fa.fai
+fa_fai=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Rutpela_maculata-GCA_936432065.2-softmasked.fa.fai
+OW386285.2	427500052	60	80	81
+
+## fa file
+fa=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Rutpela_maculata-GCA_936432065.2-softmasked.fa
+>OW386285.2 Rutpela maculata genome assembly, chromosome: 1
+>CAKZFB020000001.1 Rutpela maculata genome assembly, contig: SUPER_1_unloc_1, whole genome shotgun sequence
+>OW386286.2 Rutpela maculata genome assembly, chromosome: 2
+>OW386287.2 Rutpela maculata genome assembly, chromosome: 3
+>OW386288.2 Rutpela maculata genome assembly, chromosome: 4
+>CAKZFB020000002.1 Rutpela maculata genome assembly, contig: SUPER_4_unloc_1, whole genome shotgun sequence
+>OW386289.2 Rutpela maculata genome assembly, chromosome: 5
+>OW386290.2 Rutpela maculata genome assembly, chromosome: 6
+>OW386291.2 Rutpela maculata genome assembly, chromosome: 7
+>OW386292.2 Rutpela maculata genome assembly, chromosome: 8
+>OW386293.2 Rutpela maculata genome assembly, chromosome: 9
+>OW386294.2 Rutpela maculata genome assembly, chromosome: X
+
+## only replace the number staarting the lines, not greedy way.
+sed -e 's/^1\tensembl/OW386285.2\tensembl/' \
+    -e 's/^2\tensembl/OW386286.2\tensembl/' \
+    -e 's/^3\tensembl/OW386287.2\tensembl/' \
+    -e 's/^4\tensembl/OW386288.2\tensembl/' \
+    -e 's/^5\tensembl/OW386289.2\tensembl/' \
+    -e 's/^6\tensembl/OW386290.2\tensembl/' \
+    -e 's/^7\tensembl/OW386291.2\tensembl/' \
+    -e 's/^8\tensembl/OW386292.2\tensembl/' \
+    -e 's/^9\tensembl/OW386293.2\tensembl/' \
+    -e 's/^X\tensembl/OW386294.2\tensembl/' $gtf > $modified_gtf
+## compress the gtf file as genes.gtf.gz to be consistent with others
+gzip $modified_gtf
+## Rutpela_maculata-GCA_936432065.2-2023_05-issue_modified-genes.gtf.gz
+
+# change chr names to  numbers
+ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+ref=Rutpela_maculata-GCA_936432065.2-softmasked.fa
+modified_ref=Rutpela_maculata-GCA_936432065.2-softmasked.chr2no.fa
+
+sed -e 's/^>OW386285.2/1/' \
+    -e 's/^>OW386286.2/2/' \
+    -e 's/^>OW386287.2/3/' \
+    -e 's/^>OW386288.2/4/' \
+    -e 's/^>OW386289.2/5/' \
+    -e 's/^>OW386290.2/6/' \
+    -e 's/^>OW386291.2/7/' \
+    -e 's/^>OW386292.2/8/' \
+    -e 's/^>OW386293.2/9/' \
+    -e 's/^>OW386294.2/X/' $ref > $modified_ref
+
+******** other conditions: https://www.biostars.org/p/313561/
+
+awk  '!/#/ {split($1, a, "_"); $1=a[2]}1'  OFS='\t' test.gtf
+cat test.gtf 
+##gff-version   null
+CA_chr4_BGI-A2_v1.0 GLEAN   mRNA    123284514   123288477   0.999991-   .   ID=Cotton_A_18927_BGI-A2_v1.0;Name=Cotton_A_18927;source_id=CottonA_GLEAN_10022228;identical_support_id=CUFF67.1103.1;evid_id=Cot030308.1
+CA_chr4_BGI-A2_v1.0 GLEAN   CDS 123288376   123288477   .   -0  Parent=Cotton_A_18927_BGI-A2_v1.0
+CA_chr4_BGI-A2_v1.0 GLEAN   CDS 123287662   123287826   .   -0  Parent=Cotton_A_18927_BGI-A2_v1.0
+
+awk  '!/#/ {split($1, a, "_"); $1=a[2]}1'  OFS='\t' test.gtf
+##gff-version   null
+chr4    GLEAN   mRNA    123284514   123288477   0.999991-   .   ID=Cotton_A_18927_BGI-A2_v1.0;Name=Cotton_A_18927;source_id=CottonA_GLEAN_10022228;identical_support_id=CUFF67.1103.1;evid_id=Cot030308.1
+chr4    GLEAN   CDS 123288376   123288477   .   -0  Parent=Cotton_A_18927_BGI-A2_v1.0
+
+
+*********** correct codes
 
 for i in ${!REF_list[*]}
     ## input in the same index
     do
     ## "-1" means [start pos - 1]
-    OUT_name=`echo ${REF_list[i]} | sed -e 's/\.\///' -e 's/\/genes.gtf.gz/_gene_region-1.sorted.bed/'`
+    #OUT_name=`echo ${REF_list[i]} | sed -e 's/\.\///' -e 's/\/enes.gtf.gz/_gene_region-1.sorted.bed/'`
+    OUT_name=`echo ${REF_list[i]} | sed -E 's/\.([12]).*genes.gtf.gz/\.\1-gene_region-1.sorted.bed/'`
+    echo $OUT_name
+#done
+    less ${REF_list[i]} | head -2
+    less ${REF_list[i]} | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | \
+    bedtools sort -i stdin -g $REF_DIR/${REF_INDEX_list[i]} \
+    > $OUT_BED_DIR/$OUT_name
+    #| sed -e 's/^/chr/' -e '/chrCAJ/d' \
+done
+
+************* following one has problems
+
+conda activate variant_calling_mapping
+unset REF_list # remove an environment variable
+REF_list=`ls -t ./*/*genes.gtf.gz | head -20 | sort -n`
+
+for REF in `ls -t ./*/*genes.gtf.gz | head -20`
+for REF in ${REF_list[*]}
+    #do echo $REF
+    do
+    OUT_name=`echo $REF| sed -e 's/\.\/.*\///'
+    #-e 's/enes.gtf.gz/ene_region-1.sorted.bed/'`
+    echo $OUT_name
+done
+    echo $REF
+    less $REF | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | \
+    bedtools sort -i stdin -g $REF_DIR/${REF_INDEX_list[i]} \
+    > $OUT_BED_DIR/$OUT_name
+    #| sed -e 's/^/chr/' -e '/chrCAJ/d' \
+done
+
+done
+
+for i in ${REF_list[*]}
+    ## input in the same index
+    do
+    ## "-1" means [start pos - 1]
+    OUT_name=`echo ${REF_list[i]} | sed -e 's/\.\///' -e 's/\/enes.gtf.gz/_gene_region-1.sorted.bed/'`
     echo $OUT_name
     echo ${REF_list[i]}
     less ${REF_list[i]} | awk 'BEGIN{OFS="\t"} {if ($3=="gene") {print $1,$4-1,$5}}' | \
@@ -434,7 +599,7 @@ chr1    36940   36982
 chr1    37326   37365
 chr1    37526   46635
 
-**************************************** final step III: softmasked + genic regions *********************************************
+**************************************** final step III: softmasked + genic regions that will be excluded *********************************************
 ## for loop: to prepare softmask+gene region bed
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
 OUT_BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
@@ -442,7 +607,9 @@ REF_gene_region_list=(
     #"BomMus_alt-GCA_963971125.1_gene_region-1.sorted.bed"
     #"BomSyl-GCA_911622165.2_gene_region-1.sorted.bed"
     #"AndBic-GCA_960531205.1_gene_region-1.sorted.bed"
-    "Bombus_veteranus-hifiasm_gene_region-1.bed"
+
+    #"Bombus_veteranus-hifiasm_gene_region-1.bed"
+    
     #"AndTri-GCA_951215215.1_gene_region-1.sorted.new.bed"
     #"AndFlu-GCA_946251845.1_gene_region-1.sorted.bed"
     #"BomHor-GCA_905332935.1_gene_region-1.sorted.bed"
@@ -454,6 +621,16 @@ REF_gene_region_list=(
     #"BomHyp_GCA_911387925.1_gene_region-1.sorted.bed"
     #"BomPas_GCA_905332965.1_gene_region-1.sorted.bed"
     #"DroMel_GCF_000001215.4_Release_6_plus_ISO1_MT_gene_region-1.sorted.bed"
+
+    # 2025
+
+    #"Bombylius_major-GCA_932526495.1-gene_region-1.sorted.bed"
+    "Cerceris_rybyensis-GCA_910591515.1-gene_region-1.sorted.bed"
+    "Megachile_leachella-GCA_963576845.1-gene_region-1.sorted.bed"
+    #"Ochropleura_plecta-GCA_905475445.1-gene_region-1.sorted.bed"
+    #"Phragmatobia_fuliginosa-GCA_932526445.1-gene_region-1.sorted.bed"
+    "Rutpela_maculata-GCA_936432065.2-gene_region-1.sorted.bed"
+
 )
 
 #ls -t *masked.bed | head -3
@@ -466,7 +643,9 @@ REF_softmasked_region_list=(
     #"Bombus_muscorum-GCA_963971125.1-softmasked.bed"
     #"Bombus_sylvestris-GCA_911622165.2-softmasked.bed"
     #"Andrena_bicolor-GCA_960531205.1-softmasked.bed"
-    "Bombus_veteranus.hifi_asm_pl2-softmasked.bed"
+
+    #"Bombus_veteranus.hifi_asm_pl2-softmasked.bed"
+    
     #"Andrena_trimmerana-GCA_951215215.1-softmasked.bed"
     #"Andrena_fulva-GCA_946251845.1-softmasked.bed"
     #"Bombus_hortorum-GCA_905332935.1-softmasked.bed"
@@ -478,6 +657,14 @@ REF_softmasked_region_list=(
     #"Bombus_hypnorum-GCA_911387925.1-softmasked.bed"
     #"Bombus_pascuorum-GCA_905332965.1-softmasked.bed"
     #"Drosophila_melanoganster-GCF_000001215.4_Release_6_plus_ISO1_MT_genomic-softmasked.bed"
+
+    # 2025
+    
+    "Cerceris_rybyensis-GCA_910591515.1-softmasked.bed"
+    "Megachile_leachella-GCA_963576845.1-softmasked.bed"
+    "Rutpela_maculata-GCA_936432065.2-softmasked.bed"
+
+
 )
 
 for i in ${!REF_gene_region_list[*]}

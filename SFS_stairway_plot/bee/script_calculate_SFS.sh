@@ -124,12 +124,7 @@ um}' | head
 3
 3
 3
-1
-1
-1
-2
-1
-v
+
 vcf_BomVet_REF_BomPas=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomVet_REF_BomPas.g600_regions.bi_MQ20_DP270_rename.vcf.gz
 vcf_BomPas_REF_BomPas=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.fb_per_contig_BomPas_REF_BomPas.g600_regions.bi_MQ20_DP270_rename.vcf.gz
 bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | less
@@ -145,24 +140,6 @@ chr1    25233   36      58      457
 chr1    25243   22      58      422
 chr1    25255   24      58      368
 chr1    25267   37      58      352
-chr1    25291   27      58      303
-chr1    25294   22      58      292
-chr1    30041   42      58      274
-chr1    32262   40      58      375
-chr1    34030   3       58      487
-chr1    34045   55      58      494
-chr1    34135   5       58      470
-chr1    34714   8       58      339
-chr1    35971   6       58      459
-chr1    36052   3       58      529
-chr1    36534   57      58      386
-chr1    36614   38      58      515
-chr1    37848   11      58      272
-chr1    37922   10      58      482
-chr1    38085   8       58      558
-chr1    42014   8       58      526
-chr1    42130   9       58      543
-chr1    43438   6       58      524
 
 ## https://unix.stackexchange.com/questions/396785/selecting-two-sets-of-conditions-in-awk
 bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_BomVet_REF_BomPas | head | awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' |  
@@ -188,30 +165,79 @@ for vcf_rename in `ls concated*rename.vcf.gz`
         echo $vcf_rename
 done
 
+********    "sfs for softmasked+gene_regions"   ********
 ## New REF ($3 <= $4/2)
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
-
+## 2025
 conda activate variant_calling_mapping
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 output_SFS_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
 
 #cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/snpEff_annotation
-********    softmasked+gene_regions   ********
+
 for vcf in `ls -t *AndMar_New_REF_AndMar*all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
 for vcf in `ls -t *BomPas_New_REF_BomHyp*all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
 for vcf in `ls -t *noMS.vcf.gz | head -12 | sort`
 for vcf in `ls -t *BomVet_New_REF_BomVet*SNP_softmask_genic_bi_FMT*vcf.gz | sort`
 
-## depth test
+## downsample
 for vcf in `ls -t *vcf.gz | head -24 | sort`
+
+## 2025
+for vcf in `ls -t *vcf.gz | head -12 | sort`
 
     do
     output_sfs_name=${vcf/vcf.gz/equal_self}
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
         awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
+        ## $1=$1 is an assignment operation in awk. 
+        ## It reassigns the first field ($1) to itself, which forces awk to rebuild the current line using the default output field separator (a single space).
+        
+        ## print the sfs in terminal
+        echo -e $output_sfs_name.sfs"\n"
+        cat $output_SFS_dir/$output_sfs_name.sfs
+        echo -e "\n"
 done
 
-## output SFS in terminal
+## simulated reads
+## add AC and AN tags
+sim_vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/simulated_reference_genomes
+bcftools +fill-tags hap_100_chr_1_10.vcf.gz -t AC,AN -Oz -o hap_100_chr_1_10.AC_AN_tags.vcf.gz
+bcftools view hap_100_chr_1_10.vcf.gz -S sim_sample.list -Oz -o hap_100_chr_1_10.AC_AN_tags.vcf.gz
+## get biallelic SNPs
+bcftools view -m2 -M2 hap_100_chr_1_10.vcf.gz -S sim_sample.list | bcftools filter -e 'AC==0 || AC == AN' | bcftools view -Oz -o hap_100_chr_1_10.bi_SNPs.AC_AN_tags.vcf.gz
+
+less hap_100_chr_1_10.bi_SNPs.AC_AN_tags.vcf.gz | wc -l
+2084577
+
+sample=$(cat sim_sample.list | tr "\n" ",")
+bcftools view hap_100_chr_1_10.vcf.gz -s tsk_0,tsk_1,tsk_2,tsk_3,tsk_4,tsk_5,tsk_6,tsk_7,tsk_8,tsk_9,tsk_10,tsk_11,tsk_12,tsk_13,tsk_14,tsk_15,tsk_16,tsk_17,tsk_18,tsk_19,tsk_20,tsk_21,tsk_22,tsk_23,tsk_24,tsk_25,tsk_26,tsk_27,tsk_28,tsk_29,tsk_30,tsk_31,tsk_32,tsk_33,tsk_34,tsk_35,tsk_36,tsk_37,tsk_38,tsk_39,tsk_40,tsk_41,tsk_42,tsk_43,tsk_44,tsk_45,tsk_46,tsk_47,tsk_48,tsk_49,tsk_50,tsk_51,tsk_52,tsk_53,tsk_54,tsk_55,tsk_56,tsk_57,tsk_58,tsk_59,tsk_60,tsk_61,tsk_62,tsk_63,tsk_64,tsk_65,tsk_66,tsk_67,tsk_68,tsk_69,tsk_70,tsk_71,tsk_72,tsk_73,tsk_74,tsk_75,tsk_76,tsk_77,tsk_78,tsk_79,tsk_80,tsk_81,tsk_82,tsk_83,tsk_84,tsk_85,tsk_86,tsk_87,tsk_88,tsk_89,tsk_90,tsk_91,tsk_92,tsk_93,tsk_94,tsk_95,tsk_96,tsk_97,tsk_98,tsk_99 \
+| less -S
+bcftools view hap_100_chr_1_10.vcf.gz -s tsk_0,tsk_1 -Oz -o hap_100_chr_1_10.AC_AN_tags.vcf.gz
+
+bcftools query -f '%CHROM\t%POS\t%AC\t%AN' hap_100_chr_1_10.AC_AN_tags.vcf.gz | less -S
+
+# 1       7328791 14147   G       C,A     .       PASS    AC=0,1;AN=100   GT 
+
+for vcf in `ls hap_100_chr_1_10.bi_SNPs.AC_AN_tags.vcf.gz`
+
+    do
+    output_sfs_name=${vcf/vcf.gz/equal_self}
+    bcftools query -f '%CHROM\t%POS\t%AC\t%AN' $vcf | \
+        awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c | \
+        awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > ./sfs/$output_sfs_name.sfs
+        ## $1=$1 is an assignment operation in awk. 
+        ## It reassigns the first field ($1) to itself, which forces awk to rebuild the current line using the default output field separator (a single space).
+        
+        ## print the sfs in terminal
+        echo -e $output_sfs_name.sfs"\n"
+        cat ./sfs/$output_sfs_name.sfs
+        echo -e "\n"
+done
+
+
+********** output SFS in terminal ***********
+
 ## https://unix.stackexchange.com/questions/513131/how-to-get-the-files-name-and-content-in-the-terminal-for-all-files-in-a-direc
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
 ls -t *softmask_genic_bi_FMT*_1500x_noMS.equal_self.sfs | head -36 | sort -V | xargs head
@@ -229,7 +255,7 @@ done
 
 ## pas-pas-200x
 vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
-vcf=
+
 vcf_ann=concated.Bompas.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
 vcf_ann=concated.Andhae.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
 vcf_ann=concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP200_noMS_AO3.ann_no_mis.vcf.gz
@@ -237,7 +263,7 @@ vcf_ann=concated.Andhae.New_REF_AndHae.100kb_g1500x_region.sorted_chr.GQ_issue.S
 bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf_ann | \
         awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c
 
-## each group sfs count
+********** each group sfs count **********
 for vcf in `ls *all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT*vcf.gz`
 ## low depth
 for vcf in `ls -t *all_chr.sorted.*vcf.gz | head -24`
@@ -248,6 +274,8 @@ for vcf in `ls -t *all_chr.sorted.*vcf.gz | head -24`
         awk '{if ($3 <= $4/2) print $3; if ($3 > $4/2) print $4-$3 }' | sort -V | uniq -c \
         > $output_SFS_dir/$output_sfs_name.sfs.count
 done
+
+******************************************
 
 ## New_REF_DroMel
 vcf=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/dro_mel_gatk_vcf/conc_vcf/concated_dro_mel_all_chr.sorted_chr.SNP_hard_filter.MQ40_masked_bi_AC1_FMT_DP3_noMS.BP_CS.list.vcf.gz

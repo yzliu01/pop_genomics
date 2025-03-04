@@ -1,3 +1,5 @@
 {
-    "backend": "slurm"
+    "backend": "local",
+    "bcakend": "local",
+    "verbose": "warning"
 }

@@ -70,8 +70,9 @@ assembly-stats
 ....
 
 cd ./assembly_fa_stats
-assembly-stats Chorthippus_parallelus.pl*.asm.bp.p_ctg.gfa.fa > stats_hifi_asm_with_fail.log
-assembly-stats Chorthippus_parallelus.pl_3.asm.bp.p_ctg.gfa.fa >> stats_hifi_asm_with_fail.log
+assembly-stats Chorthippus_parallelus.pl*.asm.bp.p_ctg.gfa.fa > stats_hifi_asm.log
+
+assembly-stats Chorthippus_parallelus.pl_3.asm.bp.p_ctg.gfa.fa >> stats_hifi_asm.log
 
 # need BUSCO mapping to assess the quality of ref genome (No. of single copy genes and complete genes)
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/busco/hifi_asm/busco_summary

@@ -2,11 +2,11 @@
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 10g
-#SBATCH --array=1-4%4
+#SBATCH --array=2-3%2
 #SBATCH --time=06:00:00
-#SBATCH --error=get_vcf_ind_Hae_Mar_DP_1x_1.5x_2x.%A_%a.e
-#SBATCH --output=get_vcf_ind_Hae_Mar_DP_1x_1.5x_2x.%A_%a.o
-#SBATCH --job-name=get_vcf_ind_Hae_Mar_DP_1x_1.5x_2x
+#SBATCH --error=get_filtered_2025_DP_1x_1.5x_2x.%A_%a.e
+#SBATCH --output=get_filtered_2025_DP_1x_1.5x_2x.%A_%a.o
+#SBATCH --job-name=get_filtered_2025_DP_1x_1.5x_2x
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -37,6 +37,11 @@ New_REF_AndFul_mask_region=$REF_MASKED_DIR/Andrena_fulva-GCA_946251845.1-softmas
 #New_REF_BomSyl_mask_region=$REF_MASKED_DIR/Bombus_sylvestris-GCA_911622165.2-softmasked_ref_gene.conca_sorted.bed
 #New_REF_BomVet_mask_region=$REF_MASKED_DIR/Bombus_veteranus.hifi_asm_pl2-softmasked_ref_gene.conca_sorted.bed
 
+#2025
+REF_CerRyb_mask_region=$REF_MASKED_DIR/Cerceris_rybyensis-GCA_910591515.1-softmasked_ref_gene.conca_sorted.bed
+REF_MegLea_mask_region=$REF_MASKED_DIR/Megachile_leachella-GCA_963576845.1-softmasked_ref_gene.conca_sorted.bed
+REF_RutMac_mask_region=$REF_MASKED_DIR/Rutpela_maculata-GCA_936432065.2-softmasked_ref_gene.conca_sorted.bed
+
 ## ref
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 
@@ -56,6 +61,12 @@ REF_AndFul=$REF_DIR/Andrena_fulva-GCA_946251845.1-softmasked.fa
 #REF_BomMus=$REF_DIR/Bombus_muscorum-GCA_963971125.1.fa
 #REF_BomSyl=$REF_DIR/Bombus_sylvestris-GCA_911622165.2-softmasked.fa
 #REF_BomVet=$REF_DIR/Bombus_veteranus.hifi_asm_pl2.fa
+
+## 2025
+REF_CerRyb=$REF_DIR/"Cerceris_rybyensis-GCA_910591515.1-softmasked.fa"
+REF_MegLea=$REF_DIR/"Megachile_leachella-GCA_963576845.1-softmasked.fa"
+REF_RutMac=$REF_DIR/"Rutpela_maculata-GCA_936432065.2-softmasked.fa"
+
 ## vcf
 concated_vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 cd $concated_vcf_dir
@@ -117,40 +128,75 @@ Andhae_New_REF_AndFul_VCF_filter=${Andhae_New_REF_AndFul_VCF/.vcf.gz/}
 #Bomvet_New_REF_BomVet_VCF=concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.vcf.gz
 #Bomvet_New_REF_BomVet_VCF_filter=${Bomvet_New_REF_BomVet_VCF/.vcf.gz/}
 
-## downsample
-Andhae_New_REF_AndHae_0_2_VCF=concated.Andhae.New_REF_AndHae_0_2.100kb_g1500x_regions.vcf.gz
-Andhae_New_REF_AndHae_0_2_VCF_filter=${Andhae_New_REF_AndHae_0_2_VCF/.vcf.gz/}
-Andhae_New_REF_AndHae_0_3_VCF=concated.Andhae.New_REF_AndHae_0_3.100kb_g1500x_regions.vcf.gz
-Andhae_New_REF_AndHae_0_3_VCF_filter=${Andhae_New_REF_AndHae_0_3_VCF/.vcf.gz/}
-Andhae_New_REF_AndHae_0_4_VCF=concated.Andhae.New_REF_AndHae_0_4.100kb_g1500x_regions.vcf.gz
-Andhae_New_REF_AndHae_0_4_VCF_filter=${Andhae_New_REF_AndHae_0_4_VCF/.vcf.gz/}
-
-Andhae_New_REF_AndHae_0_5_VCF=concated.Andhae.New_REF_AndHae_0_5.100kb_g1500x_regions.vcf.gz
-Andhae_New_REF_AndHae_0_5_VCF_filter=${Andhae_New_REF_AndHae_0_5_VCF/.vcf.gz/}
-Andhae_New_REF_AndHae_0_6_VCF=concated.Andhae.New_REF_AndHae_0_6.100kb_g1500x_regions.vcf.gz
-Andhae_New_REF_AndHae_0_6_VCF_filter=${Andhae_New_REF_AndHae_0_6_VCF/.vcf.gz/}
+## 2025
+CerRyb_REF_CerRyb_VCF=concated.Cerryb.REF_CerRyb.100kb_g1500x_regions.vcf.gz
+CerRyb_REF_CerRyb_VCF_filter=${CerRyb_REF_CerRyb_VCF/.vcf.gz/}
+MegLea_REF_MegLea_VCF=concated.Meglea.REF_MegLea.100kb_g1500x_regions.vcf.gz
+MegLea_REF_MegLea_VCF_filter=${MegLea_REF_MegLea_VCF/.vcf.gz/}
+RutMac_REF_RutMac_VCF=concated.Rutmac.REF_RutMac.100kb_g1500x_regions.vcf.gz
+RutMac_REF_RutMac_VCF_filter=${RutMac_REF_RutMac_VCF/.vcf.gz/}
 
 
-Andmar_New_REF_AndMar_0_2_VCF=concated.Andmar.New_REF_AndMar_0_2.100kb_g1500x_regions.vcf.gz
-Andmar_New_REF_AndMar_0_2_VCF_filter=${Andmar_New_REF_AndMar_0_2_VCF/.vcf.gz/}
-Andmar_New_REF_AndMar_0_3_VCF=concated.Andmar.New_REF_AndMar_0_3.100kb_g1500x_regions.vcf.gz
-Andmar_New_REF_AndMar_0_3_VCF_filter=${Andmar_New_REF_AndMar_0_3_VCF/.vcf.gz/}
-Andmar_New_REF_AndMar_0_4_VCF=concated.Andmar.New_REF_AndMar_0_4.100kb_g1500x_regions.vcf.gz
-Andmar_New_REF_AndMar_0_4_VCF_filter=${Andmar_New_REF_AndMar_0_4_VCF/.vcf.gz/}
+# index vcf files
+concated.Rutmac.REF_RutMac.100kb_g1500x_regions.vcf.gz
+concated.Meglea.REF_MegLea.100kb_g1500x_regions.vcf.gz
+concated.Cerryb.REF_CerRyb.100kb_g1500x_regions.vcf.gz
 
-Andmar_New_REF_AndMar_0_5_VCF=concated.Andmar.New_REF_AndMar_0_5.100kb_g1500x_regions.vcf.gz
-Andmar_New_REF_AndMar_0_5_VCF_filter=${Andmar_New_REF_AndMar_0_5_VCF/.vcf.gz/}
-Andmar_New_REF_AndMar_0_6_VCF=concated.Andmar.New_REF_AndMar_0_6.100kb_g1500x_regions.vcf.gz
-Andmar_New_REF_AndMar_0_6_VCF_filter=${Andmar_New_REF_AndMar_0_6_VCF/.vcf.gz/}
+for vcf in `ls -t *.gz | head -3`
+do
+bcftools index $vcf
+done
+
 
 ## >>>>>>>>>>>>>>>>>>>>>>>>>>>>>  NEW  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ## keep biallelic snp, remove duplicates and normalize snp with long base (bcftools norm -d none/-m-snps), also remove monomorphic snps
 
+# 2025
+## 1. CerRyb_REF_CerRyb_VCF ****************
+50*2*2=200x
+CerRyb_REF_CerRyb_VCF(){
+for depth in {100,150,200}
+do
+    bcftools filter --soft-filter mask --mask-file $REF_CerRyb_mask_region $CerRyb_REF_CerRyb_VCF | \
+    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_CerRyb | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+    bcftools filter -e 'AC==0 || AC == AN' | \
+    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+    -Oz -o ./"$CerRyb_REF_CerRyb_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
+
+## 2. MegLea_REF_MegLea_VCF ****************
+MegLea_REF_MegLea_VCF(){
+for depth in {100,150,200}
+do
+    bcftools filter --soft-filter mask --mask-file $REF_MegLea_mask_region $MegLea_REF_MegLea_VCF | \
+    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_MegLea | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+    bcftools filter -e 'AC==0 || AC == AN' | \
+    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+    -Oz -o ./"$MegLea_REF_MegLea_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
+
+## 3. RutMac_REF_RutMac_VCF ****************
+50*2*2=200x
+50*2*2.5=250x
+50*2*3=300x
+RutMac_REF_RutMac_VCF(){
+#for depth in {100,150,200}
+for depth in {250,300}
+do
+    bcftools filter --soft-filter mask --mask-file $REF_RutMac_mask_region $RutMac_REF_RutMac_VCF | \
+    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_RutMac | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+    bcftools filter -e 'AC==0 || AC == AN' | \
+    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+    -Oz -o ./"$RutMac_REF_RutMac_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+done
+}
+
+# 2023-2024
 ## 1. Andhae_New_REF_AndHae_VCF *************   New Version afterwards
-## downsample
 ## 39 samples
-## 1x 1.5x 2x
-Andhae_New_REF_AndHae_VCF_0_2(){
+Andhae_New_REF_AndHae_VCF(){
 for depth in {78,117,156}
 do
     ## depth_upper=`echo $(($depth+50))`
@@ -159,68 +205,6 @@ do
     bcftools filter -e 'AC==0 || AC == AN' | \
     bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
     -Oz -o ./"$Andhae_New_REF_AndHae_0_2_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-Andhae_New_REF_AndHae_VCF_0_3(){
-for depth in {78,117,156}
-do
-    ## depth_upper=`echo $(($depth+50))`
-    bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andhae_New_REF_AndHae_0_3_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Andhae_New_REF_AndHae_0_3_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-Andhae_New_REF_AndHae_VCF_0_4(){
-for depth in {78,117,156}
-do
-    ## depth_upper=`echo $(($depth+50))`
-    bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andhae_New_REF_AndHae_0_4_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Andhae_New_REF_AndHae_0_4_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 1x 1.5x 2x
-Andhae_New_REF_AndHae_VCF_0_5(){
-for depth in {78,117,156}
-do
-    ## depth_upper=`echo $(($depth+50))`
-    bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andhae_New_REF_AndHae_0_5_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Andhae_New_REF_AndHae_0_5_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-Andhae_New_REF_AndHae_VCF_0_6(){
-for depth in {78,117,156}
-do
-    ## depth_upper=`echo $(($depth+50))`
-    bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andhae_New_REF_AndHae_0_6_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Andhae_New_REF_AndHae_0_6_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-# extra 3x 4x
-Andhae_New_REF_AndHae_VCF_0_4(){
-for depth in {234,312}
-do
-    ## depth_upper=`echo $(($depth+50))`
-    bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andhae_New_REF_AndHae_0_4_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Andhae_New_REF_AndHae_0_4_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
 done
 }
 
@@ -312,7 +296,6 @@ done
 
 Andmar_New_REF_AndMar_VCF_0_4(){
 for depth in {80,120,160}
-# 1x, 1.5x, 2x
 do
 bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region $Andmar_New_REF_AndMar_0_4_VCF | \
 bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndMar | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
@@ -322,41 +305,6 @@ bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
 done
 }
 
-Andmar_New_REF_AndMar_VCF_0_5(){
-for depth in {80,120,160}
-# 1x, 1.5x, 2x
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region $Andmar_New_REF_AndMar_0_5_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndMar | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndMar_0_5_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-Andmar_New_REF_AndMar_VCF_0_6(){
-for depth in {80,120,160}
-# 1x, 1.5x, 2x
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region $Andmar_New_REF_AndMar_0_6_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndMar | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndMar_0_6_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-Andmar_New_REF_AndMar_VCF_0_4(){
-# 3x, 4x
-for depth in {240,320}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region $Andmar_New_REF_AndMar_0_4_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndMar | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndMar_0_4_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
 
 
 ## 8. Andmar_New_REF_AndHae_VCF
@@ -589,32 +537,31 @@ function_list=(
     #"Bompas_New_REF_BomSyl_VCF"
     #"Bomvet_New_REF_BomSyl_VCF"
     #"Bompas_New_alt_REF_BomMus_VCF"
-    
-    #"Andmar_New_REF_AndMar_VCF_0_2"
-    #"Andmar_New_REF_AndMar_VCF_0_3"
-    #"Andmar_New_REF_AndMar_VCF_0_4"
-    "Andmar_New_REF_AndMar_VCF_0_5"
-    "Andmar_New_REF_AndMar_VCF_0_6"
-    #"Andhae_New_REF_AndHae_VCF_0_2"
-    #"Andhae_New_REF_AndHae_VCF_0_3"
-    #"Andhae_New_REF_AndHae_VCF_0_4"
-    "Andhae_New_REF_AndHae_VCF_0_5"
-    "Andhae_New_REF_AndHae_VCF_0_6"
+
+    # 2025
+    "CerRyb_REF_CerRyb_VCF"
+    "MegLea_REF_MegLea_VCF"
+    "RutMac_REF_RutMac_VCF"
 
 )
 
+#conda activate variant_calling_mapping
+
 ## make array jobs
 function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
+function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n 1p)
+function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n 2p)
+function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n 3p)
+# CerRyb_REF_CerRyb_VCF
+# MegLea_REF_MegLea_VCF
+# RutMac_REF_RutMac_VCF
 
-#function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n 1p)
-#function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n 2p)
-#function_array=$(echo ${function_list[*]} | tr ' ' '\n' | sed -n 3p)
-#echo $function_array
 ## execute array jon function
 echo $($function_array)
 
 exit 0
 
+## index vcf files
 vcf_list=(
     "$Andhae_New_REF_AndHae_0_2_VCF"
     "$Andhae_New_REF_AndHae_0_3_VCF"
@@ -622,6 +569,7 @@ vcf_list=(
     #"$Andmar_New_REF_AndMar_0_2_VCF"
     "$Andmar_New_REF_AndMar_0_3_VCF"
     "$Andmar_New_REF_AndMar_0_4_VCF"
+
 
 )
 
