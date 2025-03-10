@@ -1,15 +1,13 @@
 #!/bin/bash
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 6
-#SBATCH --mem 10g
-##SBATCH --mem-per-cpu=1G
+#SBATCH --mem 1g
 ##SBATCH --mem-per-cpu=8G
-#SBATCH --array=1-2%2
-#SBATCH --time=14:00:00
-##SBATCH --time=4:00:00
-#SBATCH --error=sim_100hap_no_singleton.%A_%a.e
-#SBATCH --output=sim_100hap_no_singleton.%A_%a.o
-#SBATCH --job-name=sim_100hap_no_singleton
+#SBATCH --array=1-3%3
+#SBATCH --time=08:00:00
+#SBATCH --error=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.New_REF_BomPas_gt_2_0.5.%A_%a.e
+#SBATCH --output=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.New_REF_BomPas_gt_2_0.5.%A_%a.o
+#SBATCH --job-name=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.New_REF_BomPas_gt_2_0.5
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -24,7 +22,7 @@ function pwait() {
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
 blueprint_file_dir=./stairway_plot_blueprint/bee_pools_blueprint/New_REF
 ## check declining PasVet first
-blueprint_file=`ls -t $blueprint_file_dir/*blueprint | head -2| sort -V`
+blueprint_file=`ls -t $blueprint_file_dir/*no_singleton_sfs_*_1500x.sm_genic.gt_0.5.blueprint | head -3 | sort -V`
 #blueprint_file=$(ls ft_sim_10000Ne*20Chr_15Mb_*MSFS.blueprint | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## create a function to run blueprint file
 ## attention to nrand as integer
@@ -53,10 +51,12 @@ run_batch_file(){
 
 
 ## run batch files in array jobs to plot
-run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*blueprint.sh | head -2 | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*no_singleton_sfs_*_1500x.sm_genic.gt_0.5.blueprint.sh | head -3 | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 time bash $run_blueprint_plot_sh
 
 exit 0
+
+for plot in 
 
 ## modify blueprint files
 for bp in `ls *extended.blueprint`; do cp $bp $bp.new1;done

@@ -184,6 +184,7 @@ for vcf in `ls -t *vcf.gz | head -24 | sort`
 
 ## 2025
 for vcf in `ls -t *vcf.gz | head -12 | sort`
+for vcf in `ls -t concated.Rutmac*_1500x_noMS.vcf.gz | sort`
 
     do
     output_sfs_name=${vcf/vcf.gz/equal_self}
@@ -192,7 +193,7 @@ for vcf in `ls -t *vcf.gz | head -12 | sort`
         awk '$1=$1'| cut -d ' ' -f 1 | tr '\n' ' ' > $output_SFS_dir/$output_sfs_name.sfs
         ## $1=$1 is an assignment operation in awk. 
         ## It reassigns the first field ($1) to itself, which forces awk to rebuild the current line using the default output field separator (a single space).
-        
+
         ## print the sfs in terminal
         echo -e $output_sfs_name.sfs"\n"
         cat $output_SFS_dir/$output_sfs_name.sfs

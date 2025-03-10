@@ -56,7 +56,7 @@ MQ_bal_new <- MQ_bal %>%
   mutate_at(c(2:5),as.numberic)
 
 head(EH_DP_MP_data)
-head(as.numeric(as.character(EH_DP_MP_data$V5))
+head(as.numeric(as.character(EH_DP_MP_data$V5)))
 
 MQ_data <- ggplot(CHROM_POS_QUAL_DP_MQ,aes(as.numeric(as.character(V3))))+
   geom_histogram(bins=500)+
@@ -176,11 +176,19 @@ sfs_x <- c(
     #"concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP204_1500x_noMS.equal_self.sfs",
     #"concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP174_1500x_noMS.equal_self.sfs"
 
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP100_1500x_noMS.equal_self.sfs",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP150_1500x_noMS.equal_self.sfs",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP200_1500x_noMS.equal_self.sfs",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP250_1500x_noMS.equal_self.sfs",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP300_1500x_noMS.equal_self.sfs"
+    # sfs
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP100_1500x_noMS.equal_self.sfs",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP150_1500x_noMS.equal_self.sfs",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP200_1500x_noMS.equal_self.sfs",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP250_1500x_noMS.equal_self.sfs",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP300_1500x_noMS.equal_self.sfs"
+
+    # sfs prop
+    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP100_1500x_noMS.equal_self.sfs.prop",
+    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP150_1500x_noMS.equal_self.sfs.prop",
+    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP200_1500x_noMS.equal_self.sfs.prop",
+    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP250_1500x_noMS.equal_self.sfs.prop",
+    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP300_1500x_noMS.equal_self.sfs.prop"
     
 )
 
@@ -207,9 +215,14 @@ library(ggplot2)
 ## However, expression() does not directly evaluate variables, so you'll need to use bquote() to achieve this.
 for (i in 1:length(sfs_x)){
     print(sfs_x[i])
-    sfs_dt <- suppressWarnings(read.table(sfs_x[i], header=F, sep =" "))
-    sfs_dt1 <- sfs_dt[,!is.na(sfs_dt[1,])]
-    sfs_dt2 <- as.data.frame(t(sfs_dt1))
+    
+    ## sfs lines
+    #sfs_dt <- suppressWarnings(read.table(sfs_x[i], header=F, sep =" "))
+    #sfs_dt1 <- sfs_dt[,!is.na(sfs_dt[1,])]
+    #sfs_dt2 <- as.data.frame(t(sfs_dt1))
+
+    ## sfs col for proportion
+    sfs_dt2 <- (read.table(sfs_x[i], header=F, sep =" "))
     #print(sfs_dt2)
     print(head(sfs_dt2))
     plot_list[[i]] <- #ggplot(data = sfs_dt2, aes(x = 1:nrow(sfs_dt2), y = V1))+
@@ -217,7 +230,12 @@ for (i in 1:length(sfs_x)){
                     geom_col(fill = "gray")+
                     #labs(title = paste0("Bar Plot of SFS: ", species_list[i]), x = "Index", y = "Value")+
                     ## The bquote() function allows you to mix text and evaluated expressions. The .(species_list[i]) syntax inside bquote() evaluates species_list[i] and wraps it in italic() to display it in italics.
-                    labs(title = bquote("Bar Plot of SFS: " *italic(.(species_list[i]))), x = "Index", y = "Value")+
+                    
+                    ## sfs lines
+                    #labs(title = bquote("Bar Plot of SFS: " *italic(.(species_list[i]))), x = "Index", y = "Value")+
+                    
+                    ## sfs col for proportion
+                    labs(title = bquote("Bar Plot of SFS Prop: " *italic(.(species_list[i]))), x = "Index", y = "Value")+
                     theme_bw(base_size = 12)+
                     theme(axis.text = element_text(size = 8), axis.text.x = element_text(angle = -10))
 }
@@ -242,7 +260,10 @@ for (i in 1:length(plot_list)) {
 
 # Assuming plot_list contains your ggplot objects
 # Open PDF device
-pdf("./sfs_plot/combined_sfs_plots_RutMac.pdf", width = 12, height = 8)  # Adjust width and height as needed
+## sfs lines
+#pdf("./sfs_plot/combined_sfs_plots_RutMac.pdf", width = 12, height = 8)  # Adjust width and height as needed
+## sfs col for proportion
+pdf("./sfs_plot/combined_sfs_prop_plots_RutMac.pdf", width = 12, height = 8)  # Adjust width and height as needed
 
 # Combine plots and save to PDF
 gridExtra::grid.arrange(grobs = plot_list, ncol = 2)

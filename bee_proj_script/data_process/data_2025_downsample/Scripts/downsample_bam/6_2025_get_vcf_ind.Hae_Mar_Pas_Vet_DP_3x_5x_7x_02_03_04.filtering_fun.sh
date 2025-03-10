@@ -150,48 +150,23 @@ done
 
 ## >>>>>>>>>>>>>>>>>>>>>>>>>>>>>  NEW  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ## keep biallelic snp, remove duplicates and normalize snp with long base (bcftools norm -d none/-m-snps), also remove monomorphic snps
+## vcf
+concated_vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
+cd $concated_vcf_dir
 
-# 2025
-## 1. CerRyb_REF_CerRyb_VCF ****************
-50*2*2=200x
-CerRyb_REF_CerRyb_VCF(){
-for depth in {100,150,200}
-do
-    bcftools filter --soft-filter mask --mask-file $REF_CerRyb_mask_region $CerRyb_REF_CerRyb_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_CerRyb | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$CerRyb_REF_CerRyb_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
+Andhae_New_REF_AndHae_VCF=concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
+Andhae_New_REF_AndHae_VCF_filter=${Andhae_New_REF_AndHae_VCF/.vcf.gz/}
 
-## 2. MegLea_REF_MegLea_VCF ****************
-MegLea_REF_MegLea_VCF(){
-for depth in {100,150,200}
-do
-    bcftools filter --soft-filter mask --mask-file $REF_MegLea_mask_region $MegLea_REF_MegLea_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_MegLea | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$MegLea_REF_MegLea_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
+# issue due to pigz
+Andmar_New_REF_AndMar_VCF=concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
+Andmar_New_REF_AndMar_VCF_filter=${Andmar_New_REF_AndMar_VCF/.vcf.gz/}
 
-## 3. RutMac_REF_RutMac_VCF ****************
-50*2*2=200x
-50*2*2.5=250x
-50*2*3=300x
-RutMac_REF_RutMac_VCF(){
-#for depth in {100,150,200}
-for depth in {250,300}
-do
-    bcftools filter --soft-filter mask --mask-file $REF_RutMac_mask_region $RutMac_REF_RutMac_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_RutMac | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$RutMac_REF_RutMac_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
+# issue
+Bompas_New_REF_BomPas_VCF=concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
+Bompas_New_REF_BomPas_VCF_filter=${Bompas_New_REF_BomPas_VCF/.vcf.gz/}
+
+Bomvet_New_REF_BomVet_VCF=concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.vcf.gz
+Bomvet_New_REF_BomVet_VCF_filter=${Bomvet_New_REF_BomVet_VCF/.vcf.gz/}
 
 # 2023-2024
 ## 1. Andhae_New_REF_AndHae_VCF *************   New Version afterwards
@@ -208,18 +183,6 @@ do
 done
 }
 
-## 2. Andhae_New_REF_BomPas_VCF ****************
-Andhae_New_REF_BomPas_VCF(){
-for depth in {78,117,156}
-do
-    bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Andhae_New_REF_BomPas_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Andhae_New_REF_BomPas_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
 ## 3. Bompas_New_REF_BomPas_VCF ****************
 Bompas_New_REF_BomPas_VCF(){
 for depth in {204,340,476}
@@ -232,44 +195,67 @@ do
 done
 }
 
-## 4. Bomvet_New_REF_BomPas_VCF ****************
-Bomvet_New_REF_BomPas_VCF(){
-for depth in {174,290,416}
+************************************************
+## Proportion of genome
+## 4. Andmar_New_REF_AndMar_VCF
+## 40 ind 40*2*1
+1x 3x 5x 7x 10x
+
+conda activate variant_calling_mapping
+
+REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+REF_AndMar=$REF_DIR/Andrena_marginata_GCA_963932335.1-softmasked.fa
+
+REF_MASKED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
+New_REF_AndMar_mask_region=$REF_MASKED_DIR/Andrena_marginata_GCA_963932335.1-softmasked_ref_gene.conca_sorted.bed
+
+BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
+BED_01=Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed
+
+Andmar_New_REF_AndMar_VCF_P01(){
+#for depth in {80,240,400,560,800}
+#for depth in 80 240 400 560 800
+for depth in 20
 do
-    bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Bomvet_New_REF_BomPas_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Bomvet_New_REF_BomPas_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+#echo $depth
+#done
+bcftools view -R $BED_DIR/$BED_01 $Andmar_New_REF_AndMar_VCF | \
+bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region | \
+bcftools filter --SnpGap 5:indel | \
+bcftools norm -d none -f $REF_AndMar | \
+bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Andmar_New_REF_AndMar_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"$depth"_1500x_noMS.P01.vcf.gz
 done
 }
 
-## 5. Bompas_New_REF_ApisMel_VCF ****************
-Bompas_New_REF_ApisMel_VCF(){
-for depth in {204,340,476}
+Andmar_New_REF_AndMar_VCF_P01
+
+Andmar_New_REF_AndMar_VCF_P01(){
+#for depth in {80,240,400,560,800}
+#for depth in 80 240 400 560 800
+for depth in 20
 do
-    bcftools filter --soft-filter mask --mask-file $New_REF_ApisMel_mask_region $Bompas_New_REF_ApisMel_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_ApisMel | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Bompas_New_REF_ApisMel_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
+#echo $depth
+#done
+bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region $Andmar_New_REF_AndMar_VCF | \
+bcftools filter --SnpGap 5:indel | \
+bcftools norm -d none -f $REF_AndMar | \
+bcftools view -v snps -A -m 2 -M 2 -f 'PASS' -R $BED_DIR/$BED_01 | \
+bcftools filter -e 'AC==0 || AC == AN' | \
+bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
+-Oz -o ./"$Andmar_New_REF_AndMar_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"$depth"_1500x_noMS.P01.vcf.gz
 done
 }
 
-## 6. Bomvet_New_REF_ApisMel_VCF ****************
-Bomvet_New_REF_ApisMel_VCF(){
-for depth in {174,290,416}
-do
-    bcftools filter --soft-filter mask --mask-file $New_REF_ApisMel_mask_region $Bomvet_New_REF_ApisMel_VCF | \
-    bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_ApisMel | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-    bcftools filter -e 'AC==0 || AC == AN' | \
-    bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
-    -Oz -o ./"$Bomvet_New_REF_ApisMel_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
+Andmar_New_REF_AndMar_VCF_P01
 
-## later
-## 7. Andmar_New_REF_AndMar_VCF
+bcftools view -v snps -A -m 2 -M 2 -f 'PASS' -R $BED_DIR/$BED_01 $Andmar_New_REF_AndMar_VCF | less -S
+
+
+************************************************
+
 ## downsample
 ## 40 samples
 Andmar_New_REF_AndMar_VCF_0_2(){
@@ -306,199 +292,6 @@ done
 }
 
 
-
-## 8. Andmar_New_REF_AndHae_VCF
-Andmar_New_REF_AndHae_VCF(){
-for depth in {80,120,160}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $Andmar_New_REF_AndHae_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHae | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndHae_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 9. Andmar_New_REF_AndHat_VCF
-Andmar_New_REF_AndHat_VCF(){
-for depth in {80,120,160}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndHat_mask_region $Andmar_New_REF_AndHat_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHat | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndHat_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 10. Andmar_New_REF_BomPas_VCF
-Andmar_New_REF_BomPas_VCF(){
-for depth in {80,120,160}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region $Andmar_New_REF_BomPas_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomPas | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_BomPas_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 11. Andhae_New_REF_AndHat_VCF
-Andhae_New_REF_AndHat_VCF(){
-for depth in {78,117,156}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndHat_mask_region $Andhae_New_REF_AndHat_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndHat | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andhae_New_REF_AndHat_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 12. Bompas_New_REF_BomHyp_VCF
-Bompas_New_REF_BomHyp_VCF(){
-for depth in {204,340,476}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomHyp_mask_region $Bompas_New_REF_BomHyp_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomHyp | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bompas_New_REF_BomHyp_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 13. Bomvet_New_REF_BomHyp_VCF
-Bomvet_New_REF_BomHyp_VCF(){
-for depth in {174,290,416}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomHyp_mask_region $Bomvet_New_REF_BomHyp_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomHyp | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bomvet_New_REF_BomHyp_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 14. Andhae_New_REF_AndFul_VCF
-Andhae_New_REF_AndFul_VCF(){
-for depth in {78,117,156}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndFul_mask_region $Andhae_New_REF_AndFul_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndFul | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andhae_New_REF_AndFul_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 15. Andmar_New_REF_AndTri_VCF
-Andmar_New_REF_AndTri_VCF(){
-for depth in {240,400,560}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndTri_mask_region $Andmar_New_REF_AndTri_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndTri | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndTri_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 16. Bompas_New_REF_BomCon_VCF
-Bompas_New_REF_BomCon_VCF(){
-for depth in {204,340,476}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomCon_mask_region $Bompas_New_REF_BomCon_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomCon | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bompas_New_REF_BomCon_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 17. Bomvet_New_REF_BomCon_VCF
-Bomvet_New_REF_BomCon_VCF(){
-for depth in {174,290,416}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomCon_mask_region $Bomvet_New_REF_BomCon_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomCon | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bomvet_New_REF_BomCon_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 18. Bompas_New_REF_BomHor_VCF
-Bompas_New_REF_BomHor_VCF(){
-for depth in {204,340,476}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomHor_mask_region $Bompas_New_REF_BomHor_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomHor | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bompas_New_REF_BomHor_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 19. Bomvet_New_REF_BomHor_VCF
-Bomvet_New_REF_BomHor_VCF(){
-for depth in {174,290,416}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomHor_mask_region $Bomvet_New_REF_BomHor_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomHor | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bomvet_New_REF_BomHor_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-
-## 20. Andmar_New_REF_AndBic_VCF
-Andmar_New_REF_AndBic_VCF(){
-for depth in {240,400,560}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_AndBic_mask_region $Andmar_New_REF_AndBic_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_AndBic | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndBic_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 21. Bompas_New_alt_REF_BomMus_VCF
-Bompas_New_alt_REF_BomMus_VCF(){
-for depth in {204,340,476}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_alt_BomMus_mask_region $Bompas_New_alt_REF_BomMus_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomMus | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bompas_New_alt_REF_BomMus_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 22. Bompas_New_REF_BomSyl_VCF
-Bompas_New_REF_BomSyl_VCF(){
-for depth in {204,340,476}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomSyl_mask_region $Bompas_New_REF_BomSyl_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomSyl | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bompas_New_REF_BomSyl_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
-
-## 23. Bomvet_New_REF_BomSyl_VCF
-Bomvet_New_REF_BomSyl_VCF(){
-for depth in {174,290,416}
-do
-bcftools filter --soft-filter mask --mask-file $New_REF_BomSyl_mask_region $Bomvet_New_REF_BomSyl_VCF | \
-bcftools filter --SnpGap 5:indel | bcftools norm -d none -f $REF_BomSyl | bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
-bcftools filter -e 'AC==0 || AC == AN' | \
-bcftools view -e "MEAN(FMT/DP) < $depth || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bomvet_New_REF_BomSyl_VCF_filter".SNP_softmask_genic_bi_FMT_DP"$depth"_1500x_noMS.vcf.gz
-done
-}
 
 ## 24. Bomvet_New_REF_BomVet_VCF
 Bomvet_New_REF_BomVet_VCF(){

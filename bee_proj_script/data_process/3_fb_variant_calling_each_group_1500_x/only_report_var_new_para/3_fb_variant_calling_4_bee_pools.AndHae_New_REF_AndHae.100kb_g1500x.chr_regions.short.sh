@@ -3,8 +3,9 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 50g
 ##SBATCH --array=1-2944%40
-#SBATCH --array=1-3537%40
-#SBATCH --time=05:00:00
+##SBATCH --array=1-3537%600
+#SBATCH --array=1-547,549-826,828-1399,1401-2074,2076-3537%600 ##548,827,1400,2075
+#SBATCH --time=08:00:00
 ##SBATCH --time=3-04:04:00
 #SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.100kb_g1500x.chr_regions.short.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.100kb_g1500x.chr_regions.short.%A_%a.o

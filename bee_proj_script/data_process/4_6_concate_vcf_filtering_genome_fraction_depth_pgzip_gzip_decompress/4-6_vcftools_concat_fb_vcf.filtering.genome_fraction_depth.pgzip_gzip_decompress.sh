@@ -1049,7 +1049,174 @@ for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep '\.0_' | grep
     printf "\tDP160_1500x\t$COV \n"
 done
 
+*********************************************************************************************************
+# 1x 3x 5x 7x 10x
 
+# 39 ind
+# 1x
+## grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 78 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP78_1500x\t$COV \n"
+done
+
+# 3x
+## grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 234 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP234_1500x\t$COV \n"
+done
+
+# 5x
+## grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 390 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP390_1500x\t$COV \n"
+done
+
+# 7x
+## grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 546 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP546_1500x\t$COV \n"
+done
+
+# 10x
+## grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF_AndHae.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 780 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP780_1500x\t$COV \n"
+done
+
+# 40 ind
+# 1x
+## grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 80 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP80_1500x\t$COV \n"
+done
+
+# 3x
+## grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP240_1500x\t$COV \n"
+done
+
+# 5x
+## grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 400 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP400_1500x\t$COV \n"
+done
+
+# 7x
+## grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 560 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP560_1500x\t$COV \n"
+done
+
+# 10x
+## grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF_AndMar.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 800 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP800_1500x\t$COV \n"
+done
+
+# 34
+## 1x per sample: NR > 68 (&& NR < 1500: fb variant calling)
+## grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 68 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP68_1500x\t$COV \n"
+done
+
+## 3x
+## grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 204 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP204_1500x\t$COV \n"
+done
+
+## 5x
+## grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 340 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP340_1500x\t$COV \n"
+done
+
+## 7x
+## grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 476 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP476_1500x\t$COV \n"
+done
+
+## 10x
+## grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF_BomPas.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 680 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP680_1500x\t$COV \n"
+done
+
+# 29 ind
+# 1x
+## grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 58 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP58_1500x\t$COV \n"
+done
+
+# 3x
+## grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 174 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP174_1500x\t$COV \n"
+done
+
+# 5x
+## grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 290 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP290_1500x\t$COV \n"
+done
+
+# 7x
+## grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 416 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP416_1500x\t$COV \n"
+done
+
+# 10x
+## grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam'
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF_BomVet.sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 580 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP580_1500x\t$COV \n"
+done
+
+***********************************************************
 
 ## 3x per sample: NR > 200 (&& NR < 1500: fb variant calling)
 ## grep 'Bompas.New_REF'

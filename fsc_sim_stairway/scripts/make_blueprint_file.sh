@@ -3,17 +3,34 @@
 for i in `ls -t *.blueprint | head -6`; do cp $i "$i.0_3";done
 for i in `ls -t *.blueprint.0_3`; do sed -i 's/_0_2/_0_3/g' $i;done
 
+
 ## create new blueprint files and rename them
 #for i in `ls -t *blueprint | head -6`
 for i in $(ls -t *blueprint | head -6) # preferred
+# to include singleton
+for i in $(ls -t *no_doubleton*blueprint)
 do
 cp $i $i.new
 #rename 's/0_5/0_6/; s/\.new$//' $i.new 
 # rename: not enough arguments
 # Try 'rename --help' for more information.
 
-new_name=$(echo $i | sed 's/0_5/0_6/;s/\.new$//'); mv $i.new $new_name # change file names
+sed -i '8s/smallest_size_of_SFS_bin_used_for_estimation: 3/#smallest_size_of_SFS_bin_used_for_estimation: 2/; s/no_doubleton/with_doubleton/' $i.new 
+
+## change file names multiple times in once
+#new_name=$(echo $i | sed 's/0_5/0_6/;s/\.new$//'); mv $i.new $new_name # change file names
+new_name=$(echo $i | sed 's/\.new$//')
+mv $i.new $new_name # change file names
+
 done
+
+for bp in $(ls -t *no_doubleton*1500x.sm_genic.blueprint)
+do
+sed -i 's/with_doubleton/with_singleton/g' $bp
+rename no_doubleton with_singleton $bp
+
+done
+
 
 ## change text in place in the files
 for file in $(ls -t *_0_6*blueprint | head -6) # preferred

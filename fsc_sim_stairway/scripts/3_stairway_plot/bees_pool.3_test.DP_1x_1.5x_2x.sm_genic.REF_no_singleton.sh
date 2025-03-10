@@ -4,7 +4,7 @@
 #SBATCH --mem 10g
 ##SBATCH --mem-per-cpu=1G
 ##SBATCH --mem-per-cpu=8G
-#SBATCH --array=1-14%14
+#SBATCH --array=1-1%1
 #SBATCH --time=14:00:00
 ##SBATCH --time=4:00:00
 #SBATCH --error=bees_pool.3_test.DP_1x_1.5x_2x.sm_genic.REF_no_singleton.%A_%a.e
@@ -24,7 +24,7 @@ function pwait() {
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
 blueprint_file_dir=./stairway_plot_blueprint/bee_pools_blueprint/New_REF
 ## check declining PasVet first
-blueprint_file=`ls -t $blueprint_file_dir/*blueprint | head -14 | sort -V`
+blueprint_file=`ls -t $blueprint_file_dir/*blueprint | head -1 | sort -V`
 #blueprint_file=$(ls ft_sim_10000Ne*20Chr_15Mb_*MSFS.blueprint | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## create a function to run blueprint file
 ## attention to nrand as integer
@@ -53,7 +53,7 @@ run_batch_file(){
 
 
 ## run batch files in array jobs to plot
-run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*blueprint.sh | head -14 | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*blueprint.sh | head -1 | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 time bash $run_blueprint_plot_sh
 
 exit 0

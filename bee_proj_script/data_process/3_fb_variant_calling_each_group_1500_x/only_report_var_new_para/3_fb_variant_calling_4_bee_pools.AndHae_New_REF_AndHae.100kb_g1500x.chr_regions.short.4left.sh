@@ -3,12 +3,12 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 350g
 #SBATCH --array=548,827,1400,2075%4
-##SBATCH --array=2945-3537%40
-#SBATCH --time=10:00:00
+##SBATCH --array=1-3537%600
+#SBATCH --time=20:00:00
 ##SBATCH --time=3-04:04:00
-#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.100kb_g1500x.chr_regions.short_4left.%A_%a.e
-#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.100kb_g1500x.chr_regions.short_4left.%A_%a.o
-#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.short_4left
+#SBATCH --error=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.100kb_g1500x.chr_regions.rerun.%A_%a.e
+#SBATCH --output=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.100kb_g1500x.chr_regions.rerun.%A_%a.o
+#SBATCH --job-name=3_fb_variant_calling_4_bee_pools.AndHae_New_REF_AndHae.rerun
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -55,7 +55,7 @@ Ref_Masked_Bed=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_ma
 freebayes --region $Each_Region_Ref --fasta-reference $REF \
     --ploidy 78 --pooled-discrete --genotype-qualities --use-best-n-alleles 3 --min-alternate-fraction 0 --min-alternate-count 2 \
     --bam $BAM_DIR/$SAMPLE -g 1500 --strict-vcf --gvcf \
-    > $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae/"Andhae.New_REF_AndHae.100kb_Ref_Region=Andrena_haemorrhoa-GCA_910592295.1-softmasked.fb_2Mb.regions"${SLURM_ARRAY_TASK_ID}.g.vcf
+    > $VCF_OUT_DIR/fb_per_region_AndHae_New_REF_AndHae/"Andhae.New_REF_AndHae.100kb_1500x_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcfintersect -v -b $Ref_Masked_Bed > $VCF_OUT_DIR/$fb_per_region_AndHae_New_REF_AndHae/"Bompas.New_REF_BomPas.2Mb_g1500_region_"${SLURM_ARRAY_TASK_ID}.g.vcf
 #    vcffilter -f "QUAL > 20"
 
