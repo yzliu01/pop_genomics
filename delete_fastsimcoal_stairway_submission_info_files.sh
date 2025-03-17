@@ -21,11 +21,17 @@ find . -type f -name '3_fb_*0_6_bam*.o' -exec rm {} +
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new
 find . -maxdepth 5 -type f -name '*addTheta' | xargs rm
 
+# submission directory
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submission
 find . -maxdepth 5 -type f -name '*3_fb_variant_calling_4_bee_pools*' | xargs rm
+# check the total number of .e and .o file
+find . -maxdepth 5 -type f -name '*.[e|o]*' | wc -l
 
+# bee pool data dir
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new
 find . -maxdepth 5 -type f -regex '.*genic-\([1-9]\|[1-9][0-9]\|1[0-9][0-9]\|200\)$'
 
+# # fastsimcoal 2
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned
 find . -maxdepth 5 -type f -regex '.*15Mb_[1-5]-\([1-9]\|[1-9][0-9]\|1[0-9][0-9]\|200\)$' | wc -l # | xargs rm
+

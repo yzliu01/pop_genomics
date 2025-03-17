@@ -28,7 +28,7 @@ New_REF_BomVet_mask_region=$REF_MASKED_DIR/Bombus_veteranus.hifi_asm_pl2-softmas
 
 ## region of selected - bed files
 BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
-BED_01=Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed
+BED_01=Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_01.bed
 
 ## ref
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
@@ -85,16 +85,16 @@ done
 
 BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
 BED_LIST=(
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_02.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_03.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_04.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_05.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_06.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_07.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_08.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_09.sort.bed"
-    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.shuf_subset_10.sort.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_01.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_02.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_03.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_04.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_05.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_06.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_07.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_08.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_09.bed"
+    "Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_10.bed"
 
 )
 
@@ -109,16 +109,16 @@ BED_LIST=(
 ## bed file input
 BED=$(echo ${BED_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## remove prefix text using #
-#OUT_PORT=${BED/#Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_}
+#OUT_PORT=${BED/#Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_}
 #echo $OUT_PORT
 ## remove suffix text using %
-#OUT_PORT=${OUT_PORT/%.sort.bed}
+#OUT_PORT=${OUT_PORT/%.bed}
 #echo $OUT_PORT
 
 ## portion value
 PROP_LIST=(01 02 03 04 05 06 07 08 09 10)
 PROP=$(echo ${PROP_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
-echo $PROP
+echo "P_$PROP"
 
 depth=(78 256 390 546 780)
 depth_time=(1x 3x 5x 7x 10x)
@@ -319,7 +319,7 @@ Andmar_New_REF_AndMar_VCF=concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.al
 Andmar_New_REF_AndMar_VCF_filter=${Andmar_New_REF_AndMar_VCF/.vcf.gz/}
 
 BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
-BED_01=Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed
+BED_01=Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_01.bed
 
 Andmar_New_REF_AndMar_VCF_P01(){
 #for depth in {80,240,400,560,800}

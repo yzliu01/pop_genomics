@@ -186,6 +186,9 @@ for vcf in `ls -t *vcf.gz | head -24 | sort`
 for vcf in `ls -t *vcf.gz | head -12 | sort`
 for vcf in `ls -t concated.Rutmac*_1500x_noMS.vcf.gz | sort`
 
+## downsample genomes
+for vcf in `ls -t *P_[0-1][0-9].vcf.gz | sort -V`
+
     do
     output_sfs_name=${vcf/vcf.gz/equal_self}
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \

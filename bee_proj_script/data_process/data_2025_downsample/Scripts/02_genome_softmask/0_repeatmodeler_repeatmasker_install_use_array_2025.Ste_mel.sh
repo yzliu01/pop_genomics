@@ -19,11 +19,6 @@ REF_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 cd $REF_dir
 
 ## step I: build database
-#BuildDatabase -name Andrena_marginata Andrena_marginata_GCA_963932335.1.fa
-#BuildDatabase -name Andrena_bicolor Andrena_bicolor-GCA_960531205.1.fa
-#BuildDatabase -name Bombus_muscorum Bombus_muscorum-GCA_963971185.1.fa
-#BuildDatabase -name Bombus_muscorum_alt Bombus_muscorum-GCA_963971125.1.fa
-
 #BuildDatabase -name Bombus_veteranus Bombus_veteranus.hifi_asm_pl2.fa
 
 ## array index stats with 0
@@ -49,7 +44,7 @@ ref_list=(
 species=${species_list[$SLURM_ARRAY_TASK_ID]}
 species_ref=${ref_list[$SLURM_ARRAY_TASK_ID]}
 
-BuildDatabase -name $species $species_ref
+#BuildDatabase -name $species $species_ref
 
 ## step II: detect repeats
 
@@ -68,7 +63,7 @@ consensi_fa=(
     
     "RM_1128091.MonFeb101858392025"
     "RM_634679.MonFeb101858532025"
-    "RM_1286427.MonFeb101858422025"
+    #"RM_1286427.MonFeb101858422025"
     "RM_806318.MonFeb101858362025"
 )
 consensi=${consensi_fa[$SLURM_ARRAY_TASK_ID]}
@@ -76,7 +71,7 @@ consensi=${consensi_fa[$SLURM_ARRAY_TASK_ID]}
 out_fa=(
     "Aphodius_sticticus-GCA_963966075.1.fa"
     "Stenurella_melanura-GCA_963583905.1.fa"
-    "Notonecta_glauca.hifi_asm_pl2.fa"
+    #"Notonecta_glauca.hifi_asm_pl2.fa"
     "Ephemera_danica-GCA_000507165.2.fa"
 )
 out=${out_fa[$SLURM_ARRAY_TASK_ID]}

@@ -18,7 +18,7 @@ conda activate variant_calling_mapping
 #https://github.com/lh3/psmc
 #https://psmc-tutorial-birdlab.readthedocs.io/en/latest/01_Data_Pre-Processing.html#j-creating-consensus-fq-file
 #https://blog.csdn.net/zaprily/article/details/108764219
-#https://gtpb.github.io/PGDH19/pages/ms-psmc_practical
+#https://gtpb.github.io/PGDH19/pages/ms-psmc_practical; https://github.com/willyrv/ms-PSMC
 
 bam_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 bam_pas=Bompas.New_REF_BomPas.sort.marked_dups.bam
@@ -33,20 +33,27 @@ bam_list=(
         #"Andmar.New_REF_BomPas.sort.marked_dups.bam"
         "Bomvet.New_REF_BomPas.sort.marked_dups.bam")
 bam=$(echo ${bam_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
-bam=$(echo ${bam_list[*]} | tr ' ' '\n' | sed -n 2p)
+#bam=$(echo ${bam_list[*]} | tr ' ' '\n' | sed -n 2p)
 
 bam_output=${bam_list/.sort.marked_dups.bam/}
 
+# aligned depth from qualimap
+# A. haemorrhoa 550 1/3=183 2x=1100
+# A. marginata  500 1/3=167 2x=1000
+# B. pascuorum  500 1/3=167 2x=1000
+# B. veteranus  550 1/3=183 2x=1100
+#
 samtools view -b -L $mappability_path/mappability_pas.bed.gz $bam | \
     bcftools mpileup -q 20 -Q 20 -C 50 -d 1500 -f $REF - | bcftools call -c -V indels | \
     vcfutils.pl vcf2fq -d 200 -D 1500 | gzip > $psmc_output/$bam_output.vcf2fq_test.fq.gz
     ## convert vcf file to fasta file using vcfutils.pl coming with bcftools not in psmc
-    ## vcfutils.pl not supported anymore
+    ## vcfutils.pl not supported anymore ??
     #less -S | gzip > $psmc_output/pas_REF_pas_DP1500x.vcf.gz
     #bcftools consensus -m $mappability_path/mappability_pas.bed.gz 
 
 exit 0
 
+## make consensus file
 vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 bcftools index $vcf_dir/concated.Andhae.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP400_noMS_AO3.vcf.gz
 cat $REF | bcftools consensus $vcf_dir/concated.Andhae.New_REF_BomPas.100kb_g1500x_region.sorted_chr.GQ_issue.SNP_softmasked_bi_FMT_DP600_noMS_AO3.vcf.gz > \
@@ -69,6 +76,7 @@ pas_REF_pas_DP200_1500x_consense_fq=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/d
 conda activate psmc
 utiles_tools=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/psmc/utils
 $utiles_tools/fq2psmcfa -q20 $pas_REF_pas_DP200_1500x_fq > pas_REF_pas_DP200_1500x.psmcfa
+
 ## consense
 $utiles_tools/fq2psmcfa -q20 $pas_REF_pas_DP200_1500x_consense_fq > $psmc_output/pas_REF_pas_DP200_1500x.consense.psmcfa
 
@@ -85,6 +93,7 @@ $utiles_tools/splitfa pas_REF_pas_DP200_1500x.psmcfa > $psmc_output/bootstrap/pa
 ## split ?
 $utiles_tools/splitfa pas_REF_pas_DP200_1500x.psmcfa 100000 > $psmc_output/bootstrap/pas_REF_pas_DP200_1500x.split_100000.psmcfa
 
+## 5 rounds of bootstrapping
 cd $psmc_output/bootstrap
 seq 5 | xargs -i echo psmc -N25 -t15 -r5 -b -p "4+25*2+4+6" \
 	    -o round-{}.psmc pas_REF_pas_DP200_1500x.split.psmcfa | sh

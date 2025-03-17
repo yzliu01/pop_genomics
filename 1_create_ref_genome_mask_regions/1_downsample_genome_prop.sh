@@ -68,11 +68,13 @@ echo $ref_fai
 
 #Compute Target Subset Length
 #If you want, say, 10% of the genome:
-#prop=(0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9)
-#prop_name=(01 02 03 04 05 06 07 08 09)
+prop=(0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9)
+prop_name=(01 02 03 04 05 06 07 08 09)
 
-prop=(1)
-prop_name=(10)
+# prepare full genome prop separately, win_whole
+
+#prop=(1)
+#prop_name=(10)
 
 #Divide the Genome into Non-Overlapping Windows
 #Use bedtools makewindows to generate evenly spaced non-overlapping regions:
@@ -96,17 +98,29 @@ echo -e "Target genome length: $ref_fai \t $target_length"
 ## shuf is produce non-overlapping regions
 #shuf ./random_prop_sample_genome/$ref_fai.win_100b.bed | awk -v target="$target_length" '{
 # in one step
-bedtools makewindows -g $ref_fai -w 100 | shuf | awk -v target="$target_length" '{
+# random due to shuf
+#bedtools makewindows -g $ref_fai -w 100 | shuf | awk -v target="$target_length" '{
+# generate consistent regions
+bedtools makewindows -g $ref_fai -w 100 | awk -v target="$target_length" '{
         sum += $3 - $2;
     print $0;
     if (sum >= target) exit;
-}' | sort -V | bedtools merge > ./random_prop_sample_genome/$ref_fai.win_whole.shuf_subset_"${prop_name[i]}".sort.bed # for whole genome
+}' | sort -V > ./random_prop_sample_genome/$ref_fai.win_100b.subset_"${prop_name[i]}".bed # for whole genome
+# random due to shuf
+#}' | sort -V | bedtools merge > ./random_prop_sample_genome/$ref_fai.win_100b.shuf_subset_"${prop_name[i]}".sort.bed # for whole genome
 # each region
 # | sort -V > ./random_prop_sample_genome/$ref_fai.win_100b.shuf_subset_"${prop_name[i]}".sort.bed
 done
 done
 
+# then go here
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025_downsample/Scripts/downsample_bam
 
+6_systematic_sample_genome.1x_3x_5x_7x_10x.Hae.template.sh
+
+exit 0
+
+******************************** below is tests ****************************************************
 less ./random_prop_sample_genome/$ref_fai.win_100b.shuf_subset_01.sort.bed | wc -l
 330686
 

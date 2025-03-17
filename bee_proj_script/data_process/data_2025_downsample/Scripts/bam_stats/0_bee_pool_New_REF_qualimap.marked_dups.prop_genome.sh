@@ -19,11 +19,13 @@ conda activate qualimap # v2.2.3
 
 ## bam files
 BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
+cd $BAM_DIR
 
 ## mark duplicates
 #SORTED_BAM=$(cat $BAM_DIR/bee_spools.bam.list | sed -n ${SLURM_ARRAY_TASK_ID}p)
 #OUT_FILENAME=${SORTED_BAM/.bam/.bam.qualimap}
-OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+#OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
+OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF/random_prop_sample_genome
 #OUT_FILE=$OUT_DIR/$OUT_FILENAME
 
 #bam_list_path_group=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/stats/multi_bamqc_describing_pool_samples.new_rm_dups.list
@@ -39,10 +41,17 @@ bam_list=$(cat bee_4_pools.New_REF_bam_marked_dups.prop_genome.list | sed -n ${S
 ## bed dir
 bed_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
 cd $bed_dir
-bed_list_1=$(ls Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
-bed_list_2=$(ls Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
-bed_list_3=$(ls Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
-bed_list_4=$(ls Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
+# random sampleing
+#bed_list_1=$(ls Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
+#bed_list_2=$(ls Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
+#bed_list_3=$(ls Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
+#bed_list_4=$(ls Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_0{1..9}.sort.bed)
+# linear sampling
+bed_list_1=$(ls Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa.fai.win_whole.subset_[0-1][0-9].bed)
+bed_list_2=$(ls Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_[0-1][0-9].bed)
+bed_list_3=$(ls Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_whole.subset_[0-1][0-9].bed)
+bed_list_4=$(ls Bombus_veteranus.hifi_asm_pl2.fa.fai.win_whole.subset_[0-1][0-9].bed)
+
 
 bed_file_list=("${bed_list_1[@]}" "${bed_list_2[@]}" "${bed_list_3[@]}" "${bed_list_4[@]}")
 
@@ -68,7 +77,7 @@ out_file=${bed/.sort.bed/}
 # -gff,--feature-file <arg>            Feature file with regions of interest in
 #                                      GFF/GTF or BED format
 # bed files already have path from ls $bed_dir/...
-qualimap bamqc -nt 20 -cl 400 -dl 90 -sd -c -bam $bam_list -gff $bed --java-mem-size=100G \
+qualimap bamqc -nt 20 -cl 400 -dl 90 -sd -c -bam $bam_list -gff $bed_dir/$bed --java-mem-size=100G \
 -outdir $OUT_DIR/$out_file \
 -outformat PDF:HTML
 done
