@@ -5,7 +5,7 @@
 #SBATCH --time=6-00:00:00 # 1-RepeatModeler
 ##SBATCH --array=0-3%4
 ##SBATCH --time=1-10:00:00  # 2-RepeatMasker
-#SBATCH --array=1-2%2
+#SBATCH --array=0-2%3
 #SBATCH --error=0_RepeatMasker_detect_2025_Ref_softmask_grasshopper.%A_%a.e
 #SBATCH --output=0_RepeatMasker_detect_2025_Ref_softmask_grasshopper.%A_%a.o
 #SBATCH --job-name=0_RepeatMasker_detect_2025_Ref_softmask_grasshopper
@@ -32,7 +32,7 @@ species_list=(
     "Chorthippus_brunneus" # self_annotated: 14Gb
     ##"Pseudochorthippus_parallelus" # no ref & no reads
     "Chorthippus_parallelus" # self_annotated: 14Gb
-    #"Panurgus_banksianus"  # self_annotated
+    "Panurgus_banksianus"  # self_annotated
 
     #"Agelastica_alni"
     #"Leptopterna_dolobrata"
@@ -48,10 +48,10 @@ ref_list=(
     #"Notonecta_glauca.hifi_asm_pl2.fa"
     #"Stenurella_melanura-GCA_963583905.1.fa"
 
-    "Chorthippus_brunneus.hifi_asm_pl2.fa" # assembling: 14Gb
+    "Chorthippus_brunneus.hifi_asm_pl3.fa" # assembling: 14Gb
     ##"Pseudochorthippus_parallelus.hifi_asm_pl2.fa" # no data
-    "Chorthippus_parallelus.hifi_asm_pl2.fa" # assembling: 14Gb
-    #"Panurgus_banksianus.hifi_asm_pl2.fa" # assembling
+    "Chorthippus_parallelus.hifi_asm_pl3.fa" # assembling: 14Gb
+    "Panurgus_banksianus.hifi_asm_pl3.fa" # assembling
 
     #"Agelastica_alni-GCA_950111635.2.fa"
     #"Leptopterna_dolobrata-GCA_954871275.1.fa"

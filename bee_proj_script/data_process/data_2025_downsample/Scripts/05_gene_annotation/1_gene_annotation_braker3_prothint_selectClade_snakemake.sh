@@ -103,6 +103,11 @@ selectClade_py=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gen
 #cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db
 mkdir /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db_1
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db_1
+
+#cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db_more_species
+
+cp /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db_1/selectClade.py .
+cp /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db_1/Snakefile .
 ## downloaded files will be saved in ./orthodb
 ## place Snakefile and selectClade_py in the same dir
 ## snakemake file can be updated, use the latest one or it cannot be downloaded: https://github.com/tomasbruna/orthodb-clades?tab=readme-ov-file
@@ -124,7 +129,7 @@ usage: selectClade.py [-h] [--exclude EXCLUDE]
                       [--species species.tab] [--dryrun]
                       proteins.fa levels.tab level2species.tab clade
 
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db/orthodb
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db_1/orthodb
 ## orthoDB data structure
 ## https://v101.orthodb.org/download/README.txt
 
@@ -138,4 +143,8 @@ cp species.tab species_copy.tab
 grep -E 'Apis|Bombus|Osmia|Colletes|Ceratina|Dufourea|Eufriesea|Euglossa|Frieseomelitta|Habropoda|Lasioglossum|Megachile|Megalopta|Melipona|Nomia' species_copy.tab > species.tab
 
 ## run the script to generate protein database
-$selectClade_py --species species.tab raw.fasta levels.tab level2species.tab Apoidea > Apodiea_gene_AA.fa
+## https://github.com/Gaius-Augustus/BRAKER?tab=readme-ov-file
+## We recommend using OrthoDB as basis for proteins.fa. The instructions on how to prepare the input OrthoDB proteins are documented here: 
+## https://github.com/gatech-genemark/ProtHint#protein-database-preparation.
+#$selectClade_py --species species.tab raw.fasta levels.tab level2species.tab Apoidea > Apodiea_gene_AA.fa
+$selectClade_py --species species.tab raw.fasta levels.tab level2species.tab Insecta > Insecta_gene_AA.fa

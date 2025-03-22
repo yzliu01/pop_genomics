@@ -66,16 +66,41 @@ library(ggmap)
 ## google API-Key - following not working anymore
 ## register_stadiamaps(key = "AIzaSyAsh8H8QRZdawAXfRhnnpJCCqz88coK1-8", write = TRUE)
 ## ggmap one works
-register_stadiamaps(key = "10fc01ec-fa9a-4c7b-bfff-e4fc2312191b", write = TRUE)
+register_stadiamaps(key = "10fc01ec-fa9a-4c7b-bfff-e4fc2312191b", write = FALSE)
+
+# https://cran.r-project.org/web/packages/ggmap/readme/README.html
+register_google(key = "AIzaSyDDzzkF3DOkXyO8wO9ByIXefW9XRNprK-U", write = TRUE)
+
+us <- c(left = -125, bottom = 25.75, right = -67, top = 49)
+get_stadiamap(us, zoom = 5, maptype = "outdoors") |> ggmap()
+
+(map <- get_googlemap("waco texas", zoom = 12))
+#  ℹ <https://maps.googleapis.com/maps/api/staticmap?center=waco%20texas&zoom=12&size=640x640&scale=2&maptype=terrain&key=xxx>
+#  ℹ <https://maps.googleapis.com/maps/api/geocode/json?address=waco+texas&key=xxx>
+#  1280x1280 terrain map image from Google Maps; use `ggmap::ggmap()` to plot it.
+ggmap::ggmap(map)
+
+get_googlemap("waco texas", zoom = 12, maptype = "terrain", color="bw") |> ggmap()
+get_googlemap("waco texas", zoom = 12, maptype = "hybrid") |> ggmap()
+get_googlemap("waco texas", zoom = 12, maptype = "roadmap") |> ggmap()
+
 ## https://github.com/dkahle/ggmap/issues/237
 httr::set_config(httr::use_proxy(url = "http://64.251.21.73", port = 8080), override = TRUE)
 httr::set_config(httr::use_proxy(url = "http://proxy:8000"), override = TRUE)
 urlonly = TRUE
 
-get_googlemap("waco texas", urlonly = TRUE)
-qmplot()
+
+install.packages("pacman")
+install.packages("libproj-dev")
+install.packages(c("proj4","reproj","osmdata"))
+library(pacman)
+library("osmdata")
 
 ## https://www.r-bloggers.com/2018/10/getting-started-stamen-maps-with-ggmap/
+library(caret)
+library(dplyr)
+library(ggmap)
+
 data(Sacramento)
 head(Sacramento)
 df <- Sacramento %>% group_by(city) %>%
@@ -86,7 +111,6 @@ qmplot(x = longitude, y = latitude, data = df, maptype = "stamen_watercolor",
        geom = "point", color = median_price, size = transactions) +
   scale_color_gradient(low = "blue", high = "red")
 
-
 data(Sacramento)
 df <- Sacramento
 height <- max(Sacramento$latitude) - min(Sacramento$latitude)
@@ -96,7 +120,9 @@ sac_borders <- c(bottom  = min(Sacramento$latitude)  - 0.1 * height,
                  left    = min(Sacramento$longitude) - 0.1 * width,
                  right   = max(Sacramento$longitude) + 0.1 * width)
 #map <- get_stamenmap(sac_borders, zoom = 10, maptype = "terrain")
-map <- get_stadiamap(sac_borders, zoom = 10, maptype = "stamen_terrain")
+map <- get_stadiamap(sac_borders, zoom = 10, maptype = "stamen_terrain_labels")
+# Error in match.arg(maptype) : 
+#  'arg' should be one of “stamen_terrain”, “stamen_toner”, “stamen_toner_lite”, “stamen_watercolor”, “alidade_smooth”, “alidade_smooth_dark”, “outdoors”, “stamen_terrain_background”, “stamen_toner_background”, “stamen_terrain_labels”, “stamen_terrain_lines”, “stamen_toner_labels”, “stamen_toner_lines”
 
 ggmap(map)+
   geom_point(data = df, mapping = aes(x = longitude, y = latitude, 
@@ -138,7 +164,15 @@ bee_site <- read_excel("organized_bee_lat_lon.xlsx")
 
 bee_site <- read.table("organized_bee_lat_lon.tsv",sep = "\t",header = T,na.strings = "NA")
 head(bee_site)
-bee_map <- get_stadiamap(bbox = c(left = 7.7, bottom = 54.76906, right =12.5, top = 57.7), zoom = 10, maptype = "stamen_terrain")
+# outdoor map
+#bee_map <- get_stadiamap(bbox = c(left = 7.7, bottom = 54.76906, right =12.5, top = 57.7), zoom = 10, maptype = "outdoors")
+# google map
+bee_map <- get_googlemap("denmark", zoom = 7, maptype = "terrain")
+
+bee_map <- get_googlemap(c(10.38,56.16), zoom = 8, maptype = "terrain")
+# aarhus
+# randers 56.45945472816156, 10.131149308103902
+#Silkberg: 56.17679334915558, 9.547910441496022
 #install.packages(c("sf","maptools"))
 #devtools::install_github('oswaldosantos/ggsn')
 #install.packages("devtools",denpendencies=TRUE)
@@ -153,7 +187,7 @@ bee_site_plot <- ggmap(bee_map) +
                 geom_label(aes(x=10, y=10, label="N"), size=3, label.padding=unit(1,"mm"), label.r=unit(1,"lines")) 
 getwd()
 #ggsave(filename="bee_site_plot_transparent_legend.new.pdf",height = 20, width =20, units = "cm", bee_site_plot)
-ggsave(filename="bee_site_plot_legend.new1.pdf",height = 20, width =20, units = "cm", bee_site_plot)
+ggsave(filename="bee_site_plot_legend.gg_satellite.pdf",height = 20, width =20, units = "cm", bee_site_plot)
 
 # stairway plot
 #c("A.haemorrhoa" = "#009E73", "A.marginata" = "#0072B2", "B.pascuorum" = "#D55E00", "B.veteranus" = "#CC79A7")
@@ -170,7 +204,7 @@ ggmap(sq_map) + geom_point(data = sisquoc, mapping = aes(x = lon, y = lat), colo
 
 ggmap::register_google(key = "AIzaSyAsh8H8QRZdawAXfRhnnpJCCqz88coK1-8")
 
-map <- get_map(location = "texas", zoom = 6, source = "stamen")
+map <- get_map(location = "texas", zoom = 6, source = "stadia")
 ggmap(map, fullpage = TRUE)
 
 install.packages("mapproj")

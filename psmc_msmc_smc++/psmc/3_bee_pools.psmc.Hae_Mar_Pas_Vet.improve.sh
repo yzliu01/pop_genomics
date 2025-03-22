@@ -3,7 +3,7 @@
 #SBATCH --cpus-per-task 4
 #SBATCH --mem 150g
 ##SBATCH --array=4%1
-#SBATCH --array=1,3-4%3
+#SBATCH --array=1-4%4
 ##SBATCH --time=00:10:00
 #SBATCH --time=10:10:00
 #SBATCH --job-name=bee_pools_psmc_hifi_Hae_Mar_Pas_Vet
@@ -93,34 +93,18 @@ D_depth=$(echo ${D_twice_mean_depth[@]} | tr " " "\n" | sed -n ${SLURM_ARRAY_TAS
 #ptg000001l      3       T       0       *       *
 #ptg000001l      4       G       1       ,       D
 
-#bcftools call -c $in_bam.intermediate.mpileup > $in_bam.intermediate.mpileup.vcf
-#bcftools call -c $in_bam.intermediate.mpileup | head -10
-#bcftools call -c BomVet_hifi_asm.aligned.bam.intermediate.mpileup | head -10
+#bcftools mpileup -C 50 -f $ref_dir/$ref $input_dir/$in_bam | bcftools call -c | \
+#    vcfutils.pl vcf2fq -d $d_depth -D $D_depth | gzip > $in_bam.fq.gz
+## AndHae_hifi_asm.aligned.bam.fq.gz
 
-#bam=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/hifi/output_bam_psmc/AndHae_hifi_asm.aligned.bam
-#ref=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Andrena_haemorrhoa-GCA_910592295.1-softmasked.fa
-#bcftools mpileup -C 50 -f $ref $bam | bcftools call -c | \
-#    vcfutils.pl vcf2fq -d 5 -D 40 | gzip > $bam.fq.gz
-
-bcftools mpileup -C 50 -f $ref_dir/$ref $input_dir/$in_bam | bcftools call -c | \
-    vcfutils.pl vcf2fq -d $d_depth -D $D_depth | gzip > $in_bam.fq.gz
-# AndHae_hifi_asm.aligned.bam.fq.gz
-
-# prepare psmcfa files
+#3 prepare psmcfa files
 conda activate psmc
 #utiles_tools=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/psmc/utils
 #$utiles_tools/fq2psmcfa -q20 $pas_REF_pas_DP200_1500x_fq > pas_REF_pas_DP200_1500x.psmcfa
 in_bam_fq_file=$in_bam.fq.gz
 out_psmcfa_file=${in_bam_fq_file/.gz/}
-fq2psmcfa -q20 $in_bam_fq_file > $out_psmcfa_file.psmcfa
-# AndHae_hifi_asm.aligned.bam.fq.psmcfa
-
-
-#psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o pas_REF_pas_DP200_1500x.psmc pas_REF_pas_DP200_1500x.psmcfa 
-#psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o pas_REF_pas_DP200_1500x.consense.psmc pas_REF_pas_DP200_1500x.consense.psmcfa 
-#utils/psmc2history.pl diploid.psmc | utils/history2ms.pl > ms-cmd.sh
-#utils/psmc_plot.pl diploid diploid.psmc
-
+#fq2psmcfa -q20 $in_bam_fq_file > $out_psmcfa_file.psmcfa
+## AndHae_hifi_asm.aligned.bam.fq.psmcfa
 
 ## bootstrap
 
@@ -130,8 +114,6 @@ fq2psmcfa -q20 $in_bam_fq_file > $out_psmcfa_file.psmcfa
 #awk '{if(NR==1) {print $0} else {if($0 ~ /^>/) {print "\n"$0} else {printf $0}}}' pas_REF_pas_DP200_1500x.split.psmcfa | less -S > pas_REF_pas_DP200_1500x.split.one_line_seq.psmcfa
 
 # run splitfa to split long chromosome sequences to short segments
-# not spliting
-#$utiles_tools/splitfa pas_REF_pas_DP200_1500x.psmcfa > $psmc_output/bootstrap/pas_REF_pas_DP200_1500x.split.psmcfa
 ## spliting
 #$utiles_tools/splitfa pas_REF_pas_DP200_1500x.psmcfa 100000 > $psmc_output/bootstrap/pas_REF_pas_DP200_1500x.split_100000.psmcfa
 splitfa $out_psmcfa_file.psmcfa 100000 > ./bootstrap/$out_psmcfa_file.split_100000.psmcfa
@@ -141,16 +123,27 @@ splitfa $out_psmcfa_file.psmcfa 100000 > ./bootstrap/$out_psmcfa_file.split_1000
 cd $psmc_output/bootstrap
 #psmc -N25 -t15 -r5 -p "4+25*2+4+6" -o $out_psmcfa_file.psmc $out_psmcfa_file.psmcfa
 # improvement from Jesper
-psmc -N25 -t15 -r5 -p "1+1+1+1+23*2+5" -o $out_psmcfa_file.psmc $out_psmcfa_file.psmcfa
+psmc -N25 -t15 -r5 -p "1+1+1+1+23*2+5" -o $out_psmcfa_file.psmc ../$out_psmcfa_file.psmcfa
+#psmc -N25 -t15 -r5 -p "1+1+1+1+23*2+5" -o AndHae_hifi_asm.aligned.bam.fq.psmc.new ../AndHae_hifi_asm.aligned.bam.fq.psmcfa
 # AndHae_hifi_asm.aligned.bam.fq.psmc
 
 # 20 rounds of bootstrapping
-seq 20 | xargs -i echo psmc -N25 -t15 -r5 -b -p "4+25*2+4+6" \
+#seq 20 | xargs -i echo psmc -N25 -t15 -r5 -b -p "4+25*2+4+6" \
+seq 20 | xargs -i echo psmc -N25 -t15 -r5 -b -p "1+1+1+1+23*2+5" \
 	    -o round-{}.$out_psmcfa_file.split_100000.psmc $out_psmcfa_file.split_100000.psmcfa | sh
 # round-1.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc
 
 cat $out_psmcfa_file.psmc round-*.$out_psmcfa_file.split_100000.psmc > $out_psmcfa_file.combined.psmc
+cat AndHae_hifi_asm.aligned.bam.fq.psmc round-*AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc > AndHae_hifi_asm.aligned.bam.fq.combined.psmc
+cat AndMar_hifi_asm.aligned.bam.fq.psmc round-*AndMar_hifi_asm.aligned.bam.fq.split_100000.psmc > AndMar_hifi_asm.aligned.bam.fq.combined.psmc
+cat BomPas_hifi_asm.aligned.bam.fq.psmc round-*BomPas_hifi_asm.aligned.bam.fq.split_100000.psmc > BomPas_hifi_asm.aligned.bam.fq.combined.psmc
+cat BomVet_hifi_asm.aligned.bam.fq.psmc round-*BomVet_hifi_asm.aligned.bam.fq.split_100000.psmc > BomVet_hifi_asm.aligned.bam.fq.combined.psmc
 
+
+AndHae_hifi_asm.aligned.bam.fq.psmc
+AndMar_hifi_asm.aligned.bam.fq.psmc
+BomPas_hifi_asm.aligned.bam.fq.psmc
+BomVet_hifi_asm.aligned.bam.fq.psmc
 
 exit 0
 
@@ -175,10 +168,23 @@ gs --version
 
 
 # /home/yzliu/miniforge3/envs/psmc/bin/psmc_plot.pl
-psmc_plot.pl -pY50000 AndHae_hifi_asm.aligned.bam.fq.combined.psmc AndHae_hifi_asm.aligned.bam.fq.combined.psmc
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 AndHae_hifi_asm.aligned.bam.fq.combined.psmc AndHae_hifi_asm.aligned.bam.fq.combined.psmc
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 AndHae_hifi_asm.aligned.bam.fq.psmc AndHae_hifi_asm.aligned.bam.fq.psmc
 # single
-psmc_plot.pl -pY50000 -u 3.6e-08 -g 1 round-1.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc round-1.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc
-psmc_plot.pl -pY500000 -R -u 3.6e-09 -g 1 -p round-1.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc round-1.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 round-1.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc round-1.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc
+
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 round-1_20.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc round-*.AndHae_hifi_asm.aligned.bam.fq.split_100000.psmc
+psmc_plot.pl -pY50 -u 3.6e-09 -g 1 round-1_20.AndMar_hifi_asm.aligned.bam.fq.split_100000.psmc round-*.AndMar_hifi_asm.aligned.bam.fq.split_100000.psmc
+psmc_plot.pl -pY300 -u 3.6e-09 -g 1 round-1_20.BomPas_hifi_asm.aligned.bam.fq.split_100000.psmc round-*.BomPas_hifi_asm.aligned.bam.fq.split_100000.psmc
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 round-1_20.BomVet_hifi_asm.aligned.bam.fq.split_100000.psmc round-*.BomVet_hifi_asm.aligned.bam.fq.split_100000.psmc
+
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 -R AndHae_hifi_asm.aligned.bam.fq.combined.psmc AndHae_hifi_asm.aligned.bam.fq.combined.psmc
+psmc_plot.pl -pY50 -u 3.6e-09 -g 1 -R AndMar_hifi_asm.aligned.bam.fq.combined.psmc AndMar_hifi_asm.aligned.bam.fq.combined.psmc
+#psmc_plot.pl -pY100 -u 3.6e-09 -g 1 -R BomPas_hifi_asm.aligned.bam.fq.combined.psmc BomPas_hifi_asm.aligned.bam.fq.combined.psmc
+psmc_plot.pl -pY300 -u 3.6e-09 -g 1 -R BomPas_hifi_asm.aligned.bam.fq.combined.psmc BomPas_hifi_asm.aligned.bam.fq.combined.psmc
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 -R BomVet_hifi_asm.aligned.bam.fq.combined.psmc BomVet_hifi_asm.aligned.bam.fq.combined.psmc
+
+psmc_plot.pl -pY100 -u 3.6e-09 -g 1 All_hifi_asm.aligned.bam.fq.combined.psmc *_hifi_asm.aligned.bam.fq.combined.psmc
 
 # sh: line 1: gnuplot: command not found
 # Can't exec "epstopdf": No such file or directory at /home/yzliu/miniforge3/envs/psmc/bin/psmc_plot.pl line 236, <> line 1939.

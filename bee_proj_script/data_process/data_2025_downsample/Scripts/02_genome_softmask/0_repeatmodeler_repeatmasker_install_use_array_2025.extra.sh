@@ -5,7 +5,7 @@
 #SBATCH --time=3-10:00:00 # 1-RepeatModeler
 ##SBATCH --array=0-3%4
 ##SBATCH --time=1-10:00:00  # 2-RepeatMasker
-#SBATCH --array=1-11%11
+#SBATCH --array=0-6%6
 #SBATCH --error=0_RepeatMasker_detect_2025_Ref_softmask.%A_%a.e
 #SBATCH --output=0_RepeatMasker_detect_2025_Ref_softmask.%A_%a.o
 #SBATCH --job-name=0_RepeatMasker_detect_2025_Ref_softmask
@@ -23,7 +23,7 @@ cd $REF_dir
 #BuildDatabase -name Bombus_veteranus Bombus_veteranus.hifi_asm_pl2.fa
 
 ## test 
-SLURM_ARRAY_TASK_ID=11
+#SLURM_ARRAY_TASK_ID=11
 
 ## array index stats with 0
 species_list=(
@@ -68,40 +68,40 @@ ref_list=(
 species=${species_list[$SLURM_ARRAY_TASK_ID]}
 species_ref=${ref_list[$SLURM_ARRAY_TASK_ID]}
 
-BuildDatabase -name $species $species_ref
+#BuildDatabase -name $species $species_ref
 
 ## step II: detect repeats
 
 ## run RepeatModeler
 #RepeatModeler -database Andrena_marginata -threads 20 > Andrena_marginata_repeat_out.new.log
 
-RepeatModeler -database "$species" -threads 20 > "$species"_repeat_out.log
+#RepeatModeler -database "$species" -threads 20 > "$species"_repeat_out.log
 
-exit 0
+#exit 0
 
 ## Step III: mask regions run after step II is done to have a consensi_fa id
 
 # -LTRStruct (optional)
-mkdir MaskerOutput
+#mkdir MaskerOutput
 
 consensi_fa=(
-    #"RM_2298508.ThuSep121905222024"
 
-    ""
-    ""
-    ""
-    ""
-    ""
-    ""
-    ""
+    "RM_4145600.WedMar192315022025" #Pan
+
+    "RM_1762225.SunMar161930472025" #age
+    "RM_1762236.SunMar161930512025" #lep
+    "RM_1762217.SunMar161930472025" #my
+    "RM_2244147.SunMar161930492025" #por
+    "RM_2244172.SunMar161930582025" #tho
+    "RM_2244153.SunMar161930492025" #x
 
 )
 consensi=${consensi_fa[$SLURM_ARRAY_TASK_ID]}
 out_fa=(
-    "Aphodius_sticticus-GCA_963966075.1.fa"
-    "Ephemera_danica-GCA_000507165.2.fa"
-    "Notonecta_glauca.hifi_asm_pl2.fa"
-    "Stenurella_melanura-GCA_963583905.1.fa"
+    #"Aphodius_sticticus-GCA_963966075.1.fa"
+    #"Ephemera_danica-GCA_000507165.2.fa"
+    #"Notonecta_glauca.hifi_asm_pl2.fa"
+    #"Stenurella_melanura-GCA_963583905.1.fa"
 
     #"Chorthippus_brunneus.hifi_asm_pl2.fa" # assembling: 14Gb
     ##"Pseudochorthippus_parallelus.hifi_asm_pl2.fa" # no data
