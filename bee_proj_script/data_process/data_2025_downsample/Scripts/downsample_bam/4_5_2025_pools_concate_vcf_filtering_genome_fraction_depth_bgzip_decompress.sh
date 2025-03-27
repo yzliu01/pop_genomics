@@ -71,8 +71,7 @@ for vcf_list in $(ls -t *.list | head -3 | sort)
 done
 
 
-## genome fraction of called sites
-
+******************** genome fraction of called sites ********************
 ## downsample
 ## New REF for pooled bees
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF

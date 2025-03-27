@@ -2,7 +2,8 @@
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 50g
-#SBATCH --array=1-10%10
+#SBATCH --array=2-9%9
+##SBATCH --array=1-10%10
 #SBATCH --time=1-16:00:00
 #SBATCH --error=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.e
 #SBATCH --output=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.o
@@ -13,6 +14,9 @@
 ## activate (env) tools of variant_calling_mapping
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 conda activate variant_calling_mapping
+
+## test
+#SLURM_ARRAY_TASK_ID=1
 
 ## run in terminal
 #export OPENBLAS_NUM_THREADS=1
@@ -82,15 +86,15 @@ done
 
 BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
 BED_LIST=(
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_01.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_02.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_03.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_04.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_05.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_06.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_07.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_08.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_09.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_02.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_03.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_04.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_05.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_06.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_07.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_08.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_09.sort.bed"
     ## 100% whole genome
     "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_10.bed"
 
@@ -100,9 +104,6 @@ BED_LIST=(
 #chr_n=${ref_chr_md[i]#ref_genome_md_chr_}
 ## remove suffix text using %
 #chr_n=${chr_n%.fasta}
-
-## test
-#SLURM_ARRAY_TASK_ID=10
 
 ## bed file input
 BED=$(echo ${BED_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
@@ -133,7 +134,7 @@ bcftools norm -d none -f $REF_AndMar | \
 bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools view -e "MEAN(FMT/DP) < "${depth[i]}" || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndMar_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"${depth_time[i]}"_1500x_noMS.shuf.P_"$PROP".issue.vcf.gz
+-Oz -o ./"$Andmar_New_REF_AndMar_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"${depth_time[i]}"_1500x_noMS.shuf.P_"$PROP".vcf.gz
 done
 
 exit 0

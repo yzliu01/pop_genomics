@@ -28,7 +28,7 @@ cd $gene_rediction_dir
 species_list=(
     "Aphodius_sticticus"
     "Ephemera_danica" 
-    "Notonecta_glauca" #x      # self_annotated
+    "Notonecta_glauca_pl2" #x      # self_annotated
     "Stenurella_melanura" #x
 
     #"Chorthippus_brunneus" # self_annotated: 14Gb
@@ -69,7 +69,7 @@ species=${species_list[$SLURM_ARRAY_TASK_ID]}
 species_ref=${ref_list[$SLURM_ARRAY_TASK_ID]}
 
 ## reference genome with simple header lines
-#sed -e 's/|/_/g' -e 's/\.1.*/.1/g' $ref_dir/$species_ref > $ref_dir/$species_ref.simple_header.fa
+sed -e 's/|/_/g' -e 's/\.1.*/.1/g' $ref_dir/$species_ref > $ref_dir/$species_ref.simple_header.fa
 
 ## the fasta header name affect GeneMark
 ##sed -e 's/|/_/g' -e 's/\.1.*/.1/g' /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.fa > /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Bombus_muscorum-GCA_963971185.1.simple_header_new.fa

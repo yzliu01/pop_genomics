@@ -1,14 +1,14 @@
 #!/bin/sh
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 20
-#SBATCH --mem 500g
-#SBATCH --time=3-10:00:00 # 1-RepeatModeler
+#SBATCH --mem 1000g
+#SBATCH --time=6-00:00:00 # 1-RepeatModeler
 ##SBATCH --array=0-3%4
 ##SBATCH --time=1-10:00:00  # 2-RepeatMasker
-#SBATCH --array=0-6%6
-#SBATCH --error=0_RepeatMasker_detect_2025_Ref_softmask.%A_%a.e
-#SBATCH --output=0_RepeatMasker_detect_2025_Ref_softmask.%A_%a.o
-#SBATCH --job-name=0_RepeatMasker_detect_2025_Ref_softmask
+#SBATCH --array=0-1%3
+#SBATCH --error=0_RepeatMasker_detect_2025_Ref_softmask_grasshopper.%A_%a.e
+#SBATCH --output=0_RepeatMasker_detect_2025_Ref_softmask_grasshopper.%A_%a.o
+#SBATCH --job-name=0_RepeatMasker_detect_2025_Ref_softmask_grasshopper
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -22,78 +22,70 @@ cd $REF_dir
 ## step I: build database
 #BuildDatabase -name Bombus_veteranus Bombus_veteranus.hifi_asm_pl2.fa
 
-## test 
-#SLURM_ARRAY_TASK_ID=11
-
 ## array index stats with 0
 species_list=(
-    "Aphodius_sticticus"
-    "Ephemera_danica" 
-    "Notonecta_glauca"      # self_annotated
-    "Stenurella_melanura"
+    #"Aphodius_sticticus"
+    #"Ephemera_danica" 
+    #"Notonecta_glauca"      # self_annotated
+    #"Stenurella_melanura"
 
-    #"Chorthippus_brunneus" # self_annotated: 14Gb
+    "Chorthippus_brunneus" # self_annotated: 14Gb
     ##"Pseudochorthippus_parallelus" # no ref & no reads
-    #"Chorthippus_parallelus" # self_annotated: 14Gb
-    "Panurgus_banksianus"  # self_annotated
+    "Chorthippus_parallelus" # self_annotated: 14Gb
+    #"Panurgus_banksianus"  # self_annotated
 
-    "Agelastica_alni"
-    "Leptopterna_dolobrata"
-    "Mystacides_longicornis"
-    "Porcellio_scaber"
-    "Tholera_decimalis"
-    "Xestia_c-nigrum"
+    #"Agelastica_alni"
+    #"Leptopterna_dolobrata"
+    #"Mystacides_longicornis"
+    #"Porcellio_scaber"
+    #"Tholera_decimalis"
+    #"Xestia_c-nigrum"
 )
 ## Ste_mel need more mem and time to be done
 ref_list=(
-    "Aphodius_sticticus-GCA_963966075.1.fa"
-    "Ephemera_danica-GCA_000507165.2.fa"
-    "Notonecta_glauca.hifi_asm_pl2.fa"
-    "Stenurella_melanura-GCA_963583905.1.fa"
+    #"Aphodius_sticticus-GCA_963966075.1.fa"
+    #"Ephemera_danica-GCA_000507165.2.fa"
+    #"Notonecta_glauca.hifi_asm_pl2.fa"
+    #"Stenurella_melanura-GCA_963583905.1.fa"
 
-    #"Chorthippus_brunneus.hifi_asm_pl2.fa" # assembling: 14Gb
+    "Chorthippus_brunneus.hifi_asm_pl3.fa" # assembling: 15.6Gb
     ##"Pseudochorthippus_parallelus.hifi_asm_pl2.fa" # no data
-    #"Chorthippus_parallelus.hifi_asm_pl2.fa" # assembling: 14Gb
-    "Panurgus_banksianus.hifi_asm_pl2.fa" # assembling
+    "Chorthippus_parallelus.hifi_asm_pl3.fa" # assembling: 14Gb
+    #"Panurgus_banksianus.hifi_asm_pl3.fa" # assembling
 
-    "Agelastica_alni-GCA_950111635.2.fa"
-    "Leptopterna_dolobrata-GCA_954871275.1.fa"
-    "Mystacides_longicornis-GCA_963576905.1.fa"
-    "Porcellio_scaber-GCA_034700385.1.fa"
-    "Tholera_decimalis-GCA_943138885.2.fa"
-    "Xestia_c-nigrum-GCA_916618015.1.fa"
+    #"Agelastica_alni-GCA_950111635.2.fa"
+    #"Leptopterna_dolobrata-GCA_954871275.1.fa"
+    #"Mystacides_longicornis-GCA_963576905.1.fa"
+    #"Porcellio_scaber-GCA_034700385.1.fa"
+    #"Tholera_decimalis-GCA_943138885.2.fa"
+    #"Xestia_c-nigrum-GCA_916618015.1.fa"
 )
 
 ## chatgpt
 species=${species_list[$SLURM_ARRAY_TASK_ID]}
 species_ref=${ref_list[$SLURM_ARRAY_TASK_ID]}
 
-#BuildDatabase -name $species $species_ref
+BuildDatabase -name $species $species_ref
 
 ## step II: detect repeats
 
 ## run RepeatModeler
 #RepeatModeler -database Andrena_marginata -threads 20 > Andrena_marginata_repeat_out.new.log
+echo "running RepeatModeler for $species" > "$species"_repeat_out.log
+RepeatModeler -database "$species" -threads 20 >> "$species"_repeat_out.log
 
-#RepeatModeler -database "$species" -threads 20 > "$species"_repeat_out.log
-
-#exit 0
+exit 0
 
 ## Step III: mask regions run after step II is done to have a consensi_fa id
 
 # -LTRStruct (optional)
-#mkdir MaskerOutput
+mkdir MaskerOutput
 
 consensi_fa=(
 
-    #"RM_4145600.WedMar192315022025" #Pan pl3
-
-    "RM_1762225.SunMar161930472025" #age
-    "RM_1762236.SunMar161930512025" #lep
-    "RM_1762217.SunMar161930472025" #my
-    "RM_2244147.SunMar161930492025" #por
-    "RM_2244172.SunMar161930582025" #tho
-    "RM_2244153.SunMar161930492025" #x
+    "RM_2314111.WedMar192228052025"
+    "RM_1000189.WedMar192316112025"
+    #"RM_4145600.WedMar192315022025"
 
 )
 consensi=${consensi_fa[$SLURM_ARRAY_TASK_ID]}
@@ -103,17 +95,17 @@ out_fa=(
     #"Notonecta_glauca.hifi_asm_pl2.fa"
     #"Stenurella_melanura-GCA_963583905.1.fa"
 
-    #"Chorthippus_brunneus.hifi_asm_pl2.fa" # assembling: 14Gb
+    "Chorthippus_brunneus.hifi_asm_pl3.fa" # assembling: 14Gb
     ##"Pseudochorthippus_parallelus.hifi_asm_pl2.fa" # no data
-    #"Chorthippus_parallelus.hifi_asm_pl2.fa" # assembling: 14Gb
-    #"Panurgus_banksianus.hifi_asm_pl2.fa" # assembling
+    "Chorthippus_parallelus.hifi_asm_pl3.fa" # assembling: 14Gb
+    #"Panurgus_banksianus.hifi_asm_pl3.fa" # assembling
 
-    "Agelastica_alni-GCA_950111635.2.fa"
-    "Leptopterna_dolobrata-GCA_954871275.1.fa"
-    "Mystacides_longicornis-GCA_963576905.1.fa"
-    "Porcellio_scaber-GCA_034700385.1.fa"
-    "Tholera_decimalis-GCA_943138885.2.fa"
-    "Xestia_c-nigrum-GCA_916618015.1.fa"
+    #"Agelastica_alni-GCA_950111635.2.fa"
+    #"Leptopterna_dolobrata-GCA_954871275.1.fa"
+    #"Mystacides_longicornis-GCA_963576905.1.fa"
+    #"Porcellio_scaber-GCA_034700385.1.fa"
+    #"Tholera_decimalis-GCA_943138885.2.fa"
+    #"Xestia_c-nigrum-GCA_916618015.1.fa"
 
 )
 out=${out_fa[$SLURM_ARRAY_TASK_ID]}

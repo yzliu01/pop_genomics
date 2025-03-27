@@ -10,6 +10,9 @@
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
+## test
+#SLURM_ARRAY_TASK_ID=1
+
 ## activate (env) tools of variant_calling_mapping
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 conda activate variant_calling_mapping
@@ -100,9 +103,6 @@ BED_LIST=(
 #chr_n=${ref_chr_md[i]#ref_genome_md_chr_}
 ## remove suffix text using %
 #chr_n=${chr_n%.fasta}
-
-## test
-#SLURM_ARRAY_TASK_ID=1
 
 ## bed file input
 BED=$(echo ${BED_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)

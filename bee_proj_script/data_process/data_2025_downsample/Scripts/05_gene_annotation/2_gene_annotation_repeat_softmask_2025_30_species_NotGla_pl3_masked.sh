@@ -7,9 +7,9 @@
 #SBATCH --time=25:00:00 # PorSca
 #SBATCH --array=2%1
 ##SBATCH --array=0-9%10
-#SBATCH --error=2_gene_annotation_repeat_softmask_2025_30_NotGla_pl3.%A_%a.e
-#SBATCH --output=2_gene_annotation_repeat_softmask_2025_30_NotGla_pl3.%A_%a.o
-#SBATCH --job-name=2_gene_annotation_repeat_softmask_2025_30_NotGla_pl3
+#SBATCH --error=2_gene_annotation_repeat_softmask_2025_30_NotGla_pl3_masked.%A_%a.e
+#SBATCH --output=2_gene_annotation_repeat_softmask_2025_30_NotGla_pl3_masked.%A_%a.o
+#SBATCH --job-name=2_gene_annotation_repeat_softmask_2025_30_NotGla_pl3_masked
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -49,7 +49,7 @@ ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 ref_list=(
     "Aphodius_sticticus-GCA_963966075.1.fa" # >ENA|OZ014506|OZ014506.1 Aphodius sticticus genome assembly, chromosome: 1
     "Ephemera_danica-GCA_000507165.2.fa" # >KZ497563.1 UNVERIFIED_CONTAM: Ephemera danica
-    "Notonecta_glauca.hifi_asm_pl3.fa" # >ptg000001l
+    "Notonecta_glauca.hifi_asm_pl3.fa.masked" # >ptg000001l; the non-softmasked one got problem.
     "Stenurella_melanura-GCA_963583905.1.fa" # >ENA|OY757309|OY757309.1 Stenurella melanura genome assembly, chromosome: 1
 
     #"Chorthippus_brunneus.hifi_asm_pl2.fa" # assembling: 14Gb
@@ -64,6 +64,12 @@ ref_list=(
     "Tholera_decimalis-GCA_943138885.2.fa" # >ENA|OW964549|OW964549.2 Tholera decimalis genome assembly, chromosome: 1
     "Xestia_c-nigrum-GCA_916618015.1.fa" # >ENA|OU745244|OU745244.1 Xestia c-nigrum genome assembly, chromosome: 1
 )
+
+## /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_softmask_Notonecta_glauca_pl3_results_for_protseq-/GeneMark-EP.stdout
+## Intergenic:	39449	0	0
+## error, no valid sequences were found
+## error on call: /faststorage/project/eDNA/yzliu/DK_proj/sofwtare/gmetp_linux_64/bin/gmes/make_nt_freq_mat.pl --cfg /faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/gene_annotation/braker_softmask_Notonecta_glauca_pl3_results_for_protseq/GeneMark-EP/run.cfg --section stop_TAA   --format TERM_TAA
+
 
 species=${species_list[$SLURM_ARRAY_TASK_ID]}
 species_ref=${ref_list[$SLURM_ARRAY_TASK_ID]}
