@@ -1,0 +1,15 @@
+{
+    "created": "2018-01-11T09:13:44.448342",
+    "description": "China administrative level 0-2 zipped shapefiles",
+    "format": "SHP",
+    "download_url": "https://data.humdata.org/dataset/17a2aaa2-dea9-4a2e-8b3f-92d1bdfb850c/resource/9e67ddf9-ce26-4b7a-82b1-51e5ca0714c8/download/chn_adm_ocha_2020_shp.zip",
+    "id": "9e67ddf9-ce26-4b7a-82b1-51e5ca0714c8",
+    "last_modified": "2020-09-10T09:00:06.531869",
+    "metadata_modified": "2025-02-25T21:27:41.538882",
+    "microdata": false,
+    "dataset_id": "17a2aaa2-dea9-4a2e-8b3f-92d1bdfb850c",
+    "resource_type": "file.upload",
+    "name": "chn_adm_ocha_2020_SHP.zip",
+    "mimetype": "application/x-zip-compressed",
+    "size": "3.5M"
+}

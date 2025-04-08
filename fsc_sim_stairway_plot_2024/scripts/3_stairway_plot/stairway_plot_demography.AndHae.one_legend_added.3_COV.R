@@ -204,7 +204,7 @@ p1_final <- p1_initial +
 
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 4, nrow = 3,
                             layout_matrix = matrix(seq_len(12), nrow = 3, byrow = FALSE))
-pdf_file <- file.path(result_path,"AndHae_combined_added_plot.dS.pdf")
+pdf_file <- file.path(result_path,"AndHae_combined_added_plot.dS.new.pdf")
 ggsave(pdf_file,combined_plot,width = 18, height = 13.5)
 
 combined_plot1 <- marrangeGrob(grobs = plot_list[c(1,4,7,10)],ncol = 3, nrow = 1, top=NULL,

@@ -196,28 +196,15 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
     # "A.marginata" = "#0072B2"
     scale_fill_manual(values = c("A.haemorrhoa" = "#009E73", "A.marginata" = "#332288", "B.pascuorum" = "#D55E00", "B.veteranus" = "#CC79A7")) +  # Custom fill colors
     theme_pubr( base_size = 9.5,border = TRUE) +
-    guides(color = guide_legend(nrow = 1)) +  # Set the legend to two rows
-# single plot
-#    guides(color = guide_legend(nrow = 2)) +  # Set the legend to two rows
-    theme(
-        #legend.position = c(0.3,-0.635),
-        #legend.text = element_text(size = 9),
-        legend.background = element_rect(fill = "transparent", color = NA), # Transparent background
-        legend.box.background = element_rect(fill = "transparent", color = NA), # Optional for legend box
-# single plot new
-        legend.position = c(0.28,-0.63),
-        legend.text = element_text(size = 9),
-        legend.title = element_text(size = 9.5),
-# single plot old
-        #legend.position = c(0.73,-0.21),
-        #legend.text = element_text(size = 9.5),
-        #legend.position = "bottom",
-        axis.text = element_text(colour = "black",size = 9), 
+
+    theme(axis.text = element_text(colour = "black",size = 9), 
         axis.title = element_text(colour = "black",size = 9.5),
         panel.border = element_rect(linewidth = 1.2),
+        legend.position = "none"
         #panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
         #axis.ticks = element_line(colour = "black", size = 1)
         ) +
+
     labs(x="Years ago (log transformed)",
          y=expression(paste(italic("N")["e"]))) +
     scale_x_log10(lim= c(10,25000),

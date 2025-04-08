@@ -227,9 +227,9 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
 ## combine: p1_final
 p5x_final <- p1_initial + 
     ## position of zoom plot
-    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 250000, ymax = 500000) +
+    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000) +
     ## position of annotation frame
-    geom_rect(aes(xmin = 50000, xmax = 180000, ymin = 250000, ymax = 500000),
+    geom_rect(aes(xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000),
               color='black', linetype='dashed', linewidth=0.5, alpha=0) +
     ## conncetion line to one side of the frame [geom_rect]
     geom_path(aes(x,y,group=grp), 

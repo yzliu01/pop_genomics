@@ -5,6 +5,7 @@ install.packages("mapdata")
 library(RgoogleMaps)
 library(mapdata)
 help("mapdata")
+
 ??mapdata
 lat <- c(48,64)
 lon <- c(-140,-110)
