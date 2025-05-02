@@ -12,12 +12,12 @@ setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stai
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
-pdf(paste0("combined.1000000Ne_200hapS_5rep_2_10_i_d_cons.rotated_x_lab.pdf"),width = 20, height = 25)
+pdf(paste0("combined.1000000Ne_200hapS_5rep_2_10_i_d_cons.rotated_x_lab.pdf"),width = 12, height = 12)
 #pdf(paste0("combined.1000000Ne_200hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
-par(mfcol=c(5,4),mar=c(4,4.4,3,1)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-layout(matrix(c(1:20),nrow=5,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
+par(mfcol=c(4,4),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.4, lwd=2) # cex.axis=1,
+layout(matrix(c(1:16),nrow=4,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
@@ -25,8 +25,8 @@ for (generation in c("50G","100G","500G","1000G")){
     ## modified naming format
     for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
         ## solo axis name plot
-        #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
-        ##log="xy",xlab="Years ago", ylab="Effective population size"
+        #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Generations ago", ylab="Effective population size",xaxt='n',yaxt='n')
+        ##log="xy",xlab="Generations ago", ylab="Effective population size"
         #title(line=2)
 
         ## key step
@@ -36,75 +36,75 @@ for (generation in c("50G","100G","500G","1000G")){
         cat("\n",plot_name,"\n\n")
         
         if (plot_name %in% c("1000000Ne_200hapS_1E_50G_2e_d_cons_20Chr_15Mb", "1000000Ne_200hapS_1E_100G_2e_d_cons_20Chr_15Mb", "1000000Ne_200hapS_1E_500G_2e_d_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,5.5e5),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
-            #log="xy",xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,2e6),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
+            #log="xy",xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(150000,250000,500000,550000),label=c(format(c(150000,250000,500000,550000),scientific=FALSE)))
+            axis(side=2, at=c(50000,250000,500000,2000000),label=c(format(c(50000,250000,500000,2000000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_200hapS_1E_1000G_2e_d_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e5),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2e6),log="x", xlab="Generations ago", ylab="Effective population size",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(150000,250000,500000,550000),label=c(format(c(150000,250000,500000,550000),scientific=FALSE)))
+            axis(side=2, at=c(50000,250000,500000,2000000),label=c(format(c(50000,250000,500000,2000000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.2e6),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2e6),log="x", xlab="Generations ago", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(150000,250000,500000,750000,1000000,1200000),label=c(format(c(150000,250000,500000,750000,1000000,1200000),scientific=FALSE)))
+            axis(side=2, at=c(50000,250000,500000,2000000),label=c(format(c(50000,250000,500000,2000000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,1.2e6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2e6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(150000,250000,500000,750000,1000000,1200000),label=c(format(c(150000,250000,500000,750000,1000000,1200000),scientific=FALSE)))
+            axis(side=2, at=c(50000,250000,500000,2000000),label=c(format(c(50000,250000,500000,2000000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb")){
             
             ## high Ne (attention to duplicate)
 
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5e6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(250000,500000,750000,950000,1500000,3000000,4500000,5000000,5200000),label=c(format(c(250000,500000,750000,950000,1500000,3000000,4500000,5000000,5200000),scientific=FALSE)))
+            axis(side=2, at=c(500000,3000000,5000000),label=c(format(c(500000,3000000,5000000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.2e6),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5e6),log="x", xlab="Generations ago", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(25000,50000,75000,95000,150000,300000,450000,500000,520000),label=c(format(c(25000,50000,75000,95000,150000,300000,450000,500000,520000),scientific=FALSE)))
+            axis(side=2, at=c(500000,3000000,5000000),label=c(format(c(500000,3000000,5000000),scientific=FALSE)))
 
         } else if (plot_name %in% c("1000000Ne_200hapS_1E_1000G_10e_d_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(5,5.5e5),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2e6),log="x", xlab="Generations ago", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(20000,50000,80000,100000,150000,250000,500000,550000),label=c(format(c(20000,50000,80000,100000,150000,250000,500000,550000),scientific=FALSE)))
+            axis(side=2, at=c(50000,250000,500000,2000000),label=c(format(c(50000,250000,500000,2000000),scientific=FALSE)))
 
         } else {#50G_100G_500G_10e_d_cons
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,5.5e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2e6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(20000,50000,80000,100000,150000,250000,500000,550000),label=c(format(c(20000,50000,80000,100000,150000,250000,500000,550000),scientific=FALSE)))
+            axis(side=2, at=c(50000,250000,500000,2000000),label=c(format(c(50000,250000,500000,2000000),scientific=FALSE)))
 
         }
         ##turn scientific notion off
-        #axis(side=1,at=c(50,100,500,1000,10000,100000,200000),las=0,label=c(format(c(50,100,500,1000,10000,100000,200000),scientific=TRUE)))
+        #axis(side=1,at=c(50,100,500,1000,10000,100000),las=0,label=c(format(c(50,100,500,1000,10000,100000),scientific=TRUE)))
         #axis(side=2, at=c(25000,50000,75000,100000,125000,150000,180000,200000,300000),label=c(format(c(25000,50000,75000,100000,125000,150000,180000,200000,300000),scientific=FALSE)))
         #eaxis(2, padj=0.5,cex.axis=1.5)
         
         ## rotating x axis labels
-        lablist.x <- as.vector(c(50,100,500,1000,10000,100000,200000))
-        axis(side=1,at=c(50,100,500,1000,10000,100000,200000),labels=FALSE)
+        lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
+        axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
         
-        #text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 8000,srt = 38,pos = 3, xpd = TRUE)
+        #text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 8000,srt = 38,pos = 3, xpd = TRUE)
 
         ## distance to x axis
         if (plot_name %in% c("1000000Ne_200hapS_1E_50G_10e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_100G_10e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_500G_10e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_1000G_10e_i_cons_20Chr_15Mb")){
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 400000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 710000,srt = 45,pos = 3, xpd = TRUE)
         } else if (plot_name %in% c("1000000Ne_200hapS_1E_50G_2e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_100G_2e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_500G_2e_i_cons_20Chr_15Mb","1000000Ne_200hapS_1E_1000G_2e_i_cons_20Chr_15Mb")) {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 100000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 300000,srt = 45,pos = 3, xpd = TRUE)
         } else {
-            text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 40000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 300000,srt = 45,pos = 3, xpd = TRUE)
         }
 
         ## add plot title in each plot

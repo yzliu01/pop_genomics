@@ -3,11 +3,11 @@ library(gtools)
 library(fs)
 library(stringr)
 
-setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft/10KNe_swp")
-final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft/10KNe_swp"
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp")
+final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp"
 
 ## attention to refer to only one file name
-file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*20hapS*15Mb_1.final.summary")
+file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*20hapS*15Mb*_1.final.summary")
 #file_list <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*final.summary")
 #file_list0 <- fs::dir_ls(path=final_summary, recurse = TRUE, type = "file", glob = "*.summary")
 
@@ -15,12 +15,16 @@ file_list0 <- fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "fil
 #mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*100_500G*20hapS*.final.summary")))
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp")
 
-pdf(paste0("combined.10000Ne_20hapS_5rep_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.pdf"),width = 20, height = 12)
-#pdf(paste0("combined.10000Ne_20hapS_5rep.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
+pdf(paste0("combined.10000Ne_20hapS_5rep_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.new.pdf"),width = 20, height = 12)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
 par(mfcol=c(4,7),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2)
 layout(matrix(c(1:28),nrow=4,ncol=7,byrow=T),width=c(rep(1,6)),height=c(1,1))
+
+## combined one start from here
+pdf(paste0("combined.10000Ne_40_80_200hapS_5rep_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei.new.pdf"),width = 36, height = 12)
+par(mfcol=c(3,7),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2)
+layout(matrix(c(1:21),nrow=3,ncol=7,byrow=T),width=c(rep(1,6)),height=c(1,1))
 
 for (generation in c("100_500G")){
     ## old naming format
@@ -212,7 +216,7 @@ for (generation in c("100_500G")){
     }
 }
 
-dev.off()
+#dev.off()
 
 **************************************************************
                 if (x <= 100) {

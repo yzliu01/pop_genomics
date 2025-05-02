@@ -3,11 +3,11 @@
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 50g
 ##SBATCH --mem 25g # not enough
-#SBATCH --array=1-14281%600
+#SBATCH --array=1-13243%600
 #SBATCH --time=28:00:00
 #SBATCH --error=3_fb_variant_calling_2025_NotGla_REF_NotGla.100kb_g1500x.chr_regions.%A_%a.e
 #SBATCH --output=3_fb_variant_calling_2025_NotGla_REF_NotGla.100kb_g1500x.chr_regions.%A_%a.o
-#SBATCH --job-name=14281_3_fb_variant_calling_2025_NotGla_REF_NotGla.100kb_g1500x.chr_regions
+#SBATCH --job-name=13243_3_fb_variant_calling_2025_NotGla_REF_NotGla.100kb_g1500x.chr_regions
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -28,10 +28,10 @@ cd $VCF_OUT_DIR/fb_per_region_NotGla_REF_NotGla
 
 ## path to your ref genome
 REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
-REF=$REF_DIR/Notonecta_glauca.hifi_asm_pl2-softmasked.fa
+REF=$REF_DIR/Notonecta_glauca.hifi_asm_pl3.fa.masked
 
 Each_Region_Dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
-Ref_Region=Notonecta_glauca.hifi_asm_pl2.fb_100kb.regions
+Ref_Region=Notonecta_glauca.hifi_asm_pl3.fb_100kb.regions.masked
 Each_Region_Ref=$(cat $Each_Region_Dir/$Ref_Region | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 ## run freebayes with single core

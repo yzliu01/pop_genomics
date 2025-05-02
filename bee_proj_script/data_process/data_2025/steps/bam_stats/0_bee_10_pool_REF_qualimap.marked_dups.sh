@@ -2,8 +2,8 @@
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 10
 #SBATCH --mem 200g
-##SBATCH --array=1-10%10
-#SBATCH --time=05:00:00
+#SBATCH --array=1-10%10
+#SBATCH --time=10:00:00
 #SBATCH --error=qualimap_bee_10_pool.marked_dups.%A_%a.e
 #SBATCH --output=qualimap_bee_10_pool.marked_dups.%A_%a.o
 #SBATCH --job-name=qualimap_bee_10_pool.marked_dups
@@ -32,7 +32,7 @@ cd $BAM_DIR
 ##bam_list=$(ls *sort.marked_dups.new.bam | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 ## create a bam file list
-#ls -t *sort.marked_dups.bam | head -10 > bee_10_pools.sort.marked_dups.bam.list
+ls -t *sort.marked_dups.bam | head -10 > bee_10_pools.sort.marked_dups.bam.list
 #Andhae.New_REF_AndHae.sort.marked_dups.bam
 #Andmar.New_REF_AndHae.sort.marked_dups.bam
 # Aphsti.REF_AphSti.sort.marked_dups.bam

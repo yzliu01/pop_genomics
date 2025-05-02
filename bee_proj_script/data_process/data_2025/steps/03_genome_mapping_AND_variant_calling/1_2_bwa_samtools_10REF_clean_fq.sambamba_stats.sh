@@ -11,8 +11,6 @@
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
-# 10 min test job_id 52764774
-
 ## read fastq files and Read group lines
 FASTQ_CLEAN=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/fastq_clean
 cd $FASTQ_CLEAN
@@ -24,24 +22,24 @@ cd $FASTQ_CLEAN
 ## examples of clean data
 # Andmar_fastq1.fq.clean.gz
 # Andmar_fastq2.fq.clean.gz
-seq1=$(ls *R1.fq.clean.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
-seq2=$(ls *R2.fq.clean.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # reverse sequence
+seq1=$(ls *R1_000.fq.clean.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # forward sequence
+seq2=$(ls *R2_000.fq.clean.gz | sed -n ${SLURM_ARRAY_TASK_ID}p) # reverse sequence
 
 ## Read group
 #Sorted_ReadGroup_FILE=/faststorage/project/eDNA/yzliu/DK_proj/data/bee_proj_data/bam/ReadGroup_pooled.tab.list
 Sorted_ReadGroup_FILE=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/ReadGroup_10pools.tab.list
 ReadGroup=$(cat $Sorted_ReadGroup_FILE | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
-# @RG\tID:AphSti\tLB:Col_AphSti\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Col_AphSti
-# @RG\tID:BomMaj\tLB:Dip_BomMaj\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Dip_BomMaj
-# @RG\tID:CerRyb\tLB:Hym_CerRyb\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Hym_CerRyb
-# @RG\tID:EphDan\tLB:Eph_EphDan\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Eph_EphDan
-# @RG\tID:MegLea\tLB:Hym_MegLea\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Hym_MegLea
-# @RG\tID:NotGla\tLB:Hem_NotGla\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Hem_NotGla
-# @RG\tID:OchPle\tLB:Lep_OchPle\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Lep_OchPle
-# @RG\tID:PhrFul\tLB:Lep_PhrFul\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Lep_PhrFul
-# @RG\tID:RutMac\tLB:Col_RutMac\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Col_RutMac
-# @RG\tID:SteMel\tLB:Col_SteMel\tPL:Azenta_NovaSeq\tPU:gDNA\tSM:Col_SteMel
+# @RG\tID:AphSti\tLB:Col_AphSti\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Col_AphSti
+# @RG\tID:BomMaj\tLB:Dip_BomMaj\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Dip_BomMaj
+# @RG\tID:CerRyb\tLB:Hym_CerRyb\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Hym_CerRyb
+# @RG\tID:EphDan\tLB:Eph_EphDan\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Eph_EphDan
+# @RG\tID:MegLea\tLB:Hym_MegLea\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Hym_MegLea
+# @RG\tID:NotGla\tLB:Hem_NotGla\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Hem_NotGla
+# @RG\tID:OchPle\tLB:Lep_OchPle\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Lep_OchPle
+# @RG\tID:PhrFul\tLB:Lep_PhrFul\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Lep_PhrFul
+# @RG\tID:RutMac\tLB:Col_RutMac\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Col_RutMac
+# @RG\tID:SteMel\tLB:Col_SteMel\tPL:Azenta_NovaSeq2x150\tPU:gDNA\tSM:Col_SteMel
 
 
 ## mapping output
@@ -59,20 +57,21 @@ REF_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 #"Bombus_hortorum-GCA_905332935.1-softmasked.fa"
 #"Bombus_confusus-GCA_014737475.1_ASM1473747v1-softmasked.fa"
 
-REF1_list=(
+REF_list=(
     "Aphodius_sticticus-GCA_963966075.1.fa"
     "Bombylius_major-GCA_932526495.1-softmasked.fa"
     "Cerceris_rybyensis-GCA_910591515.1-softmasked.fa"
     "Ephemera_danica-GCA_000507165.2.fa"
     "Megachile_leachella-GCA_963576845.1-softmasked.fa"
-    "Notonecta_glauca.hifi_asm_pl2.fa"
+    #"Notonecta_glauca.hifi_asm_pl2.fa"
+    "Notonecta_glauca.hifi_asm_pl3.fa.masked"
     "Ochropleura_plecta-GCA_905475445.1-softmasked.fa"
     "Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa"
     "Rutpela_maculata-GCA_936432065.2-softmasked.fa"
     "Stenurella_melanura-GCA_963583905.1.fa"
 
             )
-REF1=$(echo ${REF1_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
+REF=$(echo ${REF_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 OUT_NAME_list=(
             "REF_AphSti"
@@ -89,7 +88,7 @@ OUT_NAME_list=(
 OUT_NAME=$(echo ${OUT_NAME_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## out bam file name
 # Aphsti_R1_001.fastq.gz
-File1=${seq1/_R1.fq.clean.gz/}
+File=${seq1/_R1_000.fq.clean.gz/}
 
 ## activate (env) tools of variant_calling_mapping to use sambamba markdup
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
@@ -99,10 +98,10 @@ conda activate variant_calling_mapping
 cd $OUT_BAM
 
 ## attention to REF variable
-bwa mem -t 20 -R $ReadGroup $REF_DIR/$REF1 $FASTQ_CLEAN/$seq1 $FASTQ_CLEAN/$seq2 | samtools sort  -@ 8 -m 100G -o $OUT_BAM/$File1.$OUT_NAME".sort.bam"
+bwa mem -t 20 -R $ReadGroup $REF_DIR/$REF $FASTQ_CLEAN/$seq1 $FASTQ_CLEAN/$seq2 | samtools sort  -@ 8 -m 100G -o $OUT_BAM/$File.$OUT_NAME".sort.bam"
 
 ## mark duplicates
-SORTED_BAM=$File1.$OUT_NAME".sort.bam"
+SORTED_BAM=$File.$OUT_NAME".sort.bam"
 MARKED_BAM=${SORTED_BAM/.sort.bam/.sort.marked_dups.bam}
 
 #picard MarkDuplicates \

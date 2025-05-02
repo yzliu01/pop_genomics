@@ -127,6 +127,7 @@ done
 conda activate variant_calling_mapping
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
 Regions_New=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/fasta_generate_regions/chr_regions
+
 REF_list=(
             #"Andrena_fulva-GCA_946251845.1-softmasked.fa"
             #"Andrena_trimmerana-GCA_951215215.1-softmasked.fa"
@@ -142,30 +143,59 @@ REF_list=(
 ## need to index reference genomes before run the genome split
 
 REF_list=(
-    "Aphodius_sticticus-GCA_963966075.1.fa"
-    "Stenurella_melanura-GCA_963583905.1.fa"
-    "Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa"
-    "Megachile_leachella-GCA_963576845.1-softmasked.fa"
-    "Ochropleura_plecta-GCA_905475445.1-softmasked.fa"
-    "Cerceris_rybyensis-GCA_910591515.1-softmasked.fa"
-    "Bombylius_major-GCA_932526495.1-softmasked.fa"
-    "Ephemera_danica-GCA_000507165.2.fa"
-    "Rutpela_maculata-GCA_936432065.2-softmasked.fa"
-    "Notonecta_glauca.hifi_asm_pl2.fa"
+## hifi_asm - self assemblies
+# first 10 ref
+    #"Aphodius_sticticus-GCA_963966075.1.fa"
+    #"Stenurella_melanura-GCA_963583905.1.fa"
+    #"Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa"
+    #"Megachile_leachella-GCA_963576845.1-softmasked.fa"
+    #"Ochropleura_plecta-GCA_905475445.1-softmasked.fa"
+    #"Cerceris_rybyensis-GCA_910591515.1-softmasked.fa"
+    #"Bombylius_major-GCA_932526495.1-softmasked.fa"
+    #"Ephemera_danica-GCA_000507165.2.fa"
+    #"Rutpela_maculata-GCA_936432065.2-softmasked.fa"
+    ##"Notonecta_glauca.hifi_asm_pl2.fa"
+    "Notonecta_glauca.hifi_asm_pl3.fa.masked"
 
-    # extra ref genomes
-    "Panurgus_banksianus.hifi_asm_pl2.fa" # assembling
-    "Tholera_decimalis-GCA_943138885.2.fa"
-    "Xestia_c-nigrum-GCA_916618015.1.fa"
-    "Chorthippus_brunneus.hifi_asm_pl2.fa" # assembling
-    #"Pseudochorthippus_parallelus.hifi_asm_pl2.fa" # assembling
-    "Mystacides_longicornis-GCA_963576905.1.fa"
-    "Porcellio_scaber-GCA_034700385.1.fa"
+# rest ref 23
+    Chorthippus_brunneus.hifi_asm_pl3.fa.masked
+    Chorthippus_parallelus.hifi_asm_pl3.fa.masked
+    Agelastica_alni-GCA_950111635.2.fa.masked
+
+    Amphimallon_solstitiale-GCA_963170755.1-softmasked.fa
+    Dorcus_parallelipipedus-GCA_958336345.1-softmasked.fa
+    Malachius_bipustulatus-GCA_910589415.1-softmasked.fa
+    Phosphuga_atrata-GCA_944588485.1-softmasked.fa
+    Pterostichus_niger-GCA_947425015.1-softmasked.fa
+    Rhagonycha_fulva-GCA_905340355.1-softmasked.fa
+
+    Lasioglossum_morio-GCA_916610235.2-softmasked.fa
+    Panurgus_banksianus.hifi_asm_pl3.fa.masked
+
+    Bibio_marci-GCA_910594885.2-softmasked.fa
+    Eristalis_intricaria-GCA_964034865.1-softmasked.fa
+    Eristalis_pertinax-GCA_907269125.1-softmasked.fa
+    Tachina_fera-GCA_905220375.1-softmasked.fa
+
+    Aelia_acuminata-GCA_911387785.2-softmasked.fa
+    Gerris_lacustris-GCA_951217055.1-softmasked.fa
+    Leptopterna_dolobrata-GCA_954871275.1.fa.masked
+
+    Noctua_pronuba-GCA_905220335.1-softmasked.fa
+
+    Tholera_decimalis-GCA_943138885.2.fa.masked
+    Xestia_c-nigrum-GCA_916618015.1.fa.masked
+
+    Mystacides_longicornis-GCA_963576905.1.fa.masked
+
+# Crustaces
+    Porcellio_scaber-GCA_034700385.1.fa.masked
 )
 
 for Ref_New in `ls -t *-softmasked.fa | head -4`
 for Ref_New in `ls Bombus_muscorum-GCA_963971125.1.fa`
 for Ref_New in `ls Bombus_veteranus.hifi_asm_pl2.fa`
+
 # 10 new pools in Jan 2025
 for Ref_New in ${REF_list[@]}
     do
@@ -174,6 +204,8 @@ for Ref_New in ${REF_list[@]}
     Out_Region_Name=${Ref_New/.fa/.fb_100kb.regions}
     fasta_generate_regions.py $Ref_New 100000 > $Regions_New/$Out_Region_Name
 done
+
+
 
 ## check number of regions
 less $Regions_New/Bombus_veteranus.hifi_asm_pl2.fb_100kb.regions | wc -l
@@ -197,8 +229,11 @@ NC_037638.1:6000000-8000000
 less -S /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/Apis_mellifera_HAv-GCF_003254395.2-softmasked.fa
 >NC_037638.1 Apis mellifera strain DH4 linkage group LG1, Amel_HAv3.1, whole genome shotgun sequence
 
-# 10 pools
-for region in $(ls ./fasta_generate_regions/chr_regions/*.regions -t | head)
+
+
+
+# 10 0r 32 pools
+for region in $(ls ./fasta_generate_regions/chr_regions/*.regions* -t | head -24 | sort)
 do
 # head -2 $region
 # Extract filename without the path
@@ -236,13 +271,37 @@ ${region##*/}
 4567     Cerceris_rybyensis-GCA_910591515.1-softmasked.fb_100kb.regions 
 11842    Ephemera_danica-GCA_000507165.2.fb_100kb.regions 
 5876     Megachile_leachella-GCA_963576845.1-softmasked.fb_100kb.regions 
-14281    Notonecta_glauca.hifi_asm_pl2.fb_100kb.regions 
+14281    # Notonecta_glauca.hifi_asm_pl2.fb_100kb.regions 
 6458     Ochropleura_plecta-GCA_905475445.1-softmasked.fb_100kb.regions 
 6311     Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fb_100kb.regions 
 20308    Rutpela_maculata-GCA_936432065.2-softmasked.fb_100kb.regions 
 16283    Stenurella_melanura-GCA_963583905.1.fb_100kb.regions
 
-
+# rest ref 24
+11745   Aelia_acuminata-GCA_911387785.2-softmasked.fb_100kb.regions
+7005    Agelastica_alni-GCA_950111635.2.fb_100kb.regions.masked
+16121   Amphimallon_solstitiale-GCA_963170755.1-softmasked.fb_100kb.regions
+3402    Bibio_marci-GCA_910594885.2-softmasked.fb_100kb.regions
+160301  Chorthippus_brunneus.hifi_asm_pl3.fb_100kb.regions.masked # very long
+148664  Chorthippus_parallelus.hifi_asm_pl3.fb_100kb.regions.masked # very long
+4774    Dorcus_parallelipipedus-GCA_958336345.1-softmasked.fb_100kb.regions
+6045    Eristalis_intricaria-GCA_964034865.1-softmasked.fb_100kb.regions
+4958    Eristalis_pertinax-GCA_907269125.1-softmasked.fb_100kb.regions
+9432    Gerris_lacustris-GCA_951217055.1-softmasked.fb_100kb.regions
+6135    Lasioglossum_morio-GCA_916610235.2-softmasked.fb_100kb.regions
+10107   Leptopterna_dolobrata-GCA_954871275.1.fb_100kb.regions.masked
+5472    Malachius_bipustulatus-GCA_910589415.1-softmasked.fb_100kb.regions
+6673    Mystacides_longicornis-GCA_963576905.1.fb_100kb.regions.masked
+5317    Noctua_pronuba-GCA_905220335.1-softmasked.fb_100kb.regions
+13243   # Notonecta_glauca.hifi_asm_pl3.fb_100kb.regions.masked
+4788    Panurgus_banksianus.hifi_asm_pl3.fb_100kb.regions.masked
+12353   Phosphuga_atrata-GCA_944588485.1-softmasked.fb_100kb.regions
+455076  Porcellio_scaber-GCA_034700385.1.fb_100kb.regions.masked # fragmented ref
+6837    Pterostichus_niger-GCA_947425015.1-softmasked.fb_100kb.regions
+4254    Rhagonycha_fulva-GCA_905340355.1-softmasked.fb_100kb.regions
+7525    Tachina_fera-GCA_905220375.1-softmasked.fb_100kb.regions
+13390   Tholera_decimalis-GCA_943138885.2.fb_100kb.regions.masked
+7630    Xestia_c-nigrum-GCA_916618015.1.fb_100kb.regions.masked
 
 ## use this in freebayes for each region
 ## print the first line

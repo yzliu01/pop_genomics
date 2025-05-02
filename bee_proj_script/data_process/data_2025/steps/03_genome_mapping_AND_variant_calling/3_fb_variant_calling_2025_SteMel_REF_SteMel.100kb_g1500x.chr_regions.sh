@@ -18,7 +18,7 @@ conda activate variant_calling_mapping
 ## the location of bam-files
 BAM_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam
 ## for pooled data
-SAMPLE=SteMel.REF_SteMel.sort.marked_dups.bam
+SAMPLE=Stemel.REF_SteMel.sort.marked_dups.bam
 
 ## output vcf
 VCF_OUT_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf

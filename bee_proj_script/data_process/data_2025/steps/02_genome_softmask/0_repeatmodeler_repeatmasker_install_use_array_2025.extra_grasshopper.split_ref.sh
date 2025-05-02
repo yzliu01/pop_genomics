@@ -213,6 +213,12 @@ RepeatMasker -pa 30 -gff -lib ./$consensi/consensi.fa.classified -dir ./MaskerOu
 
 exit 0
 
+## concatenate split ref
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/split_ref_genome_fa/MaskerOutput
+ls *para*part*fa.masked
+cat *para*part*fa.masked > ../../Chorthippus_parallelus.hifi_asm_pl3.fa.masked
+cat *brunn*part*fa.masked > ../../Chorthippus_brunneus.hifi_asm_pl3.fa.masked
+
 ## create masked reference genome bed file in two steps
 ## https://www.danielecook.com/generate-a-bedfile-of-masked-ranges-a-fasta-file/
 

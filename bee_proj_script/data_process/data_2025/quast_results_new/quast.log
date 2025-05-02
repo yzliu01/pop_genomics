@@ -1,0 +1,63 @@
+/home/yzliu/miniforge3/envs/HiFiAsm/bin/quast Porcellio_scaber-GCA_034700385.1.fa.masked --min-contig 100 --output-dir /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new
+
+Version: 5.2.0
+
+System information:
+  OS: Linux-5.14.0-427.35.1.el9_4.x86_64-x86_64-with-glibc2.34 (linux_64)
+  Python version: 3.10.14
+  CPUs number: 64
+
+Started: 2025-04-24 11:28:22
+
+Logging to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/quast.log
+NOTICE: Output directory already exists and looks like a QUAST output dir. Existing results can be reused (e.g. previously generated alignments)!
+NOTICE: Maximum number of threads is set to 16 (use --threads option to set it manually)
+
+CWD: /faststorage/project/eDNA/yzliu/DK_proj/data/ref_genome
+Main parameters: 
+  MODE: default, threads: 16, min contig length: 100, min alignment length: 65, min alignment IDY: 95.0, \
+  ambiguity: one, min local misassembly length: 200, min extensive misassembly length: 1000
+
+Contigs:
+  Pre-processing...
+  Porcellio_scaber-GCA_034700385.1.fa.masked ==> Porcellio_scaber-GCA_034700385.1.fa.masked
+
+2025-04-24 11:28:43
+Running Basic statistics processor...
+  Contig files: 
+    Porcellio_scaber-GCA_034700385.1.fa.masked
+  Calculating N50 and L50...
+    Porcellio_scaber-GCA_034700385.1.fa.masked, N50 = 1242, L50 = 92003, auN = 1663.2, Total length = 396179840, GC % = 32.08, # N's per 100 kbp =  0.03
+  Drawing Nx plot...
+    saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/basic_stats/Nx_plot.pdf
+  Drawing cumulative plot...
+    saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/basic_stats/cumulative_plot.pdf
+  Drawing GC content plot...
+    saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/basic_stats/GC_content_plot.pdf
+  Drawing Porcellio_scaber-GCA_034700385.1.fa.masked GC content plot...
+    saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/basic_stats/Porcellio_scaber-GCA_034700385.1.fa.masked_GC_content_plot.pdf
+Done.
+
+NOTICE: Genes are not predicted by default. Use --gene-finding or --glimmer option to enable it.
+
+2025-04-24 11:29:00
+Creating large visual summaries...
+This may take a while: press Ctrl-C to skip this step..
+  1 of 2: Creating PDF with all tables and plots...
+  2 of 2: Creating Icarus viewers...
+Done
+
+2025-04-24 11:29:06
+RESULTS:
+  Text versions of total report are saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/report.txt, report.tsv, and report.tex
+  Text versions of transposed total report are saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/transposed_report.txt, transposed_report.tsv, and transposed_report.tex
+  HTML version (interactive tables and plots) is saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/report.html
+  PDF version (tables and plots) is saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/report.pdf
+  Icarus (contig browser) is saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/icarus.html
+  Log is saved to /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/quast_results_new/quast.log
+
+Finished: 2025-04-24 11:29:06
+Elapsed time: 0:00:44.699469
+NOTICEs: 3; WARNINGs: 0; non-fatal ERRORs: 0
+
+Thank you for using QUAST!

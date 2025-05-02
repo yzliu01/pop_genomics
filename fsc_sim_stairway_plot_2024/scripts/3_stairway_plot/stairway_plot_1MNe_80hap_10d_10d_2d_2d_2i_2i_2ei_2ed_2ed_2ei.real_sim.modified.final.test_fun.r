@@ -16,14 +16,14 @@ setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stai
 ## check the files
 #mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*100_500G*80hapS*.final.summary")))
 
-pdf(paste0("combined.1000000Ne_80hapS_5rep_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.test_fun.pdf"),width = 20, height = 12)
-#pdf(paste0("combined.1000000Ne_80hapS_5rep.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
-#par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
-#par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
+pdf(paste0("combined.1000000Ne_80hapS_5rep_10d_10d_2d_2d_2i_2i_2ei_2ed_2ed_2ei.rotated_x_lab_final.new.pdf"),width = 20, height = 12)
+##par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
+##par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
 
 par(mfcol=c(4,7),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2)
 layout(matrix(c(1:28),nrow=4,ncol=7,byrow=T),width=c(rep(1,6)),height=c(1,1))
 
+## combined one start from here
 for (generation in c("100_500G")){
     ## old naming format
     #for (event in c("00d","01d","05d","09d","05i")){
@@ -103,7 +103,7 @@ for (generation in c("100_500G")){
         for (rep in c(1:5)){
             ## https://stackoverflow.com/questions/27662162/error-in-my-code-target-of-assignment-expands-to-non-language-object
             assign(paste0("a",rep), read.table(mixedsort(sort(fs::dir_ls(path=paste0("./ft_sim_1000000Ne_80hapS_2E_",generation,"_",event,"_20Chr_15Mb_",rep), recurse = 1, fail=TRUE, type = "file", glob = "*80hapS*.final.summary"))),header=T,sep="\t"))
-            print(head(get(paste0("a",rep)),n=2L))
+            #print(head(get(paste0("a",rep)),n=2L))
             #paste0("data_ft_sim_1000000Ne_80hapS_2E_",generation,"_",event,"_20Chr_15Mb")
             #data <- data.frame(get(paste0("a",rep))$year,get(paste0("a",rep))$Ne_median)
             ##print(head(data))
@@ -224,4 +224,4 @@ for (generation in c("100_500G")){
     }
 }
 
-dev.off()
+#dev.off()

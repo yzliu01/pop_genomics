@@ -18,8 +18,8 @@
 
 ## conda installation
 ## alternatively, start BRAKER with hints already produced by ProtHint (Step III), by providing ProtHint's prothint_augustus.gff output
-gene_rediction_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation
-cd $gene_rediction_dir
+gene_prediction_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation
+cd $gene_prediction_dir
 
 ## test
 ##SLURM_ARRAY_TASK_ID=0
@@ -39,7 +39,7 @@ species_list=(
     "Agelastica_alni"
     "Leptopterna_dolobrata"
     "Mystacides_longicornis"
-    "Porcellio_scaber" #x
+    "Porcellio_scaber" #x not successful
     "Tholera_decimalis" #x
     "Xestia_c-nigrum"
 )
@@ -95,7 +95,7 @@ braker_output_dir_for_protseq=braker_softmask_"$species"_results_for_protseq
 
 ## protein database
 ##Apodiea_gene_AA=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prepare_protein_db/orthodb/Apodiea_gene_AA.fa
-Insecta_gene_AA=$gene_rediction_dir/prepare_protein_db_1/orthodb/Insecta_gene_AA.fa
+Insecta_gene_AA=$gene_prediction_dir/prepare_protein_db_1/orthodb/Insecta_gene_AA.fa
 
 ## gff file from Prothint
 ## wrong: prothint_augustus_gff=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/gene_annotation/prothint_results/prothint_augustus.gff

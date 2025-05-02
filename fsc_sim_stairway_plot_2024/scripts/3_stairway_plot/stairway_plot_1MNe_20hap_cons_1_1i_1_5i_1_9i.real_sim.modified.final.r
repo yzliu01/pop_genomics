@@ -14,13 +14,12 @@ library(stringr)
 
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp")
 
-pdf(paste0("combined.1000000Ne_20hapS_5rep_cons_1_1i_1_5i_1_9i.rotated_x_lab_final.pdf"),width = 12, height = 12)
+pdf(paste0("combined.1000000Ne_20hapS_5rep_cons_1_1i_1_5i_1_9i.rotated_x_lab_final.new7.pdf"),width = 12, height = 12)
 #pdf(paste0("combined.1000000Ne_20hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
 par(mfcol=c(5,4),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2) # cex.axis=1,
 layout(matrix(c(1:16),nrow=4,ncol=4,byrow=T),width=c(1,1),height=c(1,1))
-
 
 for (generation in c("50G","100G","500G","1000G")){
     ## old naming format
@@ -28,8 +27,8 @@ for (generation in c("50G","100G","500G","1000G")){
     ## modified naming format
     for (event in c("cons","1.1i","1.5i","1.9i")){
         ## solo axis name plot
-        #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
-        ##log="xy",xlab="Years ago", ylab="Effective population size"
+        #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Generations ago", ylab="Effective population size",xaxt='n',yaxt='n')
+        ##log="xy",xlab="Generations ago", ylab="Effective population size"
         #title(line=2)
 
         ## key step
@@ -42,69 +41,69 @@ for (generation in c("50G","100G","500G","1000G")){
 #    }
 #}         
         if (plot_name %in% c("1000000Ne_20hapS_1E_50G_cons_20Chr_15Mb", "1000000Ne_20hapS_1E_100G_cons_20Chr_15Mb", "1000000Ne_20hapS_1E_500G_cons_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e5), ylim=c(400000,7e5),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
-            #log="xy",xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e5), ylim=c(10000,8.0e5),log="x", xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
+            #log="xy",xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(400000,450000,500000,550000,600000,700000),label=c(format(c(400000,450000,500000,550000,600000,700000),scientific=FALSE)))
+            axis(side=2, at=c(500000,800000),label=c(format(c(500000,800000),scientific=FALSE)))
             
             ## rotating x axis labels
             lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
             axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 42000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 145000,srt = 45,pos = 3, xpd = TRUE)
             ## negative to go down
 
         } else if (plot_name %in% c("1000000Ne_20hapS_1E_1000G_cons_20Chr_15Mb","1000000Ne_20hapS_1E_1000G_1.1i_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(400000,7e5),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(10000,8.0e5),log="x", xlab="Generations ago", ylab="Effective population size",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(400000,450000,500000,550000,600000,700000),label=c(format(c(400000,450000,500000,550000,600000,700000),scientific=FALSE)))
+            axis(side=2, at=c(500000,800000),label=c(format(c(500000,800000),scientific=FALSE)))
             
             ## rotating x axis labels
             lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
             axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 42000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 145000,srt = 45,pos = 3, xpd = TRUE)
 
         } else if (plot_name %in% c("1000000Ne_20hapS_1E_50G_1.1i_20Chr_15Mb","1000000Ne_20hapS_1E_100G_1.1i_20Chr_15Mb","1000000Ne_20hapS_1E_500G_1.1i_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(400000,7e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(10000,8.0e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(400000,450000,500000,550000,600000,700000),label=c(format(c(400000,450000,500000,550000,600000,700000),scientific=FALSE)))
+            axis(side=2, at=c(500000,800000),label=c(format(c(500000,800000),scientific=FALSE)))
             
             ## rotating x axis labels
             lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
             axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 42000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 145000,srt = 45,pos = 3, xpd = TRUE)
 
             ## bigger Ne
 
         } else if (plot_name %in% c("1000000Ne_20hapS_1E_1000G_1.5i_20Chr_15Mb","1000000Ne_20hapS_1E_1000G_1.9i_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(300000,1.0e6),log="x", xlab="Years ago", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(10000,8.0e5),log="x", xlab="Generations ago", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(300000,500000,550000,750000,1000000),label=c(format(c(300000,500000,550000,750000,1000000),scientific=FALSE)))
+            axis(side=2, at=c(500000,800000),label=c(format(c(500000,800000),scientific=FALSE)))
             
             ## rotating x axis labels
             lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
             axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 95000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 145000,srt = 45,pos = 3, xpd = TRUE)
 
         } else if (plot_name %in% c("1000000Ne_20hapS_1E_50G_1.5i_20Chr_15Mb","1000000Ne_20hapS_1E_100G_1.5i_20Chr_15Mb","1000000Ne_20hapS_1E_500G_1.5i_20Chr_15Mb",
                                     "1000000Ne_20hapS_1E_50G_1.9i_20Chr_15Mb","1000000Ne_20hapS_1E_100G_1.9i_20Chr_15Mb","1000000Ne_20hapS_1E_500G_1.9i_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(300000,1.0e6),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
-            #xlab="Years ago", ylab="Effective population size"
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(10000,8.0e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
+            #xlab="Generations ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(300000,500000,550000,750000,1000000),label=c(format(c(300000,500000,550000,750000,1000000),scientific=FALSE)))
+            axis(side=2, at=c(500000,800000),label=c(format(c(500000,800000),scientific=FALSE)))
             
             ## rotating x axis labels
             lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
             axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 95000,srt = 38,pos = 3, xpd = TRUE)
+            text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 130000,srt = 45,pos = 3, xpd = TRUE)
 
         }
         else {
             NULL
             #plot(1,1, type="n", xlim=c(1,5e6), ylim=c(10000,1.0e5),log="x", xlab="", ylab="",xaxt='n',yaxt='n')
-            ##xlab="Years ago", ylab="Effective population size"
+            ##xlab="Generations ago", ylab="Effective population size"
             #title(line=2)
         }
         ##turn scientific notion off
@@ -115,7 +114,7 @@ for (generation in c("50G","100G","500G","1000G")){
         ## rotating x axis labels
         #lablist.x <- as.vector(c(50,100,500,1000,10000,100000))
         #axis(side=1,at=c(50,100,500,1000,10000,100000),labels=FALSE)
-        #text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 5000,srt = 38,pos = 3, xpd = TRUE)
+        #text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 5000,srt = 45,pos = 3, xpd = TRUE)
 
         ## add plot title in each plot
         mtext(side=3,text=paste0("1000000Ne_20hapS_1E_",generation,"_",event,"_20Chr_15Mb"),cex=0.8,line=1.2)

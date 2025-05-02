@@ -1,0 +1,25 @@
+All statistics are based on contigs of size >= 100 bp, unless otherwise noted (e.g., "# contigs (>= 0 bp)" and "Total length (>= 0 bp)" include all contigs).
+
+Assembly                    Porcellio_scaber-GCA_034700385.1.fa.masked
+# contigs (>= 0 bp)         455076                                    
+# contigs (>= 1000 bp)      127372                                    
+# contigs (>= 5000 bp)      2187                                      
+# contigs (>= 10000 bp)     56                                        
+# contigs (>= 25000 bp)     0                                         
+# contigs (>= 50000 bp)     0                                         
+Total length (>= 0 bp)      396179840                                 
+Total length (>= 1000 bp)   237473960                                 
+Total length (>= 5000 bp)   13753550                                  
+Total length (>= 10000 bp)  653094                                    
+Total length (>= 25000 bp)  0                                         
+Total length (>= 50000 bp)  0                                         
+# contigs                   455076                                    
+Largest contig              17937                                     
+Total length                396179840                                 
+GC (%)                      32.08                                     
+N50                         1242                                      
+N90                         383                                       
+auN                         1663.2                                    
+L50                         92003                                     
+L90                         319430                                    
+# N's per 100 kbp           0.03                                      

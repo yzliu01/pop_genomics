@@ -171,10 +171,10 @@ dev.off()
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data")
 # check sfs distribution
 sfs_x <- c(
-    #"concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP234_1500x_noMS.equal_self.sfs",
-    #"concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP240_1500x_noMS.equal_self.sfs",
-    #"concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP204_1500x_noMS.equal_self.sfs",
-    #"concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP174_1500x_noMS.equal_self.sfs"
+    "concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP234_1500x_noMS.equal_self.sfs",
+    "concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP240_1500x_noMS.equal_self.sfs",
+    "concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP204_1500x_noMS.equal_self.sfs",
+    "concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP174_1500x_noMS.equal_self.sfs"
 
     # sfs
     #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP100_1500x_noMS.equal_self.sfs",
@@ -184,24 +184,24 @@ sfs_x <- c(
     #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP300_1500x_noMS.equal_self.sfs"
 
     # sfs prop
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP100_1500x_noMS.equal_self.sfs.prop",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP150_1500x_noMS.equal_self.sfs.prop",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP200_1500x_noMS.equal_self.sfs.prop",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP250_1500x_noMS.equal_self.sfs.prop",
-    "concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP300_1500x_noMS.equal_self.sfs.prop"
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP100_1500x_noMS.equal_self.sfs.prop",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP150_1500x_noMS.equal_self.sfs.prop",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP200_1500x_noMS.equal_self.sfs.prop",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP250_1500x_noMS.equal_self.sfs.prop",
+    #"concated.Rutmac.REF_RutMac.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP300_1500x_noMS.equal_self.sfs.prop"
     
 )
 
 species_list <- c(
-    #"A. haemorrhoa",
-    #"A. marginata",
-    #"B. pascuorum",
-    #"B. veteranus"
-    "Rutpela_maculata_1x",
-    "Rutpela_maculata_1.5x",
-    "Rutpela_maculata_2x",
-    "Rutpela_maculata_2.5x",
-    "Rutpela_maculata_3x"
+    "A. haemorrhoa",
+    "A. marginata",
+    "B. pascuorum",
+    "B. veteranus"
+    #"Rutpela_maculata_1x",
+    #"Rutpela_maculata_1.5x",
+    #"Rutpela_maculata_2x",
+    #"Rutpela_maculata_2.5x",
+    #"Rutpela_maculata_3x"
 )
 # show data lines directly in the terminal
 #file.show("concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.SNP_softmask_genic_bi_FMT_DP416_1500x_noMS.equal_self.sfs")
@@ -261,9 +261,9 @@ for (i in 1:length(plot_list)) {
 # Assuming plot_list contains your ggplot objects
 # Open PDF device
 ## sfs lines
-#pdf("./sfs_plot/combined_sfs_plots_RutMac.pdf", width = 12, height = 8)  # Adjust width and height as needed
+pdf("./sfs_plot/combined_sfs_plots_hae_mar_pas_vet.pdf", width = 8, height = 8)  # Adjust width and height as needed
 ## sfs col for proportion
-pdf("./sfs_plot/combined_sfs_prop_plots_RutMac.pdf", width = 12, height = 8)  # Adjust width and height as needed
+#pdf("./sfs_plot/combined_sfs_prop_plots_RutMac.pdf", width = 12, height = 8)  # Adjust width and height as needed
 
 # Combine plots and save to PDF
 gridExtra::grid.arrange(grobs = plot_list, ncol = 2)

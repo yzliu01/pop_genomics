@@ -1,3 +1,110 @@
+#!/bin/sh
+#SBATCH --account eDNA
+#SBATCH --cpus-per-task 6
+#SBATCH --mem 200g
+#SBATCH --array=0-23%24
+#SBATCH --time=15:00:00
+#SBATCH --error=index_ref.%A_%a.e
+#SBATCH --output=index_ref.%A_%a.o
+#SBATCH --job-name=index_ref
+#SBATCH --mail-type=all #begin,end,fail,all
+#SBATCH --mail-user=yuanzhen.liu2@gmail.com
+
+## call env
+source /home/yzliu/miniforge3/etc/profile.d/conda.sh
+## https://stackoverflow.com/questions/61915607/commandnotfounderror-your-shell-has-not-been-properly-configured-to-use-conda
+conda activate variant_calling_mapping
+
+# test
+#SLURM_ARRAY_TASK_ID=1
+
+ref_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+cd $ref_dir
+
+ref_list=(
+# first 10 ref
+    #"Aphodius_sticticus-GCA_963966075.1.fa"
+    ##"Aphodius_sticticus-GCA_963966075.1-softmasked.fa"
+
+    #"Stenurella_melanura-GCA_963583905.1.fa"
+    ##"Stenurella_melanura-GCA_963583905.1-softmasked.fa"
+
+    #"Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa"
+    #"Megachile_leachella-GCA_963576845.1-softmasked.fa"
+    #"Ochropleura_plecta-GCA_905475445.1-softmasked.fa"
+    #"Cerceris_rybyensis-GCA_910591515.1-softmasked.fa"
+    #"Bombylius_major-GCA_932526495.1-softmasked.fa"
+    
+    #"Ephemera_danica-GCA_000507165.2.fa"
+    ##"Ephemera_danica-GCA_000507165.2-softmasked.fa"
+
+    #"Rutpela_maculata-GCA_936432065.2-softmasked.fa"
+
+    ##"Notonecta_glauca.hifi_asm_pl2.fa"
+    "Notonecta_glauca.hifi_asm_pl3.fa.masked"
+
+# rest ref 23
+    Chorthippus_brunneus.hifi_asm_pl3.fa.masked
+    Chorthippus_parallelus.hifi_asm_pl3.fa.masked
+
+    Agelastica_alni-GCA_950111635.2.fa.masked
+    Amphimallon_solstitiale-GCA_963170755.1-softmasked.fa
+    Dorcus_parallelipipedus-GCA_958336345.1-softmasked.fa
+    Malachius_bipustulatus-GCA_910589415.1-softmasked.fa
+    Phosphuga_atrata-GCA_944588485.1-softmasked.fa
+    Pterostichus_niger-GCA_947425015.1-softmasked.fa
+    Rhagonycha_fulva-GCA_905340355.1-softmasked.fa
+
+    Lasioglossum_morio-GCA_916610235.2-softmasked.fa
+    Panurgus_banksianus.hifi_asm_pl3.fa.masked
+
+    Bibio_marci-GCA_910594885.2-softmasked.fa
+    Eristalis_intricaria-GCA_964034865.1-softmasked.fa
+    Eristalis_pertinax-GCA_907269125.1-softmasked.fa
+    Tachina_fera-GCA_905220375.1-softmasked.fa
+
+    Aelia_acuminata-GCA_911387785.2-softmasked.fa
+    Gerris_lacustris-GCA_951217055.1-softmasked.fa
+    Leptopterna_dolobrata-GCA_954871275.1.fa.masked
+
+    Noctua_pronuba-GCA_905220335.1-softmasked.fa
+
+    Tholera_decimalis-GCA_943138885.2.fa.masked
+    Xestia_c-nigrum-GCA_916618015.1.fa.masked
+
+    Mystacides_longicornis-GCA_963576905.1.fa.masked
+
+# Crustaces
+    Porcellio_scaber-GCA_034700385.1.fa.masked
+)
+
+## check number of array
+#echo ${!ref_list[@]}
+#0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23
+
+## array jobs
+bwa index -a bwtsw ${ref_list[SLURM_ARRAY_TASK_ID]}
+samtools faidx ${ref_list[SLURM_ARRAY_TASK_ID]}
+
+exit 0
+
+#for masked_ref in `ls *softmasked.fa`
+#for masked_ref in `ls -t *softmasked.fa | head -4`
+
+for masked_ref in ${ref_list[@]}
+    do
+#    echo $masked_ref
+#done
+    bwa index -a bwtsw $masked_ref
+done
+
+#for masked_ref in `ls *softmasked.fa`
+#for masked_ref in `ls -t *softmasked.fa | head -4`
+
+for masked_ref in ${ref_list[@]}
+    do
+    samtools faidx $masked_ref
+done
 
 
 ##https://github.com/broadgsa/gatk/blob/master/doc_archive/deprecated/(howto)_Prepare_a_reference_for_use_with_BWA_and_GATK.md
@@ -152,29 +259,6 @@ done
 rename ".fasta" ".fa" Leptopterna_dolobrata-GCA_954871275.1.fasta
 
 
-ref_list=(
-    "Aphodius_sticticus-GCA_963966075.1.fa"
-    "Stenurella_melanura-GCA_963583905.1.fa"
-    "Phragmatobia_fuliginosa-GCA_932526445.1-softmasked.fa"
-    "Megachile_leachella-GCA_963576845.1-softmasked.fa"
-    "Ochropleura_plecta-GCA_905475445.1-softmasked.fa"
-    "Cerceris_rybyensis-GCA_910591515.1-softmasked.fa"
-    "Bombylius_major-GCA_932526495.1-softmasked.fa"
-    "Ephemera_danica-GCA_000507165.2.fa"
-    "Rutpela_maculata-GCA_936432065.2-softmasked.fa"
-    "Notonecta_glauca.hifi_asm_pl2.fa"
-)
-
-for masked_ref in `ls *softmasked.fa`
-for masked_ref in `ls -t *softmasked.fa | head -4`
-
-for masked_ref in ${ref_list[@]}
-    do
-#    echo $masked_ref
-#done
-    bwa index -a bwtsw $masked_ref
-done
-
 ## use self softmasked REF
 bwa index -a bwtsw Andrena_marginata_GCA_963932335.1-softmasked.fa
 
@@ -207,14 +291,6 @@ samtools faidx Amel_HAv3_1.md_chr.fa
 ## self assemblied genome
 samtools faidx Bombus_veteranus.hifi_asm_pl2.sorted.fa
 samtools faidx Bombus_veteranus.hifi_asm_pl2.fa
-
-for masked_ref in `ls *softmasked.fa`
-for masked_ref in `ls -t *softmasked.fa | head -4`
-
-for masked_ref in ${ref_list[@]}
-    do
-    samtools faidx $masked_ref
-done
 
 ## use self softmasked REF
 samtools faidx Andrena_marginata_GCA_963932335.1-softmasked.fa
@@ -354,6 +430,11 @@ seqkit split -p 10 Chorthippus_brunneus.hifi_asm_pl3.fa -O $out_subset_fa
 #[INFO] read 7459 sequences
 #[INFO] write 746 sequences to file: /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/split_ref_genome_fa/Chorthippus_brunneus.hifi_asm_pl3.part_001.fa
 #[INFO] write 746 sequences to file: /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/split_ref_genome_fa/Chorthippus_brunneus.hifi_asm_pl3.part_002.fa
+
+#grep '>' Chorthippus_brunneus.hifi_asm_pl3.part_009.fa | wc -l
+745
+# grep '>' Chorthippus_brunneus.hifi_asm_pl3.part_010.fa | wc -l
+746
 
 seqkit split -p 10 Chorthippus_parallelus.hifi_asm_pl3.fa -O $out_subset_fa
 # Chorthippus_parallelus.hifi_asm_pl3.part_010.fa

@@ -154,7 +154,7 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
     #fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
 
   labs(title = "Median Ne Over Years by Species (1x)",
-       y = "Ne",
+       y=expression(paste(italic("N")["e"])),
        x = "Years ago") +  # Correct label for the x-axis
   #theme_minimal() +
   theme_classic() +
@@ -177,9 +177,10 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
   
   ## display specific labels to show time periods
   scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = "")) +
-  #scale_y_continuous(limits = c(10, 250000), breaks = c(10,100,1000,3000,10000,100000), labels = label_number(big.mark = ""))  # Set x-axis limits between 1 and 100,000
   scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = "")) + # Set x-axis limits between 1 and 100,000
-  # scale_x_log10(limits = c(10, 250000), breaks = c(100,1000,3000,10000,100000),labels = label_number(big.mark = ""))
+  ## add comma
+  #scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = ",")) + # Adding commas as thousand separators without scientific notation
+  #scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = ",")) + # Set x-axis limits between 1 and 100,000
 
   ## frame to select area on the plot
   annotate(geom = "rect", xmin = 10, xmax = 25000, ymin = 1000, ymax = 480000, 
@@ -218,36 +219,54 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
     theme_pubr( base_size = 9.5,border = TRUE) +
 
     guides(color = guide_legend(nrow = 1)) +  # Set the legend to two rows
+
 # single plot
 #    guides(color = guide_legend(nrow = 2)) +  # Set the legend to two rows
     theme(
+        # customise ticks
+        #axis.ticks.y = element_line(size = 0.5),  # Major ticks customization
+        #axis.ticks = element_line(size = 1),  # Customize general axis ticks
+        #panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
+        #panel.grid.minor = element_line(color = "lightgray", size = 0.25, linetype = 2),
+        
+        #legend.position = "bottom",        
         #legend.position = c(0.3,-0.635),
-        #legend.text = element_text(size = 9),
-        legend.background = element_rect(fill = "transparent", color = NA), # Transparent background
-        legend.box.background = element_rect(fill = "transparent", color = NA), # Optional for legend box
 # single plot new
         legend.position = c(0.28,-0.63),
+# single plot old
+        #legend.position = c(0.6,-0.18),
         legend.text = element_text(size = 9),
         legend.title = element_text(size = 9.5),
-# single plot old
-        #legend.position = c(0.73,-0.21),
-        #legend.text = element_text(size = 9.5),
-        #legend.position = "bottom",
+        legend.background = element_rect(fill = "transparent", color = NA), # Transparent background
+        legend.box.background = element_rect(fill = "transparent", color = NA), # Optional for legend box
+
         axis.text = element_text(colour = "black",size = 9), 
         axis.title = element_text(colour = "black",size = 9.5),
         panel.border = element_rect(linewidth = 1.2),
         #panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
-        #axis.ticks = element_line(colour = "black", size = 1)
+        axis.ticks = element_line(colour = "black", size = 0.5)
         ) +
         
     labs(x="Years ago (log transformed)",
-         y=expression(paste(italic("N")["e"]))) +
+         y=expression(paste(italic("N")["e"]))
+        ) +
     scale_x_log10(lim= c(10,25000),
                   labels = function(year) format(year, scientific = FALSE)) +
     scale_y_continuous(limits = c(1,500000),
-                       labels = function(Ne_median) format(Ne_median, scientific = FALSE))
-    # breaks = seq(0, 150000, by = 25000), 
-    
+                        # customise ticks
+                        #breaks = seq(0, 500000, by = 100000),  # Major ticks
+                        #minor_breaks = seq(0, 500000, by = 10000),  # Minor ticks every 50000 between 100000 and 200000
+                        #breaks = seq(0, 500000, by = 50000), 
+                        #breaks = c(1, 10, 100, 1000, 10000, 100000, 500000),  # Define specific break points for y-axis
+                       labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+
+    annotation_logticks(
+        sides = "b",
+        short = unit(0.1, "cm"),  # Adjust size of short ticks
+        mid = unit(0.15, "cm"),     # Adjust size of medium ticks
+        long = unit(0.2, "cm")       # Adjust size of long ticks)  # log ticks only on  bottom
+    )
+
 ## combine: p1_final
 p1x_final <- p1_initial + 
     ## position of zoom plot
@@ -266,9 +285,9 @@ p1x_final <- p1_initial +
                 linetype = 'dashed')
 
 # Save the plot
-ggsave("non_log_plot_all_1x.pdf", p1x_final, width = 10, height = 8)
+ggsave("non_log_plot_all_1x.tick_x_log.new.pdf", p1x_final, width = 10, height = 8)
 
-print(p1_final) 
+print(p1x_final) 
 
 
 ######################################################################

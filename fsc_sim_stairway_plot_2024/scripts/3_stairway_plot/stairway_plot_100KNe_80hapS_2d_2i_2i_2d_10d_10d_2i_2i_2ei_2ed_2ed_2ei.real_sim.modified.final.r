@@ -16,18 +16,19 @@ setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stai
 ## check the files
 #mixedsort(sort(fs::dir_ls(path=".", recurse = 1, fail=TRUE, type = "file", glob = "*100_500G*80hapS*.final.summary")))
 
-pdf(paste0("combined.50000Ne_80hapS_5rep_2d_2i_2i_2d_10d_10d_2i_2i_2ei_2ed_2ed_2ei.pdf"),width = 18, height = 12)
+pdf(paste0("combined.50000Ne_80hapS_5rep_2d_2i_2i_2d_2i_2i_2d_2d_10d_10d_2ei_2ed_2ed_2ei.new.pdf"),width = 20, height = 12)
 #pdf(paste0("combined.50000Ne_80hapS_5rep_non_pruned.real_sim.rotated_x_lab-.pdf"),width = 20, height = 25)
 #par(mfcol=c(5,5),mar=c(5,5,4,2)+0.2,cex.lab=1.6, cex.axis=1.3,lwd=2)
 #par(mfcol=c(5,5),mar=c(4,4,3,1)+0.1,cex.lab=1.6, cex.axis=1.3,lwd=2)
-par(mfcol=c(4,6),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2)
-layout(matrix(c(1:24),nrow=4,ncol=6,byrow=T),width=c(rep(1,6)),height=c(1,1))
+par(mfcol=c(4,7),mar=c(4.2,4.2,2.2,2)+0.5,cex.lab=1.6, lwd=2)
+layout(matrix(c(1:28),nrow=4,ncol=7,byrow=T),width=c(rep(1,6)),height=c(1,1))
 
+## combined one start from here
 for (generation in c("100_500G")){
     ## old naming format
     #for (event in c("00d","01d","05d","09d","05i")){
     ## modified naming format
-    for (event in c("10d_10d","2i_2i","2d_2i","2i_2d","2e_i_2e_d","2e_d_2e_i")){
+    for (event in c("2i_2i","2d_2d","10d_10d","2d_2i","2i_2d","2e_i_2e_d","2e_d_2e_i")){
         ## solo axis name plot
         #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
         ##log="xy",xlab="Years ago", ylab="Effective population size"
@@ -40,17 +41,20 @@ for (generation in c("100_500G")){
         ## print names with newline 
         cat("\n",plot_name,"\n\n")
         
-        if (plot_name %in% c("xx_50000Ne_80hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,6.0e4),log="x", cex.axis = 0.8, xlab="", ylab="Effective population size",xaxt='n',yaxt='n')
+        if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_2i_2i_20Chr_15Mb")){
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.5e5),log="x", cex.axis = 0.8, xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
             #log="xy",xlab="Years ago", ylab="Effective population size"
             title(line=2)
-        } else if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
-            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,6.0e4),log="x", cex.axis = 0.8, xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
+            axis(side=2, at=c(500,50000,100000,200000),label=c(format(c(500,50000,100000,200000),scientific=FALSE)))
+
+        } else if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_2d_2d_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
+            # 50000Ne_80hapS_2E_100_500G_10d_10d_20Chr_15Mb
+            plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,6.0e4),log="x", cex.axis = 0.8, xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
-            axis(side=2, at=c(500,1000,5000,25000,35000,50000),label=c(format(c(500,1000,5000,25000,35000,50000),scientific=FALSE)))
+            axis(side=2, at=c(500,5000,25000,50000),label=c(format(c(500,17500,25000,50000),scientific=FALSE)))
 
-        } else if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_2i_2i_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_2d_2i_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_2i_2d_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_2e_i_2e_d_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_2e_d_2e_i_20Chr_15Mb")){
+        } else if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_2d_2i_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_2i_2d_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_2e_i_2e_d_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_2e_d_2e_i_20Chr_15Mb")){
             plot(1,1, type="n", xlim=c(1,5e6), ylim=c(1,2.5e5),log="x", cex.axis = 0.8, xlab="Years ago", ylab="",xaxt='n',yaxt='n')
             #xlab="Years ago", ylab="Effective population size"
             title(line=2)
@@ -72,7 +76,8 @@ for (generation in c("100_500G")){
         #text(x=c(50,100,500,1000,10000,100000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 1300,srt = 38,pos = 3, xpd = TRUE)
 
         ## distance to x axis
-        if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
+        if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_2d_2d_20Chr_15Mb","50000Ne_80hapS_2E_100_500G_10d_10d_20Chr_15Mb")){
+            # 50000Ne_80hapS_2E_100_500G_10d_10d_20Chr_15Mb
             text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 10100,srt = 45,pos = 3, xpd = TRUE)
         } else if (plot_name %in% c("50000Ne_80hapS_2E_100_500G_2i_2i_20Chr_15Mb")) {
             text(x=c(50,100,500,1000,10000,100000,200000),labels = c(format(lablist.x,scientific=FALSE)),par("usr")[3] - 42000,srt = 45,pos = 3, xpd = TRUE)
@@ -155,7 +160,19 @@ for (generation in c("100_500G")){
                 } else {
                     return(2*1/2*50000)
                 }
+            } else if (all(sapply(c("100_500G","2d_2d"), grepl, plot_name))) {
+                # 10d_10d
+                # 0.1*50000
+                if (x <= 100) {
+                    return(50000)
+                } else if (100 < x & x <= 500) {
+                    return(0.5*50000)
+                } else {
+                    return(0.5*0.5*50000)
+                }
             } else if (all(sapply(c("100_500G","10d_10d"), grepl, plot_name))) {
+                # 10d_10d
+                # 0.1*50000
                 if (x <= 100) {
                     return(50000)
                 } else if (100 < x & x <= 500) {
@@ -187,7 +204,8 @@ for (generation in c("100_500G")){
         }
         lines(x,sapply(x,fx),type="s",lwd=2.5,col = adjustcolor("red", alpha = 0.8))
         ## add legend in specific plot
-        if (all(sapply(c("10d_10d"), grepl, plot_name))) {
+        if (all(sapply(c("2i_2i"), grepl, plot_name))) {
+            # 10d_10d
         legend("topright",c("Simulation","True model"),col = adjustcolor(c("blue","red"), alpha = 0.8),lty=1,lwd=c(2,3),bty="n")
         } else {
             NULL
@@ -195,4 +213,4 @@ for (generation in c("100_500G")){
     }
 }
 
-dev.off()
+#dev.off()

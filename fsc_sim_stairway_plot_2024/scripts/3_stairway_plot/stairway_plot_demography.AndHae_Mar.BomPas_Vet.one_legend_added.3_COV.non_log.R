@@ -134,7 +134,7 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
     #fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
 
   labs(title = "Median Ne Over Years by Species (3x)",
-       y = "Ne",
+       y=expression(paste(italic("N")["e"])),
        x = "Years ago") +  # Correct label for the x-axis
   #theme_minimal() +
   theme_classic() +
@@ -143,6 +143,10 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
   theme(#legend.position = c(0.8,0.8),
         #legend.text = element_text(size = 14),
         legend.position = "none",
+        
+        # single plot new
+        #legend.position = c(0.5,0.2),
+
         axis.text = element_text(colour = "black",size = 14), axis.text.y = element_text(angle = 90, hjust=0.5),
         ## set angle for axis labels and align them in the middle
         axis.text.x = element_text(angle = 0, hjust = 0.5),
@@ -158,9 +162,10 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
   
   ## display specific labels to show time periods
   scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = "")) +
-  #scale_y_continuous(limits = c(10, 250000), breaks = c(10,100,1000,3000,10000,100000), labels = label_number(big.mark = ""))  # Set x-axis limits between 1 and 100,000
   scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = "")) + # Set x-axis limits between 1 and 100,000
-  # scale_x_log10(limits = c(10, 250000), breaks = c(100,1000,3000,10000,100000),labels = label_number(big.mark = ""))
+  ## add comma
+  #scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = ",")) + # Adding commas as thousand separators without scientific notation
+  #scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = ",")) + # Set x-axis limits between 1 and 100,000
 
   ## frame to select area on the plot
   annotate(geom = "rect", xmin = 10, xmax = 25000, ymin = 1000, ymax = 480000, 
@@ -196,23 +201,47 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
     # "A.marginata" = "#0072B2"
     scale_fill_manual(values = c("A.haemorrhoa" = "#009E73", "A.marginata" = "#332288", "B.pascuorum" = "#D55E00", "B.veteranus" = "#CC79A7")) +  # Custom fill colors
     theme_pubr( base_size = 9.5,border = TRUE) +
+ 
+    guides(color = guide_legend(nrow = 1)) +  # Set the legend to two rows
 
-    theme(axis.text = element_text(colour = "black",size = 9), 
+    theme(
+        #legend.position = "none",
+        #legend.position = c(0.6,-0.18),
+        legend.position = c(0.28,-0.55),
+        legend.text = element_text(size = 9),
+        legend.title = element_text(size = 9.5),
+        legend.background = element_rect(fill = "transparent", color = NA), # Transparent background
+        legend.box.background = element_rect(fill = "transparent", color = NA), # Optional for legend box
+
+        #panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
+        axis.ticks = element_line(colour = "black", size = 0.5),
+        
+        axis.text = element_text(colour = "black",size = 9), 
         axis.title = element_text(colour = "black",size = 9.5),
         panel.border = element_rect(linewidth = 1.2),
-        legend.position = "none"
-        #panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
-        #axis.ticks = element_line(colour = "black", size = 1)
         ) +
 
     labs(x="Years ago (log transformed)",
          y=expression(paste(italic("N")["e"]))) +
-    scale_x_log10(lim= c(10,25000),
-                  labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(limits = c(1,500000),
-                       labels = function(Ne_median) format(Ne_median, scientific = FALSE))
-    # breaks = seq(0, 150000, by = 25000), 
-    
+    scale_x_log10(
+        limits= c(10,25000),
+        breaks = c(10, 100, 1000, 10000),  # Explicitly define breaks to avoid values below 10
+        #labels = label_number(big.mark = ",") # Adding commas as thousand separators without scientific notation
+        labels = label_number(big.mark = "")
+        #labels = function(year) format(year, scientific = FALSE)
+        ) +
+    scale_y_continuous(
+        limits = c(1,500000),
+        labels = label_number(big.mark = "")
+        #labels = function(Ne_median) format(Ne_median, scientific = FALSE)
+        ) +
+
+    annotation_logticks(
+        sides = "b",
+        short = unit(0.1, "cm"),  # Adjust size of short ticks
+        mid = unit(0.15, "cm"),     # Adjust size of medium ticks
+        long = unit(0.2, "cm")       # Adjust size of long ticks)  # log ticks only on  bottom
+    )
 ## combine: p1_final
 p3x_final <- p1_initial + 
     ## position of zoom plot
@@ -231,9 +260,9 @@ p3x_final <- p1_initial +
                 linetype = 'dashed')
 
 # Save the plot
-ggsave("non_log_plot_all_3x.check_x_axis.pdf", p3x_final, width = 10, height = 8)
+ggsave("non_log_plot_all_3x.tick_x_log.pdf", p3x_final, width = 10, height = 8)
 
-#print(p1_final) 
+print(p3x_final) 
 
 
 ######################################################################
@@ -338,7 +367,7 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     theme_pubr( base_size = 9.5,border = TRUE) +
     theme(axis.text = element_text(colour = "black",size = 9),axis.title = element_text(colour = "black",size = 9.5),
     panel.border = element_rect(linewidth = 1.2),panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
-    axis.ticks = element_line(colour = "black", size = 1))+
+    axis.ticks = element_line(colour = "black", size = 1)) +
     labs(x="Year ago (log transformed)",y=expression(paste(italic("N")["e"]))) +
     scale_x_log10(lim= c(1,15000),labels = function(year) format(year, scientific = FALSE)) +
     scale_y_continuous(limits = c(1000,550000), labels = function(Ne_median) format(Ne_median, scientific = FALSE))
