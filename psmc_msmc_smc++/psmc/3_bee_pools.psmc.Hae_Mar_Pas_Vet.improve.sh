@@ -79,7 +79,7 @@ D_depth=$(echo ${D_twice_mean_depth[@]} | tr " " "\n" | sed -n ${SLURM_ARRAY_TAS
 #samtools mpileup -C 50 -f $ref_dir/$ref $input_dir/$in_bam | head -1000 > $in_bam.intermediate.mpileup
 # https://github.com/samtools/bcftools/wiki/HOWTOs#consensus-calling (outdated)
 
-# below is right
+## below is right
 # samtools mpileup --help # get underneath info
 # Note that using "samtools mpileup" to generate BCF or VCF files has been
 # removed.  To output these formats, please use "bcftools mpileup" instead.
@@ -93,8 +93,8 @@ D_depth=$(echo ${D_twice_mean_depth[@]} | tr " " "\n" | sed -n ${SLURM_ARRAY_TAS
 #ptg000001l      3       T       0       *       *
 #ptg000001l      4       G       1       ,       D
 
-#bcftools mpileup -C 50 -f $ref_dir/$ref $input_dir/$in_bam | bcftools call -c | \
-#    vcfutils.pl vcf2fq -d $d_depth -D $D_depth | gzip > $in_bam.fq.gz
+bcftools mpileup -C 50 -f $ref_dir/$ref $input_dir/$in_bam | bcftools call -c | \
+    vcfutils.pl vcf2fq -d $d_depth -D $D_depth | gzip > $in_bam.fq.gz
 ## AndHae_hifi_asm.aligned.bam.fq.gz
 
 #3 prepare psmcfa files
@@ -103,7 +103,7 @@ conda activate psmc
 #$utiles_tools/fq2psmcfa -q20 $pas_REF_pas_DP200_1500x_fq > pas_REF_pas_DP200_1500x.psmcfa
 in_bam_fq_file=$in_bam.fq.gz
 out_psmcfa_file=${in_bam_fq_file/.gz/}
-#fq2psmcfa -q20 $in_bam_fq_file > $out_psmcfa_file.psmcfa
+fq2psmcfa -q20 $in_bam_fq_file > $out_psmcfa_file.psmcfa
 ## AndHae_hifi_asm.aligned.bam.fq.psmcfa
 
 ## bootstrap

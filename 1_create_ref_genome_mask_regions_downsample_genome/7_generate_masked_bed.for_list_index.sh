@@ -100,6 +100,8 @@ run_trial_list=(
     #"Aphodius_sticticus-GCA_963966075.1-softmasked.fa" # no gene bed
     #"Ephemera_danica-GCA_000507165.2-softmasked.fa" # no gene bed
     #"Notonecta_glauca.hifi_asm_pl2-softmasked.fa" # self assembly: not the best
+
+    ## attention
     #"Notonecta_glauca.hifi_asm_pl3-softmasked.fa" # self assembly: best -> same as: Notonecta_glauca.hifi_asm_pl3.fa.masked
     #"Stenurella_melanura-GCA_963583905.1-softmasked.fa" # no gene bed
 
@@ -283,7 +285,7 @@ fa_self_ann_list=(
     "Ephemera_danica-GCA_000507165.2-softmasked.fa" # no gene bed
     "Leptopterna_dolobrata-GCA_954871275.1.fa.masked" # no gene bed
     "Mystacides_longicornis-GCA_963576905.1.fa.masked" # no gene bed
-    "Notonecta_glauca.hifi_asm_pl3-softmasked.fa"
+    "Notonecta_glauca.hifi_asm_pl3-fa.masked"
     "Panurgus_banksianus.hifi_asm_pl3.fa.masked" # assembling
     "Porcellio_scaber-GCA_034700385.1.fa.masked" # no gene bed
     "Stenurella_melanura-GCA_963583905.1-softmasked.fa"
@@ -606,7 +608,7 @@ REF_INDEX_list_2=(
     "Notonecta_glauca.hifi_asm_pl3.fa.masked.fai"
     "Panurgus_banksianus.hifi_asm_pl3.fa.masked.fai"
     "Porcellio_scaber-GCA_034700385.1.fa.masked.fai" # need to exclude short contigs
-    "./Stenurella_melanura-GCA_963583905.1.fa.fai"
+    "Stenurella_melanura-GCA_963583905.1.fa.fai"
     "Xestia_c-nigrum-GCA_916618015.1.fa.masked.fai"
 
 )

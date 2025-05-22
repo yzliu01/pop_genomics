@@ -72,12 +72,12 @@ cd $output_dir
 #conda install --force-reinstall minimap2
 # mamba install minimap2=2.28 # fast
 
-#time minimap2 -x map-hifi -t 20 -a $ref_dir/$ref $hifi_dir/$fq_file | samtools sort -o $output_dir/$out_bam --write-index -
+time minimap2 -x map-hifi -t 20 -a $ref_dir/$ref $hifi_dir/$fq_file | samtools sort -o $output_dir/$out_bam --write-index -
 
 # bam stats on aligned bam files
 bam_out_stats_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_stats
 cd $bam_out_stats_dir
-#time samtools coverage $output_dir/$out_bam -o $out_bam.samtools.cov.stats
+time samtools coverage $output_dir/$out_bam -o $out_bam.samtools.cov.stats
 #time samtools stats -in $output_dir/$out_bam > $out_bam.samtools.stats
 
 # samtools cov outputs

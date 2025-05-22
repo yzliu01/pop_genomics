@@ -167,6 +167,9 @@ pdf("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data/sfs_
 plot(sfs_pas_REF_pas_t$V1,type="h")
 dev.off()
 
+
+
+
 ************************** form sfs plot ********************
 setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data")
 # check sfs distribution

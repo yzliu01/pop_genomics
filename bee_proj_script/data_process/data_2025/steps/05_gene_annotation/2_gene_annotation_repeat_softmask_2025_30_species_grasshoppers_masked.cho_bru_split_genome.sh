@@ -1,11 +1,11 @@
 #!/bin/bash
 #SBATCH --account eDNA
-#SBATCH --cpus-per-task 40
+#SBATCH --cpus-per-task 20
 ##SBATCH --mem 500g
 #SBATCH --mem 400g
-#SBATCH --time=25:00:00
+##SBATCH --time=25:00:00
 ##SBATCH --time=7-00:00:00 # grasshoppers
-##SBATCH --time=4-25:00:00 # grasshoppers
+#SBATCH --time=4-25:00:00 # grasshoppers
 #SBATCH --array=1-10%10
 #SBATCH --error=2_gene_annotation_repeat_softmask_2025_30_grasshoppers_cho_bru.%A_%a.e
 #SBATCH --output=2_gene_annotation_repeat_softmask_2025_30_grasshoppers_cho_bru.%A_%a.o
@@ -91,7 +91,7 @@ species_ref="Chorthippus_brunneus.hifi_asm_pl3.part_"$split_id".fa"
 ## test 01-10%10
 #echo -e "$species \t $species_ref"
 
-exit 0
+#exit 0
 
 ## reference genome with simple header lines
 #sed -e 's/|/_/g' -e 's/\.1.*/.1/g' $ref_dir/$species_ref > $ref_dir/$species_ref.simple_header.fa
@@ -143,7 +143,7 @@ conda activate braker3
 ##  --threads 20
 ## --genome="$ref_dir/$species_ref".simple_header.fa
 braker.pl --genome="$ref_dir/$species_ref" --prot_seq="$Insecta_gene_AA" \
-    --workingdir=$braker_output_dir_for_protseq --species="$species" --useexisting --threads=40 \
+    --workingdir=$braker_output_dir_for_protseq --species="$species" --useexisting --threads=20 \
     --PROTHINT_PATH=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/gmetp_linux_64/bin/gmes/ProtHint/bin \
     --GENEMARK_PATH=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/gmetp_linux_64/bin/gmes \
     --makehub --email=yuanzhen.liu2@gmail.com
