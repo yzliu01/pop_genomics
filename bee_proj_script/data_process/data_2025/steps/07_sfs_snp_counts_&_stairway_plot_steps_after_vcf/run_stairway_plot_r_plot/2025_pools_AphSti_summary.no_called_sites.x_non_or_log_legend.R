@@ -88,8 +88,15 @@ summary_list <- lapply(seq_along(sorted_files), function(i) read_summary(sorted_
 
 #valid_summaries <- summary_list[sapply(summary_list, function(x) is.data.frame(x) && nrow(x) > 0)]
 
+library(dplyr) # for label_data to label x = 100
+
 # Function to plot data
 plot_summary_legend <- function(data) {
+
+# Find the y-value where x ≈ 100 (adjust tolerance if needed)
+    label_data <- data %>% 
+        filter(abs(year - 100) == min(abs(year - 100)))  # Nearest x to 100
+
   ggplot(data, aes(x = year)) +  # Adjust column names
     #scale_x_continuous(limits= c(10,500000),labels = function(year) format(year, scientific = FALSE)) +
     scale_x_log10(limits= c(10,500000),labels = function(year) format(year, scientific = FALSE)) +
@@ -127,9 +134,9 @@ plot_summary_legend <- function(data) {
     ggtitle(unique(data$file)) +  # Title as filename
 
     # Add annotation for `no_called_sites`
-    annotate("text", x = 30, y = 3000000, label = paste("Site No: ", unique(data$no_called_sites)),
+    annotate("text", x = 10, y = 2750000, label = paste("Site No: ", unique(data$no_called_sites)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
-    annotate("text", x = 30, y = 2750000, label = paste("SNP No: ", unique(data$snp_number)),
+    annotate("text", x = 10, y = 2500000, label = paste("SNP No: ", unique(data$snp_number)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
 
     theme(
@@ -143,7 +150,7 @@ plot_summary_legend <- function(data) {
         ## non_log
         #legend.position = c(0.65, 0.75), 
         ## log
-        legend.position = c(0.37, 0.85),         
+        legend.position = c(0.33, 0.8),         
         legend.key.width=unit(1, "cm"), 
         legend.text = element_text(size = 10),
         legend.background = element_rect(fill = "transparent"),
@@ -151,6 +158,16 @@ plot_summary_legend <- function(data) {
         legend.margin =  margin(-12,0,0,0,unit="pt")
       ) +
       labs(x = "Years ago", y = expression(paste(italic("N")["e"]))) +
+
+## add y value when x = 100 years
+    geom_point(data = label_data, aes(y = Ne_median), color = "blue") +  # Optional: Add a point
+    geom_text(
+    data = label_data,
+    aes(y = Ne_median, label = paste0("italic(N)[e]==", round(Ne_median, 0))),
+    parse = TRUE,  # This is key for math expressions
+    color = "blue", hjust = 0,vjust = -1, size = 3
+    ## vjust=0.5 center; -0.3 upper; 0.6 down; hjust = -1 to the right
+    ) +
 
       ## add log ticks on x axis
       annotation_logticks(
@@ -186,9 +203,9 @@ plot_summary <- function(data) {
     #annotate("text", x = 100, y = 35000, label = paste("SNP No: ", unique(data$snp_number)),
     #size = 2.7, hjust = 0, fontface = "plain", color = "black") +
 
-    annotate("text", x = 30, y = 3000000, label = paste("Site No: ", unique(data$no_called_sites)),
+    annotate("text", x = 10, y = 3000000, label = paste("Site No: ", unique(data$no_called_sites)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
-    annotate("text", x = 30, y = 2750000, label = paste("SNP No: ", unique(data$snp_number)),
+    annotate("text", x = 10, y = 2750000, label = paste("SNP No: ", unique(data$snp_number)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
 
     theme(
@@ -214,17 +231,19 @@ plot_summary <- function(data) {
 # Generate a list of plots
 #plot_list <- lapply(summary_list, plot_summary)
 
-plot_list <- list() # intialize empty list
+plot_list1 <- list() # intialize empty list
 
 for (i in 1:length(sorted_files)){
     #print(sorted_files[i])
-    if (i == 1){
+    #if (i == 1){
+    if (i == 2){
 
-    plot_list <- list(plot_summary_legend(summary_list[[i]])) # use [[i]]
+    #plot_list1 <- list(plot_summary_legend(summary_list[[i]])) # use [[i]]
+    plot_list1 <- append(plot_list1,list(plot_summary_legend(summary_list[[i]]))) # use [[i]]
 
     } else {
     
-    plot_list <- append(plot_list,list(plot_summary(summary_list[[i]])))
+    plot_list1 <- append(plot_list1,list(plot_summary(summary_list[[i]])))
     
     }
 
@@ -237,18 +256,18 @@ for (i in 1:length(sorted_files)){
 #grid.arrange(grobs = plot_list, nrow = 1)
 
 ## 10 pools
-pdf("AphSti_stairway_plot.called_sites_snps.final.x_log.new.pdf", width = 20, height = 6)
-grid.arrange(grobs = plot_list, nrow = 1)
+pdf("AphSti_stairway_plot.called_sites_snps.final.x_log.label.pdf", width = 20, height = 4)
+grid.arrange(grobs = plot_list1, nrow = 1)
 dev.off()
 
 # Combine plots with patchwork
-combined_plot1 <- marrangeGrob(grobs = plot_list,ncol = 5, nrow = 1, top=NULL,
+combined_plot1 <- marrangeGrob(grobs = plot_list1,ncol = 5, nrow = 1, top=NULL,
                             layout_matrix = matrix(seq_len(5), nrow = 1, byrow = FALSE))
 
 
-combined_plot1 <- marrangeGrob(grobs = plot_list,ncol = 1, nrow = 5, top=NULL,
+combined_plot1 <- marrangeGrob(grobs = plot_list1,ncol = 1, nrow = 5, top=NULL,
                             layout_matrix = matrix(seq_len(5), nrow = 5, byrow = TRUE))
 
 ## 3 rows (1x, 1.5x, 2x)
-combined_plot1_new <- marrangeGrob(grobs = plot_list[1:3],ncol = 1, nrow = 3, top=NULL,
+combined_plot1_new <- marrangeGrob(grobs = plot_list1[1:3],ncol = 1, nrow = 3, top=NULL,
                             layout_matrix = matrix(seq_len(3), nrow = 3, byrow = TRUE))

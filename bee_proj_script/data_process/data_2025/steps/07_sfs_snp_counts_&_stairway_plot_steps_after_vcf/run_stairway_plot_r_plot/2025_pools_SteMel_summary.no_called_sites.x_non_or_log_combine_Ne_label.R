@@ -84,8 +84,17 @@ library(dplyr) # for label_data to label x = 100
 plot_summary_legend <- function(data) {
 
 # Find the y-value where x ≈ 100 (adjust tolerance if needed)
-    label_data <- data %>% 
-        filter(abs(year - 100) == min(abs(year - 100)))  # Nearest x to 100
+    #label_data <- data %>% 
+    #    filter(abs(year - 100) == min(abs(year - 100)))  # Nearest x to 100
+    # got two value label
+    #print(label_data)
+
+## obtain only one label
+    label_data <- data %>%
+    mutate(distance = abs(year - 100)) %>%
+    filter(distance == min(distance)) %>%
+    slice_sample(n = 1)
+    print(label_data)
 
   ggplot(data, aes(x = year)) +  # Adjust column names
     #scale_x_continuous(limits= c(10,500000),labels = function(year) format(year, scientific = FALSE)) +
@@ -124,9 +133,9 @@ plot_summary_legend <- function(data) {
     ggtitle(unique(data$file)) +  # Title as filename
 
     # Add annotation for `no_called_sites`
-    annotate("text", x = 30, y = 2000000, label = paste("Site No: ", unique(data$no_called_sites)),
+    annotate("text", x = 10, y = 2000000, label = paste("Site No: ", unique(data$no_called_sites)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
-    annotate("text", x = 30, y = 1800000, label = paste("SNP No: ", unique(data$snp_number)),
+    annotate("text", x = 10, y = 1800000, label = paste("SNP No: ", unique(data$snp_number)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
 
     theme(
@@ -162,7 +171,7 @@ plot_summary_legend <- function(data) {
     data = label_data,
     aes(y = Ne_median, label = paste0("italic(N)[e]==", round(Ne_median, 0))),
     parse = TRUE,  # This is key for math expressions
-    color = "blue", hjust = 0,vjust = 1.5, size = 3
+    color = "blue", hjust = 0,vjust = -1, size = 3
     ## vjust=0.5 center; -0.3 upper; 0.6 down; hjust = -1 to the right
     ) +
   
@@ -200,9 +209,9 @@ plot_summary <- function(data) {
     #annotate("text", x = 100, y = 35000, label = paste("SNP No: ", unique(data$snp_number)),
     #size = 2.7, hjust = 0, fontface = "plain", color = "black") +
 
-    annotate("text", x = 30, y = 2000000, label = paste("Site No: ", unique(data$no_called_sites)),
+    annotate("text", x = 10, y = 2000000, label = paste("Site No: ", unique(data$no_called_sites)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
-    annotate("text", x = 30, y = 1800000, label = paste("SNP No: ", unique(data$snp_number)),
+    annotate("text", x = 10, y = 1800000, label = paste("SNP No: ", unique(data$snp_number)),
     size = 3, hjust = 0, fontface = "plain", color = "black") +
 
     theme(
@@ -226,19 +235,22 @@ plot_summary <- function(data) {
 }
 
 # Generate a list of plots
-#plot_list <- lapply(summary_list, plot_summary)
+#plot_list10 <- lapply(summary_list, plot_summary)
 
-plot_list <- list() # intialize empty list
+plot_list10 <- list() # intialize empty list
 
 for (i in 1:length(sorted_files)){
     #print(sorted_files[i])
-    if (i == 1){
+    #if (i == 1){
+    if (i == 2){
+    #if (i %in% c(1, 2)){
 
-    plot_list <- list(plot_summary_legend(summary_list[[i]])) # use [[i]]
+    #plot_list102 <- list(plot_summary_legend(summary_list[[i]])) # use [[i]]
+    plot_list10 <- append(plot_list10,list(plot_summary_legend(summary_list[[i]]))) # use [[i]]
 
     } else {
     
-    plot_list <- append(plot_list,list(plot_summary(summary_list[[i]])))
+    plot_list10 <- append(plot_list10,list(plot_summary(summary_list[[i]])))
     
     }
 
@@ -248,25 +260,25 @@ for (i in 1:length(sorted_files)){
 #pdf("SteMel_stairway_plot.called_sites_snps.pdf", width = 20, height = 6)
 ## 3 pools test
 #pdf("SteMel_stairway_plot.called_sites_snps.x_log.pdf", width = 20, height = 6)
-#grid.arrange(grobs = plot_list, nrow = 1)
+#grid.arrange(grobs = plot_list10, nrow = 1)
 
 ## 10 pools
-pdf("SteMel_stairway_plot.called_sites_snps.final.x_log.new.pdf", width = 20, height = 6)
-grid.arrange(grobs = plot_list, nrow = 1)
+pdf("SteMel_stairway_plot.called_sites_snps.final.x_log.label.pdf", width = 20, height = 4)
+grid.arrange(grobs = plot_list10, nrow = 1)
 dev.off()
 
 # Combine plots with patchwork
-combined_plot10 <- marrangeGrob(grobs = plot_list,ncol = 5, nrow = 1, top=NULL,
+combined_plot10 <- marrangeGrob(grobs = plot_list10,ncol = 5, nrow = 1, top=NULL,
                             layout_matrix = matrix(seq_len(5), nrow = 1, byrow = FALSE))
 
 
 ## 5 rows (1x, 1.5x, 2x, 2.5x, 3x)
-combined_plot10 <- marrangeGrob(grobs = plot_list,ncol = 1, nrow = 5, top=NULL,
+combined_plot10 <- marrangeGrob(grobs = plot_list10,ncol = 1, nrow = 5, top=NULL,
                             layout_matrix = matrix(seq_len(5), nrow = 5, byrow = TRUE))
 
 
 ## 3 rows (1x, 1.5x, 2x)
-combined_plot10_new <- marrangeGrob(grobs = plot_list[1:3],ncol = 1, nrow = 3, top=NULL,
+combined_plot10_new <- marrangeGrob(grobs = plot_list10[1:3],ncol = 1, nrow = 3, top=NULL,
                             layout_matrix = matrix(seq_len(3), nrow = 3, byrow = TRUE))
 
 
@@ -281,6 +293,7 @@ length(combined_plot3)
 
 
 library(patchwork)
+
 pdf_file <- file.path(result_path,"all_combined_1_1.5_2_2.5_3x.final.pdf")
 #combined_plot <- combined_plot1 + combined_plot2 + combined_plot3 + plot_layout(ncol = 1, nrow = 3)
 #ggsave(pdf_file,combined_plot,width = 18, height = 15, limitsize = FALSE)
@@ -304,7 +317,7 @@ ggsave(pdf_file, combined_plot, width = 36, height = 18, limitsize = FALSE)
 
 
 ***************************************************
-pdf_file <- file.path(result_path,"all_combined_1_1.5_2x.final.new.pdf")
+pdf_file <- file.path(result_path,"all_combined_1_1.5_2x.final.label.pdf")
 
 # Ensure combined_plot1, combined_plot2, and combined_plot3 are not empty
 # and contain the correct plots. If they are lists of plots, we need to wrap them.

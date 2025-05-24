@@ -1,6 +1,11 @@
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/job_submission
-script_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/steps/03_genome_mapping_AND_variant_calling
+script_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/steps/123_genome_mapping_AND_variant_calling
+## 05_2025
+## submit dependent jobs
+for sh in $(ls -t $script_dir/3_fb*sh | head -16 | sort -V);do sbatch --dependency=afterok:60826698 $sh;done
+
+## 04_2025
 for sh in $(ls -t $script_dir/3_fb*sh | head -4);do sbatch $sh;done
 
 Submitted batch job 59038164*aphsti
