@@ -53,7 +53,7 @@ sfs_FilePlotName_20_80_200=sfs_Ne10000_hapS_20_80_200_5rep_2i_2d_2d_2i_10d_10d_2
 ## ft_sim_10000Ne_20hapS_2E_100_500G_10d_10d_20Chr_15Mb_2
 
 for sample_size in {20hapS,80hapS,200hapS};do
-    for i in {1..30};do
+    for i in {1..35};do
         ## sfs file
         ## modify AA and CC with pop_name and proj_dir_name in column (NF-1)
         #sfs1=`grep "$sample_size" $sfs_FilePlotName_20_80_200 | awk -F "\t" -v var=$i 'FNR==var {print $(NF-1)}'`

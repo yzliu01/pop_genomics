@@ -120,21 +120,6 @@ merged_data_new <- merged_data %>%
                   theta_per_site_97.5., year, Ne_median, Ne_2.5., Ne_97.5., 
                   Ne_12.5., Ne_87.5.), as.numeric))
 
-## Example: create the plot
-plot <- ggplot(merged_data_new, aes(x = year, y = Ne_median, color = species, fill = species)) +
-  geom_line(linewidth = 1) +
-  geom_ribbon(aes(ymin = Ne_12.5., ymax = Ne_87.5.), alpha = 0.2, color = NA) +
-  labs(title = "Ne Median Over Years by Species",
-       x = "Year",
-       y = "Ne Median",
-       color = "Species",
-       fill = "Species") +
-  theme_minimal() +
-  theme(
-    text = element_text(size = 12),
-    legend.position = "right"
-  )
-
 ## Display the plot
 #print(plot)
 
@@ -153,7 +138,8 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
     #guides(color = guide_legend(title = NULL,order = 1, override.aes = list(linewidth = 1.5)),
     #fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
 
-  labs(title = "Median Ne Over Years by Species (10x)",
+  labs(#title = "Median Ne Over Years by Species (10x)",
+        title = "10x",
        y=expression(paste(italic("N")["e"])),
        x = "Years ago") +  # Correct label for the x-axis
   #theme_minimal() +
@@ -224,7 +210,10 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
         axis.title = element_text(colour = "black",size = 9.5),
         panel.border = element_rect(linewidth = 1.2),
         legend.position = "none",
-        #panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
+
+        panel.grid.major = element_line(color = "gray", size = 0.5, linetype = 2),
+        panel.grid.minor = element_line(color = "gray", size = 0.5, linetype = 2),
+        
         axis.ticks = element_line(colour = "black", size = 0.5)
         ) +
     labs(x="Years ago (log transformed)",
@@ -236,21 +225,23 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
         labels = label_number(big.mark = "")
         #labels = function(year) format(year, scientific = FALSE)
         ) +
-    scale_y_continuous(
-        limits = c(1,500000),
+    #scale_y_continuous(limits = c(1,500000),
+    scale_y_log10(limits = c(100,500000),
+        # customise ticks
+        breaks = c(1000, 10000,100000,1000000),
         labels = label_number(big.mark = "")
         #labels = function(Ne_median) format(Ne_median, scientific = FALSE)
         ) +
 
     annotation_logticks(
-        sides = "b",
+        sides = "bl",
         short = unit(0.1, "cm"),  # Adjust size of short ticks
         mid = unit(0.15, "cm"),     # Adjust size of medium ticks
         long = unit(0.2, "cm")       # Adjust size of long ticks)  # log ticks only on  bottom
     )
     
-## combine: p1_final
-p10x_final <- p1_initial + 
+## combine:
+p010x_final <- p1_initial + 
     ## position of zoom plot
     annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000) +
     ## position of annotation frame
@@ -267,9 +258,9 @@ p10x_final <- p1_initial +
                 linetype = 'dashed')
 
 # Save the plot
-ggsave("non_log_plot_all_10x.tick_x_log.pdf", p10x_final, width = 10, height = 8)
+ggsave("non_log_plot_all_10x.no_singleton.tick_xy_log.pdf", p010x_final, width = 10, height = 8)
 
-print(p1_final) 
+print(p010x_final) 
 
 
 ######################################################################
@@ -295,8 +286,8 @@ library(patchwork)
 
 # Combine plots with patchwork
 
-pdf_file <- file.path(result_path,"all_combined_1_3_5_7_10x.tick_x_log.pdf")
-combined_plot <- p1x_final + p3x_final + p5x_final + p7x_final + p10x_final + plot_layout(ncol = 5)
+pdf_file <- file.path(result_path,"all_combined_1_3_5_7_10x.no_singleton.tick_xy_log.pdf")
+combined_plot <- p1x_final + p3x_final + p5x_final + p7x_final + p010x_final + plot_layout(ncol = 5)
 ggsave(pdf_file,combined_plot,width = 30, height = 6, limitsize = FALSE)
 
 #print(combined_plot)

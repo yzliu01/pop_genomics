@@ -34,10 +34,12 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 #blueprint_file_list_5rep=sfs_file_20_80_200hapS_10_2_e_id_cons_non_pruned.5rep_blueprint.file_name.list
 ## ft_sim_1000000Ne_20hapS_1E_50G_00d_20Chr_15Mb_1.blueprint
 
-sfs_FilePlotName_20_80_200=sfs_Ne1000000_hapS_20_80_200_10_2_e_id_cons_non_pruned.blueprint.txt
-
+#cd /home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint
+#sfs_FilePlotName_20_80_200=/home/yzliu/bin/stairway_plot_v2.1.2/stairway_plot_blueprint/sfs_Ne1000000_hapS_20_80_200_10_2_e_id_cons_non_pruned.blueprint.txt
+sfs_FilePlotName_20_80_200=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/sfs_Ne1000000_hapS_20_80_200_10_2_e_id_cons_non_pruned.blueprint.txt
 ## i the total number for each sample_size in the file: sfs_Ne1000000_hapS_20_80_200_10_2_e_id_cons_non_pruned.blueprint.txt
-for i in {1..80};do
+#for i in {1..80};do
+for i in {1..140};do # there are others like 200, 300G
     for sample_size in {20hapS,80hapS,200hapS};do
         ## sfs file
         ## modify AA and CC with pop_name and proj_dir_name in column (NF-1)
@@ -49,14 +51,14 @@ for i in {1..80};do
         sfs2=`grep "$sample_size" $sfs_FilePlotName_20_80_200 | awk -F "\t" -v var=$i 'FNR==var {print $NF}'`
         ## add ".blueprint" file extension
         sfs3=`grep "$sample_size" $sfs_FilePlotName_20_80_200 | awk -F "\t" -v var=$i 'FNR==var {print $NF".blueprint"}'`
-        sed -i -e "3s/AA/$sfs2/" -e "12s/CC/$sfs2/" ./1000000Ne_5rep/$sfs3
+        sed -i -e "3s/AA/$sfs2/" -e "12s/CC/$sfs2/" ./1000000Ne_5rep_no_singletons/$sfs3
         ## modify pop BB (sfs) and DD with sfs data and plot_title in col1 and column (NF)
         ## attention to input file
         sfs4=`grep "$sample_size" $sfs_FilePlotName_20_80_200 | awk -F "\t" -v var=$i 'FNR==var {$NF=$(NF-1)="";print}' | sed 's/[[:blank:]]*$//'`
         ## issue: sfs4=`grep "$sample_size" $sfs_20_80_200 | awk -F "\t" -v var=$i 'FNR==var {$NF=$(NF-1)=""}1' | sed 's/[[:blank:]]*$//'`
         ## remove excess space
         ## https://unix.stackexchange.com/questions/102008/how-do-i-trim-leading-and-trailing-whitespace-from-each-line-of-some-output
-        sed -i -e "7s/BB/$sfs4/" -e "20s/DD/$sfs2/" ./1000000Ne_5rep/$sfs3
+        sed -i -e "7s/BB/$sfs4/" -e "20s/DD/$sfs2/" ./1000000Ne_5rep_no_singletons/$sfs3
     done
 done
 

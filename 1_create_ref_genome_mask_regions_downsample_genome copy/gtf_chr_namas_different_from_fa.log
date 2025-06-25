@@ -1,0 +1,174 @@
+
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome
+
+yzliu in 🌐 fe-open-01 in DK_proj/data/ref_genome on  main [?] 
+❯ less -S Rutpela_maculata-GCA_936432065.2-softmasked.fa
+
+yzliu in 🌐 fe-open-01 in DK_proj/data/ref_genome on  main [?] took 21s 
+❯ grep '^>' Rutpela_maculata-GCA_936432065.2-softmasked.fa 
+>OW386285.2 Rutpela maculata genome assembly, chromosome: 1
+>CAKZFB020000001.1 Rutpela maculata genome assembly, contig: SUPER_1_unloc_1, whole genome shotgun sequence
+>OW386286.2 Rutpela maculata genome assembly, chromosome: 2
+>OW386287.2 Rutpela maculata genome assembly, chromosome: 3
+>OW386288.2 Rutpela maculata genome assembly, chromosome: 4
+>CAKZFB020000002.1 Rutpela maculata genome assembly, contig: SUPER_4_unloc_1, whole genome shotgun sequence
+>OW386289.2 Rutpela maculata genome assembly, chromosome: 5
+>OW386290.2 Rutpela maculata genome assembly, chromosome: 6
+>OW386291.2 Rutpela maculata genome assembly, chromosome: 7
+>OW386292.2 Rutpela maculata genome assembly, chromosome: 8
+>OW386293.2 Rutpela maculata genome assembly, chromosome: 9
+>OW386294.2 Rutpela maculata genome assembly, chromosome: X
+>CAKZFB020000003.1 Rutpela maculata genome assembly, contig: scaffold_74, whole genome shotgun sequence
+>CAKZFB020000004.1 Rutpela maculata genome assembly, contig: scaffold_196, whole genome shotgun sequence
+>CAKZFB020000005.1 Rutpela maculata genome assembly, contig: scaffold_51, whole genome shotgun sequence
+>CAKZFB020000006.1 Rutpela maculata genome assembly, contig: scaffold_170, whole genome shotgun sequence
+>CAKZFB020000007.1 Rutpela maculata genome assembly, contig: scaffold_197, whole genome shotgun sequence
+>CAKZFB020000008.1 Rutpela maculata genome assembly, contig: scaffold_82, whole genome shotgun sequence
+>CAKZFB020000009.1 Rutpela maculata genome assembly, contig: scaffold_138, whole genome shotgun sequence
+>CAKZFB020000010.1 Rutpela maculata genome assembly, contig: scaffold_100, whole genome shotgun sequence
+>CAKZFB020000011.1 Rutpela maculata genome assembly, contig: scaffold_135, whole genome shotgun sequence
+>CAKZFB020000012.1 Rutpela maculata genome assembly, contig: scaffold_35, whole genome shotgun sequence
+>CAKZFB020000013.1 Rutpela maculata genome assembly, contig: scaffold_114, whole genome shotgun sequence
+>CAKZFB020000014.1 Rutpela maculata genome assembly, contig: scaffold_117, whole genome shotgun sequence
+>CAKZFB020000015.1 Rutpela maculata genome assembly, contig: scaffold_59, whole genome shotgun sequence
+>CAKZFB020000016.1 Rutpela maculata genome assembly, contig: scaffold_116, whole genome shotgun sequence
+>CAKZFB020000017.1 Rutpela maculata genome assembly, contig: scaffold_73, whole genome shotgun sequence
+>CAKZFB020000018.1 Rutpela maculata genome assembly, contig: scaffold_194, whole genome shotgun sequence
+>CAKZFB020000019.1 Rutpela maculata genome assembly, contig: scaffold_162, whole genome shotgun sequence
+>CAKZFB020000020.1 Rutpela maculata genome assembly, contig: scaffold_145, whole genome shotgun sequence
+>CAKZFB020000021.1 Rutpela maculata genome assembly, contig: scaffold_152, whole genome shotgun sequence
+>CAKZFB020000022.1 Rutpela maculata genome assembly, contig: scaffold_148, whole genome shotgun sequence
+>CAKZFB020000023.1 Rutpela maculata genome assembly, contig: scaffold_69, whole genome shotgun sequence
+>CAKZFB020000024.1 Rutpela maculata genome assembly, contig: scaffold_104, whole genome shotgun sequence
+>CAKZFB020000025.1 Rutpela maculata genome assembly, contig: scaffold_57, whole genome shotgun sequence
+>CAKZFB020000026.1 Rutpela maculata genome assembly, contig: scaffold_110, whole genome shotgun sequence
+>CAKZFB020000027.1 Rutpela maculata genome assembly, contig: scaffold_158, whole genome shotgun sequence
+>CAKZFB020000028.1 Rutpela maculata genome assembly, contig: scaffold_168, whole genome shotgun sequence
+>CAKZFB020000029.1 Rutpela maculata genome assembly, contig: scaffold_165, whole genome shotgun sequence
+>CAKZFB020000030.1 Rutpela maculata genome assembly, contig: scaffold_142, whole genome shotgun sequence
+>CAKZFB020000031.1 Rutpela maculata genome assembly, contig: scaffold_155, whole genome shotgun sequence
+>CAKZFB020000032.1 Rutpela maculata genome assembly, contig: scaffold_174, whole genome shotgun sequence
+>CAKZFB020000033.1 Rutpela maculata genome assembly, contig: scaffold_49, whole genome shotgun sequence
+>CAKZFB020000034.1 Rutpela maculata genome assembly, contig: scaffold_190, whole genome shotgun sequence
+>CAKZFB020000035.1 Rutpela maculata genome assembly, contig: scaffold_177, whole genome shotgun sequence
+>CAKZFB020000036.1 Rutpela maculata genome assembly, contig: scaffold_176, whole genome shotgun sequence
+>CAKZFB020000037.1 Rutpela maculata genome assembly, contig: scaffold_220, whole genome shotgun sequence
+>CAKZFB020000038.1 Rutpela maculata genome assembly, contig: scaffold_132, whole genome shotgun sequence
+>CAKZFB020000039.1 Rutpela maculata genome assembly, contig: scaffold_106, whole genome shotgun sequence
+>CAKZFB020000040.1 Rutpela maculata genome assembly, contig: scaffold_45, whole genome shotgun sequence
+>CAKZFB020000041.1 Rutpela maculata genome assembly, contig: scaffold_172, whole genome shotgun sequence
+>CAKZFB020000042.1 Rutpela maculata genome assembly, contig: scaffold_46, whole genome shotgun sequence
+>CAKZFB020000043.1 Rutpela maculata genome assembly, contig: scaffold_195, whole genome shotgun sequence
+>CAKZFB020000044.1 Rutpela maculata genome assembly, contig: scaffold_144, whole genome shotgun sequence
+>CAKZFB020000045.1 Rutpela maculata genome assembly, contig: scaffold_198, whole genome shotgun sequence
+>CAKZFB020000046.1 Rutpela maculata genome assembly, contig: scaffold_137, whole genome shotgun sequence
+>CAKZFB020000047.1 Rutpela maculata genome assembly, contig: scaffold_136, whole genome shotgun sequence
+>CAKZFB020000048.1 Rutpela maculata genome assembly, contig: scaffold_71, whole genome shotgun sequence
+>CAKZFB020000049.1 Rutpela maculata genome assembly, contig: scaffold_209, whole genome shotgun sequence
+>CAKZFB020000050.1 Rutpela maculata genome assembly, contig: scaffold_115, whole genome shotgun sequence
+>CAKZFB020000051.1 Rutpela maculata genome assembly, contig: scaffold_134, whole genome shotgun sequence
+>CAKZFB020000052.1 Rutpela maculata genome assembly, contig: scaffold_79, whole genome shotgun sequence
+>CAKZFB020000053.1 Rutpela maculata genome assembly, contig: scaffold_201, whole genome shotgun sequence
+>CAKZFB020000054.1 Rutpela maculata genome assembly, contig: scaffold_53, whole genome shotgun sequence
+>CAKZFB020000055.1 Rutpela maculata genome assembly, contig: scaffold_147, whole genome shotgun sequence
+>CAKZFB020000056.1 Rutpela maculata genome assembly, contig: scaffold_203, whole genome shotgun sequence
+>CAKZFB020000057.1 Rutpela maculata genome assembly, contig: scaffold_160, whole genome shotgun sequence
+>CAKZFB020000058.1 Rutpela maculata genome assembly, contig: scaffold_150, whole genome shotgun sequence
+>CAKZFB020000059.1 Rutpela maculata genome assembly, contig: scaffold_146, whole genome shotgun sequence
+>CAKZFB020000060.1 Rutpela maculata genome assembly, contig: scaffold_129, whole genome shotgun sequence
+>CAKZFB020000061.1 Rutpela maculata genome assembly, contig: scaffold_112, whole genome shotgun sequence
+>CAKZFB020000062.1 Rutpela maculata genome assembly, contig: scaffold_43, whole genome shotgun sequence
+>CAKZFB020000063.1 Rutpela maculata genome assembly, contig: scaffold_181, whole genome shotgun sequence
+>CAKZFB020000064.1 Rutpela maculata genome assembly, contig: scaffold_183, whole genome shotgun sequence
+>CAKZFB020000065.1 Rutpela maculata genome assembly, contig: scaffold_189, whole genome shotgun sequence
+>CAKZFB020000066.1 Rutpela maculata genome assembly, contig: scaffold_167, whole genome shotgun sequence
+>CAKZFB020000067.1 Rutpela maculata genome assembly, contig: scaffold_157, whole genome shotgun sequence
+>CAKZFB020000068.1 Rutpela maculata genome assembly, contig: scaffold_166, whole genome shotgun sequence
+>CAKZFB020000069.1 Rutpela maculata genome assembly, contig: scaffold_156, whole genome shotgun sequence
+>CAKZFB020000070.1 Rutpela maculata genome assembly, contig: scaffold_121, whole genome shotgun sequence
+>CAKZFB020000071.1 Rutpela maculata genome assembly, contig: scaffold_140, whole genome shotgun sequence
+>CAKZFB020000072.1 Rutpela maculata genome assembly, contig: scaffold_123, whole genome shotgun sequence
+>CAKZFB020000073.1 Rutpela maculata genome assembly, contig: scaffold_77, whole genome shotgun sequence
+>CAKZFB020000074.1 Rutpela maculata genome assembly, contig: scaffold_63, whole genome shotgun sequence
+>CAKZFB020000075.1 Rutpela maculata genome assembly, contig: scaffold_178, whole genome shotgun sequence
+>CAKZFB020000076.1 Rutpela maculata genome assembly, contig: scaffold_213, whole genome shotgun sequence
+>CAKZFB020000077.1 Rutpela maculata genome assembly, contig: scaffold_211, whole genome shotgun sequence
+>CAKZFB020000078.1 Rutpela maculata genome assembly, contig: scaffold_175, whole genome shotgun sequence
+>CAKZFB020000079.1 Rutpela maculata genome assembly, contig: scaffold_192, whole genome shotgun sequence
+>CAKZFB020000080.1 Rutpela maculata genome assembly, contig: scaffold_164, whole genome shotgun sequence
+>CAKZFB020000081.1 Rutpela maculata genome assembly, contig: scaffold_154, whole genome shotgun sequence
+>CAKZFB020000082.1 Rutpela maculata genome assembly, contig: scaffold_105, whole genome shotgun sequence
+>CAKZFB020000083.1 Rutpela maculata genome assembly, contig: scaffold_64, whole genome shotgun sequence
+>CAKZFB020000084.1 Rutpela maculata genome assembly, contig: scaffold_108, whole genome shotgun sequence
+>CAKZFB020000085.1 Rutpela maculata genome assembly, contig: scaffold_130, whole genome shotgun sequence
+>CAKZFB020000086.1 Rutpela maculata genome assembly, contig: scaffold_222, whole genome shotgun sequence
+>CAKZFB020000087.1 Rutpela maculata genome assembly, contig: scaffold_219, whole genome shotgun sequence
+>CAKZFB020000088.1 Rutpela maculata genome assembly, contig: scaffold_98, whole genome shotgun sequence
+>CAKZFB020000089.1 Rutpela maculata genome assembly, contig: scaffold_101, whole genome shotgun sequence
+>CAKZFB020000090.1 Rutpela maculata genome assembly, contig: scaffold_179, whole genome shotgun sequence
+>CAKZFB020000091.1 Rutpela maculata genome assembly, contig: scaffold_103, whole genome shotgun sequence
+>CAKZFB020000092.1 Rutpela maculata genome assembly, contig: scaffold_72, whole genome shotgun sequence
+>CAKZFB020000093.1 Rutpela maculata genome assembly, contig: scaffold_218, whole genome shotgun sequence
+>CAKZFB020000094.1 Rutpela maculata genome assembly, contig: scaffold_173, whole genome shotgun sequence
+>CAKZFB020000095.1 Rutpela maculata genome assembly, contig: scaffold_215, whole genome shotgun sequence
+>CAKZFB020000096.1 Rutpela maculata genome assembly, contig: scaffold_171, whole genome shotgun sequence
+>CAKZFB020000097.1 Rutpela maculata genome assembly, contig: scaffold_125, whole genome shotgun sequence
+>CAKZFB020000098.1 Rutpela maculata genome assembly, contig: scaffold_202, whole genome shotgun sequence
+>CAKZFB020000099.1 Rutpela maculata genome assembly, contig: scaffold_24, whole genome shotgun sequence
+>CAKZFB020000100.1 Rutpela maculata genome assembly, contig: scaffold_128, whole genome shotgun sequence
+>CAKZFB020000101.1 Rutpela maculata genome assembly, contig: scaffold_83, whole genome shotgun sequence
+>CAKZFB020000102.1 Rutpela maculata genome assembly, contig: scaffold_185, whole genome shotgun sequence
+>CAKZFB020000103.1 Rutpela maculata genome assembly, contig: scaffold_90, whole genome shotgun sequence
+>CAKZFB020000104.1 Rutpela maculata genome assembly, contig: scaffold_188, whole genome shotgun sequence
+>CAKZFB020000105.1 Rutpela maculata genome assembly, contig: scaffold_205, whole genome shotgun sequence
+>CAKZFB020000106.1 Rutpela maculata genome assembly, contig: scaffold_208, whole genome shotgun sequence
+>CAKZFB020000107.1 Rutpela maculata genome assembly, contig: scaffold_122, whole genome shotgun sequence
+>CAKZFB020000108.1 Rutpela maculata genome assembly, contig: scaffold_99, whole genome shotgun sequence
+>CAKZFB020000109.1 Rutpela maculata genome assembly, contig: scaffold_119, whole genome shotgun sequence
+>CAKZFB020000110.1 Rutpela maculata genome assembly, contig: scaffold_111, whole genome shotgun sequence
+>CAKZFB020000111.1 Rutpela maculata genome assembly, contig: scaffold_182, whole genome shotgun sequence
+>CAKZFB020000112.1 Rutpela maculata genome assembly, contig: scaffold_199, whole genome shotgun sequence
+>CAKZFB020000113.1 Rutpela maculata genome assembly, contig: scaffold_221, whole genome shotgun sequence
+>CAKZFB020000114.1 Rutpela maculata genome assembly, contig: scaffold_86, whole genome shotgun sequence
+>CAKZFB020000115.1 Rutpela maculata genome assembly, contig: scaffold_212, whole genome shotgun sequence
+>CAKZFB020000116.1 Rutpela maculata genome assembly, contig: scaffold_191, whole genome shotgun sequence
+>CAKZFB020000117.1 Rutpela maculata genome assembly, contig: scaffold_193, whole genome shotgun sequence
+>CAKZFB020000118.1 Rutpela maculata genome assembly, contig: scaffold_184, whole genome shotgun sequence
+>CAKZFB020000119.1 Rutpela maculata genome assembly, contig: scaffold_52, whole genome shotgun sequence
+>CAKZFB020000120.1 Rutpela maculata genome assembly, contig: scaffold_96, whole genome shotgun sequence
+>CAKZFB020000121.1 Rutpela maculata genome assembly, contig: scaffold_95, whole genome shotgun sequence
+>CAKZFB020000122.1 Rutpela maculata genome assembly, contig: scaffold_124, whole genome shotgun sequence
+>CAKZFB020000123.1 Rutpela maculata genome assembly, contig: scaffold_217, whole genome shotgun sequence
+>CAKZFB020000124.1 Rutpela maculata genome assembly, contig: scaffold_58, whole genome shotgun sequence
+>CAKZFB020000125.1 Rutpela maculata genome assembly, contig: scaffold_216, whole genome shotgun sequence
+>CAKZFB020000126.1 Rutpela maculata genome assembly, contig: scaffold_153, whole genome shotgun sequence
+>CAKZFB020000127.1 Rutpela maculata genome assembly, contig: scaffold_163, whole genome shotgun sequence
+>CAKZFB020000128.1 Rutpela maculata genome assembly, contig: scaffold_200, whole genome shotgun sequence
+>CAKZFB020000129.1 Rutpela maculata genome assembly, contig: scaffold_161, whole genome shotgun sequence
+>CAKZFB020000130.1 Rutpela maculata genome assembly, contig: scaffold_126, whole genome shotgun sequence
+>CAKZFB020000131.1 Rutpela maculata genome assembly, contig: scaffold_151, whole genome shotgun sequence
+>CAKZFB020000132.1 Rutpela maculata genome assembly, contig: scaffold_127, whole genome shotgun sequence
+>CAKZFB020000133.1 Rutpela maculata genome assembly, contig: scaffold_89, whole genome shotgun sequence
+>CAKZFB020000134.1 Rutpela maculata genome assembly, contig: scaffold_214, whole genome shotgun sequence
+>CAKZFB020000135.1 Rutpela maculata genome assembly, contig: scaffold_186, whole genome shotgun sequence
+>CAKZFB020000136.1 Rutpela maculata genome assembly, contig: scaffold_187, whole genome shotgun sequence
+>CAKZFB020000137.1 Rutpela maculata genome assembly, contig: scaffold_159, whole genome shotgun sequence
+>CAKZFB020000138.1 Rutpela maculata genome assembly, contig: scaffold_169, whole genome shotgun sequence
+>CAKZFB020000139.1 Rutpela maculata genome assembly, contig: scaffold_120, whole genome shotgun sequence
+>CAKZFB020000140.1 Rutpela maculata genome assembly, contig: scaffold_141, whole genome shotgun sequence
+>CAKZFB020000141.1 Rutpela maculata genome assembly, contig: scaffold_87, whole genome shotgun sequence
+>CAKZFB020000142.1 Rutpela maculata genome assembly, contig: scaffold_207, whole genome shotgun sequence
+>CAKZFB020000143.1 Rutpela maculata genome assembly, contig: scaffold_143, whole genome shotgun sequence
+>CAKZFB020000144.1 Rutpela maculata genome assembly, contig: scaffold_206, whole genome shotgun sequence
+>CAKZFB020000145.1 Rutpela maculata genome assembly, contig: scaffold_180, whole genome shotgun sequence
+>CAKZFB020000146.1 Rutpela maculata genome assembly, contig: scaffold_93, whole genome shotgun sequence
+>CAKZFB020000147.1 Rutpela maculata genome assembly, contig: scaffold_149, whole genome shotgun sequence
+>CAKZFB020000148.1 Rutpela maculata genome assembly, contig: scaffold_80, whole genome shotgun sequence
+>CAKZFB020000149.1 Rutpela maculata genome assembly, contig: scaffold_133, whole genome shotgun sequence
+>CAKZFB020000150.1 Rutpela maculata genome assembly, contig: scaffold_131, whole genome shotgun sequence
+>CAKZFB020000151.1 Rutpela maculata genome assembly, contig: scaffold_48, whole genome shotgun sequence
+>CAKZFB020000152.1 Rutpela maculata genome assembly, contig: scaffold_204, whole genome shotgun sequence
+>CAKZFB020000153.1 Rutpela maculata genome assembly, contig: scaffold_94, whole genome shotgun sequence
+>CAKZFB020000154.1 Rutpela maculata genome assembly, contig: scaffold_139, whole genome shotgun sequence
+>CAKZFB020000155.1 Rutpela maculata genome assembly, contig: scaffold_210, whole genome shotgun sequence
+>OW386295.2 Rutpela maculata genome assembly, organelle: mitochondrion

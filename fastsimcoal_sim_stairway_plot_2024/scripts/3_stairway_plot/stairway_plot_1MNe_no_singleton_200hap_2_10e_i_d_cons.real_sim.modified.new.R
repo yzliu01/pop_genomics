@@ -1,6 +1,6 @@
 
 #setwd("/home/yzliu/bin/stairway_plot_v2.1.2/systematic_ft_non_pruned/")
-setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp")
+setwd("/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/1MNe_swp-")
 #final_summary <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/100KNe_swp"
 #mixedsort(sort(fs::dir_ls(path=final_summary, recurse = 1, fail=TRUE, type = "file", glob = "*G_*e_*_cons*200hapS*15Mb_*.final.summary")))
 ## attention to refer to only one file name
@@ -28,7 +28,7 @@ for (generation in c("50G","100G","500G","1000G")){
 
     ## difficult to simulate
     #for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
-    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons")){
+    for (event in c("2e_d_cons","10e_d_cons","2e_i_cons","10e_i_cons")){
         ## solo axis name plot
         #plot(1,1, type="n", xlim=c(1,5e5), ylim=c(1,1.0e4),log="x", xlab="Years ago", ylab="Effective population size",xaxt='n',yaxt='n')
         ##log="xy",xlab="Years ago", ylab="Effective population size"

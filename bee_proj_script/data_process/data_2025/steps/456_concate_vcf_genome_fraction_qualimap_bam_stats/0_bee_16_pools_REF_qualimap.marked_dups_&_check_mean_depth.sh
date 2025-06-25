@@ -32,6 +32,9 @@ cd $BAM_DIR
 ##bam_list=$(ls *sort.marked_dups.new.bam | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
 ## create a bam file list
+rename bam files due to a mistake in previous step
+rename "_R1_001.fq.clean.gz" "" *_R1_001.fq.clean.gz*bam
+
 ls -t *sort.marked_dups.bam | head -16 > bee_16_pools.sort.marked_dups.bam.list
 #Andhae.New_REF_AndHae.sort.marked_dups.bam
 #Andmar.New_REF_AndHae.sort.marked_dups.bam
@@ -66,7 +69,25 @@ qualimap multi-bamqc -nt 10 -r -cl 300 -dl 60 -d $bam_list_path_group --java-mem
 
 exit 0
 
-## check the mean depth 
+## check the mean depth
+
+ls -dt ./* | head -17 | find . -name genome_results.txt | sort | xargs grep 'mean coverageData =' | awk '{print $NF}'
+ls -dt ./* | head -18 | find . -name genome_results.txt | sort | xargs grep 'mean coverageData =' | sed -e 's/\.sort\.marked_dups\.bam\/genome_results\.txt:     mean coverageData =//' -e 's/\.\///' | awk '{print $1 "\t" $NF}'
+
+## assign each line to variable dir
+ls -dt */ | head -18 | while read dir; do
+#echo "Directory: $dir"
+    file="${dir}genome_results.txt"
+    #echo $file
+    if [ -f $file ]; then
+    ## output with file names
+        grep -H 'mean coverageData =' $file \
+        | sed -e 's/\.sort\.marked_dups\.bam\/genome_results\.txt:     mean coverageData =//' | awk '{print $1 "\t" $NF}'
+    fi
+done
+#AelAcu.REF_AelAcu       85.347X
+#LepDol.REF_LepDol       101.2703X
+
 find . -name genome_results.txt | sort | xargs grep 'mean coverageData ='
 ./Aphsti.REF_AphSti.sort.marked_dups.bam/genome_results.txt:     mean coverageData = 210.7389X
 ./Bommaj.REF_BomMaj.sort.marked_dups.bam/genome_results.txt:     mean coverageData = 269.7475X

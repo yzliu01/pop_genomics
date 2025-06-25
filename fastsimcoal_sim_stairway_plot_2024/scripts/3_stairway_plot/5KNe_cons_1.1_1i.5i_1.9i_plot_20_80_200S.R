@@ -1,0 +1,199 @@
+library(ggplot2)
+library(fs)
+library(gtools)
+library(patchwork)
+library(scales)
+
+result_path <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/systematic_ft_non_pruned/10KNe_swp"
+setwd(result_path)
+
+# Function to generate true Ne trajectory
+fx <- function(x, plot_name) {
+  sapply(x, function(xx) {
+    if (grepl("G_cons", plot_name)) {
+      5000
+    } else if (grepl("50G.*1.1i", plot_name)) {
+      if (xx <= 50) 5000 else 5000 * 1.1
+    } else if (grepl("50G.*1.5i", plot_name)) {
+      if (xx <= 50) 5000 else 5000 * 1.5
+    } else if (grepl("50G.*1.9i", plot_name)) {
+      if (xx <= 50) 5000 else 5000 * 1.9
+    } else if (grepl("50G.*05i", plot_name)) {
+      if (xx <= 50) 5000 else 5000 * 0.5
+    } else if (grepl("100G.*1.1i", plot_name)) {
+      if (xx <= 100) 5000 else 5000 * 1.1
+    } else if (grepl("100G.*1.5i", plot_name)) {
+      if (xx <= 100) 5000 else 5000 * 1.5
+    } else if (grepl("100G.*1.9i", plot_name)) {
+      if (xx <= 100) 5000 else 5000 * 1.9
+    } else if (grepl("100G.*05i", plot_name)) {
+      if (xx <= 100) 5000 else 5000 * 0.5
+    } else if (grepl("500G.*1.1i", plot_name)) {
+      if (xx <= 500) 5000 else 5000 * 1.1
+    } else if (grepl("500G.*1.5i", plot_name)) {
+      if (xx <= 500) 5000 else 5000 * 1.5
+    } else if (grepl("500G.*1.9i", plot_name)) {
+      if (xx <= 500) 5000 else 5000 * 1.9
+    } else if (grepl("500G.*05i", plot_name)) {
+      if (xx <= 500) 5000 else 5000 * 0.5
+    } else if (grepl("1000G.*1.1i", plot_name)) {
+      if (xx <= 1000) 5000 else 5000 * 1.1
+    } else if (grepl("1000G.*05i", plot_name)) {
+      if (xx <= 1000) 5000 else 5000 * 0.5
+    } else if (grepl("1000G.*1.5i", plot_name)) {
+      if (xx <= 1000) 5000 else 5000 * 1.5
+    } else {
+      if (xx <= 1000) 5000 else 5000 * 1.9
+    }
+  })
+}
+
+events <- c(
+  "50G_cons", "100G_cons", "500G_cons", "1000G_cons",
+  "50G_1.1i", "100G_1.1i", "500G_1.1i", "1000G_1.1i",
+  "50G_1.5i", "100G_1.5i", "500G_1.5i", "1000G_1.5i",
+  "50G_1.9i", "100G_1.9i", "500G_1.9i", "1000G_1.9i"
+)
+n_reps <- 5
+
+# Set per-event x-axis limits
+x_limits_list <- list(
+  "50G_cons"   = c(1, 100000),
+  "50G_1.1i"   = c(1, 100000),
+  "50G_1.5i"   = c(1, 100000),
+  "50G_1.9i"   = c(1, 100000),
+  "100G_cons"   = c(1, 100000),
+  "100G_1.1i"   = c(1, 100000),
+  "100G_1.5i"   = c(1, 100000),
+  "100G_1.9i"   = c(1, 100000),
+  "500G_cons"   = c(1, 100000),
+  "500G_1.1i"   = c(1, 100000),
+  "500G_1.5i"   = c(1, 100000),
+  "500G_1.9i"   = c(1, 100000),
+  "1000G_cons"   = c(1, 100000),
+  "1000G_1.1i"   = c(1, 100000),
+  "1000G_1.5i"   = c(1, 100000),
+  "1000G_1.9i" = c(1, 100000)
+)
+
+# Set per-event y-axis limits
+y_limits_list <- list(
+  "50G_cons"   = c(1, 20000),
+  "50G_1.1i"   = c(1, 20000),
+  "50G_1.5i"   = c(1, 20000),
+  "50G_1.9i"   = c(1, 20000),
+  "100G_cons"   = c(1, 20000),
+  "100G_1.1i"   = c(1, 20000),
+  "100G_1.5i"   = c(1, 20000),
+  "100G_1.9i"   = c(1, 20000),
+  "500G_cons"   = c(1, 20000),
+  "500G_1.1i"   = c(1, 20000),
+  "500G_1.5i"   = c(1, 20000),
+  "500G_1.9i"   = c(1, 20000),
+  "1000G_cons"   = c(1, 20000),
+  "1000G_1.1i"   = c(1, 20000),
+  "1000G_1.5i"   = c(1, 20000),
+  "1000G_1.9i" = c(1, 20000)
+)
+
+#x_limits_list <- setNames(
+#  replicate(length(events), c(1, 100000), simplify = FALSE),
+#  events
+#)
+
+#y_limits_list <- setNames(
+#  replicate(length(events), c(1, 20000), simplify = FALSE),
+#  events
+#)
+
+plot_list <- list()
+for (sample_size in c(20,80,200)) {
+#for (sample_size in c(20)) {
+  for (singleton in c("_", "_no_singleton_")) {
+    for (event in events) {
+
+      x_limits <- x_limits_list[[event]]
+      y_limits <- y_limits_list[[event]]
+
+      all_reps <- list()
+
+      for (rep in 1:n_reps) {
+        rep_path <- paste0("./ft_sim_10000Ne", singleton, sample_size, "hapS_1E_", event, "_20Chr_15Mb_", rep)
+        files <- mixedsort(sort(fs::dir_ls(path = rep_path, recurse = TRUE, fail = TRUE, type = "file", glob = "*hapS*.final.summary")))
+        if (length(files) == 0) next
+        df <- tryCatch(read.table(files[1], header = TRUE, sep = "\t"), error = function(e) NULL)
+        if (is.null(df)) next
+        df$replicate <- rep
+        all_reps[[rep]] <- df[, c("year", "Ne_median", "Ne_12.5.", "Ne_87.5.", "replicate")]
+      }
+
+      all_reps <- all_reps[!sapply(all_reps, is.null)]
+      if (length(all_reps) == 0) next
+
+      long_df <- do.call(rbind, all_reps)
+      long_df <- long_df[long_df$year > 0, ]
+
+      model_years <- 1:100000
+      true_Ne <- fx(model_years, event)
+      true_df <- data.frame(year = model_years, Ne_true = true_Ne)
+
+      p <- ggplot() +
+        geom_ribbon(data = long_df, aes(x = year, ymin = Ne_12.5., ymax = Ne_87.5., group = replicate, fill = "75% CI"), alpha = 0.3) +
+        geom_line(data = long_df, aes(x = year, y = Ne_median, group = replicate, color = "Each replicate"), alpha = 0.5, size = 0.7) +
+        geom_step(data = true_df, aes(x = year, y = Ne_true, color = "Model"), size = 1, alpha = 0.8) +
+        scale_x_continuous(trans = "log10", limits = x_limits, labels = label_number(big.mark = "")) +
+        scale_y_continuous(limits = y_limits, labels = label_number(big.mark = "")) +
+        labs(title = paste0("5kNe", singleton, sample_size,"S_" , event),
+             x = "Generations ago",
+             y = expression(italic(N[e]))) +
+        scale_color_manual(name = NULL, values = c("Model" = "red", "Each replicate" = "blue"), breaks = c("Model", "Each replicate")) +
+        scale_fill_manual(name = NULL, values = c("75% CI" = "orange"), breaks = c("75% CI")) +
+        guides(color = guide_legend(order = 1), fill = guide_legend(order = 2)) +
+        theme_bw() +
+        theme(
+          plot.title = element_text(hjust = 0.5, size = 7, face = "plain"),
+          axis.title = element_text(size = 7),
+          axis.text.x = element_text(size = 7),
+          axis.text.y = element_text(angle = 90, hjust = 0.5, size = 7),
+          legend.position = if (event == "50G_cons" && singleton == "_") c(0.3, 0.8) else "none",
+          legend.background = element_rect(fill = alpha("white", 0), color = NA),
+          legend.key = element_rect(fill = "white"),
+          legend.text = element_text(size = 8),
+          legend.margin = margin(-10, 0, 0, 0, unit = "pt"),
+          legend.key.height = unit(0.5, "line"),
+          axis.ticks.length.x = unit(0, "pt")
+        ) +
+        annotation_logticks(sides = "", short = unit(0.1, "cm"), mid = unit(0.15, "cm"), long = unit(0.2, "cm"))
+
+      key <- paste0(sample_size, singleton, event)
+      plot_list[[key]] <- p
+    }
+  }
+}
+
+# ----- Arrange plots in matrix layout ----- #
+demographic_models <- c("cons", "1.1i", "1.5i", "1.9i")
+event_sizes <- c("50G", "100G", "500G", "1000G")
+singleton_types <- c("_", "_no_singleton_")
+
+# Assemble final panels grouped by sample_size
+plot_rows <- list()
+
+for (sample_size in c(20, 80, 200)) {
+  for (model in demographic_models) {
+    for (singleton in singleton_types) {
+      row_plots <- list()
+      for (event_size in event_sizes) {
+        key <- paste0(sample_size, singleton, event_size, "_", model)
+        row_plots[[event_size]] <- if (!is.null(plot_list[[key]])) plot_list[[key]] else ggplot() + theme_void()
+      }
+      plot_rows[[paste0(sample_size, singleton, model)]] <- wrap_plots(row_plots, nrow = 1)
+    }
+  }
+}
+
+# Stack sample panels vertically
+final_plot <- wrap_plots(plot_rows, ncol = 1)
+print(final_plot)
+
+ggsave("5kNe_cons_1.1i_5i_1.9i_20_80_200S.new1.pdf", final_plot, width = 10, height = 54, limitsize = FALSE)

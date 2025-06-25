@@ -155,7 +155,7 @@ OUT_NAME_list=(
 OUT_NAME=$(echo ${OUT_NAME_list[*]} | tr ' ' '\n' | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## out bam file name
 # Aphsti_R1_001.fastq.gz
-File=${seq1/_R1_000.fq.clean.gz/}
+File=${seq1/_R1_001.fq.clean.gz/}
 
 ## activate (env) tools of variant_calling_mapping to use sambamba markdup
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh

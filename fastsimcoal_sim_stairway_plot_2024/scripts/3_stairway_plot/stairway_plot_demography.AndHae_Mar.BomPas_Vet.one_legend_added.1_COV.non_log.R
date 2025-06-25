@@ -153,7 +153,8 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
     #guides(color = guide_legend(title = NULL,order = 1, override.aes = list(linewidth = 1.5)),
     #fill = guide_legend(title = NULL, order = 2, byrow = TRUE, override.aes = list(linewidth = 4))) +
 
-  labs(title = "Median Ne Over Years by Species (1x)",
+  labs(#title = "Median Ne Over Years by Species (1x)",
+        title = "1x",
        y=expression(paste(italic("N")["e"])),
        x = "Years ago") +  # Correct label for the x-axis
   #theme_minimal() +
@@ -226,13 +227,15 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
         # customise ticks
         #axis.ticks.y = element_line(size = 0.5),  # Major ticks customization
         #axis.ticks = element_line(size = 1),  # Customize general axis ticks
-        #panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
-        #panel.grid.minor = element_line(color = "lightgray", size = 0.25, linetype = 2),
-        
+
+        panel.grid.major = element_line(color = "gray", size = 0.5, linetype = 2),
+        panel.grid.minor = element_line(color = "gray", size = 0.5, linetype = 2),
+
         #legend.position = "bottom",        
         #legend.position = c(0.3,-0.635),
 # single plot new
         legend.position = c(0.28,-0.63),
+        #legend.position = c(0.5,0.05),
 # single plot old
         #legend.position = c(0.6,-0.18),
         legend.text = element_text(size = 9),
@@ -252,8 +255,10 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
         ) +
     scale_x_log10(lim= c(10,25000),
                   labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(limits = c(1,500000),
+    #scale_y_continuous(limits = c(1,500000),
+    scale_y_log10(limits = c(100,500000),
                         # customise ticks
+                        breaks = c(1000, 10000,100000,1000000),
                         #breaks = seq(0, 500000, by = 100000),  # Major ticks
                         #minor_breaks = seq(0, 500000, by = 10000),  # Minor ticks every 50000 between 100000 and 200000
                         #breaks = seq(0, 500000, by = 50000), 
@@ -261,14 +266,14 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
                        labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
 
     annotation_logticks(
-        sides = "b",
+        sides = "bl",
         short = unit(0.1, "cm"),  # Adjust size of short ticks
         mid = unit(0.15, "cm"),     # Adjust size of medium ticks
         long = unit(0.2, "cm")       # Adjust size of long ticks)  # log ticks only on  bottom
     )
 
 ## combine: p1_final
-p1x_final <- p1_initial + 
+p01x_final <- p1_initial + 
     ## position of zoom plot
     annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000) +
     ## position of annotation frame
@@ -285,9 +290,9 @@ p1x_final <- p1_initial +
                 linetype = 'dashed')
 
 # Save the plot
-ggsave("non_log_plot_all_1x.tick_x_log.new.pdf", p1x_final, width = 10, height = 8)
+ggsave("non_log_plot_all_1x.no_singleton.tick_xy_log.new.pdf", p01x_final, width = 10, height = 8)
 
-print(p1x_final) 
+print(p01x_final) 
 
 
 ######################################################################
