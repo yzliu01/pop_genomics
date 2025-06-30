@@ -3,12 +3,16 @@
 input_sfs_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/SFS_data
 cd $input_sfs_dir
 #ls -t concated.AndHae*P_[0-1][0-9].equal_self.sfs | sort -V
+
 ## downsample reads
 #out_sfs_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/pool_downsample_reads/templates
+
+## downsample genome
 out_sfs_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/pool_shuf_downsample_genome/templates
 
 # delete old sfs files
-rm $out_sfs_dir/*.sfs
+rm $out_sfs_dir/*dipS*.sfs
+#Hae_39_dipS.1_3_5_7_10x.P_01_02_03_04_05_06_07_08_09_10.sfs
 
 # attention to the order of files
 ./Andhae.New_REF_AndHae_0_1P_downsample_reads.7x.equal_self.sfs
@@ -41,6 +45,7 @@ for species in {Hae,Mar,Pas,Vet};do ## downsample genome
 
     ## downsample linear genome
     #sfs1=`find -maxdepth 1 -print | grep "$species" | egrep "P_[0-1][0-9]" | grep "equal_self.sfs$" | sort -V`
+    
     ## downsample reads
     #sfs1=`find -maxdepth 1 -print | grep "$species" | egrep '_[0-9]P|_[0-1][0-9]P' | grep "equal_self.sfs$" | perl -pe 'm/_(\d+)P_downsample_reads\.(\d+)x/; ($p, $xn) = ($1, $2); $_ = sprintf("%05d_%05d_%s", $xn, $p, $_);' | sort -t '_' -k1,1n -k2,2n | cut -d'_' -f3-`
     sfs2=`find -maxdepth 1 -print | grep "xxxxx_old_script" | sort -V`

@@ -299,5 +299,5 @@ final_combined_plot <- do.call(grid.arrange, c(valid_plots, ncol = 1))
 
 #pdf_file <- file.path(result_path,"combined_plot_40S_50G_05d_1000G_09d_5_replicates_with_95_75CI_with_and_no_singleton.new2.pdf")
 # Save to PDF
-ggsave(filename = "./combined_plot_main_figure_1_2_3_75CI_with_singleton.small_font.log_x.pdf",
+ggsave(filename = "./combined_plot_main_figure_1_2_3_75CI_with_singleton.small_font.log_x.new.pdf",
         final_combined_plot, width = 10, height = 10 * ceiling(length(valid_plots) / 2), limitsize = FALSE)

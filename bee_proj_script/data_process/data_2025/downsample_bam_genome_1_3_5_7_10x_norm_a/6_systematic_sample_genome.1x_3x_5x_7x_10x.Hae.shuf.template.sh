@@ -11,7 +11,7 @@
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
 ## test
-#SLURM_ARRAY_TASK_ID=1
+##SLURM_ARRAY_TASK_ID=1
 
 ## activate (env) tools of variant_calling_mapping
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
@@ -128,7 +128,7 @@ echo -e "${depth[i]}\t${depth_time[i]}"
 bcftools view -R $BED_DIR/$BED $Andhae_New_REF_AndHae_VCF | \
 bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region | \
 bcftools filter --SnpGap 5:indel | \
-bcftools norm -d none -f $REF_AndHae | \
+bcftools norm -a -f $REF_AndHae | \
 bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools view -e "MEAN(FMT/DP) < "${depth[i]}" || MEAN(FMT/DP) > 1500" \

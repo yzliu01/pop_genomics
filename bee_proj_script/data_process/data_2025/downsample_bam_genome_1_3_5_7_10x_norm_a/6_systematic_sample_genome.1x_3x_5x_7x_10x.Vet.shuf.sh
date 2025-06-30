@@ -2,21 +2,20 @@
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 50g
-#SBATCH --array=2-9%9
-##SBATCH --array=1-10%10
+#SBATCH --array=1-10%10
 #SBATCH --time=1-16:00:00
-#SBATCH --error=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.e
-#SBATCH --output=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.o
-#SBATCH --job-name=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x
+#SBATCH --error=Vet_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.e
+#SBATCH --output=Vet_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.o
+#SBATCH --job-name=Vet_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
+
+## test
+##SLURM_ARRAY_TASK_ID=1
 
 ## activate (env) tools of variant_calling_mapping
 source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 conda activate variant_calling_mapping
-
-## test
-#SLURM_ARRAY_TASK_ID=1
 
 ## run in terminal
 #export OPENBLAS_NUM_THREADS=1
@@ -51,7 +50,7 @@ Andmar_New_REF_AndMar_VCF_filter=${Andmar_New_REF_AndMar_VCF/.vcf.gz/}
 Bompas_New_REF_BomPas_VCF=concated.BomPas_New_REF_BomPas.100kb_g1500x_regions.all_chr.sorted.GQ_issue_solved.vcf.gz
 Bompas_New_REF_BomPas_VCF_filter=${Bompas_New_REF_BomPas_VCF/.vcf.gz/}
 
-Bomvet_New_REF_BomVet_VCF=concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.vcf.gz
+Bomvet_New_REF_BomVet_VCF=concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.cp.vcf.gz
 Bomvet_New_REF_BomVet_VCF_filter=${Bomvet_New_REF_BomVet_VCF/.vcf.gz/}
 
 ## index vcf files
@@ -75,6 +74,8 @@ done
 }
 #index_vcf
 
+#bcftools index concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.cp.vcf.gz
+
 ## >>>>>>>>>>>>>>>>>>>>>>>>>>>>>  NEW  <<<<<<<<<<<<<<<<<<<<<<<<<<<<<
 ## keep biallelic snp, remove duplicates and normalize snp with long base (bcftools norm -d none/-m-snps), also remove monomorphic snps
 
@@ -86,17 +87,17 @@ done
 
 BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
 BED_LIST=(
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_02.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_03.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_04.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_05.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_06.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_07.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_08.sort.bed"
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_09.sort.bed"
-    ## 100% whole genome
-    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_10.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_01.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_02.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_03.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_04.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_05.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_06.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_07.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_08.sort.bed"
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_100b.shuf_subset_09.sort.bed"
+## 100% whole genome
+"Bombus_veteranus.hifi_asm_pl2.fa.fai.win_whole.subset_10.bed"
 
 )
 
@@ -119,7 +120,7 @@ PROP_LIST=(01 02 03 04 05 06 07 08 09 10)
 PROP=$(echo ${PROP_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
 echo "P_$PROP"
 
-depth=(80 240 400 560 800)
+depth=(58 174 290 416 580)
 depth_time=(1x 3x 5x 7x 10x)
 
 for i in ${!depth[@]}
@@ -127,18 +128,17 @@ for i in ${!depth[@]}
 do
 echo -e "${depth[i]}\t${depth_time[i]}"
 #done
-bcftools view -R $BED_DIR/$BED $Andmar_New_REF_AndMar_VCF | \
-bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region | \
+bcftools view -R $BED_DIR/$BED $Bomvet_New_REF_BomVet_VCF | \
+bcftools filter --soft-filter mask --mask-file $New_REF_BomVet_mask_region | \
 bcftools filter --SnpGap 5:indel | \
-bcftools norm -d none -f $REF_AndMar | \
+bcftools norm -a -f $REF_BomVet | \
 bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools view -e "MEAN(FMT/DP) < "${depth[i]}" || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Andmar_New_REF_AndMar_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"${depth_time[i]}"_1500x_noMS.shuf.P_"$PROP".vcf.gz
+-Oz -o ./"$Bomvet_New_REF_BomVet_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"${depth_time[i]}"_1500x_noMS.shuf.P_"$PROP".vcf.gz
 done
 
 exit 0
-
 
 export OPENBLAS_NUM_THREADS=4
 #OpenBLAS blas_thread_init: pthread_create failed for thread 27 of 64: Resource temporarily unavailable

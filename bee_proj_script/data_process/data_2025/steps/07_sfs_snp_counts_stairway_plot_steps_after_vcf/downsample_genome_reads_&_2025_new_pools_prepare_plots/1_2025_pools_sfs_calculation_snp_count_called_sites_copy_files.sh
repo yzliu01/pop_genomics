@@ -43,8 +43,12 @@ cd $concated_vcf_dir
 #for vcf in `ls -t concated*vcf.gz | head -15 | sort -V`
 
 ## new pools no PorSca
-for vcf in `ls -t *x.vcf.gz | head -30 | sort -V`
+for vcf in `ls -t *DP_*x.vcf.gz | head -82 | sort -V`
+
+for vcf in RutMac_REF_RutMac.DP_3x.vcf.gz SteMel_REF_SteMel.DP_2.5x.vcf.gz
     do
+    #echo $vcf
+#done
     output_sfs_name=${vcf/vcf.gz/equal_self}
     ## concated.Meglea.REF_MegLea.DP_10x.equal_self
     bcftools query -f '%CHROM\t%POS\t%AC\t%AN\t%DP' $vcf | \
@@ -79,7 +83,7 @@ cd $output_SFS_dir
 ## for all 10 species
 for sfs_file in $(ls -t ./*.sfs | head -50 | sort -V)
 
-for sfs_file in $(ls -t ./*.sfs | head -30 | sort -V)
+#for sfs_file in $(ls -t ./*.sfs | head -30 | sort -V)
 do
 count=$(grep ' ' -o $sfs_file | wc -l)
 echo -e "$count\t$sfs_file"
@@ -118,6 +122,7 @@ done
 
 done
 ''''''''''''
+
 *********************** get number of called site from excel file ********************
 ## go here
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/steps/456_concate_vcf_genome_fraction_bam_stats/
@@ -134,9 +139,11 @@ out_snp_no_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot
 #rm $out_snp_no_dir/*_snp_number.DP_1_3_5_7_10x.txt
 
 #rm $out_snp_no_dir/10_pools.snp_number.DP_1_1.5_2x.txt
+#rm $out_snp_no_dir/16_pools.snp_number.DP_1_1.5x.txt
 
 ## retrive snp count for each species at different DP levels
-for species in {AelAcu,AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,MysLon,PhoAtr,PorSca,RhaFul,TacFer,ThoDec,XesC-n}
+for species in {AphSti,BomMaj,CerRyb,EphDan,MegLea,NotGla,OchPle,PhrFul,RutMac,SteMel}
+#for species in {AelAcu,AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,MysLon,PhoAtr,PorSca,RhaFul,TacFer,ThoDec,XesC-n}
 do
 #for depth in {1x,3x,5x,7x,10x}
 ## new 
@@ -152,7 +159,10 @@ do
 ## the number depends on number of depth
 #for vcf in `ls -t concated.*$depth*vcf.gz | head -3 | sort -V`
 #for vcf in `ls -t *$depth*vcf.gz | head -10 | sort -V`
-for vcf in `ls -t $species*vcf.gz | head -2 | sort -V`
+
+for vcf in `ls -t $species*vcf.gz | head -5 | sort -V` # for DP_1_1.5_2_2.5_3x
+#for vcf in `ls -t $species*vcf.gz | head -2 | sort -V` # for DP_1_1.5x
+
 ## new vcf 
 ## ## SteMel_REF_SteMel.1x.vcf.gz
 ## in the order: 1x,1.5x,2x,2.5x,3x
@@ -161,18 +171,18 @@ for vcf in `ls -t $species*vcf.gz | head -2 | sort -V`
 #for vcf in `ls Andmar*P_downsample_reads*x.vcf.gz | sort -V | perl -pe 'm/_(\d+)P_downsample_reads\.(\d+)x/; ($p, $xn) = ($1, $2); $_ = sprintf("%05d_%05d_%s", $xn, $p, $_);' | sort -t '_' -k1,1n -k2,2n | cut -d'_' -f3-`
 do
 snp_count=$(bcftools query -f "%POS\t" $vcf | wc -l)
-echo -e "calculating snp number\t$snp_count\t$vcf"
+echo -e "$snp_count\t$vcf"
 #echo -e "$snp_count \t snp_no: $vcf" >> $out_snp_no_dir/AndHae_snp_number.P_reads_01_02_03_04_05_06_07_08_09_10.DP_1_3_5_7_10x.txt
 #echo -e "$snp_count" >> $out_snp_no_dir/Cer_Meg_Rut.snp_number.DP_1_3_5_7_10x.txt
 #echo -e "$snp_count" >> $out_snp_no_dir/10_pools.snp_number.DP_1_1.5_2x.txt
-#echo -e "$snp_count" >> $out_snp_no_dir/10_pools.snp_number.DP_1_1.5_2_2.5_3x.new.txt
-echo -e "$snp_count" >> $out_snp_no_dir/16_pools.snp_number.DP_1_1.5x.txt
+echo -e "$snp_count" >> $out_snp_no_dir/10_pools.snp_number.DP_1_1.5_2_2.5_3x.txt
+#echo -e "$snp_count" >> $out_snp_no_dir/16_pools.snp_number.DP_1_1.5x.txt
 done
 done
 
 ## then add comma for the numbers
 
-## create new files
+## create new files for number of called sites
 for i in $(ls -t *_50*genome.txt | head);do echo $i;cp $i $i.new;done
 ## remove ","
 for i in $(ls -t *_50*genome.txt.new | head);do echo $i;sed -i 's/,//g' $i;done
@@ -180,12 +190,18 @@ for i in $(ls -t *_50*genome.txt.new | head);do echo $i;sed -i 's/,//g' $i;done
 
 ******************* make copies of called sites and SNP files using AelAcu as a template *******************
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/2025_pools/templates/
+
+#for species in {AphSti,BomMaj,CerRyb,EphDan,MegLea,NotGla,OchPle,PhrFul,RutMac,SteMel}
 for species in {AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,MysLon,PhoAtr,PorSca,RhaFul,TacFer,ThoDec,XesC-n}
+
 do
 ## create snp files (copy from excel to text files)
+#cp AelAcu_snp_number.DP_1_1.5x.txt "$species"_snp_number.DP_1_1.5_2_2.5_3x.txt
 cp AelAcu_snp_number.DP_1_1.5x.txt "$species"_snp_number.DP_1_1.5x.txt
+
 ## create called site files (copy from excel to text files)
 cp AelAcu_50_number_called_sites_across_genome.txt "$species"_50_number_called_sites_across_genome.txt
+
 done
 ## AelAcu_50_number_called_sites_across_genome.txt
 
@@ -193,6 +209,7 @@ done
 ## called sites revised from snp number files (due to errors)
 for snp_list in $(ls *snp_number.DP_1_1.5x.txt)
 do
+#new_name=${snp_list/snp_number.DP_1_1.5_2_2.5_3x.txt/50_number_called_sites_across_genome.txt}
 new_name=${snp_list/snp_number.DP_1_1.5x.txt/50_number_called_sites_across_genome.txt}
 cp $snp_list $new_name
 ## remove comma

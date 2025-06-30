@@ -4,9 +4,9 @@
 #SBATCH --mem 50g
 #SBATCH --array=1-9%9
 #SBATCH --time=1-16:00:00
-#SBATCH --error=Hae_downsample_read_2025_DP_1x_3x_5x_7x_10x.%A_%a.e
-#SBATCH --output=Hae_downsample_read_2025_DP_1x_3x_5x_7x_10x.%A_%a.o
-#SBATCH --job-name=Hae_downsample_read_2025_DP_1x_3x_5x_7x_10x
+#SBATCH --error=Mar_downsample_read_2025_DP_1x_3x_5x_7x_10x.%A_%a.e
+#SBATCH --output=Mar_downsample_read_2025_DP_1x_3x_5x_7x_10x.%A_%a.o
+#SBATCH --job-name=Mar_downsample_read_2025_DP_1x_3x_5x_7x_10x
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -33,34 +33,35 @@ REF_AndMar=$REF_DIR/Andrena_marginata_GCA_963932335.1-softmasked.fa
 concated_vcf_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF
 cd $concated_vcf_dir
 
-vcf_file=$(ls Andhae*_0_*100kb_1500x_region.vcf.gz | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+vcf_file=$(ls Andmar*_0_*100kb_1500x_region.vcf.gz | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 output_vcf=${vcf_file/.100kb_1500x_region.vcf.gz/}
+
 ## vcf files for each percentage of downsampling
 #ls Andhae*_0_*100kb_1500x_region.vcf.gz | sort -V
-#Andhae.New_REF_AndHae_0_1.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_2.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_3.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_4.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_5.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_6.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_7.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_8.100kb_1500x_region.vcf.gz
-#Andhae.New_REF_AndHae_0_9.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_1.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_2.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_3.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_4.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_5.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_6.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_7.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_8.100kb_1500x_region.vcf.gz
+#Andhae.New_REF_AndMar_0_9.100kb_1500x_region.vcf.gz
 
 ## 100% read group vcf files: from genome 100% genome sampling
 ## /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025_downsample/Scripts/downsample_bam/
-## 6_systematic_sample_genome.1x_3x_5x_7x_10x.Hae.template.sh
+## 6_systematic_sample_genome.1x_3x_5x_7x_10x.Mar.sh
 
-#ls concated.AndHae*noMS.P_10.vcf.gz | sort -V
-#concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_1x_1500x_noMS.P_10.vcf.gz
-#concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_3x_1500x_noMS.P_10.vcf.gz
-#concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_5x_1500x_noMS.P_10.vcf.gz
-#concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_7x_1500x_noMS.P_10.vcf.gz
-#concated.AndHae_New_REF_AndHae.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_10x_1500x_noMS.P_10.vcf.gz
+#ls concated.AndMar*noMS.P_10.vcf.gz | sort -V
+#concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_1x_1500x_noMS.P_10.vcf.gz
+#concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_3x_1500x_noMS.P_10.vcf.gz
+#concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_5x_1500x_noMS.P_10.vcf.gz
+#concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_7x_1500x_noMS.P_10.vcf.gz
+#concated.AndMar_New_REF_AndMar.100kb_g1500x_regions.GQ_issue_solved.SNP_softmask_genic_bi_FMT_DP_10x_1500x_noMS.P_10.vcf.gz
 
 ## index vcf files
 vcf_list=(
-    $Andhae_New_REF_AndHae_VCF
+    $Andhae_New_REF_AndMar_VCF
     $Andmar_New_REF_AndMar_VCF
     $Bompas_New_REF_BomPas_VCF
     $Bomvet_New_REF_BomVet_VCF)
@@ -88,7 +89,7 @@ done
 #chr_n=${chr_n%.fasta}
 
 ## test
-#SLURM_ARRAY_TASK_ID=2
+##SLURM_ARRAY_TASK_ID=2
 
 ## bed file input
 #BED=$(echo ${BED_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
@@ -105,9 +106,9 @@ PROP_LIST=(01 02 03 04 05 06 07 08 09)
 PROP=$(echo ${PROP_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
 echo -e "processing: P_$PROP \t $vcf_file"
 
-# Hae
-## 39 ind 78*2*1
-depth=(78 256 390 546 780)
+# Mar
+## 40 ind 40*2*1
+depth=(80 240 400 560 800)
 depth_time=(1x 3x 5x 7x 10x)
 
 for i in ${!depth[@]}
@@ -115,10 +116,10 @@ for i in ${!depth[@]}
 do
 echo -e "${depth[i]}\t${depth_time[i]}"
 #done
-#bcftools view -R $BED_DIR/$BED $Andhae_New_REF_AndHae_VCF | \
-bcftools filter --soft-filter mask --mask-file $New_REF_AndHae_mask_region $vcf_file | \
+#bcftools view -R $BED_DIR/$BED $Andhae_New_REF_AndMar_VCF | \
+bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region $vcf_file | \
 bcftools filter --SnpGap 5:indel | \
-bcftools norm -d none -f $REF_AndHae | \
+bcftools norm -a -f $REF_AndMar | \
 bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools view -e "MEAN(FMT/DP) < "${depth[i]}" || MEAN(FMT/DP) > 1500" \
@@ -127,5 +128,5 @@ done
 
 exit 0
 
-# in - Andhae.New_REF_AndHae_0_2.100kb_1500x_region.vcf.gz
-# out - Andhae.New_REF_AndHae_0_2P_downsample_reads.1x.vcf.gz
+# in - Andmar.New_REF_AndMar_0_2.100kb_1500x_region.vcf.gz
+# out - Andmar.New_REF_AndMar_0_2P_downsample_reads.1x.vcf.gz

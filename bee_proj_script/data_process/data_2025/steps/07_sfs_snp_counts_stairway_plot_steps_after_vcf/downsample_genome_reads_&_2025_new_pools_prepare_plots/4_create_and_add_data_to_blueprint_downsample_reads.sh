@@ -16,7 +16,7 @@ blueprint_file_name=Vet_29_dipS.1_3_5_7_10x.P_01_02_03_04_05_06_07_08_09_10.sfs.
 
 ## take the (last) 3rd column
 #awk '{print $NF".blueprint"}' $sfs_file_name > $blueprint_file_list_5rep
-awk '{print $NF".blueprint"}' $compiled_sfs > $blueprint_file_name
+#awk '{print $NF".blueprint"}' $compiled_sfs > $blueprint_file_name
 
 
 # simplier way of using for loop

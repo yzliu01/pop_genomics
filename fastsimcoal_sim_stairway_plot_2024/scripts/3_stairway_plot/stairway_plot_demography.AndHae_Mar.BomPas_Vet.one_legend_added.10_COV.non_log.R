@@ -13,7 +13,7 @@ library(gridExtra) # for grid.arrange
 
 ##########################  final #####################################
 
-result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new"
+result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new/pool_shuf_downsample_genome"
 setwd(result_path)
 
 file_list_a <- c(             
@@ -36,7 +36,6 @@ file_list_a <- c(
                 #"BomVet_New_REF_BomVet.no_singleton_sfs_416_1500x_sm_genic"   
 
                 #10x
-
                 "AndHae_REF_AndHae.DP_10x.P_10",
                 "AndMar_REF_AndMar.DP_10x.P_10",
                 "BomPas_REF_BomPas.DP_10x.P_10",
@@ -162,14 +161,14 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
     scale_fill_manual(values = c("A.haemorrhoa" = "#009E73", "A.marginata" = "#332288", "B.pascuorum" = "#D55E00", "B.veteranus" = "#CC79A7")) +  # Custom fill colors
   
   ## display specific labels to show time periods
-  scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = "")) +
+  scale_y_continuous(limits = c(1, 800000), labels = label_number(big.mark = "")) +
   scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = "")) + # Set x-axis limits between 1 and 100,000
   ## add comma
-  #scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = ",")) + # Adding commas as thousand separators without scientific notation
+  #scale_y_continuous(limits = c(1, 800000), labels = label_number(big.mark = ",")) + # Adding commas as thousand separators without scientific notation
   #scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = ",")) + # Set x-axis limits between 1 and 100,000
 
   ## frame to select area on the plot
-  annotate(geom = "rect", xmin = 10, xmax = 25000, ymin = 1000, ymax = 480000, 
+  annotate(geom = "rect", xmin = 10, xmax = 25000, ymin = 1000, ymax = 800000, 
            color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1)
         #theme_pubr( base_size = 10, border = TRUE) +
         #theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
@@ -225,8 +224,8 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
         labels = label_number(big.mark = "")
         #labels = function(year) format(year, scientific = FALSE)
         ) +
-    #scale_y_continuous(limits = c(1,500000),
-    scale_y_log10(limits = c(100,500000),
+    #scale_y_continuous(limits = c(1,800000),
+    scale_y_log10(limits = c(100,800000),
         # customise ticks
         breaks = c(1000, 10000,100000,1000000),
         labels = label_number(big.mark = "")
@@ -243,15 +242,15 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
 ## combine:
 p010x_final <- p1_initial + 
     ## position of zoom plot
-    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000) +
+    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 150000, ymax = 800000) +
     ## position of annotation frame
-    geom_rect(aes(xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000),
+    geom_rect(aes(xmin = 50000, xmax = 180000, ymin = 150000, ymax = 800000),
               color='black', linetype='dashed', linewidth=0.5, alpha=0) +
     ## conncetion line to one side of the frame [geom_rect]
     geom_path(aes(x,y,group=grp), 
                 #[selected-annotation:left-right]
                 data=data.frame(x = c(25000,50000),
-                                y = c(480000,500000),
+                                y = c(800000,800000),
                                 grp = c(1,1,2,2)),
                 color = "black",
                 linewidth = 0.5,
@@ -287,7 +286,7 @@ library(patchwork)
 # Combine plots with patchwork
 
 pdf_file <- file.path(result_path,"all_combined_1_3_5_7_10x.no_singleton.tick_xy_log.pdf")
-combined_plot <- p1x_final + p3x_final + p5x_final + p7x_final + p010x_final + plot_layout(ncol = 5)
+combined_plot <- p01x_final + p03x_final + p05x_final + p07x_final + p010x_final + plot_layout(ncol = 5)
 ggsave(pdf_file,combined_plot,width = 30, height = 6, limitsize = FALSE)
 
 #print(combined_plot)

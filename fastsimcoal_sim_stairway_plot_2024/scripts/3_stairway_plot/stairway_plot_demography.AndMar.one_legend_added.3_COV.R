@@ -17,29 +17,29 @@ result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v
 setwd(result_path)
 
 file_list_a <- c(             
-                "AndMar_New_REF_AndMar.no_singleton_sfs_240_1500x_sm_genic", 
-                "AndMar_New_REF_AndMar.no_singleton_sfs_400_1500x_sm_genic",
-                "AndMar_New_REF_AndMar.no_singleton_sfs_560_1500x_sm_genic",
+                "AndMar_REF_AndMar.DP240", 
+                "AndMar_REF_AndMar.DP400",
+                "AndMar_REF_AndMar.DP560",
 ## exclude A. bicolor due to weird 
-                "AndMar_New_REF_AndBic.no_singleton_sfs_240_1500x_sm_genic",
-                "AndMar_New_REF_AndBic.no_singleton_sfs_400_1500x_sm_genic",
-                "AndMar_New_REF_AndBic.no_singleton_sfs_560_1500x_sm_genic",
+                "AndMar_REF_AndBic.DP240",
+                "AndMar_REF_AndBic.DP400",
+                "AndMar_REF_AndBic.DP560",
 ## just for calculating dS
-                #"AndMar_New_REF_AndTri.no_singleton_sfs_240_1500x_sm_genic",
-                #"AndMar_New_REF_AndTri.no_singleton_sfs_400_1500x_sm_genic",
-                #"AndMar_New_REF_AndTri.no_singleton_sfs_560_1500x_sm_genic",
+                #"AndMar_REF_AndTri.DP240",
+                #"AndMar_REF_AndTri.DP400",
+                #"AndMar_REF_AndTri.DP560",
 
-                "AndMar_New_REF_AndHat.no_singleton_sfs_240_1500x_sm_genic",
-                "AndMar_New_REF_AndHat.no_singleton_sfs_400_1500x_sm_genic",
-                "AndMar_New_REF_AndHat.no_singleton_sfs_560_1500x_sm_genic",
+                "AndMar_REF_AndHat.DP240",
+                "AndMar_REF_AndHat.DP400",
+                "AndMar_REF_AndHat.DP560",
 
-                "AndMar_New_REF_AndHae.no_singleton_sfs_240_1500x_sm_genic",
-                "AndMar_New_REF_AndHae.no_singleton_sfs_400_1500x_sm_genic",
-                "AndMar_New_REF_AndHae.no_singleton_sfs_560_1500x_sm_genic",
+                "AndMar_REF_AndHae.DP240",
+                "AndMar_REF_AndHae.DP400",
+                "AndMar_REF_AndHae.DP560",
 
-                "AndMar_New_REF_BomPas.no_singleton_sfs_240_1500x_sm_genic",
-                "AndMar_New_REF_BomPas.no_singleton_sfs_400_1500x_sm_genic",
-                "AndMar_New_REF_BomPas.no_singleton_sfs_560_1500x_sm_genic"
+                "AndMar_REF_BomPas.DP240",
+                "AndMar_REF_BomPas.DP400",
+                "AndMar_REF_BomPas.DP560"
                 )
 
 file_list_b <- c(      
@@ -92,7 +92,7 @@ for (i in 1:length(file_list_a)){
     ## key step
     ## conditional axis name plot
     ## plot a frame
-    file_path <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[i]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+    file_path <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[i]), recurse = 2, fail=TRUE, type = "file", glob = "*.final.summary")
     file_path <- file_path[1]
     data <- read.table(file_path,header=TRUE,sep="\t")
 
@@ -101,14 +101,14 @@ for (i in 1:length(file_list_a)){
     #x_axis_title <- ifelse(i %in% c(7, 8, 9), "Year ago", NULL)
 
     ## Determine which titles to show based on the plot position
-    print(i) # Add this line to see the value of i
+    #print(i) # Add this line to see the value of i
     #if (i %in% c(1,2,3)) {
     if (i %in% c(1,2,3)) {
         y_axis_title <- expression(paste(italic("N")["e"]," ", "(", italic("A. marginata"), ")"))
     } else {
         y_axis_title <- NULL
     }
-    print(y_axis_title) # Add this line to see the value of y_axis_title
+    #print(y_axis_title) # Add this line to see the value of y_axis_title
     
     #x_axis_title <- if (i %in% c(1,2,3,4,5,6,7,8,9)) "Year ago" else NULL
     x_axis_title <- if (i %in% c(3,6,9,12,15)) "Year ago" else NULL
@@ -202,8 +202,18 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     axis.ticks = element_line(colour = "black", size = 1))+
     labs(x="Year ago (log transformed)",y=expression(paste(italic("N")["e"]))) +
     scale_x_log10(lim= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(limits = c(1,200000), labels = function(Ne_median) format(Ne_median, scientific = FALSE))
+    #scale_y_continuous(limits = c(1,200000), labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+    scale_y_log10(limits = c(1,200000), labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
     # breaks = seq(0, 150000, by = 25000), 
+    
+    ## add log ticks on x axis
+    annotation_logticks(
+        sides = "bl",
+        short = unit(0.1, "cm"),  # Adjust size of short ticks
+        mid = unit(0.15, "cm"),     # Adjust size of medium ticks
+        long = unit(0.2, "cm")       # Adjust size of long ticks)  # log ticks only on  bottom
+        )
+
     
 p1_final <- p1_initial + 
     ## position of zoom plot
@@ -230,7 +240,7 @@ ggsave(pdf_file,combined_plot,width = 22.5, height = 13.5, limitsize = FALSE)
 
 ## 4.5/width/height
 
-combined_plot2 <- marrangeGrob(grobs = plot_list[c(1,7,10,13)],ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(4), nrow = 1, byrow = FALSE))
+combined_plot2 <- marrangeGrob(grobs = plot_list[c(1,4,7,10,13)],ncol = 5, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(5), nrow = 1, byrow = TRUE))
 
 print(combined_plot2)

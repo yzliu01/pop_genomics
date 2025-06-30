@@ -1,13 +1,13 @@
 #!/bin/bash
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 6
-#SBATCH --mem 1g
+#SBATCH --mem 2g
 ##SBATCH --mem-per-cpu=8G
-#SBATCH --array=1-34%34
+#SBATCH --array=1-72%72
 #SBATCH --time=08:00:00
-#SBATCH --error=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.New_REF.%A_%a.e.txt
-#SBATCH --output=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.New_REF.%A_%a.o.txt
-#SBATCH --job-name=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.New_REF
+#SBATCH --error=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.related_species_REF.%A_%a.e
+#SBATCH --output=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.related_species_REF.%A_%a.o
+#SBATCH --job-name=bees_4pools.DP_3x_5x_7x_no_singleton.sm_genic.related_species_REF
 #SBATCH --mail-type=all #begin,end,fail,all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com #send email notification
 
@@ -20,9 +20,9 @@ function pwait() {
     }
 ## generate blueprint.sh batch files
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
-blueprint_file_dir=./stairway_plot_blueprint/bee_pools_blueprint/New_REF
+blueprint_file_dir=./stairway_plot_blueprint/bee_pools_blueprint/related_species
 ## check declining PasVet first
-blueprint_file=`ls -t $blueprint_file_dir/*no_singleton_sfs_*_1500x.sm_genic.blueprint | head -34 | sort -r`
+blueprint_file=`ls -t $blueprint_file_dir/*DP*.blueprint | head -72 | sort -V`
 #blueprint_file=$(ls ft_sim_10000Ne*20Chr_15Mb_*MSFS.blueprint | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## create a function to run blueprint file
 ## attention to nrand as integer
@@ -51,11 +51,12 @@ run_batch_file(){
 
 
 ## run batch files in array jobs to plot
-run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*no_singleton_sfs_*_1500x.sm_genic.blueprint.sh | head -34 | sort -r | sed -n ${SLURM_ARRAY_TASK_ID}p)
+run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*DP*.blueprint.sh | head -72 | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 time bash $run_blueprint_plot_sh
 
 exit
-for plot in 
+
+
 
 ## modify blueprint files
 for bp in `ls *extended.blueprint`; do cp $bp $bp.new1;done

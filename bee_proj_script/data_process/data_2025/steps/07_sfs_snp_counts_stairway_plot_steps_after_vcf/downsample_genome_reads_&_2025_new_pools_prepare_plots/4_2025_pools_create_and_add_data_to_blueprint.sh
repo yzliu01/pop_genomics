@@ -3,7 +3,8 @@
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/2025_pools/templates
 
 #for compiled_sfs in `ls -t *_dipS.DP_1_1.5_2x.sfs.blueprint.txt`
-for compiled_sfs in `ls -t *_dipS.DP_1_1.5x.sfs.blueprint.txt`
+for compiled_sfs in `ls -t *_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt`
+#for compiled_sfs in `ls -t *_dipS.DP_1_1.5x.sfs.blueprint.txt`
 do
 echo $compiled_sfs
 #head -1 $compiled_sfs
@@ -39,12 +40,13 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 
 ## new 
 ## template.RutMac_50.no_singleton_sfs_nx_1500x.sm_genic.blueprint
-#for species in {AphSti_50,BomMaj_50,CerRyb_50,EphDan_50,MegLea_50,NotGla_50,OchPle_50,PhrFul_50,RutMac_50,SteMel_50};do
-#PorSca_50
-for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasMor_50,LepDol_50,MalBip_50,MysLon_50,PhoAtr_50,RhaFul_50,TacFer_50,ThoDec_50,XesC-n_50};do
+for species in {AphSti_50,BomMaj_50,CerRyb_50,EphDan_50,MegLea_50,NotGla_50,OchPle_50,PhrFul_50,RutMac_50,SteMel_50};do
 
-    for bp_file in `cat ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.folder_name.list`;do
-    #for bp_file in `cat ./"$species"_dipS.DP_1_1.5_2x.sfs.blueprint.folder_name.list`;do
+#PorSca_50
+#for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasMor_50,LepDol_50,MalBip_50,MysLon_50,PhoAtr_50,RhaFul_50,TacFer_50,ThoDec_50,XesC-n_50};do
+
+    for bp_file in `cat ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.folder_name.list`;do
+    #for bp_file in `cat ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.folder_name.list`;do
         #echo $bp_file by using templates
 
         ## save blueprint files in folder: 2025_pools: prepared for each before
@@ -69,7 +71,8 @@ CerRyb_REF_CerRyb.DP_5x.blueprint
 CerRyb_REF_CerRyb.DP_7x.blueprint
 CerRyb_REF_CerRyb.DP_10x.blueprint
 
-cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/2025_pools/templates
+# 10 species
+# 16 species
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/2025_pools
 
 ## early five depth: DP_1_3_5_7_10x
@@ -80,11 +83,11 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 #for i in {1..3};do
 
 ## new pools for three depth: 1_1.5_2_2.5_3x
-#for i in {1..5};do
+for i in {1..5};do
 ## new 16 pools for three depth: 1_1.5x
-for i in {1..2};do
-    for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasMor_50,LepDol_50,MalBip_50,MysLon_50,PhoAtr_50,RhaFul_50,TacFer_50,ThoDec_50,XesC-n_50};do
-    #for species in {AphSti_50,BomMaj_50,CerRyb_50,EphDan_50,MegLea_50,NotGla_50,OchPle_50,PhrFul_50,RutMac_50,SteMel_50};do
+#for i in {1..2};do
+    #for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasMor_50,LepDol_50,MalBip_50,MysLon_50,PhoAtr_50,RhaFul_50,TacFer_50,ThoDec_50,XesC-n_50};do
+    for species in {AphSti_50,BomMaj_50,CerRyb_50,EphDan_50,MegLea_50,NotGla_50,OchPle_50,PhrFul_50,RutMac_50,SteMel_50};do
         ## sfs file
         ## modify xx with number of called sites across the genomes or proportion of genomes
         #sfs1=`cat "$species"_number_called_sites_across_genome.txt | awk -F "\t" -v var=$i 'FNR==var {print $(NF-1)}'`
@@ -98,24 +101,31 @@ for i in {1..2};do
 #       Cerryb_50_number_called_sites_across_genome.txt
 
         ## numbers without comma
-        sfs1=`cat ./"$species"_number_called_sites_across_genome.txt.new | awk -F " " -v var=$i 'FNR==var {print $NF}'`
+        sfs1=`cat ./templates/"$species"_number_called_sites_across_genome.txt.new | awk -F " " -v var=$i 'FNR==var {print $NF}'`
         
         ## blueprint file names in last column; dir of blueprint files
 ## early test        
-##        sfs2=`cat ./templates/"$species"_dipS.DP_1_3_5_7_10x.sfs.blueprint.folder_name.list | sed 's/.blueprint//' | awk -F " " -v var=$i 'FNR==var {print $NF}'`
+        sfs2=`cat ./templates/"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.folder_name.list | sed 's/.blueprint//' | awk -F " " -v var=$i 'FNR==var {print $NF}'`
 
 ## new pools
 #        sfs2=`cat ./templates/"$species"_dipS.DP_1_1.5_2x.sfs.blueprint.folder_name.list | sed 's/.blueprint//' | awk -F " " -v var=$i 'FNR==var {print $NF}'`
-        sfs2=`cat ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.folder_name.list | sed 's/.blueprint//' | awk -F " " -v var=$i 'FNR==var {print $NF}'`
-        
+        #sfs2=`cat ./templates/"$species"_dipS.DP_1_1.5x.sfs.blueprint.folder_name.list | sed 's/.blueprint//' | awk -F " " -v var=$i 'FNR==var {print $NF}'`
+## DP_1_1.5_2_2.5_3x
         ## replace string in .blueprint files: popid (AA), project_dir (CC), plot title (DD) from the last col (NF)
-        sfs3=`cat ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.folder_name.list | awk -F " " -v var=$i 'FNR==var {print $NF}'`
+        sfs3=`cat ./templates/"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.folder_name.list | awk -F " " -v var=$i 'FNR==var {print $NF}'`
+## DP_1_1.5x
+        #sfs3=`cat ./templates/"$species"_dipS.DP_1_1.5x.sfs.blueprint.folder_name.list | awk -F " " -v var=$i 'FNR==var {print $NF}'`
+
         sed -i -e "3s/AA/$sfs2/" -e "12s/CC/$sfs2/" -e "20s/DD/$sfs2/" "$sfs3"
         echo "editing popid, project_dir, plot_title: $sfs3"
 
         ## modify the number of called sites (xx) and pop BB (sfs) with sfs data in col1
         ## attention to input file (set the last two columns empty $NF=$(NF-1)="")
-        sfs4=`cat ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt | awk -F " " -v var=$i 'FNR==var {$NF=$(NF-1)="";print}' | sed 's/[[:blank:]]*$//'`
+## DP_1_1.5_2_2.5_3x
+        sfs4=`cat ./templates/"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt | awk -F " " -v var=$i 'FNR==var {$NF=$(NF-1)="";print}' | sed 's/[[:blank:]]*$//'`
+## DP_1_1.5x
+#        sfs4=`cat ./templates/"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt | awk -F " " -v var=$i 'FNR==var {$NF=$(NF-1)="";print}' | sed 's/[[:blank:]]*$//'`
+
         ## issue: sfs4=`grep "$sample_size" $sfs_20_80_200_400 | awk -F "\t" -v var=$i 'FNR==var {$NF=$(NF-1)=""}1' | sed 's/[[:blank:]]*$//'`
         ## remove excess space
         ## https://unix.stackexchange.com/questions/102008/how-do-i-trim-leading-and-trailing-whitespace-from-each-line-of-some-output

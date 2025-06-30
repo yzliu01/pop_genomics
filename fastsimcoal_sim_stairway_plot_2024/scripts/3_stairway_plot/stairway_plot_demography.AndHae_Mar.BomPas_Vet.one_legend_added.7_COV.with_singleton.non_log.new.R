@@ -13,38 +13,44 @@ library(gridExtra) # for grid.arrange
 
 ##########################  final #####################################
 
-result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new"
+result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new/pool_shuf_downsample_genome"
 setwd(result_path)
-           
-file_list_a <- c(             
-                #3X
-                #"AndHae_New_REF_AndHae.no_singleton_sfs_234_1500x_sm_genic",
-                #"AndMar_New_REF_AndMar.no_singleton_sfs_240_1500x_sm_genic",
-                #"BomPas_New_REF_BomPas.no_singleton_sfs_204_1500x_sm_genic",
-                #"BomVet_New_REF_BomVet.no_singleton_sfs_174_1500x_sm_genic"
+
+file_list_a <- c(     
+                #1x
+                "AndHae_REF_AndHae.with_singleton.DP_7x.P_10",
+                "AndMar_REF_AndMar.with_singleton.DP_7x.P_10",
+                "BomPas_REF_BomPas.with_singleton.DP_7x.P_10",
+                "BomVet_REF_BomVet.with_singleton.DP_7x.P_10"
+
+                #1x
+                #"AndHae_New_REF_AndHae.with_singleton_sfs_234P_10.with_singleton",
+                #"AndMar_New_REF_AndMar.with_singleton_sfs_240P_10.with_singleton",
+                #"BomPas_New_REF_BomPas.with_singleton_sfs_204P_10.with_singleton",
+                #"BomVet_New_REF_BomVet.with_singleton_sfs_174P_10.with_singleton"
 
                 #5X
-                #"AndHae_New_REF_AndHae.no_singleton_sfs_390_1500x_sm_genic",
-                #"AndMar_New_REF_AndMar.no_singleton_sfs_400_1500x_sm_genic",
-                #"BomPas_New_REF_BomPas.no_singleton_sfs_340_1500x_sm_genic",
-                #"BomVet_New_REF_BomVet.no_singleton_sfs_290_1500x_sm_genic"
+                #"AndHae_New_REF_AndHae.with_singleton_sfs_390P_10.with_singleton",
+                #"AndMar_New_REF_AndMar.with_singleton_sfs_400P_10.with_singleton",
+                #"BomPas_New_REF_BomPas.with_singleton_sfs_340P_10.with_singleton",
+                #"BomVet_New_REF_BomVet.with_singleton_sfs_290P_10.with_singleton"
 
                 #7X
-                "AndHae_New_REF_AndHae.with_singleton_sfs_546_1500x_sm_genic",
-                "AndMar_New_REF_AndMar.with_singleton_sfs_560_1500x_sm_genic",
-                "BomPas_New_REF_BomPas.with_singleton_sfs_476_1500x_sm_genic",
-                "BomVet_New_REF_BomVet.with_singleton_sfs_416_1500x_sm_genic"               
+                #"AndHae_New_REF_AndHae.with_singleton_sfs_546P_10.with_singleton",
+                #"AndMar_New_REF_AndMar.with_singleton_sfs_560P_10.with_singleton",
+                #"BomPas_New_REF_BomPas.with_singleton_sfs_476P_10.with_singleton",
+                #"BomVet_New_REF_BomVet.with_singleton_sfs_416P_10.with_singleton"               
 )
 
 file_list_b <- c(
                 # hae
-                expression(paste("Closest Ref: ", italic("A. haemorrhoa"), " | Divergence Time: 0 Mya | Cov: 7x")), 
+                expression(paste("Closest Ref: ", italic("A. haemorrhoa"), " | Divergence Time: 0 Mya | Cov: 1x")), 
                 # mar
-                expression(paste("Closest Ref: ", italic("A. marginata"), " | Divergence Time: 0 Mya | Cov: 7x")), 
+                expression(paste("Closest Ref: ", italic("A. marginata"), " | Divergence Time: 0 Mya | Cov: 1x")), 
                 # pas
-                expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 7x")),          
+                expression(paste("Closest Ref: ", italic("B. pascuorum"), " | Divergence Time: 0 Mya | Cov: 1x")),          
                 # vet
-                expression(paste("Closest Ref: ", italic("B. veteranus"), " | Divergence Time: 0 Mya | Cov: 7x"))
+                expression(paste("Closest Ref: ", italic("B. veteranus"), " | Divergence Time: 0 Mya | Cov: 1x"))
 )
 
 
@@ -66,7 +72,7 @@ file_list_b <- c(
 ## add background grid: https://r-charts.com/ggplot2/grid/
 ## ! add shaded area: https://stackoverflow.com/questions/68770379/how-to-color-shade-the-area-between-two-lines-in-ggplot2
 
-file_path_hae <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[1]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_hae <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[1]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_hae <- file_path_hae[1]
 data_hae <- read.table(file_path_hae,header=TRUE,sep="\t")
 #head(data_hae)
@@ -74,35 +80,35 @@ data_hae <- read.table(file_path_hae,header=TRUE,sep="\t")
 str(data_hae)
 species <- rep("A.haemorrhoa",30401)
 data_hae_new <- cbind(species,data_hae)
-head(data_hae_new)
+#head(data_hae_new)
 #merged_data[30400:30405, ]
 #str(merged_data)
 #unique(merged_data$species)
 
-file_path_mar <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[2]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_mar <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[2]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_mar <- file_path_mar[1]
 data_mar <- read.table(file_path_mar,header=TRUE,sep="\t")
 str(data_mar)
 species <- rep("A.marginata",31201)
 data_mar_new <- cbind(species,data_mar)
-head(data_mar_new)
+#head(data_mar_new)
 
-file_path_pas <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[3]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_pas <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[3]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_pas <- file_path_pas[1]
 data_pas <- read.table(file_path_pas,header=TRUE,sep="\t")
 str(data_pas)
 species <- rep("B.pascuorum",26401)
 data_pas_new <- cbind(species,data_pas)
-head(data_pas_new)
+#head(data_pas_new)
 
-file_path_vet <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[4]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_vet <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[4]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_vet <- file_path_vet[1]
 data_vet <- read.table(file_path_vet,header=TRUE,sep="\t")
 str(data_vet)
-head(data_vet)
+#head(data_vet)
 species <- rep("B.veteranus",22401)
 data_vet_new <- cbind(species,data_vet)
-head(data_vet_new)
+#head(data_vet_new)
 
 ## merge all data frames
 merged_data <- rbind(data_hae_new,data_mar_new,data_pas_new,data_vet_new)
@@ -268,7 +274,7 @@ p7x_final <- p1_initial +
                 linetype = 'dashed')
 
 # Save the plot
-ggsave("plot_all_7x.with_singleton.tick_x_log.pdf", p7x_final, width = 10, height = 8)
+ggsave("plot_all_7x.with_singleton.tick_xy_log.pdf", p7x_final, width = 10, height = 8)
 
 print(p7x_final)
 

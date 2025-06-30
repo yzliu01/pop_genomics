@@ -51,11 +51,12 @@ out_sfs_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2
 
 # delete old sfs files
 #rm $out_sfs_dir/*.sfs
+#rm $out_sfs_dir/*_50_dipS.DP_1_1.5x.sfs
 
 #for species in {AelAcu,AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,MysLon,PhoAtr,PorSca,RhaFul,TacFer,ThoDec,XesC-n};do
 ## no PorSca
-for species in {AelAcu,AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,MysLon,PhoAtr,RhaFul,TacFer,ThoDec,XesC-n};do
-#for species in {AphSti,BomMaj,CerRyb,EphDan,MegLea,NotGla,OchPle,PhrFul,RutMac,SteMel};do
+#for species in {AelAcu,AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,MysLon,PhoAtr,RhaFul,TacFer,ThoDec,XesC-n};do
+for species in {AphSti,BomMaj,CerRyb,EphDan,MegLea,NotGla,OchPle,PhrFul,RutMac,SteMel};do
 ## next batch
 #for species in {AphSti,BomMaj,CerRyb,EphDan,MegLea,NotGla,OchPle,PhrFul,RutMac,SteMel};do
 ## early test with 3 species
@@ -80,7 +81,7 @@ for species in {AelAcu,AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,M
             #awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2x.sfs;
             
             ## 1x, 1.5x, 2x, 2.5x, 3x
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
             ## https://unix.stackexchange.com/questions/638196/how-to-print-in-only-one-column-if-condition-with-awk
             #BEGIN{FS=OFS="\t"}
             #echo -e "\t$i\t$i" >> $out_sfs_dir/sfs_1000000Ne_"$sample_size"hapS_5rep_final.txt
@@ -91,98 +92,99 @@ for species in {AelAcu,AgeAln,AmpSol,EriInt,EriPer,GerLac,LasMor,LepDol,MalBip,M
         
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: BomMaj - 50 ind
     elif [ "$species" = "BomMaj" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: CerRyb - 50 ind
     elif [ "$species" = "CerRyb" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: EphDan - 50 ind
     elif [ "$species" = "EphDan" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: Meglea - 50 ind
     elif [ "$species" = "MegLea" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: NotGla - 50 ind
     elif [ "$species" = "NotGla" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: OchPle - 50 ind
     elif [ "$species" = "OchPle" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: PhrFul - 50 ind
     elif [ "$species" = "PhrFul" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: Rutmac - 50 ind
     elif [ "$species" = "RutMac" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
 
 # species: SteMel - 50 ind
     elif [ "$species" = "SteMel" ];then
         for file_name in $sfs1;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
         # no need to change
         for file_name in $sfs2;do
-            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5x.sfs;
+            awk -v var=$file_name 'BEGIN{FS=OFS=" "}NR>=1,NR<=1{print $0 var OFS var}' $file_name | cut -d ' ' -f 1-52 >> $out_sfs_dir/"$species"_50_dipS.DP_1_1.5_2_2.5_3x.sfs;
         done
+
 
 ### rest species
 

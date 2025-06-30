@@ -1,23 +1,23 @@
 #!/bin/bash
 #SBATCH --account eDNA
 #SBATCH --cpus-per-task 3
-#SBATCH --mem 4g
-#SBATCH --array=1-240%120
+#SBATCH --mem 3g
+#SBATCH --array=1-15%15
 #SBATCH --time=18:00:00
-#SBATCH --error=fsc2stairway_1MNe_no_singleton_20_80_200hapS_1E_cons_1.1i_1.5i_1.9i_20Chr_15Mb.%A_%a.e
-#SBATCH --output=fsc2stairway_1MNe_no_singleton_20_80_200hapS_1E_cons_1.1i_1.5i_1.9i_20Chr_15Mb.%A_%a.o
-#SBATCH --job-name=fsc2stairway_1MNe_no_singleton_20_80_200hapS_1E_cons_1.1i_1.5i_1.9i
+#SBATCH --error=fsc2stairway_1MNe_20_80_200hapS_1E_10d_10d.%A_%a.e
+#SBATCH --output=fsc2stairway_1MNe_20_80_200hapS_1E_10d_10d.%A_%a.o
+#SBATCH --job-name=fsc2stairway_1MNe_20_80_200hapS_1E_10d_10d
 #SBATCH --mail-type=all #begin,end,fail,all
-#SBATCH --mail-user=yuanzhen.liu2@gmail.com
+#SBATCH --mail-user=yuanzhen.liu2@gmail.com #send email notification
 
 ## array job
 ## single run
 ## I - generate blueprint.sh batch files
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
-blueprint_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep_no_singletons
-blueprint_plot_sh=$(ls $blueprint_dir | grep -E 'G_1\.*.i|G_cons' | grep blueprint.sh | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+blueprint_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep
+blueprint_plot_sh=$(ls -t $blueprint_dir/*100_500G_10d_10d*blueprint.sh | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 
-time bash $blueprint_dir/$blueprint_plot_sh
+time bash $blueprint_plot_sh
 
 exit 0
 
@@ -35,13 +35,13 @@ function pwait() {
 ## I - generate blueprint.sh batch files
 #cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2
-blueprint_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep_no_singletons
-blueprint_file=`ls $blueprint_dir | sort -V | grep -E 'G_1\.*.i|G_cons'`
+blueprint_dir=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/1000000Ne_5rep
+blueprint_file=`ls -t $blueprint_dir/*100_500G_10d_10d*blueprint | sort -V`
 ## attention to nrand as integer
 ## blueprint files and program are in the same folder
 create_batch_files(){
     for file in $blueprint_file; do
-    time java -cp stairway_plot_es Stairbuilder $blueprint_dir/$file
+    time java -cp stairway_plot_es Stairbuilder $file
     done
 }
 ## run the function and output **blueprint.sh files

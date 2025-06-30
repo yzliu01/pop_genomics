@@ -11,20 +11,20 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 #for species in {Hae_39,Mar_40};do
 
 ## 10 new pools
-#for species in {AphSti_50,BomMaj_50,CerRyb_50,EphDan_50,MegLea_50,NotGla_50,OchPle_50,PhrFul_50,RutMac_50,SteMel_50};do
+for species in {AphSti_50,BomMaj_50,CerRyb_50,EphDan_50,MegLea_50,NotGla_50,OchPle_50,PhrFul_50,RutMac_50,SteMel_50};do
 ## 16 new pools
 #PorSca_50
-for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasMor_50,LepDol_50,MalBip_50,MysLon_50,PhoAtr_50,RhaFul_50,TacFer_50,ThoDec_50,XesC-n_50};do
+#for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasMor_50,LepDol_50,MalBip_50,MysLon_50,PhoAtr_50,RhaFul_50,TacFer_50,ThoDec_50,XesC-n_50};do
 
     if [ "$species" = "AphSti_50" ];then
         ## few depth
         #cat "$species"_dipS.DP_1_1.5_2x.sfs |\
         ## more depth
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         # cut: the delimiter must be a single character
         #cut -d "/" -f 1,3,5 | \
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
         ## few depth
         #sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2x.sfs.blueprint.txt
         ## new 10 pools
@@ -44,51 +44,52 @@ for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasM
         ## https://unix.stackexchange.com/questions/517985/how-can-i-merge-multiple-column-in-one-column-and-separated-by
 
     elif [ "$species" = "BomMaj_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
         #awk -F "\t" -v OFS="\t" '{$43=++a[$41]}1' | \
         #awk '{ for (i = 1; i <= 41; ++i) printf $i"\t"; print "" $42$43}' >> $out_sub_dir/sfs_Ne1000000_hapS_20_80_200_400_5rep_00d_01d_05d_09d_final.blueprint.txt
 
     elif [ "$species" = "CerRyb_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
 
     elif [ "$species" = "EphDan_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
 
     elif [ "$species" = "MegLea_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
 
     elif [ "$species" = "NotGla_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
 
     elif [ "$species" = "OchPle_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
 
     elif [ "$species" = "PhrFul_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
   
     elif [ "$species" = "RutMac_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
 
     elif [ "$species" = "SteMel_50" ];then
-        cat "$species"_dipS.DP_1_1.5x.sfs |\
+        cat "$species"_dipS.DP_1_1.5_2_2.5_3x.sfs |\
         awk -F "./" '{print $1 $2 $3}' |\
-        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5x.sfs.blueprint.txt
+        sed -e 's/.equal_self.sfs//g' > ./"$species"_dipS.DP_1_1.5_2_2.5_3x.sfs.blueprint.txt
+
 # 16 new pools
     elif [ "$species" = "AelAcu_50" ];then
         cat "$species"_dipS.DP_1_1.5x.sfs |\
@@ -180,4 +181,3 @@ for species in {AelAcu_50,AgeAln_50,AmpSol_50,EriInt_50,EriPer_50,GerLac_50,LasM
 
     fi
 done
-

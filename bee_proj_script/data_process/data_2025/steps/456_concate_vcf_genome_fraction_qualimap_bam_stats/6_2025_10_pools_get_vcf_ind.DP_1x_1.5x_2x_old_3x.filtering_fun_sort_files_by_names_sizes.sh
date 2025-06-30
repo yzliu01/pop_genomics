@@ -2,8 +2,8 @@
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 10g
-##SBATCH --array=4,6,7,9,16,19-20,23,27-28%10
-#SBATCH --array=28%1
+#SBATCH --array=4,6,7,9,16,19-20,23,27-28%10
+##SBATCH --array=28%1
 #SBATCH --time=10:00:00
 #SBATCH --error=get_filtered_2025_DP_new_1x_1.5x_2x_old_3x_4x_5x_7x_10x.%A_%a.e
 #SBATCH --output=get_filtered_2025_DP_new_1x_1.5x_2x_old_3x_4x_5x_old_7x_10x.%A_%a.o
@@ -152,7 +152,7 @@ RutMac_REF_RutMac.100kb_1500x_region.vcf.gz
 SteMel_REF_SteMel.100kb_1500x_region.vcf.gz
 TacFer_REF_TacFer.100kb_1500x_region.vcf.gz
 ThoDec_REF_ThoDec.100kb_1500x_region.vcf.gz
-XesNig_REF_XesNig.100kb_1500x_region.vcf.gz
+XesC-n_REF_XesC-n.100kb_1500x_region.vcf.gz
 
 )
 #vcf_file=${vcf_list[SLURM_ARRAY_TASK_ID]}  # start from 0
@@ -183,8 +183,16 @@ done
 #depth=(250 300)
 #depth_time=(2.5x 3x)
 
+## place this before call slurm_array_task_id
+## SLURM_ARRAY_TASK_ID=27 # 3x : RutMac_REF_RutMac.DP_3x.vcf.gz
+## SLURM_ARRAY_TASK_ID=28 # 2.5x SteMel_REF_SteMel.DP_2.5x.vcf.gz
+depth=(250)
+depth_time=(2.5x)
+
+## norm -a 
 depth=(100 150 200 250 300)
 depth_time=(1x 1.5x 2x 2.5x 3x)
+
 
 for i in ${!depth[@]}
 do
@@ -193,7 +201,7 @@ echo -e "${depth[i]}\t${depth_time[i]}"
 #bcftools view -R $BED_DIR/$BED $Andhae_New_REF_AndMar_VCF | \
 bcftools filter --soft-filter mask --mask-file $REF_MASKED_DIR/$REF_mask_region $vcf_file | \
 bcftools filter --SnpGap 5:indel | \
-bcftools norm -d none -f $REF_DIR/$REF | \
+bcftools norm -a -f $REF_DIR/$REF | \
 bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools view -e "MEAN(FMT/DP) < "${depth[i]}" || MEAN(FMT/DP) > 1500" \

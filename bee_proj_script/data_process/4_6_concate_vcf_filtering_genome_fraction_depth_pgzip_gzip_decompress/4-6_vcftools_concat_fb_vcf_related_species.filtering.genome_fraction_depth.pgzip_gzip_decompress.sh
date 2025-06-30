@@ -180,7 +180,6 @@ list=( "fb_per_region_BomPas_New_REF_BomPas"
 ****************** New mapping step I: concat in for loop *******************
 
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
-
 conda activate variant_calling_mapping
 
 ## check vcf files without headers line (empty files)
@@ -192,23 +191,56 @@ ls |sort -V | xargs grep -L '^#CHR' | less -S | ls -lh | less
 find ./fb_per_region_BomPas_New_alt_REF_BomMus -type f -size +0 -print | sort -V > BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_BomPas_New_alt_REF_BomMus
 
+## run this separately due to isssues for this vcf (working)
+vcf_list=BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list
+conc_name="${vcf_list/.individual_100kb_1500x_region_vcf_file.list/}"
+time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.new_1.vcf.gz
+
+cp concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.new_1.vcf concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.cp_new_1.vcf
+
+bgzip -d ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.new_1.vcf.gz
+
+bgzip concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.cp_new_1.vcf -k -i
+# -i, --index                compress and create BGZF index
+# bgzip --reindex (re)index compressed file
+bgzip -r concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.cp_new_1.vcf.gz
+#concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.cp_new_1.vcf.gz.gzi
+
+
+## alternative way not working
+# here: /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025/steps/456_concate_vcf_genome_fraction_qualimap_bam_stats/4_5_2025_10_pools_concate_vcf_filtering_genome_fraction_depth_bgzip_decompress.sh
+time bcftools concat --file-list $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.bcftools_concat.vcf.gz
+time bcftools index ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.bcftools_concat.vcf.gz
+
+
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf
 find ./fb_per_region_BomVet_New_REF_BomVet -type f -size +0 -print | sort -V > BomVet_New_REF_BomVet.individual_100kb_1500x_region_vcf_file.list
 #cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/fb_per_region_BomVet_New_REF_BomVet
 
+
+## old way
+
 #for vcf_list in $(ls -t *.list | head -1)
+
 ## downsample
-for vcf_list in $(ls -t *.list | head -6 | sort)
+#for vcf_list in $(ls -t *.list | head -6 | sort)
+
+# regenerate the vcf file for BomMus
+for vcf_list in $(ls BomPas_New_alt_REF_BomMus.individual_100kb_1500x_region_vcf_file.list)
     do
-    #conc_name="${vcf_list/.individual_100kb_1500x_region_vcf_file.list/}"
-    conc_name="${vcf_list/.100kb_1500x_region_vcf_file.list/}"
+    conc_name="${vcf_list/.individual_100kb_1500x_region_vcf_file.list/}"
+    #conc_name="${vcf_list/.100kb_1500x_region_vcf_file.list/}"
     #for dir in `ls -t -d fb_per_region* | head -4 | sort`
     #for dir in `ls -t -d fb_per_region* | head -1 | sort`
+
     ## downsample
-    for dir in `ls -t -d fb_per_region* | head -6 | sort`
+    #for dir in `ls -t -d fb_per_region* | head -6 | sort`
+
+    # regenerate the vcf file for BomMus
+    for dir in `ls -d *BomPas_New_alt_REF_BomMus*` # name needs to be the same as "$dir == xx"
         do
-#        echo $dir
-#    done
+        echo $dir
+    #done
 #done
         ## when meet multiple condition
         if [[ $vcf_list == *BomPas*New_REF_BomPas* && $dir == fb_per_region*BomPas*New_REF_BomPas* ]]
@@ -330,12 +362,28 @@ for vcf_list in $(ls -t *.list | head -6 | sort)
             echo $vcf_list $dir
             time vcf-concat --files $vcf_list | sed 's/ID=GQ,Number=1,Type=Integer/ID=GQ,Number=1,Type=Float/' | bgzip -c > ./concated_vcf_each_species_REF/concated.$conc_name.100kb_g1500x_regions.vcf.gz
 
-        
         else
             echo "no_concat"
         fi
     done
 done
+
+
+zcat concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.vcf.gz \
+  | grep -v '^$' \
+  | bgzip > concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.cleaned.vcf.gz
+
+bcftools index concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.cleaned.vcf.gz
+
+
+## sort chr according to ref
+cd ./concated_vcf_each_species_REF
+conda activate gatk_4.3.0.0
+gatk SortVcf --INPUT concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.vcf.gz --OUTPUT concated.BomPas_New_alt_REF_BomMus.100kb_g1500x_regions.all_chr.sorted.vcf.gz
+
+
+
+## old ways
 
 BomVet_Vet_vcf=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.all_chr.sorted.vcf.gz
 BomVet_Vet_vcf_out=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/vcf/concated_vcf_each_species_REF/concated.BomVet_New_REF_BomVet.100kb_g1500x_regions.all_chr.sorted.new.vcf.gz
@@ -944,7 +992,7 @@ for sample_samtools_stat in `ls *sort*stats.txt`;do
     grep ^COV $sample_samtools_stat| cut -f 2- > ./samtools_stat_cov/$sample_samtools_stat.COV;
 done
 
-*********************  calculate genome fraction covered by reads   **********************
+*********************  number of called sites - calculate genome fraction covered by reads   **********************
 ## total number of bases with depth > 9
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/samtools_stats
 BomVet_BomPas_COV=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF/Bomvet.New_REF_BomPas.sort.marked_dups.bam/raw_data_qualimapReport/coverage_histogram.txt
@@ -1049,11 +1097,41 @@ for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep '\.0_' | grep
     printf "\tDP160_1500x\t$COV \n"
 done
 
-***********************************************************
+***********************************************   3x    ****************************************************************
+cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/bee_proj_data/bam/bam_stats/qualimap/New_REF
 
 ## 3x per sample: NR > 200 (&& NR < 1500: fb variant calling)
-## grep 'Bompas.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+
+## grep 'Andhae.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF.' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 234 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP234_1500x\t$COV \n"
+done
+
+## grep 'Andhae.New_REF - AndFul'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 234 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP234_1500x\t$COV \n"
+done
+
+## grep 'Andmar.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP240_1500x\t$COV \n"
+done
+
+## grep 'Andmar.New_REF - AndTri'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP240_1500x\t$COV \n"
+done
+
+## grep 'Bompas.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 204 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP204_1500x\t$COV \n"
@@ -1067,8 +1145,8 @@ for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_his
     printf "\tDP204_1500x\t$COV \n"
 done
 
-## grep 'Bomvet.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+## grep 'Bomvet.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 174 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP174_1500x\t$COV \n"
@@ -1080,68 +1158,11 @@ for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_his
     sed '1d' $COV | awk -F " " 'NR > 174 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP174_1500x\t$COV \n"
 done
-## grep 'Andhae.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 234 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP234_1500x\t$COV \n"
-done
-
-## grep 'Andhae.New_REF - AndFul'
-for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 234 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP234_1500x\t$COV \n"
-done
-
-## grep 'Andmar.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP240_1500x\t$COV \n"
-done
-
-## grep 'Andmar.New_REF - AndTri'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 240 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP240_1500x\t$COV \n"
-done
-
-
-
+***********************************************   5x    ****************************************************************
 ## 5x per sample:  NR > 400 (&& NR < 1500: fb variant calling)
-## grep 'Bompas.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 340 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP340_1500x\t$COV \n"
-done
 
-## ls -td *dups.bam | head -6
-## grep 'Bompas.New_REF - BomHor- BomCon'
-for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 340 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP340_1500x\t$COV \n"
-done
-
-## grep 'Bomvet.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 290 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP290_1500x\t$COV \n"
-done
-
-## grep 'Bomvet.New_REF - BomHor- BomCon'
-for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 290 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP290_1500x\t$COV \n"
-done
-
-## grep 'Andhae.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+## grep 'Andhae.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 390 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP390_1500x\t$COV \n"
@@ -1155,8 +1176,8 @@ for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_his
 done
 
 
-## grep 'Andmar.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+## grep 'Andmar.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 400 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP400_1500x\t$COV \n"
@@ -1169,9 +1190,67 @@ for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_his
     printf "\tDP400_1500x\t$COV \n"
 done
 
+## grep 'Bompas.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 340 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP340_1500x\t$COV \n"
+done
+
+## ls -td *dups.bam | head -6
+## grep 'Bompas.New_REF - BomHor- BomCon'
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 340 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP340_1500x\t$COV \n"
+done
+
+## grep 'Bomvet.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 290 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP290_1500x\t$COV \n"
+done
+
+## grep 'Bomvet.New_REF - BomHor- BomCon'
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 290 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP290_1500x\t$COV \n"
+done
+
+***********************************************   7x    ****************************************************************
 ## 7x per sample: NR > 600 (&& NR < 1500: fb variant calling)
-## grep 'Bompas.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+## grep 'Andhae.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 546 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP546_1500x\t$COV \n"
+done
+
+## grep 'Andhae.New_REF - AndFul'
+for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 546 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP546_1500x\t$COV \n"
+done
+
+## grep 'Andmar.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 560 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP560_1500x\t$COV \n"
+done
+
+## grep 'Andmar.New_REF - AndTri'
+for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+    do
+    sed '1d' $COV | awk -F " " 'NR > 560 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
+    printf "\tDP560_1500x\t$COV \n"
+done
+
+## grep 'Bompas.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 476 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP476_1500x\t$COV \n"
@@ -1185,8 +1264,8 @@ for COV in `find -maxdepth 3 -print | grep 'Bompas.New_REF' | grep 'coverage_his
     printf "\tDP476_1500x\t$COV \n"
 done
 
-## grep 'Bomvet.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_histogram.txt' | sort -V`
+## grep 'Bomvet.New_REF' for all related species
+for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'sort.marked_dups.bam' | grep 'coverage_histogram.txt' | sort -V`
     do
     sed '1d' $COV | awk -F " " 'NR > 416 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP416_1500x\t$COV \n"
@@ -1197,34 +1276,6 @@ for COV in `find -maxdepth 3 -print | grep 'Bomvet.New_REF' | grep 'coverage_his
     do
     sed '1d' $COV | awk -F " " 'NR > 416 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
     printf "\tDP416_1500x\t$COV \n"
-done
-
-## grep 'Andhae.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 546 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP546_1500x\t$COV \n"
-done
-
-## grep 'Andhae.New_REF - AndFul'
-for COV in `find -maxdepth 3 -print | grep 'Andhae.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 546 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP546_1500x\t$COV \n"
-done
-
-## grep 'Andmar.New_REF'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 560 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP560_1500x\t$COV \n"
-done
-
-## grep 'Andmar.New_REF - AndTri'
-for COV in `find -maxdepth 3 -print | grep 'Andmar.New_REF' | grep 'coverage_histogram.txt' | sort -V`
-    do
-    sed '1d' $COV | awk -F " " 'NR > 560 && NR < 1500 {sum+=$2}END{print sum}' | tr -d '\n'
-    printf "\tDP560_1500x\t$COV \n"
 done
 
 

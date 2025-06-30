@@ -2,11 +2,12 @@
 #SBATCH --account eDNA
 ##SBATCH --cpus-per-task 20
 #SBATCH --mem 50g
+##SBATCH --array=2-9%9
 #SBATCH --array=1-10%10
 #SBATCH --time=1-16:00:00
-#SBATCH --error=Pas_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.e
-#SBATCH --output=Pas_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.o
-#SBATCH --job-name=Pas_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x
+#SBATCH --error=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.e
+#SBATCH --output=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x.%A_%a.o
+#SBATCH --job-name=Mar_shuf_get_filtered_2025_DP_1x_3x_5x_7x_10x
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -15,14 +16,14 @@ source /home/yzliu/miniforge3/etc/profile.d/conda.sh
 conda activate variant_calling_mapping
 
 ## test
-#SLURM_ARRAY_TASK_ID=1
+##SLURM_ARRAY_TASK_ID=1
 
 ## run in terminal
 #export OPENBLAS_NUM_THREADS=1
 
 ## pooled bees
 REF_MASKED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/ref_masked_bed
-## complement (softmasked_regions + gene_regions) sort.bed file - preferred
+## complement (softmasked_regions + gene_regions) bed file - preferred
 ## test low sequencing depth for Andrena species
 New_REF_AndHae_mask_region=$REF_MASKED_DIR/Andrena_haemorrhoa-GCA_910592295.1-softmasked_ref_gene.conca_sorted.bed
 New_REF_BomPas_mask_region=$REF_MASKED_DIR/Bombus_pascuorum-GCA_905332965.1-softmasked_ref_gene.conca_sorted.bed
@@ -85,17 +86,17 @@ done
 
 BED_DIR=/home/yzliu/eDNA/faststorage/yzliu/DK_proj/data/ref_genome/random_prop_sample_genome
 BED_LIST=(
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_02.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_03.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_04.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_05.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_06.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_07.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_08.sort.bed"
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_100b.shuf_subset_09.sort.bed"
-## 100% whole genome
-"Bombus_pascuorum-GCA_905332965.1-softmasked.fa.fai.win_whole.subset_10.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_01.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_02.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_03.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_04.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_05.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_06.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_07.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_08.sort.bed"
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_100b.shuf_subset_09.sort.bed"
+    ## 100% whole genome
+    "Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_10.bed"
 
 )
 
@@ -104,13 +105,13 @@ BED_LIST=(
 ## remove suffix text using %
 #chr_n=${chr_n%.fasta}
 
-## sort.bed file input
+## bed file input
 BED=$(echo ${BED_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## remove prefix text using #
 #OUT_PORT=${BED/#Andrena_marginata_GCA_963932335.1-softmasked.fa.fai.win_whole.subset_}
 #echo $OUT_PORT
 ## remove suffix text using %
-#OUT_PORT=${OUT_PORT/%.sort.bed}
+#OUT_PORT=${OUT_PORT/%.bed}
 #echo $OUT_PORT
 
 ## portion value
@@ -118,7 +119,7 @@ PROP_LIST=(01 02 03 04 05 06 07 08 09 10)
 PROP=$(echo ${PROP_LIST[@]} | tr " " "\n"| sed -n ${SLURM_ARRAY_TASK_ID}p)
 echo "P_$PROP"
 
-depth=(68 204 340 476 680)
+depth=(80 240 400 560 800)
 depth_time=(1x 3x 5x 7x 10x)
 
 for i in ${!depth[@]}
@@ -126,17 +127,18 @@ for i in ${!depth[@]}
 do
 echo -e "${depth[i]}\t${depth_time[i]}"
 #done
-bcftools view -R $BED_DIR/$BED $Bompas_New_REF_BomPas_VCF | \
-bcftools filter --soft-filter mask --mask-file $New_REF_BomPas_mask_region | \
+bcftools view -R $BED_DIR/$BED $Andmar_New_REF_AndMar_VCF | \
+bcftools filter --soft-filter mask --mask-file $New_REF_AndMar_mask_region | \
 bcftools filter --SnpGap 5:indel | \
-bcftools norm -d none -f $REF_BomPas | \
+bcftools norm -a -f $REF_AndMar | \
 bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools view -e "MEAN(FMT/DP) < "${depth[i]}" || MEAN(FMT/DP) > 1500" \
--Oz -o ./"$Bompas_New_REF_BomPas_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"${depth_time[i]}"_1500x_noMS.shuf.P_"$PROP".vcf.gz
+-Oz -o ./"$Andmar_New_REF_AndMar_VCF_filter".SNP_softmask_genic_bi_FMT_DP_"${depth_time[i]}"_1500x_noMS.shuf.P_"$PROP".vcf.gz
 done
 
 exit 0
+
 
 export OPENBLAS_NUM_THREADS=4
 #OpenBLAS blas_thread_init: pthread_create failed for thread 27 of 64: Resource temporarily unavailable

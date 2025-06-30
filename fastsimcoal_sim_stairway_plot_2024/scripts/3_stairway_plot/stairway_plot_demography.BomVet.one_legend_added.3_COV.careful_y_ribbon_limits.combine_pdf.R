@@ -13,33 +13,33 @@ library(gridExtra) # for grid.arrange
 
 ##########################  final #####################################
 
-result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new"
+result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new/related_species"
 setwd(result_path)
 
 file_list_a <- c(   
-                "BomVet_New_REF_BomVet.no_singleton_sfs_174_1500x_sm_genic", 
-                "BomVet_New_REF_BomVet.no_singleton_sfs_290_1500x_sm_genic",
-                "BomVet_New_REF_BomVet.no_singleton_sfs_416_1500x_sm_genic",
+                "BomVet_REF_BomVet.DP174", 
+                "BomVet_REF_BomVet.DP290",
+                "BomVet_REF_BomVet.DP416",
 
-                "BomVet_New_REF_BomPas.no_singleton_sfs_174_1500x_sm_genic", 
-                "BomVet_New_REF_BomPas.no_singleton_sfs_290_1500x_sm_genic",
-                "BomVet_New_REF_BomPas.no_singleton_sfs_416_1500x_sm_genic",
+                "BomVet_REF_BomPas.DP174", 
+                "BomVet_REF_BomPas.DP290",
+                "BomVet_REF_BomPas.DP416",
 
-                "BomVet_New_REF_BomHor.no_singleton_sfs_174_1500x_sm_genic",
-                "BomVet_New_REF_BomHor.no_singleton_sfs_290_1500x_sm_genic",
-                "BomVet_New_REF_BomHor.no_singleton_sfs_416_1500x_sm_genic",
+                "BomVet_REF_BomHor.DP174",
+                "BomVet_REF_BomHor.DP290",
+                "BomVet_REF_BomHor.DP416",
 
-                #"BomVet_New_REF_BomHyp.no_singleton_sfs_174_1500x_sm_genic",
-                #"BomVet_New_REF_BomHyp.no_singleton_sfs_290_1500x_sm_genic",
-                #"BomVet_New_REF_BomHyp.no_singleton_sfs_416_1500x_sm_genic",
+                #"BomVet_REF_BomHyp.DP174",
+                #"BomVet_REF_BomHyp.DP290",
+                #"BomVet_REF_BomHyp.DP416",
 
-                "BomVet_New_REF_BomCon.no_singleton_sfs_174_1500x_sm_genic",
-                "BomVet_New_REF_BomCon.no_singleton_sfs_290_1500x_sm_genic",
-                "BomVet_New_REF_BomCon.no_singleton_sfs_416_1500x_sm_genic",
+                "BomVet_REF_BomCon.DP174",
+                "BomVet_REF_BomCon.DP290",
+                "BomVet_REF_BomCon.DP416",
 
-                "BomVet_New_REF_ApisMel.no_singleton_sfs_174_1500x_sm_genic",
-                "BomVet_New_REF_ApisMel.no_singleton_sfs_290_1500x_sm_genic",
-                "BomVet_New_REF_ApisMel.no_singleton_sfs_416_1500x_sm_genic"
+                "BomVet_REF_ApisMel.DP174",
+                "BomVet_REF_ApisMel.DP290",
+                "BomVet_REF_ApisMel.DP416"
                 )
 
 file_list_b <- c(  
@@ -92,7 +92,7 @@ for (i in 1:length(file_list_a)){
     ## key step
     ## conditional axis name plot
     ## plot a frame
-    file_path <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[i]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+    file_path <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[i]), recurse = 2, fail=TRUE, type = "file", glob = "*.final.summary")
     file_path <- file_path[1]
     print(file_path)
     data <- read.table(file_path,header=TRUE,sep="\t")
@@ -187,8 +187,8 @@ p1_initial <- ggplot(data = data, aes(x = year)) +
 }
     # axis of select area for zoom
 p1_zoom <- ggplot(data = data, aes(x = year)) +
-    ylim(1,180000)+
-    scale_x_log10(lim= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
+    #ylim(1,180000)+
+    #scale_x_log10(lim= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
     #geom_line(aes(y = (Ne_median)), color = "red", linewidth = 0.5) +
     geom_ribbon(aes(ymin = Ne_12.5.,ymax = Ne_87.5.),fill = "blue",alpha = 0.3) +
     geom_line(aes(y = (Ne_median)), color = "red", linewidth = 0.7, alpha = 0.8) +
@@ -202,8 +202,20 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     axis.title.x=element_text(hjust=1),
     panel.border = element_rect(linewidth = 1.2), panel.grid.major = element_line(color = "gray", size = 0.25, linetype = 2),
     axis.ticks = element_line(colour = "black", size = 1)) +
-    labs(x="Year ago (log transformed)",y=expression(paste(bolditalic("N")["e"])))
-    #scale_x_continuous(labels = function(year) format(year, scientific = FALSE))
+    labs(x="Year ago (log transformed)",y=expression(paste(bolditalic("N")["e"]))) +
+    
+    scale_x_log10(limits= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
+#    scale_y_continuous(limits = c(1000,1500000), labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+    scale_y_log10(limits = c(1000,1500000), labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+    
+    ## add log ticks on x axis
+    annotation_logticks(
+        sides = "bl",
+        short = unit(0.1, "cm"),  # Adjust size of short ticks
+        mid = unit(0.15, "cm"),     # Adjust size of medium ticks
+        long = unit(0.2, "cm")       # Adjust size of long ticks)  # log ticks only on  bottom
+        )
+
 
 p1_final <- p1_initial + 
     ## position of zoom plot, the y axis title affect the plot area
@@ -225,14 +237,37 @@ combined_plot <- marrangeGrob(grobs = plot_list,ncol = 5, nrow = 3,
                             layout_matrix = matrix(seq_len(15), nrow = 3, byrow = FALSE))
 
 
-pdf_file <- file.path(result_path,"BomVet_combined_added_plot.dS.issue.pdf")
+pdf_file <- file.path(result_path,"BomVet_combined_added_plot.dS.pdf")
 ggsave(pdf_file,combined_plot,width = 22.5, height = 13.5,limitsize = FALSE)
 
 # get the first three plots in the first column
-combined_plot4 <- marrangeGrob(grobs = plot_list[c(1,7,10,13)],ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(4), nrow = 1, byrow = FALSE))
+combined_plot4 <- marrangeGrob(grobs = plot_list[c(1,4,7,10,13)],ncol = 5, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(5), nrow = 1, byrow = TRUE))
 
 dev.off()
+
+
+
+# combine multiple pdf
+# /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/fastsimcoal_sim_stairway_plot_2024/scripts/3_stairway_plot/stairway_plot_main_figure_2.combine_pdf.R
+#install.packages("qpdf")
+library(qpdf)
+
+# Vector of input PDF filenames
+input_pdfs <- c(
+    "AndHae_combined_added_plot.dS.pdf", 
+    "AndMar_combined_added_plot.dS.pdf",
+    "BomPas_combined_added_plot.dS.pdf",
+    "BomVet_combined_added_plot.dS.pdf"
+    )  
+
+# Output merged PDF filename
+output_pdf <- "combined_related_species_plot.pdf"
+
+# Combine PDFs
+pdf_combine(input = input_pdfs, output = output_pdf)
+
+
 
 *************** test of interleved ribbon plot **************
 
@@ -278,20 +313,22 @@ print(p)
 ***********************
 # before there were 
 # get the first three plots in the first column
-combined_plot4 <- marrangeGrob(grobs = plot_list[c(1,7,10,13)],ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(4), nrow = 1, byrow = FALSE))
+## select the first row (related species by 3x; original plots are arranged by columns)
+combined_plot4 <- marrangeGrob(grobs = plot_list[c(1,4,7,10,13)],ncol = 5, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(5), nrow = 1, byrow = TRUE))
 
-combined_plot3 <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(3), nrow = 1, byrow = FALSE))
+combined_plot3 <- marrangeGrob(grobs = plot_list[c(1,4,7,10,13)],ncol = 5, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(5), nrow = 1, byrow = TRUE))
                             
-combined_plot2 <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(3), nrow = 1, byrow = FALSE))
+combined_plot2 <- marrangeGrob(grobs = plot_list[c(1,4,7,10,13)],ncol = 5, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(5), nrow = 1, byrow = TRUE))
 
-combined_plot1 <- marrangeGrob(grobs = plot_list,ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(3), nrow = 1, byrow = FALSE))
+combined_plot1 <- marrangeGrob(grobs = plot_list[c(1,4,7,10,0)],ncol = 5, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(5), nrow = 1, byrow = TRUE))
 
 print(combined_plot4)
 
+************************ from plot directly ******************
 # Convert each marrangeGrob object to a single grob
 combined_plot1_grob <- grid.arrange(grobs = combined_plot1, "null")
 combined_plot2_grob <- grid.arrange(grobs = combined_plot2, "null")
@@ -316,7 +353,7 @@ all_combined_plots <- arrangeGrob(combined_plot1_grob,
 #library(gridExtra)
 library(gtable)
 
-all_combined_plots_padded <- gtable_add_padding(all_combined_plots, padding = unit(c(1, 1, 1, 1), "cm"))
+all_combined_plots_padded <- gtable_add_padding(all_combined_plots, padding = unit(c(0.5, 0.5, 0.5, 0.5), "cm"))
 
 # To display the combined plots with padding
 #grid.draw(all_combined_plots_padded)
@@ -326,13 +363,16 @@ all_combined_plots_padded <- gtable_add_padding(all_combined_plots, padding = un
 # Save the combined plots to a PDF
 #pdf("all_combined_plots.pdf", width = 18, height = 26) # Adjust the width and height as needed
 #pdf("all_combined_plots.pdf", width = 15, height = 20) # Adjust the width and height as needed
-pdf("all_combined_plots.dS.pdf", width = 18, height = 18)
+pdf("all_combined_plots.dS_3x.pdf", width = 20, height = 16)
 grid.draw(all_combined_plots_padded)
 
 #grid.draw(all_combined_plots)
 dev.off()
 
 #print(combined_plot4)
+
+
+
 
 library(gridExtra)
 #install.packages("patchwork")

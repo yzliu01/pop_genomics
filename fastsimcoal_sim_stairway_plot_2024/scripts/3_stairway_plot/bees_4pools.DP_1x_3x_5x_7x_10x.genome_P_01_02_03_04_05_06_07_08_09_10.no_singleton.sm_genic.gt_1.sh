@@ -3,11 +3,11 @@
 ##SBATCH --cpus-per-task 6
 #SBATCH --mem 2g
 ##SBATCH --mem-per-cpu=8G
-#SBATCH --array=1-200%200
+#SBATCH --array=1-220%220
 #SBATCH --time=08:00:00
-#SBATCH --error=bees_4pools.DP_1x_3x_5x_7x_10x.P_01_02_03_04_05_06_07_08_09_10.no_singleton.shuf.sm_genic.gt_1.%A_%a.e
-#SBATCH --output=bees_4pools.DP_1x_3x_5x_7x_10x.P_01_02_03_04_05_06_07_08_09_10.no_singleton.shuf.sm_genic.gt_1.%A_%a.o
-#SBATCH --job-name=bees_4pools.DP_1x_3x_5x_7x_10x.P_01_02_03_04_05_06_07_08_09_10.no_singleton.shuf.sm_genic.gt_1
+#SBATCH --error=bees_4pools.DP_1x_3x_5x_7x_10x.P_01_02_03_04_05_06_07_08_09_10.with_no_singleton.shuf.sm_genic.gt_1.%A_%a.e
+#SBATCH --output=bees_4pools.DP_1x_3x_5x_7x_10x.P_01_02_03_04_05_06_07_08_09_10.with_no_singleton.shuf.sm_genic.gt_1.%A_%a.o
+#SBATCH --job-name=bees_4pools.DP_1x_3x_5x_7x_10x.P_01_02_03_04_05_06_07_08_09_10.no_siwith_no_singletonngleton.shuf.sm_genic.gt_1
 #SBATCH --mail-type=all
 #SBATCH --mail-user=yuanzhen.liu2@gmail.com
 
@@ -25,7 +25,7 @@ cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway
 ## shuf
 blueprint_file_dir=./stairway_plot_blueprint/pool_shuf_downsample_genome
 ## check declining PasVet first
-blueprint_file=`ls -t $blueprint_file_dir/*DP_*x.P_[0-9][0-9].blueprint | head -200 | sort -V`
+blueprint_file=`ls -t $blueprint_file_dir/*DP_*x.P_[0-9][0-9]*.blueprint | head -220 | sort -V`
 #blueprint_file=$(ls ft_sim_10000Ne*20Chr_15Mb_*MSFS.blueprint | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 ## create a function to run blueprint file
 ## attention to nrand as integer
@@ -64,7 +64,7 @@ run_batch_file(){
 # /home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/pool_downsample_genome/BomPas_REF_BomPas.DP_10x.P_02.blueprint
 
 ## run batch files in array jobs to plot
-run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*DP_*x.P_[0-9][0-9].blueprint.sh | head -200 | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
+run_blueprint_plot_sh=$(ls -t $blueprint_file_dir/*DP_*x.P_[0-9][0-9]*.blueprint.sh | head -220 | sort -V | sed -n ${SLURM_ARRAY_TASK_ID}p)
 #run_blueprint_plot_sh=./stairway_plot_blueprint/pool_downsample_genome/AndHae_REF_AndHae.DP_1x.P_01.blueprint.sh
 time bash $run_blueprint_plot_sh
 

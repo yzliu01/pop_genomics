@@ -193,7 +193,7 @@ echo -e "${depth[i]}\t${depth_time[i]}"
 #bcftools view -R $BED_DIR/$BED $Andhae_New_REF_AndMar_VCF | \
 bcftools filter --soft-filter mask --mask-file $REF_MASKED_DIR/$REF_mask_region $vcf_file | \
 bcftools filter --SnpGap 5:indel | \
-bcftools norm -d none -f $REF_DIR/$REF | \
+bcftools norm -a -f $REF_DIR/$REF | \
 bcftools view -v snps -A -m 2 -M 2 -f 'PASS' | \
 bcftools filter -e 'AC==0 || AC == AN' | \
 bcftools view -e "MEAN(FMT/DP) < "${depth[i]}" || MEAN(FMT/DP) > 1500" \

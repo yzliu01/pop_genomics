@@ -13,7 +13,7 @@ library(gridExtra) # for grid.arrange
 
 ##########################  final #####################################
 
-result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new"
+result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new/pool_shuf_downsample_genome"
 setwd(result_path)
 
 file_list_a <- c(             
@@ -30,10 +30,10 @@ file_list_a <- c(
                 #"BomVet_New_REF_BomVet.no_singleton_sfs_290_1500x_sm_genic"
 
                 #7X
-                "AndHae_New_REF_AndHae.no_singleton_sfs_546_1500x_sm_genic",
-                "AndMar_New_REF_AndMar.no_singleton_sfs_560_1500x_sm_genic",
-                "BomPas_New_REF_BomPas.no_singleton_sfs_476_1500x_sm_genic",
-                "BomVet_New_REF_BomVet.no_singleton_sfs_416_1500x_sm_genic"               
+                "AndHae_REF_AndHae.DP_7x.P_10",
+                "AndMar_REF_AndMar.DP_7x.P_10",
+                "BomPas_REF_BomPas.DP_7x.P_10",
+                "BomVet_REF_BomVet.DP_7x.P_10"              
                 )
 
 file_list_b <- c(
@@ -65,7 +65,7 @@ file_list_b <- c(
 ## add background grid: https://r-charts.com/ggplot2/grid/
 ## ! add shaded area: https://stackoverflow.com/questions/68770379/how-to-color-shade-the-area-between-two-lines-in-ggplot2
 
-file_path_hae <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[1]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_hae <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[1]), recurse = 2, fail=TRUE, type = "file", glob = "*7x.P_10.final.summary")
 file_path_hae <- file_path_hae[1]
 data_hae <- read.table(file_path_hae,header=TRUE,sep="\t")
 #head(data_hae)
@@ -78,7 +78,7 @@ head(data_hae_new)
 #str(merged_data)
 #unique(merged_data$species)
 
-file_path_mar <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[2]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_mar <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[2]), recurse = 2, fail=TRUE, type = "file", glob = "*7x.P_10.final.summary")
 file_path_mar <- file_path_mar[1]
 data_mar <- read.table(file_path_mar,header=TRUE,sep="\t")
 str(data_mar)
@@ -86,7 +86,7 @@ species <- rep("A.marginata",31201)
 data_mar_new <- cbind(species,data_mar)
 head(data_mar_new)
 
-file_path_pas <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[3]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_pas <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[3]), recurse = 2, fail=TRUE, type = "file", glob = "*7x.P_10.final.summary")
 file_path_pas <- file_path_pas[1]
 data_pas <- read.table(file_path_pas,header=TRUE,sep="\t")
 str(data_pas)
@@ -94,7 +94,7 @@ species <- rep("B.pascuorum",26401)
 data_pas_new <- cbind(species,data_pas)
 head(data_pas_new)
 
-file_path_vet <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[4]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+file_path_vet <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[4]), recurse = 2, fail=TRUE, type = "file", glob = "*7x.P_10.final.summary")
 file_path_vet <- file_path_vet[1]
 data_vet <- read.table(file_path_vet,header=TRUE,sep="\t")
 str(data_vet)
@@ -155,14 +155,14 @@ p1_initial <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = speci
     scale_fill_manual(values = c("A.haemorrhoa" = "#009E73", "A.marginata" = "#332288", "B.pascuorum" = "#D55E00", "B.veteranus" = "#CC79A7")) +  # Custom fill colors
   
   ## display specific labels to show time periods
-  scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = "")) +
+  scale_y_continuous(limits = c(1, 800000), labels = label_number(big.mark = "")) +
   scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = "")) + # Set x-axis limits between 1 and 100,000
   ## add comma
-  #scale_y_continuous(limits = c(1, 500000), labels = label_number(big.mark = ",")) + # Adding commas as thousand separators without scientific notation
+  #scale_y_continuous(limits = c(1, 800000), labels = label_number(big.mark = ",")) + # Adding commas as thousand separators without scientific notation
   #scale_x_continuous(limits = c(10, 180000), labels = label_number(big.mark = ",")) + # Set x-axis limits between 1 and 100,000
 
   ## frame to select area on the plot
-  annotate(geom = "rect", xmin = 10, xmax = 25000, ymin = 1000, ymax = 480000, 
+  annotate(geom = "rect", xmin = 10, xmax = 25000, ymin = 1000, ymax = 800000, 
            color = "black", linetype='dashed', linewidth = 0.5, alpha = 0.1)
         #theme_pubr( base_size = 10, border = TRUE) +
         #theme(axis.text = element_text(colour = "black",size = 12), axis.text.y = element_text(angle = 90, vjust = 0, hjust=0.5),
@@ -218,8 +218,8 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
         labels = label_number(big.mark = "")
         #labels = function(year) format(year, scientific = FALSE)
         ) +
-    #scale_y_continuous(limits = c(1,500000),
-    scale_y_log10(limits = c(100,500000),
+    #scale_y_continuous(limits = c(1,800000),
+    scale_y_log10(limits = c(100,800000),
         # customise ticks
         breaks = c(1000, 10000,100000,1000000),
         labels = label_number(big.mark = "")
@@ -236,15 +236,15 @@ p1_zoom <- ggplot(merged_data_new, aes(x = year, y = Ne_median, group = species,
 ## combine:
 p07x_final <- p1_initial + 
     ## position of zoom plot
-    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000) +
+    annotation_custom(ggplotGrob(p1_zoom), xmin = 50000, xmax = 180000, ymin = 150000, ymax = 800000) +
     ## position of annotation frame
-    geom_rect(aes(xmin = 50000, xmax = 180000, ymin = 150000, ymax = 500000),
+    geom_rect(aes(xmin = 50000, xmax = 180000, ymin = 150000, ymax = 800000),
               color='black', linetype='dashed', linewidth=0.5, alpha=0) +
     ## conncetion line to one side of the frame [geom_rect]
     geom_path(aes(x,y,group=grp), 
                 #[selected-annotation:left-right]
                 data=data.frame(x = c(25000,50000),
-                                y = c(480000,500000),
+                                y = c(800000,800000),
                                 grp = c(1,1,2,2)),
                 color = "black",
                 linewidth = 0.5,

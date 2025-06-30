@@ -13,25 +13,25 @@ library(gridExtra) # for grid.arrange
 
 ##########################  final #####################################
 
-result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new"
+result_path="/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/bee_pools_plot_new/related_species"
 setwd(result_path)
 
 file_list_a <- c(             
-                "AndHae_New_REF_AndHae.no_singleton_sfs_234_1500x_sm_genic", 
-                "AndHae_New_REF_AndHae.no_singleton_sfs_390_1500x_sm_genic",
-                "AndHae_New_REF_AndHae.no_singleton_sfs_546_1500x_sm_genic",
+                "AndHae_REF_AndHae.DP234", 
+                "AndHae_REF_AndHae.DP390",
+                "AndHae_REF_AndHae.DP546",
 
-                "AndHae_New_REF_AndHat.no_singleton_sfs_234_1500x_sm_genic",
-                "AndHae_New_REF_AndHat.no_singleton_sfs_390_1500x_sm_genic",
-                "AndHae_New_REF_AndHat.no_singleton_sfs_546_1500x_sm_genic",
+                "AndHae_REF_AndHat.DP234",
+                "AndHae_REF_AndHat.DP390",
+                "AndHae_REF_AndHat.DP546",
 
-                "AndHae_New_REF_AndFul.no_singleton_sfs_234_1500x_sm_genic",
-                "AndHae_New_REF_AndFul.no_singleton_sfs_390_1500x_sm_genic",
-                "AndHae_New_REF_AndFul.no_singleton_sfs_546_1500x_sm_genic",
+                "AndHae_REF_AndFul.DP234",
+                "AndHae_REF_AndFul.DP390",
+                "AndHae_REF_AndFul.DP546",
 
-                "AndHae_New_REF_BomPas.no_singleton_sfs_234_1500x_sm_genic",
-                "AndHae_New_REF_BomPas.no_singleton_sfs_390_1500x_sm_genic",
-                "AndHae_New_REF_BomPas.no_singleton_sfs_546_1500x_sm_genic"
+                "AndHae_REF_BomPas.DP234",
+                "AndHae_REF_BomPas.DP390",
+                "AndHae_REF_BomPas.DP546"
                 )
 
 file_list_b <- c(       
@@ -52,6 +52,15 @@ file_list_b <- c(
                 expression(paste("Ref4: ", italic("B. pascuorum"), " | d", italic("S"), ":  (1.1801, 1.1831) | Cov: 5X")),
                 expression(paste("Ref4: ", italic("B. pascuorum"), " | d", italic("S"), ":  (1.1801, 1.1831) | Cov: 7X"))
                 )
+
+
+## for DP_1_1.5x
+#site_file <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/bee_pools_blueprint/templates/Hae_39_number_called_sites_related_species_across_genome.txt.new"
+#no_called_sites <- read.table(site_file, header = FALSE)
+#head(no_called_sites)
+#snp_file <- "/home/yzliu/eDNA/faststorage/yzliu/DK_proj/sofwtare/stairway_plot_v2/stairway_plot_v2.1.2/stairway_plot_blueprint/bee_pools_blueprint/templates/AndHae_snp_number.related_species.3_5_7x.txt"
+#snp_number <- read.table(snp_file, header = FALSE)
+#head(snp_number)
 
 ## initialize a list to store plot
 plot_list <- list()
@@ -77,7 +86,7 @@ for (i in 1:length(file_list_a)){
     ## key step
     ## conditional axis name plot
     ## plot a frame
-    file_path <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[i]), recurse = 2, fail=TRUE, type = "file", glob = "*_1500x_sm_genic.final.summary")
+    file_path <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[i]), recurse = 2, fail=TRUE, type = "file", glob = "*.final.summary")
     file_path <- file_path[1]
     data <- read.table(file_path,header=TRUE,sep="\t")
 
@@ -86,13 +95,13 @@ for (i in 1:length(file_list_a)){
     #x_axis_title <- ifelse(i %in% c(7, 8, 9), "Year ago", NULL)
 
     ## Determine which titles to show based on the plot position
-    print(i) # Add this line to see the value of i
+    #print(i) # Add this line to see the value of i
     if (i %in% c(1,2,3)) {
         y_axis_title <- expression(paste(italic("N")["e"]," ", "(", italic("A. haemorrhoa"), ")"))
     } else {
         y_axis_title <- NULL
     }
-    print(y_axis_title) # Add this line to see the value of y_axis_title
+    #print(y_axis_title) # Add this line to see the value of y_axis_title
     
     x_axis_title <- if (i %in% c(3,6,9,12)) "Year ago" else NULL
     ##print(x_axis_title) # Add this line to see the value of x_axis_title
@@ -183,7 +192,17 @@ p1_zoom <- ggplot(data = data, aes(x = year)) +
     axis.ticks = element_line(colour = "black", size = 1))+
     labs(x="Year ago (log transformed)",y=expression(paste(italic("N")["e"]))) +
     scale_x_log10(limits= c(10,15000),labels = function(year) format(year, scientific = FALSE)) +
-    scale_y_continuous(limits = c(1000,1500000), labels = function(Ne_median) format(Ne_median, scientific = FALSE))
+#    scale_y_continuous(limits = c(1000,1500000), labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+    scale_y_log10(limits = c(1000,1500000), labels = function(Ne_median) format(Ne_median, scientific = FALSE)) +
+    
+    ## add log ticks on x axis
+    annotation_logticks(
+        sides = "bl",
+        short = unit(0.1, "cm"),  # Adjust size of short ticks
+        mid = unit(0.15, "cm"),     # Adjust size of medium ticks
+        long = unit(0.2, "cm")       # Adjust size of long ticks)  # log ticks only on  bottom
+        )
+
 
 p1_final <- p1_initial + 
     ## position of zoom plot
@@ -204,10 +223,10 @@ p1_final <- p1_initial +
 
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 4, nrow = 3,
                             layout_matrix = matrix(seq_len(12), nrow = 3, byrow = FALSE))
-pdf_file <- file.path(result_path,"AndHae_combined_added_plot.dS.new.pdf")
+pdf_file <- file.path(result_path,"AndHae_combined_added_plot.dS.pdf")
 ggsave(pdf_file,combined_plot,width = 18, height = 13.5)
 
-combined_plot1 <- marrangeGrob(grobs = plot_list[c(1,4,7,10)],ncol = 3, nrow = 1, top=NULL,
-                            layout_matrix = matrix(seq_len(4), nrow = 1, byrow = FALSE))
+combined_plot1 <- marrangeGrob(grobs = plot_list[c(1,4,7,10,0)],ncol = 5, nrow = 1, top=NULL,
+                            layout_matrix = matrix(seq_len(5), nrow = 1, byrow = FALSE))
 
 print(combined_plot1)

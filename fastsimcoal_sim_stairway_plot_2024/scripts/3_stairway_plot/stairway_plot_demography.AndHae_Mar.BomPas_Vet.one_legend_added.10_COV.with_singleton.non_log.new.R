@@ -36,11 +36,10 @@ file_list_a <- c(
                 #"BomVet_New_REF_BomVet.with_singleton_sfs_416P_10.with_singleton"
 
                 #10x
-
-                "AndHae_REF_AndHae.DP_10x.P_10.with_singleton",
-                "AndMar_REF_AndMar.DP_10x.P_10.with_singleton",
-                "BomPas_REF_BomPas.DP_10x.P_10.with_singleton",
-                "BomVet_REF_BomVet.DP_10x.P_10.with_singleton"
+                "AndHae_REF_AndHae.with_singleton.DP_10x.P_10",
+                "AndMar_REF_AndMar.with_singleton.DP_10x.P_10",
+                "BomPas_REF_BomPas.with_singleton.DP_10x.P_10",
+                "BomVet_REF_BomVet.with_singleton.DP_10x.P_10"
 
 )
 
@@ -74,7 +73,7 @@ file_list_b <- c(
 ## add background grid: https://r-charts.com/ggplot2/grid/
 ## ! add shaded area: https://stackoverflow.com/questions/68770379/how-to-color-shade-the-area-between-two-lines-in-ggplot2
 
-file_path_hae <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[1]), recurse = 2, fail=TRUE, type = "file", glob = "*P_10.with_singleton.final.summary")
+file_path_hae <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[1]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_hae <- file_path_hae[1]
 data_hae <- read.table(file_path_hae,header=TRUE,sep="\t")
 #head(data_hae)
@@ -87,7 +86,7 @@ head(data_hae_new)
 #str(merged_data)
 #unique(merged_data$species)
 
-file_path_mar <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[2]), recurse = 2, fail=TRUE, type = "file", glob = "*P_10.with_singleton.final.summary")
+file_path_mar <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[2]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_mar <- file_path_mar[1]
 data_mar <- read.table(file_path_mar,header=TRUE,sep="\t")
 str(data_mar)
@@ -95,7 +94,7 @@ species <- rep("A.marginata",31201)
 data_mar_new <- cbind(species,data_mar)
 head(data_mar_new)
 
-file_path_pas <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[3]), recurse = 2, fail=TRUE, type = "file", glob = "*P_10.with_singleton.final.summary")
+file_path_pas <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[3]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_pas <- file_path_pas[1]
 data_pas <- read.table(file_path_pas,header=TRUE,sep="\t")
 str(data_pas)
@@ -103,7 +102,7 @@ species <- rep("B.pascuorum",26401)
 data_pas_new <- cbind(species,data_pas)
 head(data_pas_new)
 
-file_path_vet <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[4]), recurse = 2, fail=TRUE, type = "file", glob = "*P_10.with_singleton.final.summary")
+file_path_vet <- fs::dir_ls(path=paste0(result_path,"/",file_list_a[4]), recurse = 2, fail=TRUE, type = "file", glob = "*with_singleton.*P_10.final.summary")
 file_path_vet <- file_path_vet[1]
 data_vet <- read.table(file_path_vet,header=TRUE,sep="\t")
 str(data_vet)
@@ -271,7 +270,7 @@ p10x_final <- p1_initial +
                 linetype = 'dashed')
 
 # Save the plot
-ggsave("plot_all_10x.with_singleton.tick_x_log.pdf", p10x_final, width = 10, height = 8)
+ggsave("plot_all_10x.with_singleton.tick_xy_log.pdf", p10x_final, width = 10, height = 8)
 
 print(p10x_final)
 
@@ -284,7 +283,7 @@ print(p10x_final)
 combined_plot <- marrangeGrob(grobs = plot_list,ncol = 5, nrow = 3, 
                             layout_matrix = matrix(seq_len(15), nrow = 3, byrow = FALSE))
 
-pdf_file <- file.path(result_path,"all_combined_3_5_7x.with_singleton.pdf")
+pdf_file <- file.path(result_path,"all_combined_3_5_7x.with_singleton.log_xy.pdf")
 ggsave(pdf_file,combined_plot,width = 22.5, height = 13.5, limitsize = FALSE)
 
 

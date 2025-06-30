@@ -208,27 +208,31 @@ for (sample_size in c(20,80,200)) {
 
 # ----- Arrange plots in matrix layout ----- #
 demographic_models <- c("2i_2i","2d_2d","10d_10d","2d_2i","2i_2d","2e_i_2e_d","2e_d_2e_i")
-event_sizes <- c("100_500G","100_500G","100_500G","100_500G","100_500G","100_500G","100_500G")
+event_sizes <- c("100_500G")
 singleton_types <- c("_", "_no_singleton_")
 
 # Assemble final panels grouped by sample_size
 plot_rows <- list()
 
 for (sample_size in c(20, 80, 200)) {
-  for (model in demographic_models) {
-    for (singleton in singleton_types) {
-      row_plots <- list()
-      for (event_size in event_sizes) {
+  # Create separate rows for each singleton type
+  for (singleton in singleton_types) {
+    row_plots <- list()  # This will store all models for current sample_size/singleton
+    
+    for (event_size in event_sizes) {
+      for (model in demographic_models) {
         key <- paste0(sample_size, singleton, event_size, "_", model)
-        row_plots[[event_size]] <- if (!is.null(plot_list[[key]])) plot_list[[key]] else ggplot() + theme_void()
+        row_plots[[paste0(event_size, "_", model)]] <- if (!is.null(plot_list[[key]])) plot_list[[key]] else ggplot() + theme_void()
       }
-      plot_rows[[paste0(sample_size, singleton, model)]] <- wrap_plots(row_plots, nrow = 1)
     }
+    
+    # Store the complete row for this sample_size and singleton
+    plot_rows[[paste0(sample_size, singleton)]] <- wrap_plots(row_plots, nrow = 1)
   }
 }
 
 # Stack sample panels vertically
-final_plot <- wrap_plots(plot_rows, ncol = 7)
+final_plot <- wrap_plots(plot_rows, ncol = 1)
 print(final_plot)
 
 ggsave("50KNe_2d_2d_2i_2i_10i_10i_2d_2i_2i_2d_2ei_2ed_2ed_2ei_plot_20_80_200S.new1.pdf", final_plot, width = 17.5, height = 13.5, limitsize = FALSE) # 3 * 2 rows
