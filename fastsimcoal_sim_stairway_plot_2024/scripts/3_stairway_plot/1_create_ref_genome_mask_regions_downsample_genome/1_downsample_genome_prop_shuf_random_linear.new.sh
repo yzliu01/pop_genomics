@@ -72,51 +72,60 @@ prop=(0.1 0.2 0.3 0.4 0.5 0.6 0.7 0.8 0.9)
 prop_name=(01 02 03 04 05 06 07 08 09)
 
 # prepare full genome prop separately, win_whole
-
-#prop=(1)
+#rop=(1)
 #prop_name=(10)
 
 #Divide the Genome into Non-Overlapping Windows
 #Use bedtools makewindows to generate evenly spaced non-overlapping regions:
-#bedtools makewindows -g $ref_fai -w 100000 > genome_windows.bed
-#Adjust -w 100 to change window size to 100bp per fragment.
-
-## generate a separate original bed file
+##Adjust -w 100 to change window size to 100bp per fragment.
 #bedtools makewindows -g $ref_fai -w 100 > ./random_prop_sample_genome/$ref_fai.win_100b.bed
-
-for i in ${!prop[*]}
-do
-echo "prop: ${prop[i]}"
-#done
-total_length=$(awk '{sum+=$2} END {print sum}' $ref_fai)
-target_length=$(echo "$total_length * ${prop[i]}" | bc)
-echo -e "Target genome length: $ref_fai \t $target_length"
-#Target genome length: 33067069
+## example
+#1       0       100
+#1       100     200
+#1       200     300
+#1       300     400
 
 #Randomly Sample from Non-Overlapping Windows
 #Ensure the selected windows sum up to your target length:
 ## shuf is produce non-overlapping regions
 #shuf ./random_prop_sample_genome/$ref_fai.win_100b.bed | awk -v target="$target_length" '{
 
-# in one step
-# random due to shuf
-#bedtools makewindows -g $ref_fai -w 100 | shuf | awk -v target="$target_length" '{
+## example
+#4       7761200 7761300
+#4       4028500 4028600
+#1       28858800        28858900
+#6       6189500 6189600
+#7       27870600        27870700
 
-## generate consistent regions
-## for whole genome linear sampling
+for i in ${!prop[*]}
+do
+echo "prop: ${prop[i]}"
+#done
+total_length=$(awk '{sum+=$2} END {print sum}' $ref_fai)
+# calculate target genome length
+target_length=$(echo "$total_length * ${prop[i]}" | bc)
+echo -e "Target genome length: $ref_fai \t $target_length"
+#Target genome length: 33067069
+
+# in one step
+## for whole genome random due to shuf
+## check the sum of ranges, and take the range when in the required sizes
 bedtools makewindows -g $ref_fai -w 100 | awk -v target="$target_length" '{
-        sum += $3 - $2;
+    sum += $3 - $2;
     print $0;
     if (sum >= target) exit;
-}' | sort -V > ./random_prop_sample_genome/$ref_fai.win_100b.subset_"${prop_name[i]}".bed
+}' | sort -V | bedtools merge > ./random_prop_sample_genome/$ref_fai.win_100b.shuf_subset_"${prop_name[i]}".sort.bed
 
-## for whole genome random due to shuf
-#}' | sort -V | bedtools merge > ./random_prop_sample_genome/$ref_fai.win_100b.shuf_subset_"${prop_name[i]}".sort.bed
+## for whole genome linear sampling
+#}' | sort -V > ./random_prop_sample_genome/$ref_fai.win_100b.subset_"${prop_name[i]}".bed
 
 ## each region
 # | sort -V > ./random_prop_sample_genome/$ref_fai.win_100b.shuf_subset_"${prop_name[i]}".sort.bed
 done
 done
+
+
+
 
 ## then go here
 cd /home/yzliu/eDNA/faststorage/yzliu/DK_proj/population_genomics/bee_proj_script/data_process/data_2025_downsample/Scripts/downsample_bam
